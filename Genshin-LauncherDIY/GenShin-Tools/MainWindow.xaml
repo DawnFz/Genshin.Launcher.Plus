@@ -1,0 +1,50 @@
+﻿<mah:MetroWindow x:Class="GenShin_Tools.MainWindow"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GenShin_Tools"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="730" Width="1280" WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  ShowCloseButton="False" ShowMinButton="False">
+    <Grid x:Name="BGW">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Res/BG.png"/>
+        </Grid.Background>
+        <Button Content="开始游戏" HorizontalAlignment="Left" Margin="921,632,0,0" VerticalAlignment="Top" Click="Button_Click" Height="64" Width="238" FontSize="24" FontWeight="Normal" FontFamily="Microsoft YaHei" Foreground="#FF5D4400">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFFFD371"/>
+                    <GradientStop Color="#FFFFAF00" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Grid HorizontalAlignment="Center" Height="45" VerticalAlignment="Top" Width="1280" Background="#FF272727">
+            <Button x:Name="CloseW" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FFFF5252" Content="" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="1245,0,0,0" VerticalAlignment="Center" Height="25" Width="25" Click="CloseW_Click"/>
+            <Button x:Name="MinW" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FF00AFEA" Content="" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="1210,0,0,0" VerticalAlignment="Center" Height="25" Width="25" Click="Min_Click"/>
+            <Label Content="原神启动器Plus   Ver.1.0.1  " HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
+        </Grid>
+        <Grid HorizontalAlignment="Left" Height="685" Margin="1197,45,0,0" VerticalAlignment="Top" Width="83" Background="#66717171">
+            <Button x:Name="Setting" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,250,0,0" VerticalAlignment="Top" Click="Setting_Click" Height="60" Width="60" BorderBrush="{x:Null}" BorderThickness="5">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Res/setting.png"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="ScreenSrc" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content=""  BorderBrush="{x:Null}" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Height="60" Width="60" Click="ScreenSrc_Click"  BorderThickness="5">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Res/img.png"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="QQGroup" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,335,0,0" VerticalAlignment="Top" Click="QqG_Click" Height="60" Width="60" BorderBrush="{x:Null}" BorderThickness="5">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Res/qqg.png"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="About" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,420,0,0" VerticalAlignment="Top" Click="About_Click" Height="60" Width="60" BorderBrush="{x:Null}" BorderThickness="5">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Res/about.png"/>
+                </Button.Background>
+            </Button>
+        </Grid>
+    </Grid>
+</mah:MetroWindow>
