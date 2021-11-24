@@ -1,8 +1,6 @@
 C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\bin\Release\GenShin-LauncherDIY.exe.config
 C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\bin\Release\GenShin-LauncherDIY.exe
 C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\bin\Release\GenShin-LauncherDIY.pdb
-C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\GenShin-LauncherDIY.csproj.AssemblyReference.cache
-C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\GenShin-LauncherDIY.csproj.SuggestedBindingRedirects.cache
 C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\setWindow.baml
 C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\App.baml
 C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\MainWindow.g.cs
@@ -15,6 +13,5 @@ C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\GenShin-Laun
 C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\GenShin_LauncherDIY.Properties.Resources.resources
 C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\GenShin-LauncherDIY.csproj.GenerateResource.cache
 C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\GenShin-LauncherDIY.csproj.CoreCompileInputs.cache
-C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\GenShin-LauncherDIY.csproj.CopyComplete
 C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\GenShin-LauncherDIY.exe
 C:\Users\dawnf\source\repos\GenShin-Tools\GenShin-Tools\obj\Release\GenShin-LauncherDIY.pdb

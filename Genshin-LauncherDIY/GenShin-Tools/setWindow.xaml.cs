@@ -3,8 +3,10 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +16,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 
 namespace GenShin_Tools
@@ -37,6 +40,7 @@ namespace GenShin_Tools
                 BIliS.IsChecked = true;
             else
                 MiS.IsChecked = true;
+            IsSDK();
         }
 
         private void setSave_Click(object sender, RoutedEventArgs e)
@@ -112,6 +116,40 @@ namespace GenShin_Tools
             int y = (int)SystemParameters.WorkArea.Height - 80;
             GWidth.Text = Convert.ToString(x);
             GHeight.Text = Convert.ToString(y);
+        }
+        private void IsSDK()
+        {
+            if (GamePath.Text == "")
+            {
+                SDKlive.Content = "SDK:未知";
+                Fixbtn.IsEnabled = false;
+            }
+            else
+            {
+                if (File.Exists(GamePath.Text + "\\Genshin Impact Game\\YuanShen_Data\\Plugins\\PCGameSDK.dll") == false)
+                {
+                    SDKlive.Content = "SDK:缺失";
+                    Fixbtn.IsEnabled = true;
+                }
+                else
+                {
+                    SDKlive.Content = "SDK:存在";
+                    Fixbtn.IsEnabled = false;
+                }
+            }
+        }
+        private void Fix_Click(object sender, RoutedEventArgs e)
+        {
+            if (File.Exists(@"mihoyosdk.dll") == false)
+            {
+                this.ShowMessageAsync("错误", "mihoyo.dll文件不存在，无法进行MihoyoSDK修复\r\n请检查本启动器文件是否完整或前往GitHub重新下载！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            }
+            else
+            {
+                this.ShowMessageAsync("提示", "MihoyoSDK修复成功", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                File.Copy(@"mihoyosdk.dll", GamePath.Text + "\\Genshin Impact Game\\YuanShen_Data\\Plugins\\PCGameSDK.dll", true);
+                IsSDK();
+            }
         }
     }
 }

@@ -132,7 +132,7 @@ namespace GenShin_Tools
         private void Setting_Click(object sender, RoutedEventArgs e)
         {
             setWindow set = new setWindow();
-            set.Show();
+            set.ShowDialog();
         }
 
         private void QqG_Click(object sender, RoutedEventArgs e)
@@ -142,7 +142,7 @@ namespace GenShin_Tools
 
         private async void About_Click(object sender, RoutedEventArgs e)
         {
-            if ((await this.ShowMessageAsync("关于", "这是一个由WPF编写的原神启动器\r\n\r\n你可以使用本启动器做到以下功能：\r\n快速的跳转到游戏的照相保存目录\r\n自定义任意分辨率和选择是否全屏来启动游戏\r\n选择哔哩哔哩服或者选择米哈游官服进行启动\r\n\r\n编写：DawnFz，您可以跳转到Github以获取项目源代码", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "确定" , NegativeButtonText = "GitHub"})) != MessageDialogResult.Affirmative)
+            if ((await this.ShowMessageAsync("关于", "这是一个由WPF编写的原神启动器\r\n\r\n你可以使用本启动器做到：\r\n快速的跳转到游戏的照相保存目录\r\n自定义任意分辨率和选择是否全屏来启动游戏\r\n选择哔哩哔哩服或者选择米哈游官服进行启动\r\n\r\n编写：DawnFz，您可以跳转到Github以获取项目源代码", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "确定" , NegativeButtonText = "GitHub"})) != MessageDialogResult.Affirmative)
             {
                 Process.Start("https://github.com/DawnFz/Genshin-LauncherDIY");
             }

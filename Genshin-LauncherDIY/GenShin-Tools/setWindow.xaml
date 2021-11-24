@@ -22,5 +22,7 @@
         <TextBox mah:TextBoxHelper.Watermark="游戏路径，例：C:\Genshin Impact\" x:Name="GamePath" x:FieldModifier="public" Height="23" Margin="10,146,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
         <RadioButton x:Name="BIliS" Content="B服启动" HorizontalAlignment="Left" Margin="102,188,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
         <RadioButton x:Name="MiS" Content="官服启动" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+        <Label x:Name="SDKlive" Content="SDK:未知" HorizontalAlignment="Left" Margin="187,185,0,0" VerticalAlignment="Top" Width="65"/>
+        <Button x:Name="Fixbtn" Content="修复" HorizontalAlignment="Left" Margin="249,183,0,0" VerticalAlignment="Top" Height="28" Width="49" Click="Fix_Click" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal" />
     </Grid>
 </mah:MetroWindow>
