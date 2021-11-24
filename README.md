@@ -25,4 +25,4 @@
 ## [点击下载](https://github.com/DawnFz/Genshin-LauncherDIY/releases)
 #### 提示：1.0.2版本为纯脱机程序，没有加入更新功能，预计下个版本加入。
 
-其他待补充
+其他待补充  
