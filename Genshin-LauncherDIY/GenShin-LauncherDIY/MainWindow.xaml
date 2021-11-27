@@ -22,7 +22,7 @@
         <Grid HorizontalAlignment="Center" Height="45" VerticalAlignment="Top" Width="1280" Background="#FF272727">
             <Button x:Name="CloseW" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FFFF5252" Content="" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="1245,0,0,0" VerticalAlignment="Center" Height="25" Width="25" Click="CloseW_Click"/>
             <Button x:Name="MinW" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FF00AFEA" Content="" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="1210,0,0,0" VerticalAlignment="Center" Height="25" Width="25" Click="Min_Click"/>
-            <Label Content="原神启动器Plus   Ver.1.0.3  " HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
+            <Label Content="原神启动器Plus   Ver.1.0.4 " HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
         </Grid>
         <Grid HorizontalAlignment="Left" Height="685" Margin="1197,45,0,0" VerticalAlignment="Top" Width="83" Background="#66717171">
             <Button x:Name="Setting" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,278,0,0" VerticalAlignment="Top" Click="Setting_Click" Height="50" Width="50" BorderBrush="{x:Null}" BorderThickness="5">
