@@ -41,10 +41,11 @@ namespace GenShin_LauncherDIY
 
             {//判断版本
                 String ver = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[ver]", "[/ver]");
-                if ("1.0.3"!=ver)
+                if ("1.0.4"!=ver)
                 {
                     VerCheck();
                 }
+
             }
 
             {//判断config是否存在
@@ -96,7 +97,7 @@ namespace GenShin_LauncherDIY
             {
                 Config.Settings.FullS = "1";
             }
-            if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)
+            if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)//启动国服
             {          
                 Thread game = new Thread(() =>
                 {
@@ -109,7 +110,7 @@ namespace GenShin_LauncherDIY
                 game.Start();
                 WindowState = WindowState.Minimized;
             }
-            else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)
+            else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)//启动国际服
             {
                 Thread game = new Thread(() =>
                 {
@@ -125,7 +126,6 @@ namespace GenShin_LauncherDIY
             else
             {
                 this.ShowMessageAsync("错误", "游戏路径为空或游戏文件不存在\r\n请点击右上角蓝色按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                this.ShowMessageAsync("错误", Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
         }
 
@@ -141,14 +141,14 @@ namespace GenShin_LauncherDIY
 
         private void ScreenSrc_Click(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(Config.Settings.GamePath + "//Genshin Impact Game//ScreenShot") == false)
+            if (Directory.Exists(Config.Settings.GamePath + "//Genshin Impact Game//ScreenShot") == true)
             {
-                this.ShowMessageAsync("错误", "请先输入正确的游戏路径！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                return;
+                Process.Start(Config.Settings.GamePath + "//Genshin Impact Game//ScreenShot");
+
             }
             else
             {
-                Process.Start(Config.Settings.GamePath + "//Genshin Impact Game//ScreenShot");
+                this.ShowMessageAsync("错误", "请先输入正确的游戏路径！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
         }
 
@@ -179,14 +179,6 @@ namespace GenShin_LauncherDIY
                 this.ShowMessageAsync("提示", "访问密码：etxd\r\n已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                 Clipboard.SetText("etxd");
                 Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
-            }
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            for(int i=0;i<Config.Settings.globalfiles.Length;i++)
-            {
-                MessageBox.Show(Config.Settings.globalfiles[i]);
             }
         }
     }

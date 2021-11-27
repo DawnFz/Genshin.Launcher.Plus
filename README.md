@@ -56,6 +56,15 @@
 
    资源包下载地址：[下载资源包](https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg) 访问密码：etxd
 
+### 1.0.4
+
+1. 修复转换国际服后游戏报错31-4302
+2. 优化了对哔哩哔哩端SDK文件的检测方式
+3. 增加了对pkg包的版本检测以便大版本更新时提示
+
+
+
+
 ## [点击下载](https://github.com/DawnFz/Genshin-LauncherDIY/releases)
 #### ~~提示：1.0.2版本为纯脱机程序，没有加入更新功能，预计下个版本加入。~~
 

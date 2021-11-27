@@ -17,7 +17,7 @@ namespace GenShin_LauncherDIY.Config
         public static string Biomi;
         //下面是检查需要替换的国际服文件的路径
         public static string[] globalfiles = new string[] 
-        { "//GenshinImpact_Data//app.info", 
+        { "//GenshinImpact_Data//app.info",
           "//GenshinImpact_Data//globalgamemanagers",
           "//GenshinImpact_Data//Managed//Metadata//global-metadata.dat" ,
           "//GenshinImpact_Data//Native//Data//Metadata//global-metadata.dat",

@@ -131,8 +131,6 @@ namespace GenShin_LauncherDIY
             else
             {
                 Config.IniGS.BiOrMi = 3;
-                BOM.Sub_channel = 0;
-                BOM.Channel = 1;
             }
             Config.setConfig.checkini();
             this.Close();
@@ -169,7 +167,7 @@ namespace GenShin_LauncherDIY
                 }
                 else if (File.Exists(GamePath.Text + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll") == true)
                 {
-                    SDKlive.Content = "SDK:存在";
+                    SDKlive.Content = "SDK:无需";
                     Fixbtn.IsEnabled = false;
                 }
                 else
@@ -179,37 +177,65 @@ namespace GenShin_LauncherDIY
                 }
             }
         }
-        private void Fix_Click(object sender, RoutedEventArgs e)
+        private async void Fix_Click(object sender, RoutedEventArgs e)
         {
-            var sdkUri = "pack://application:,,,/Res/mihoyosdk.dll";
-            var uri = new Uri(sdkUri, UriKind.RelativeOrAbsolute);
-            var stream = Application.GetResourceStream(uri).Stream;
-            Utils.UtilsTools.StreamToFile(stream, GamePath.Text + "\\Genshin Impact Game\\YuanShen_Data\\Plugins\\PCGameSDK.dll");
-            this.ShowMessageAsync("提示", "MihoyoSDK修复成功", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-            IsSDK();
+            if ((await this.ShowMessageAsync("提醒", "修复SDK仅用于官转哔服，国际服无需修复", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "确定修复" })) != MessageDialogResult.Affirmative)
+            {
+                if (Directory.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen_Data") == true)
+                {
+                    var sdkUri = "pack://application:,,,/Res/mihoyosdk.dll";
+                    var uri = new Uri(sdkUri, UriKind.RelativeOrAbsolute);
+                    var stream = Application.GetResourceStream(uri).Stream;
+                    Utils.UtilsTools.StreamToFile(stream, GamePath.Text + "\\Genshin Impact Game\\YuanShen_Data\\Plugins\\PCGameSDK.dll");
+                    IsSDK();
+                }
+                else
+                {
+                    this.ShowMessageAsync("提醒", "该端无需修复SDK文件", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                }
+
+            }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+
+
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (ToGlobal.Content == "转换")
+            if ((await this.ShowMessageAsync("警告！！", "执行操作前请先检查游戏是否彻底关闭\r\n否则可能出现意料之外的效果，如客户端损坏等！\r\n如游戏大版本更新时请先转换为国内服使用游戏自带启动器更新", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消转换", NegativeButtonText = "确定转换" })) != MessageDialogResult.Affirmative)
             {
-                Thread StartUn = new Thread(() => UnFile());
-                bqload.Visibility = Visibility.Visible;
-                setSave.IsEnabled = false;
-                ToGlobal.IsEnabled = false;
-                TimeStatus.Content = "当前状态：正在解压资源";
-                StartUn.Start();
-            }
-            else
-            {
-                Thread StartRe = new Thread(() => ReCnGame());
-                bqload.Visibility = Visibility.Visible;
-                setSave.IsEnabled = false;
-                ToGlobal.IsEnabled = false;
-                TimeStatus.Content = "当前状态：正在还原游戏";
-                StartRe.Start();
+                //
+                String pkgfile = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[pkg]", "[/pkg]");
+                //
+                if (ToGlobal.Content == "复原")
+                {
+                    Thread StartRe = new Thread(() => ReCnGame());
+                    bqload.Visibility = Visibility.Visible;
+                    setSave.IsEnabled = false;
+                    ToGlobal.IsEnabled = false;
+                    TimeStatus.Content = "当前状态：正在还原游戏";
+                    StartRe.Start();
+                }
+                else if ("2.3.0-2" != pkgfile)
+                {
+                    this.ShowMessageAsync("提示", "国际服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd  已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    Clipboard.SetText("etxd");
+                    Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
+                }
+                else
+                {
+                    Thread StartUn = new Thread(() => UnFile());
+                    bqload.Visibility = Visibility.Visible;
+                    setSave.IsEnabled = false;
+                    ToGlobal.IsEnabled = false;
+                    TimeStatus.Content = "当前状态：正在解压资源";
+                    StartUn.Start();
+                }
             }
         }
+            
+        
         private void UnFile()
         {
             if (Utils.UtilsTools.UnZip(@"GlobalFile.pkg", @""))
@@ -231,7 +257,6 @@ namespace GenShin_LauncherDIY
                     {
                         //开始转换                    
                         MoveFile();
-                        //
                         bqload.Visibility = Visibility.Hidden;
                         setSave.IsEnabled = true;
                     }
@@ -277,13 +302,17 @@ namespace GenShin_LauncherDIY
                 {
                     File.Copy(@"GlobalFile//" + Settings.globalfiles[i], GamePath.Text + "//Genshin Impact Game//" + Settings.globalfiles[i], true);
                     LogBox.Content = Settings.globalfiles[i] + "替换成功";
-                }
-                IsGlobal();
+                };
                 TimeStatus.Content = "当前状态：无状态";
+                if (File.Exists(GamePath.Text + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll") == true)
+                    File.Delete(GamePath.Text + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll");
                 Config.IniGS.BiOrMi = 3;
                 BOM.Sub_channel = 0;
                 BOM.Channel = 1;
                 ToGlobal.IsEnabled = true;
+                IsSDK();
+                IsGlobal();
+                //
                 this.ShowMessageAsync("提示", "转换完毕，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }));
         }
@@ -326,6 +355,12 @@ namespace GenShin_LauncherDIY
                     redir.FileSystem.RenameFile(GamePath.Text + "//Genshin Impact Game//" + Settings.cnfiles[a] + ".bak", newFileName);
                     LogBox.Content = Settings.cnfiles[a] + "还原成功";
                 }
+                //复原SDK
+                var sdkUri = "pack://application:,,,/Res/mihoyosdk.dll";
+                var uri = new Uri(sdkUri, UriKind.RelativeOrAbsolute);
+                var stream = Application.GetResourceStream(uri).Stream;
+                Utils.UtilsTools.StreamToFile(stream, GamePath.Text + "\\Genshin Impact Game\\YuanShen_Data\\Plugins\\PCGameSDK.dll");
+                IsSDK();
                 GlobalS.IsChecked = false;
                 GlobalS.IsEnabled = false;
                 MiS.IsChecked = true;
