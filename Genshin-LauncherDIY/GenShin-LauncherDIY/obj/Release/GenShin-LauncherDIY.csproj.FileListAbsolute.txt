@@ -65,3 +65,24 @@ C:\Users\dawnf\Desktop\GenShin-Tools\GenShin-LauncherDIY\obj\Release\GenShin-Lau
 C:\Users\dawnf\Desktop\GenShin-Tools\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY.csproj.CopyComplete
 C:\Users\dawnf\Desktop\GenShin-Tools\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY.exe
 C:\Users\dawnf\Desktop\GenShin-Tools\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY.pdb
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\bin\Release\GenShin-LauncherDIY.exe.config
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\bin\Release\GenShin-LauncherDIY.exe
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\bin\Release\GenShin-LauncherDIY.pdb
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY.csproj.SuggestedBindingRedirects.cache
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\setWindow.baml
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\App.baml
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\MainWindow.g.cs
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\SaveAccIni.g.cs
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\setWindow.g.cs
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\App.g.cs
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY_MarkupCompile.cache
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY_MarkupCompile.lref
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\MainWindow.baml
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\SaveAccIni.baml
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY.g.resources
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\GenShin_LauncherDIY.Properties.Resources.resources
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY.csproj.GenerateResource.cache
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY.csproj.CoreCompileInputs.cache
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY.csproj.CopyComplete
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY.exe
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Release\GenShin-LauncherDIY.pdb

@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GenShin_LauncherDIY.Utils
 {
-    public class UtilsTools//写出内置资源文件
+    public class UtilsTools//工具类
     {
         public static void StreamToFile(Stream stream, string fileName)
         {
@@ -54,7 +55,7 @@ namespace GenShin_LauncherDIY.Utils
         }
 
 
-        static public bool UnZip(string zipFile, string directory)
+        public static bool UnZip(string zipFile, string directory)
         {
             try
             {
@@ -91,14 +92,27 @@ namespace GenShin_LauncherDIY.Utils
             }
             catch { return false; }
         }
-        static public string GetPathFileName(string Path)//获取路径中的文件名
+
+        public static void Rungenshin(params string[] command)
         {
-            //获取路径末尾的文件名
-            int i = Path.LastIndexOf(@"\");
-            if (i == -1)
-                return Path;
-            i = i + 1;
-            return Path.Substring(i, Path.Length - i);
+            using (Process pc = new Process())
+            {
+                pc.StartInfo.FileName = "cmd.exe";
+                pc.StartInfo.CreateNoWindow = true;//隐藏窗口
+                pc.StartInfo.RedirectStandardError = true;//重定向错误
+                pc.StartInfo.RedirectStandardInput = true;//重定向输入
+                pc.StartInfo.RedirectStandardOutput = true;//重定向输出
+                pc.StartInfo.UseShellExecute = false;
+                pc.Start();
+                int lenght = command.Length;
+                foreach (string com in command)
+                {
+                    pc.StandardInput.WriteLine(com);
+                }
+                pc.StandardInput.WriteLine("exit");
+                pc.StandardInput.AutoFlush = true;
+                pc.Close();
+            }
         }
     }
     class checkTool

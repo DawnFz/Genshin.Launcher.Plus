@@ -107,3 +107,25 @@ G:\GenShin-LauncherDIY\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.csproj.
 G:\GenShin-LauncherDIY\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.exe
 G:\GenShin-LauncherDIY\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.pdb
 G:\GenShin-LauncherDIY\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.csproj.SuggestedBindingRedirects.cache
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\bin\Debug\GenShin-LauncherDIY.exe.config
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\bin\Debug\GenShin-LauncherDIY.exe
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\bin\Debug\GenShin-LauncherDIY.pdb
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.csproj.AssemblyReference.cache
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.csproj.SuggestedBindingRedirects.cache
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\setWindow.baml
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\App.baml
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\MainWindow.g.cs
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\setWindow.g.cs
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\App.g.cs
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY_MarkupCompile.cache
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY_MarkupCompile.lref
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\MainWindow.baml
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.g.resources
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\GenShin_LauncherDIY.Properties.Resources.resources
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.csproj.GenerateResource.cache
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.csproj.CoreCompileInputs.cache
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.csproj.CopyComplete
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.exe
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\GenShin-LauncherDIY.pdb
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\SaveAccIni.g.cs
+G:\GenShin-LauncherDIY - DEV\GenShin-LauncherDIY\obj\Debug\SaveAccIni.baml

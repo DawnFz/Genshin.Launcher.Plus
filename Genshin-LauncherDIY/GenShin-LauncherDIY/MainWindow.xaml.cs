@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using GenShin_LauncherDIY.Utils;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,9 @@ namespace GenShin_LauncherDIY
     {
         public MainWindow()
         {
+            string Version = Application.ResourceAssembly.GetName().Version.ToString();
             InitializeComponent();
+            TitleMain.Content = "原神启动器Plus  "+Version;
             if (File.Exists(@"Config\Bg.png"))
             {//用bg.png
                 ImageBrush b = new ImageBrush();
@@ -38,26 +41,27 @@ namespace GenShin_LauncherDIY
                 b.Stretch = Stretch.Fill;
                 BGW.Background = b;
             }
-
             {//判断版本
-                String ver = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[ver]", "[/ver]");
-                if ("1.0.4"!=ver)
+                String ver = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$ver$]", "[#ver#]");
+                if (Version!= ver)
                 {
                     VerCheck();
                 }
-
             }
-
             {//判断config是否存在
-                if (Directory.Exists(Environment.CurrentDirectory + @"\\Config"))
-                {
+                if (Directory.Exists(Environment.CurrentDirectory + @"\\Config")&&Directory.Exists(Environment.CurrentDirectory + @"\\UserData"))
+                {               
                     Config.setConfig.checkini();
                 }
                 else
                 {
                     Directory.CreateDirectory("Config");
-                    Config.setConfig.checkini();
+                    Directory.CreateDirectory("UserData");
+                    Config.setConfig.checkini();                   
                 }
+            }
+            {//首次启动向导 
+                //this.ShowMessageAsync("首次启动向导", Config.Settings.hajimete, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
         }
         public void DragWindow(object sender, MouseButtonEventArgs args)
@@ -65,27 +69,6 @@ namespace GenShin_LauncherDIY
             this.DragMove();
         }
         //使用CMD方式启动原神，否则更改服务器会失效
-        public void Rungenshin(params string[] command)
-        {
-            using (Process pc = new Process())
-            {
-                pc.StartInfo.FileName = "cmd.exe";
-                pc.StartInfo.CreateNoWindow = true;//隐藏窗口
-                pc.StartInfo.RedirectStandardError = true;//重定向错误
-                pc.StartInfo.RedirectStandardInput = true;//重定向输入
-                pc.StartInfo.RedirectStandardOutput = true;//重定向输出
-                pc.StartInfo.UseShellExecute = false;
-                pc.Start();
-                int lenght = command.Length;
-                foreach (string com in command)
-                {
-                    pc.StandardInput.WriteLine(com);
-                }
-                pc.StandardInput.WriteLine("exit");
-                pc.StandardInput.AutoFlush = true;
-                pc.Close();
-            }
-        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //自定义分辨率启动
@@ -104,7 +87,7 @@ namespace GenShin_LauncherDIY
                     //次线程，防止UI假死
                     Dispatcher.Invoke(new Action(() =>
                     {
-                        Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
+                        UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
                     }));
                 });
                 game.Start();
@@ -117,7 +100,7 @@ namespace GenShin_LauncherDIY
                     //次线程，防止UI假死
                     Dispatcher.Invoke(new Action(() =>
                     {
-                        Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
+                        UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
                     }));
                 });
                 game.Start();
@@ -166,20 +149,29 @@ namespace GenShin_LauncherDIY
 
         private async void About_Click(object sender, RoutedEventArgs e)
         {
-            if ((await this.ShowMessageAsync("关于", "这是一个由WPF编写的原神启动器\r\n\r\n你可以使用本启动器做到以下操作：\r\n1.快速跳转到游戏的照相保存文件夹\r\n2.自定义任意分辨率和是否全屏启动游戏\r\n3.选择哔哩哔哩服或者米哈游官服进行启动\r\n4.修复MihoyoSDK缺失导致的解析错误或未初始化\r\n\r\n编写：DawnFz (ねねだん)\r\n联系邮箱：admin@dawnfz.com\r\n您可以跳转到Github以获取本项目源代码", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "确定" , NegativeButtonText = "GitHub"})) != MessageDialogResult.Affirmative)
+            if ((await this.ShowMessageAsync("关于", Config.Settings.aboutthis, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "确定" , NegativeButtonText = "GitHub"})) != MessageDialogResult.Affirmative)
             {
                 Process.Start("https://github.com/DawnFz/Genshin-LauncherDIY");
             }
         }
         private async void VerCheck()
         {
-            String notify = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[notify]", "[/notify]");
-            if ((await this.ShowMessageAsync("提示", notify, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "继续使用", NegativeButtonText = "下载更新" })) != MessageDialogResult.Affirmative)
+            String notify = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$notify$]", "[#notify#]");
+            notify = notify.Replace("/n/", Environment.NewLine);
+            String msgtl = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$msgtl$]", "[#msgtl#]");
+            if ((await this.ShowMessageAsync(msgtl, notify, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "继续使用", NegativeButtonText = "下载更新" })) != MessageDialogResult.Affirmative)
             {
                 this.ShowMessageAsync("提示", "访问密码：etxd\r\n已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                 Clipboard.SetText("etxd");
                 Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
             }
         }
+
+        private async void SaveAcc_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAccIni save = new SaveAccIni();
+            save.ShowDialog();
+        }
+
     }
 }

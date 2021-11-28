@@ -40,24 +40,24 @@ namespace GenShin_LauncherDIY
                 FullT.IsChecked = true;
             GHeight.Text = Config.IniGS.Height.ToString();//高度
             GWidth.Text = Config.IniGS.Width.ToString();//宽度
-            if (Config.IniGS.BiOrMi == 2)
+            IsGlobal();
+            if (Config.IniGS.BiOrMi == 1)
             { //读取服务器
-                BIliS.IsChecked = true;
+                MiS.IsChecked = true;
                 GlobalS.IsEnabled = false;
             }
-            else if (Config.IniGS.BiOrMi == 1)
+            else if (Config.IniGS.BiOrMi == 2)
             {
-                MiS.IsChecked = true;
+                BIliS.IsChecked = true;
                 GlobalS.IsEnabled = false;
             }
             else
                 GlobalS.IsChecked = true; 
             if(GamePath.Text == "")
                 ToGlobal.IsEnabled = false;
-            IsGlobal();
+            ReadUser();
             IsSDK();
         }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (bqload.Visibility == Visibility.Hidden)
@@ -70,9 +70,6 @@ namespace GenShin_LauncherDIY
                 e.Cancel = true;
             }
         }
-
-
-
         private void setSave_Click(object sender, RoutedEventArgs e)
         {
             //游戏路径保存
@@ -121,21 +118,24 @@ namespace GenShin_LauncherDIY
                 Config.IniGS.BiOrMi = 1;
                 BOM.Sub_channel = 1;
                 BOM.Channel = 1;
+                BOM.Cps = "mihoyo";
             }
             else if(BIliS.IsChecked==true)
             {
                 Config.IniGS.BiOrMi = 2;
                 BOM.Sub_channel = 0;
                 BOM.Channel = 14;
+                BOM.Cps = "bilibili";
             }
             else
             {
                 Config.IniGS.BiOrMi = 3;
             }
+            //选择启动的账号
+            WriteUser();
             Config.setConfig.checkini();
             this.Close();
         }
-
         private void Button_Click21_9(object sender, RoutedEventArgs e)
         {
             int x = (int)SystemParameters.WorkArea.Width - 80;
@@ -143,7 +143,6 @@ namespace GenShin_LauncherDIY
             GWidth.Text = Convert.ToString(x);
             GHeight.Text = Convert.ToString(y);
         }
-
         private void Button_Click4_3(object sender, RoutedEventArgs e)
         {
             int x = (int)(SystemParameters.WorkArea.Height - 80) * 4 / 3;
@@ -196,18 +195,11 @@ namespace GenShin_LauncherDIY
 
             }
         }
-
-
-
-
-
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             if ((await this.ShowMessageAsync("警告！！", "执行操作前请先检查游戏是否彻底关闭\r\n否则可能出现意料之外的效果，如客户端损坏等！\r\n如游戏大版本更新时请先转换为国内服使用游戏自带启动器更新", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消转换", NegativeButtonText = "确定转换" })) != MessageDialogResult.Affirmative)
             {
-                //
-                String pkgfile = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[pkg]", "[/pkg]");
-                //
+                String pkgfile = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$pkg$]", "[#pkg#]");
                 if (ToGlobal.Content == "复原")
                 {
                     Thread StartRe = new Thread(() => ReCnGame());
@@ -221,6 +213,7 @@ namespace GenShin_LauncherDIY
                 {
                     this.ShowMessageAsync("提示", "国际服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd  已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                     Clipboard.SetText("etxd");
+                    Thread.Sleep(2500);
                     Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
                 }
                 else
@@ -234,26 +227,24 @@ namespace GenShin_LauncherDIY
                 }
             }
         }
-            
-        
         private void UnFile()
         {
-            if (Utils.UtilsTools.UnZip(@"GlobalFile.pkg", @""))
+            this.Dispatcher.Invoke(new Action(delegate ()
             {
-                this.Dispatcher.Invoke(new Action(delegate ()
+                if (Utils.UtilsTools.UnZip(@"GlobalFile.pkg", @""))
                 {
-                    bool error=false;
+                    bool error = false;
                     for (int i = 0; i < Settings.globalfiles.Length; i++)
                     {
                         if (File.Exists(@"GlobalFile//" + Settings.globalfiles[i]) == false)
-                        {                           
+                        {
                             LogBox.Content = Settings.globalfiles[i] + "文件不存在，请重新下载资源包或尝试重新操作";
                             error = true;
                             break;
                         }
-                        LogBox.Content = Settings.globalfiles[i] + "存在"; 
+                        LogBox.Content = Settings.globalfiles[i] + "存在";
                     }
-                    if(!error)
+                    if (!error)
                     {
                         //开始转换                    
                         MoveFile();
@@ -266,26 +257,23 @@ namespace GenShin_LauncherDIY
                         bqload.Visibility = Visibility.Hidden;
                         setSave.IsEnabled = true;
                     }
-                }));
-
-            }
-            else
-            {
-                this.Dispatcher.Invoke(new Action(delegate ()
+                }
+                else
                 {
                     this.ShowMessageAsync("提示", "没有找到资源[GlobalFile.pkg]或解压失败\r\n请重试或前往下载转换资源包", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                     bqload.Visibility = Visibility.Hidden;
                     ToGlobal.IsEnabled = true;
                     TimeStatus.Content = "当前状态：未找到资源包";
                     setSave.IsEnabled = true;
-                }));               
-            }
+                }
+            }));
         }
         private void MoveFile()
         {
-            Computer redir = new Computer();
             this.Dispatcher.Invoke(new Action(delegate ()
             {
+                Computer redir = new Computer();
+
                 TimeStatus.Content = "当前状态：正在备份原文件";
                 for (int a = 0; a < Settings.cnfiles.Length; a++)
                 {
@@ -293,15 +281,14 @@ namespace GenShin_LauncherDIY
                     redir.FileSystem.RenameFile(GamePath.Text + "//Genshin Impact Game//" + Settings.cnfiles[a], newFileName + ".bak");
                     LogBox.Content = newFileName+"备份成功";
                 }
-            }));
-            this.Dispatcher.Invoke(new Action(delegate ()
-            {
+                Thread.Sleep(1000);
                 TimeStatus.Content = "当前状态：开始替换资源";
                 redir.FileSystem.RenameDirectory(GamePath.Text + "//Genshin Impact Game//YuanShen_Data", "GenshinImpact_Data");
                 for (int i = 0; i < Settings.globalfiles.Length; i++)
                 {
                     File.Copy(@"GlobalFile//" + Settings.globalfiles[i], GamePath.Text + "//Genshin Impact Game//" + Settings.globalfiles[i], true);
                     LogBox.Content = Settings.globalfiles[i] + "替换成功";
+                    Thread.Sleep(50);
                 };
                 TimeStatus.Content = "当前状态：无状态";
                 if (File.Exists(GamePath.Text + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll") == true)
@@ -347,6 +334,7 @@ namespace GenShin_LauncherDIY
                     File.Delete(GamePath.Text + "//Genshin Impact Game//" + Settings.globalfiles[i]);
                     LogBox.Content = Settings.globalfiles[i] + "清理完毕";
                 }
+                Thread.Sleep(1000);
                 TimeStatus.Content = "当前状态：正在还原文件";
                 redir.FileSystem.RenameDirectory(GamePath.Text + "//Genshin Impact Game//GenshinImpact_Data", "YuanShen_Data");
                 for (int a = 0; a < Settings.cnfiles.Length; a++)
@@ -377,14 +365,48 @@ namespace GenShin_LauncherDIY
                 ToGlobal.IsEnabled = true;
                 this.ShowMessageAsync("提示", "转换完毕，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }));
-
         }
 
         private void DownRes_Click(object sender, RoutedEventArgs e)
         {
             this.ShowMessageAsync("提示", "访问密码：etxd\r\n已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             Clipboard.SetText("etxd");
+            Thread.Sleep(1500);
             Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
+        }
+
+        //读取保存的账户文件
+        private void ReadUser()
+        {
+            DirectoryInfo TheFolder = new DirectoryInfo(@"UserData");
+            foreach (FileInfo NextFile in TheFolder.GetFiles())
+                UserList.Items.Add(NextFile.Name);
+        }
+        //修改启动时切换的用户
+        private void WriteUser()
+        {
+            if (UserList.SelectedIndex != -1)
+            {
+                string name = (UserList as ListBox).SelectedItem.ToString();
+                YSAccount acct = YSAccount.ReadFromDisk(name);
+                acct.WriteToRegedit();
+            }
+        }
+
+        private async void DelUser_Click(object sender, RoutedEventArgs e)
+        {
+            if (UserList.SelectedIndex != -1)
+            {
+                if ((await this.ShowMessageAsync("警告", "您确定删除账号："+ (UserList as ListBox).SelectedItem.ToString()+"吗？！", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "删除" })) != MessageDialogResult.Affirmative)
+                {
+                    File.Delete(@"UserData\\" + (UserList as ListBox).SelectedItem.ToString());
+                    UserList.Items.RemoveAt(UserList.Items.IndexOf(UserList.SelectedItem));
+                }   
+            }
+            else
+            {
+                this.ShowMessageAsync("错误", "请选择要删除的账户再进行操作", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            }
         }
     }
 }

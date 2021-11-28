@@ -292,12 +292,31 @@ namespace GenShin_LauncherDIY.Config
             get
             {
                 _Sub_channel = Convert.ToUInt16(YuanshenIni.ReadIni("General", "sub_channel"));
-                return _Channel;
+                return _Sub_channel;
             }
             set
             {
                 _Sub_channel = value;
                 YuanshenIni.WriteIni("General", "sub_channel", Convert.ToString(_Sub_channel));
+            }
+        }
+
+
+        private static string _Cps;
+        /// <summary>
+        /// SUB_Channel属性
+        /// </summary>
+        public static string Cps
+        {
+            get
+            {
+                _Cps = Convert.ToString(YuanshenIni.ReadIni("General", "cps"));
+                return _Cps;
+            }
+            set
+            {
+                _Cps = value;
+                YuanshenIni.WriteIni("General", "cps", Convert.ToString(_Cps));
             }
         }
     }

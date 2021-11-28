@@ -1,0 +1,21 @@
+﻿<mah:MetroWindow x:Class="GenShin_LauncherDIY.SaveAccIni"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GenShin_LauncherDIY"
+        mc:Ignorable="d"
+        Title="保存账号数据" Height="162" Width="370" WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  ShowCloseButton="False" ShowMinButton="False" Background="#CC76608A">
+    <Grid>
+        <GroupBox Header="保存上次登录的账号数据-不支持哔服">
+            <Grid Background="White">
+                <Label Content="输入保存的游戏账号名字以便读取" HorizontalAlignment="Center" Margin="0,2,0,0" VerticalAlignment="Top" FontSize="18"/>
+                <TextBox x:Name="saveFilename" mah:TextBoxHelper.Watermark="将保存为文件，请勿输入文件名不支持的符号" HorizontalAlignment="Center" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="280" Margin="0,40,0,0" FontFamily="Microsoft YaHei UI"/>
+                <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" x:Name="Save" Content="保存" HorizontalAlignment="Left" Margin="85,80,0,0" VerticalAlignment="Top" Width="80" Click="Save_Click"/>
+                <Button Style="{DynamicResource MahApps.Styles.Button.Square}" Content="取消" HorizontalAlignment="Left" Margin="193,80,0,0" VerticalAlignment="Top" Width="80" Click="Button_Click"/>
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</mah:MetroWindow>

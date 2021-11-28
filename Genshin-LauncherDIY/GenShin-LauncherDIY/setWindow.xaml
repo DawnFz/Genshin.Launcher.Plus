@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="设置" Height="306" Width="443" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal">
+        Title="设置" Height="307" Width="634" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal">
     <Grid>
         <GroupBox HorizontalAlignment="Left" Height="190" Margin="10,10,0,0" VerticalAlignment="Top" Width="193" Header="附加与窗口分辨率-快速设置">
             <Grid>
@@ -18,12 +18,12 @@
                 <Button Content="取合适本机的4:3窗口化" HorizontalAlignment="Center" Margin="0,114,0,0" VerticalAlignment="Top" Width="159" Click="Button_Click4_3" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal"/>
             </Grid>
         </GroupBox>
-        <Button x:Name="setSave" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="保存" HorizontalAlignment="Left" Margin="370,237,0,0" VerticalAlignment="Top" Height="28" Width="64" Click="setSave_Click" FontFamily="Microsoft YaHei UI" FontSize="12" />
-        <TextBox mah:TextBoxHelper.Watermark="游戏路径，例：C:\Genshin Impact\" x:Name="GamePath" x:FieldModifier="public" Height="23" Margin="10,206,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+        <Button x:Name="setSave" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="保存" HorizontalAlignment="Left" Margin="560,237,0,0" VerticalAlignment="Top" Height="28" Width="64" Click="setSave_Click" FontFamily="Microsoft YaHei UI" FontSize="12" />
+        <TextBox mah:TextBoxHelper.Watermark="游戏路径，例：C:\Genshin Impact\" x:Name="GamePath" x:FieldModifier="public" Height="23" Margin="10,206,201,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
         <RadioButton x:Name="BIliS" Content="B服启动" HorizontalAlignment="Left" Margin="89,242,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
         <RadioButton x:Name="MiS" Content="官服启动" HorizontalAlignment="Left" Margin="10,242,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
-        <Label x:Name="SDKlive" Content="SDK:未知" HorizontalAlignment="Left" Margin="238,239,0,0" VerticalAlignment="Top" Width="65"/>
-        <Button x:Name="Fixbtn" Content="修复" HorizontalAlignment="Left" Margin="308,237,0,0" VerticalAlignment="Top" Height="28" Width="49" Click="Fix_Click" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal" />
+        <Label x:Name="SDKlive" Content="SDK:未知" HorizontalAlignment="Left" Margin="314,239,0,0" VerticalAlignment="Top" Width="65"/>
+        <Button x:Name="Fixbtn" Content="修复" HorizontalAlignment="Left" Margin="385,237,0,0" VerticalAlignment="Top" Height="28" Width="49" Click="Fix_Click" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal" />
         <GroupBox HorizontalAlignment="Left" Height="190" Header="国际服 | 国内双服转换" Margin="211,10,0,0" VerticalAlignment="Top" Width="222">
             <Grid>
                 <mah:MetroProgressBar x:Name="bqload"  Margin="16,125,76,15" IsIndeterminate="True" Maximum="100" Minimum="0" Value="{Binding Value, ElementName=horizSlider}" Foreground="#CC76608A" Visibility="Hidden"/>
@@ -34,5 +34,9 @@
             </Grid>
         </GroupBox>
         <RadioButton x:Name="GlobalS" Content="国际服" HorizontalAlignment="Left" Margin="166,242,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+        <GroupBox HorizontalAlignment="Left" Height="222" Header="选择账号启动" Margin="439,10,0,0" VerticalAlignment="Top" Width="185">
+            <ListBox x:Name="UserList" d:ItemsSource="{d:SampleData ItemCount=5}"></ListBox>
+        </GroupBox>
+        <Button x:Name="DelUser" Style="{DynamicResource MahApps.Styles.Button.Square}" Content="删除选中的用户" HorizontalAlignment="Left" Margin="439,237,0,0" VerticalAlignment="Top" Width="114" Click="DelUser_Click"/>
     </Grid>
 </mah:MetroWindow>

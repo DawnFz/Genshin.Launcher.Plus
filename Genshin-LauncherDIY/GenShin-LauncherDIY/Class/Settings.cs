@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GenShin_LauncherDIY.Config
 {
@@ -74,6 +75,45 @@ namespace GenShin_LauncherDIY.Config
           "//UnityPlayer.dll"
         };
 
+        public static string aboutthis = 
+            ("这是一个由WPF编写的原神启动器\r\n\r\n" +
+            "你可以使用本启动器做到以下操作：\r\n" +
+            "1.快速跳转到游戏的照相保存文件夹\r\n" +
+            "2.自定义任意分辨率和是否全屏启动游戏\r\n" +
+            "3.选择哔哩服,官服或者国际服进行启动\r\n" +
+            "4.修复MihoyoSDK缺失导致的解析错误或未初始化\r\n" +
+            "5.保存原神账户凭证可选快速切换账号启动\r\n" +
+            "————————————————————————————\r\n" +
+            "注意，以上功能涉及到注册表修改和文件替换，部分杀毒软\r\n" +
+            "件可能会报毒，为了客户端数据完整建议关闭杀软后再运行\r\n" +
+            "本程序完全开源，并不会将用户数据公布到网络，\r\n" +
+            "本启动器需要联网部分的代码仅为版本检测和公告获取\r\n\r\n\r\n"+
+            "编写：DawnFz (ねねだん)\r\n" +
+            "联系邮箱：admin@dawnfz.com\r\n" +
+            "您可以跳转到Github以获取本项目源代码\r\n\r\n\r\n" +
+            "————————本程序用到的代码及参考————————\r\n" +
+            "[genshin-account]\r\n" +
+            "项目地址：https://github.com/babalae/genshin-account \r\n" +
+            "————————————————————————————\r\n" +
+            "[MahApps.Metro]\r\n" +
+            "项目地址：https://github.com/MahApps/MahApps.Metro \r\n" +
+            "————————————————————————————\r\n" +
+            "[ICSharpCode.SharpZipLib]\r\n" +
+            "项目地址：https://github.com/icsharpcode \r\n\r\n");
+
+        public static string hajimete =
+            ("这是一个由WPF编写的原神启动器\r\n\r\n" +
+            "你可以使用本启动器做到以下操作：\r\n" +
+            "1.快速跳转到游戏的照相保存文件夹\r\n" +
+            "2.自定义任意分辨率和是否全屏启动游戏\r\n" +
+            "3.选择哔哩服,官服或者国际服进行启动\r\n" +
+            "4.修复MihoyoSDK缺失导致的解析错误或未初始化\r\n" +
+            "5.保存原神账户凭证可选快速切换账号启动\r\n" +
+            "—————————————————————————————\r\n" +
+            "注意，以上功能涉及到注册表修改和文件替换，部分杀毒软\r\n" +
+            "件可能会报毒，为了客户端数据完整建议关闭杀软后再运行\r\n" +
+            "本程序完全开源，并不会将用户数据公布到网络，\r\n" +
+            "本启动器需要联网部分的代码仅为版本检测和公告获取\r\n");
     }
 
     class setConfig
