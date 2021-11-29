@@ -16,6 +16,7 @@ namespace GenShin_LauncherDIY.Config
         public static string GamePath = IniGS.gamePath.ToString();
         public static string FullS;
         public static string Biomi;
+        public static string GameMovePath;
         //下面是检查需要替换的国际服文件的路径
         public static string[] globalfiles = new string[] 
         { "//GenshinImpact_Data//app.info",

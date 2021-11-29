@@ -34,6 +34,7 @@ namespace GenShin_LauncherDIY
             InitializeComponent();
             this.Closing += Window_Closing;
             GamePath.Text = Config.IniGS.gamePath;//游戏路径
+            Config.Settings.GameMovePath=Config.IniGS.gamePath;
             if (!Config.IniGS.isAutoSize)//全屏
                 FullF.IsChecked = true;
             else
@@ -52,8 +53,8 @@ namespace GenShin_LauncherDIY
                 GlobalS.IsEnabled = false;
             }
             else
-                GlobalS.IsChecked = true; 
-            if(GamePath.Text == "")
+                GlobalS.IsChecked = true;
+            if (GamePath.Text == "")
                 ToGlobal.IsEnabled = false;
             ReadUser();
             IsSDK();
@@ -120,7 +121,7 @@ namespace GenShin_LauncherDIY
                 BOM.Channel = 1;
                 BOM.Cps = "mihoyo";
             }
-            else if(BIliS.IsChecked==true)
+            else if (BIliS.IsChecked == true)
             {
                 Config.IniGS.BiOrMi = 2;
                 BOM.Sub_channel = 0;
@@ -197,8 +198,9 @@ namespace GenShin_LauncherDIY
         }
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            if ((await this.ShowMessageAsync("警告！！", "执行操作前请先检查游戏是否彻底关闭\r\n否则可能出现意料之外的效果，如客户端损坏等！\r\n如游戏大版本更新时请先转换为国内服使用游戏自带启动器更新", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消转换", NegativeButtonText = "确定转换" })) != MessageDialogResult.Affirmative)
+            if ((await this.ShowMessageAsync("警告！！", "转换或还原将会执行重命名，替换，删除等操作修改客户端文件，该过程大概率会触发杀软报毒！为了防止客户端损坏导致不完整，执行前检查杀软（包括 Windows Defender）是否完全关闭或将本启动器加入白名单，并检查游戏是否彻底关闭，否则可能将导致客户端文件缺失！！\r\n\r\n提示：如游戏大版本更新时请执行还原转换为国内服使用游戏自带启动器更新！", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消转换", NegativeButtonText = "确定转换" })) != MessageDialogResult.Affirmative)
             {
+
                 String pkgfile = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$pkg$]", "[#pkg#]");
                 if (ToGlobal.Content == "复原")
                 {
@@ -216,22 +218,7 @@ namespace GenShin_LauncherDIY
                     Thread.Sleep(2500);
                     Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
                 }
-                else
-                {
-                    Thread StartUn = new Thread(() => UnFile());
-                    bqload.Visibility = Visibility.Visible;
-                    setSave.IsEnabled = false;
-                    ToGlobal.IsEnabled = false;
-                    TimeStatus.Content = "当前状态：正在解压资源";
-                    StartUn.Start();
-                }
-            }
-        }
-        private void UnFile()
-        {
-            this.Dispatcher.Invoke(new Action(delegate ()
-            {
-                if (Utils.UtilsTools.UnZip(@"GlobalFile.pkg", @""))
+                else if (Directory.Exists(@"GlobalFile") == true)
                 {
                     bool error = false;
                     for (int i = 0; i < Settings.globalfiles.Length; i++)
@@ -253,49 +240,126 @@ namespace GenShin_LauncherDIY
                     }
                     else
                     {
-                        this.ShowMessageAsync("提示", "资源解压完成但不完整\r\n请重新下载", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                        this.ShowMessageAsync("提示", "转换资源不完整\r\n请重新下载", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                         bqload.Visibility = Visibility.Hidden;
                         setSave.IsEnabled = true;
                     }
                 }
                 else
                 {
+                    Thread StartUn = new Thread(() => UnFile());
+                    bqload.Visibility = Visibility.Visible;
+                    setSave.IsEnabled = false;
+                    ToGlobal.IsEnabled = false;
+                    TimeStatus.Content = "当前状态：正在解压资源";
+                    StartUn.Start();
+                }
+            }
+        }
+        private void UnFile()
+        {
+            if (Utils.UtilsTools.UnZip(@"GlobalFile.pkg", @""))
+            {
+                bool error = false;
+                for (int i = 0; i < Settings.globalfiles.Length; i++)
+                {
+                    if (File.Exists(@"GlobalFile//" + Settings.globalfiles[i]) == false)
+                    {
+                        this.Dispatcher.Invoke(new Action(delegate ()
+                        {
+                            LogBox.Content = Settings.globalfiles[i] + "文件不存在，请重新下载资源包或尝试重新操作";
+                        }));
+                        error = true;
+                        break;
+                    }
+                    this.Dispatcher.Invoke(new Action(delegate ()
+                    {
+                        LogBox.Content = Settings.globalfiles[i] + "存在";
+                    }));
+                }
+                if (!error)
+                {
+                    //开始转换                    
+                    MoveFile();
+                    this.Dispatcher.Invoke(new Action(delegate ()
+                    {
+                        bqload.Visibility = Visibility.Hidden;
+                        setSave.IsEnabled = true;
+                    }));
+                }
+                else
+                {
+                    this.Dispatcher.Invoke(new Action(delegate ()
+                    {
+                        this.ShowMessageAsync("提示", "资源解压完成但不完整\r\n请重新下载", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                        bqload.Visibility = Visibility.Hidden;
+                        setSave.IsEnabled = true;
+                    }));
+                }
+            }
+            else
+            {
+                this.Dispatcher.Invoke(new Action(delegate ()
+                {
+
                     this.ShowMessageAsync("提示", "没有找到资源[GlobalFile.pkg]或解压失败\r\n请重试或前往下载转换资源包", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                     bqload.Visibility = Visibility.Hidden;
                     ToGlobal.IsEnabled = true;
                     TimeStatus.Content = "当前状态：未找到资源包";
                     setSave.IsEnabled = true;
-                }
-            }));
+                }));
+            }
         }
         private void MoveFile()
         {
+            Computer redir = new Computer();
             this.Dispatcher.Invoke(new Action(delegate ()
             {
-                Computer redir = new Computer();
-
                 TimeStatus.Content = "当前状态：正在备份原文件";
-                for (int a = 0; a < Settings.cnfiles.Length; a++)
+            }));
+            for (int a = 0; a < Settings.cnfiles.Length; a++)
+            {
+                String newFileName = System.IO.Path.GetFileNameWithoutExtension(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]) + System.IO.Path.GetExtension(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]);
+                if (File.Exists(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]) == true)
                 {
-                    String newFileName = System.IO.Path.GetFileNameWithoutExtension(GamePath.Text + "//Genshin Impact Game//" + Settings.cnfiles[a]) + System.IO.Path.GetExtension(GamePath.Text + "//Genshin Impact Game//" + Settings.cnfiles[a]);
-                    redir.FileSystem.RenameFile(GamePath.Text + "//Genshin Impact Game//" + Settings.cnfiles[a], newFileName + ".bak");
-                    LogBox.Content = newFileName+"备份成功";
+                    redir.FileSystem.RenameFile(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a], newFileName + ".bak");
+                    this.Dispatcher.Invoke(new Action(delegate ()
+                    {
+                        LogBox.Content = newFileName + "备份成功";
+                    }));
                 }
-                Thread.Sleep(1000);
-                TimeStatus.Content = "当前状态：开始替换资源";
-                redir.FileSystem.RenameDirectory(GamePath.Text + "//Genshin Impact Game//YuanShen_Data", "GenshinImpact_Data");
-                for (int i = 0; i < Settings.globalfiles.Length; i++)
+                else
                 {
-                    File.Copy(@"GlobalFile//" + Settings.globalfiles[i], GamePath.Text + "//Genshin Impact Game//" + Settings.globalfiles[i], true);
+                    this.Dispatcher.Invoke(new Action(delegate ()
+                    {
+                        LogBox.Content = newFileName + "备份失败，跳过";
+                    }));
+                }
+            }
+            this.Dispatcher.Invoke(new Action(delegate ()
+            {
+                TimeStatus.Content = "当前状态：开始替换资源";
+            }));
+            redir.FileSystem.RenameDirectory(Config.Settings.GameMovePath + "//Genshin Impact Game//YuanShen_Data", "GenshinImpact_Data");
+            for (int i = 0; i < Settings.globalfiles.Length; i++)
+            {
+                File.Copy(@"GlobalFile//" + Settings.globalfiles[i], Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.globalfiles[i], true);
+                this.Dispatcher.Invoke(new Action(delegate ()
+                {
                     LogBox.Content = Settings.globalfiles[i] + "替换成功";
-                    Thread.Sleep(50);
-                };
+                }));
+            };
+            this.Dispatcher.Invoke(new Action(delegate ()
+            {
                 TimeStatus.Content = "当前状态：无状态";
-                if (File.Exists(GamePath.Text + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll") == true)
-                    File.Delete(GamePath.Text + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll");
-                Config.IniGS.BiOrMi = 3;
-                BOM.Sub_channel = 0;
-                BOM.Channel = 1;
+            }));
+            if (File.Exists(Config.Settings.GameMovePath + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll") == true)
+                File.Delete(Config.Settings.GameMovePath + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll");
+            Config.IniGS.BiOrMi = 3;
+            BOM.Sub_channel = 0;
+            BOM.Channel = 1;
+            this.Dispatcher.Invoke(new Action(delegate ()
+            {
                 ToGlobal.IsEnabled = true;
                 IsSDK();
                 IsGlobal();
@@ -329,25 +393,59 @@ namespace GenShin_LauncherDIY
             this.Dispatcher.Invoke(new Action(delegate ()
             {
                 TimeStatus.Content = "当前状态：清理现存文件";
-                for (int i = 0; i < Settings.globalfiles.Length; i++)
+            }));
+            for (int i = 0; i < Settings.globalfiles.Length; i++)
+            {
+                if (File.Exists(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.globalfiles[i]) == true)
                 {
-                    File.Delete(GamePath.Text + "//Genshin Impact Game//" + Settings.globalfiles[i]);
-                    LogBox.Content = Settings.globalfiles[i] + "清理完毕";
+                    File.Delete(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.globalfiles[i]);
+                    this.Dispatcher.Invoke(new Action(delegate ()
+                    {
+                        LogBox.Content = Settings.globalfiles[i] + "清理完毕";
+                    }));
                 }
-                Thread.Sleep(1000);
+                else
+                {
+                    this.Dispatcher.Invoke(new Action(delegate ()
+                    {
+                        LogBox.Content = Settings.globalfiles[i] + "文件不存在，已跳过";
+                    }));
+                }
+            }
+            this.Dispatcher.Invoke(new Action(delegate ()
+            {
                 TimeStatus.Content = "当前状态：正在还原文件";
-                redir.FileSystem.RenameDirectory(GamePath.Text + "//Genshin Impact Game//GenshinImpact_Data", "YuanShen_Data");
-                for (int a = 0; a < Settings.cnfiles.Length; a++)
+            }));
+            redir.FileSystem.RenameDirectory(Config.Settings.GameMovePath + "//Genshin Impact Game//GenshinImpact_Data", "YuanShen_Data");
+            int whole = 0, success = 0;
+            for (int a = 0; a < Settings.cnfiles.Length; a++)
+            {
+                String newFileName = System.IO.Path.GetFileNameWithoutExtension(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]) + System.IO.Path.GetExtension(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]); ;
+                if (File.Exists(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a] + ".bak") == true)
                 {
-                    String newFileName = System.IO.Path.GetFileNameWithoutExtension(GamePath.Text + "//Genshin Impact Game//" + Settings.cnfiles[a])+ System.IO.Path.GetExtension(GamePath.Text + "//Genshin Impact Game//" + Settings.cnfiles[a]); ;
-                    redir.FileSystem.RenameFile(GamePath.Text + "//Genshin Impact Game//" + Settings.cnfiles[a] + ".bak", newFileName);
-                    LogBox.Content = Settings.cnfiles[a] + "还原成功";
+                    redir.FileSystem.RenameFile(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a] + ".bak", newFileName);
+                    this.Dispatcher.Invoke(new Action(delegate ()
+                    {
+                        LogBox.Content = Settings.cnfiles[a] + "还原成功";
+                    }));
+                    success++;
                 }
-                //复原SDK
-                var sdkUri = "pack://application:,,,/Res/mihoyosdk.dll";
-                var uri = new Uri(sdkUri, UriKind.RelativeOrAbsolute);
-                var stream = Application.GetResourceStream(uri).Stream;
-                Utils.UtilsTools.StreamToFile(stream, GamePath.Text + "\\Genshin Impact Game\\YuanShen_Data\\Plugins\\PCGameSDK.dll");
+                else
+                {
+                    this.Dispatcher.Invoke(new Action(delegate ()
+                    {
+                        LogBox.Content = Settings.cnfiles[a] + "不存在，跳过还原";
+                    }));
+                    whole++;
+                }
+            }
+            //复原SDK
+            var sdkUri = "pack://application:,,,/Res/mihoyosdk.dll";
+            var uri = new Uri(sdkUri, UriKind.RelativeOrAbsolute);
+            var stream = Application.GetResourceStream(uri).Stream;
+            Utils.UtilsTools.StreamToFile(stream, Config.Settings.GameMovePath + "\\Genshin Impact Game\\YuanShen_Data\\Plugins\\PCGameSDK.dll");
+            this.Dispatcher.Invoke(new Action(delegate ()
+            {
                 IsSDK();
                 GlobalS.IsChecked = false;
                 GlobalS.IsEnabled = false;
@@ -363,7 +461,7 @@ namespace GenShin_LauncherDIY
                 setSave.IsEnabled = true;
                 ToGlobal.Content = "转换";
                 ToGlobal.IsEnabled = true;
-                this.ShowMessageAsync("提示", "转换完毕，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                this.ShowMessageAsync("提示", "还原完毕，本次还原成功" + success + "个文件，失败或缺失" + whole + "个文件", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }));
         }
 
@@ -397,11 +495,11 @@ namespace GenShin_LauncherDIY
         {
             if (UserList.SelectedIndex != -1)
             {
-                if ((await this.ShowMessageAsync("警告", "您确定删除账号："+ (UserList as ListBox).SelectedItem.ToString()+"吗？！", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "删除" })) != MessageDialogResult.Affirmative)
+                if ((await this.ShowMessageAsync("警告", "您确定删除账号：" + (UserList as ListBox).SelectedItem.ToString() + "吗？！", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "删除" })) != MessageDialogResult.Affirmative)
                 {
                     File.Delete(@"UserData\\" + (UserList as ListBox).SelectedItem.ToString());
                     UserList.Items.RemoveAt(UserList.Items.IndexOf(UserList.SelectedItem));
-                }   
+                }
             }
             else
             {
