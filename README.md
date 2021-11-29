@@ -99,7 +99,7 @@
 
 ## 代码引用&参考
 
-读写注册表原神账户数据：[genshin-account](https://github.com/babalae/genshin-accoun)
+读写注册表原神账户数据：[genshin-account](https://github.com/babalae/genshin-account)
 
 
 
