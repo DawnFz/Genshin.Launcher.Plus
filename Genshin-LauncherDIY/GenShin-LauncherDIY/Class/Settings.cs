@@ -14,6 +14,7 @@ namespace GenShin_LauncherDIY.Config
         public static string Height = IniGS.Height.ToString();
         public static string Width = IniGS.Width.ToString();
         public static string GamePath = IniGS.gamePath.ToString();
+        public static string GamePopup;
         public static string FullS;
         public static string Biomi;
         public static string GameMovePath;
@@ -134,6 +135,7 @@ namespace GenShin_LauncherDIY.Config
                 IniGS.Height = 720;
                 //bilibiliormihayo
                 IniGS.BiOrMi = 1;
+                IniGS.isPopup = false;
             }
             catch
             {

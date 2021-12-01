@@ -32,7 +32,7 @@ namespace GenShin_LauncherDIY
         {
             string Version = Application.ResourceAssembly.GetName().Version.ToString();
             InitializeComponent();
-            TitleMain.Content = "原神启动器Plus  "+Version;
+            TitleMain.Content = "原神启动器Plus  " + Version;
             if (File.Exists(@"Config\Bg.png"))
             {//用bg.png
                 ImageBrush b = new ImageBrush();
@@ -43,21 +43,21 @@ namespace GenShin_LauncherDIY
             }
             {//判断版本
                 String ver = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$ver$]", "[#ver#]");
-                if (Version!= ver)
+                if (Version != ver)
                 {
                     VerCheck();
                 }
             }
             {//判断config是否存在
-                if (Directory.Exists(Environment.CurrentDirectory + @"\\Config")&&Directory.Exists(Environment.CurrentDirectory + @"\\UserData"))
-                {               
+                if (Directory.Exists(Environment.CurrentDirectory + @"\\Config") && Directory.Exists(Environment.CurrentDirectory + @"\\UserData"))
+                {
                     Config.setConfig.checkini();
                 }
                 else
                 {
                     Directory.CreateDirectory("Config");
                     Directory.CreateDirectory("UserData");
-                    Config.setConfig.checkini();                   
+                    Config.setConfig.checkini();
                 }
             }
             {//首次启动向导 
@@ -73,21 +73,22 @@ namespace GenShin_LauncherDIY
         {
             //自定义分辨率启动
             if (!Config.IniGS.isAutoSize)
-            {
                 Config.Settings.FullS = "0";
-            }
             else if (Config.IniGS.isAutoSize)
-            {
                 Config.Settings.FullS = "1";
-            }
+            //判断无边框
+            if (!Config.IniGS.isPopup)
+                Config.Settings.GamePopup = "";
+            else
+                Config.Settings.GamePopup = " -popupwindow";
             if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)//启动国服
-            {          
+            {
                 Thread game = new Thread(() =>
                 {
                     //次线程，防止UI假死
                     Dispatcher.Invoke(new Action(() =>
                     {
-                        UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
+                        UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
                     }));
                 });
                 game.Start();
@@ -108,7 +109,7 @@ namespace GenShin_LauncherDIY
             }
             else
             {
-                this.ShowMessageAsync("错误", "游戏路径为空或游戏文件不存在\r\n请点击右上角蓝色按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                this.ShowMessageAsync("错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
         }
 
@@ -149,7 +150,7 @@ namespace GenShin_LauncherDIY
 
         private async void About_Click(object sender, RoutedEventArgs e)
         {
-            if ((await this.ShowMessageAsync("关于", Config.Settings.aboutthis, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "确定" , NegativeButtonText = "GitHub"})) != MessageDialogResult.Affirmative)
+            if ((await this.ShowMessageAsync("关于", Config.Settings.aboutthis, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "确定", NegativeButtonText = "GitHub" })) != MessageDialogResult.Affirmative)
             {
                 Process.Start("https://github.com/DawnFz/Genshin-LauncherDIY");
             }
@@ -173,5 +174,9 @@ namespace GenShin_LauncherDIY
             save.ShowDialog();
         }
 
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

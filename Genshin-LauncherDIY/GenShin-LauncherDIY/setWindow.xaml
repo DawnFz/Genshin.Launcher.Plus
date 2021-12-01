@@ -5,21 +5,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="设置" Height="307" Width="634" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal">
+        Title="设置" Height="307" Width="634" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal" MouseLeftButtonDown="DragWindow">
+
     <Grid>
         <GroupBox HorizontalAlignment="Left" Height="190" Margin="10,10,0,0" VerticalAlignment="Top" Width="193" Header="附加与窗口分辨率-快速设置">
             <Grid>
-                <TextBox mah:TextBoxHelper.Watermark="高度" x:Name="GHeight" HorizontalAlignment="Left" Margin="107,14,0,0" TextWrapping="Wrap" Text="720" VerticalAlignment="Top" Width="60" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
-                <TextBox mah:TextBoxHelper.Watermark="宽度" x:Name="GWidth" HorizontalAlignment="Left" Margin="20,14,0,0" TextWrapping="Wrap" Text="1280" VerticalAlignment="Top" Width="60" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
-                <RadioButton x:Name="FullT" Content="全屏化" HorizontalAlignment="Left" Margin="19,50,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
-                <RadioButton x:Name="FullF" Content="窗口化" HorizontalAlignment="Left" Margin="107,50,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
-                <Label Content="×" HorizontalAlignment="Left" Margin="84,13,0,0" VerticalAlignment="Top" FontWeight="Normal" FontSize="14"/>
-                <Button Content="取合适本机的21:9窗口化" HorizontalAlignment="Center" Margin="0,76,0,0" VerticalAlignment="Top" Width="159" Click="Button_Click21_9" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal"/>
-                <Button Content="取合适本机的4:3窗口化" HorizontalAlignment="Center" Margin="0,114,0,0" VerticalAlignment="Top" Width="159" Click="Button_Click4_3" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal"/>
+                <TextBox mah:TextBoxHelper.Watermark="高度" x:Name="GHeight" HorizontalAlignment="Left" Margin="107,13,0,0" TextWrapping="Wrap" Text="720" VerticalAlignment="Top" Width="60" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                <TextBox mah:TextBoxHelper.Watermark="宽度" x:Name="GWidth" HorizontalAlignment="Left" Margin="20,13,0,0" TextWrapping="Wrap" Text="1280" VerticalAlignment="Top" Width="60" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                <RadioButton x:Name="FullT" Content="全屏化" HorizontalAlignment="Left" Margin="104,45,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+                <RadioButton x:Name="FullF" Content="窗口化" HorizontalAlignment="Left" Margin="104,0,0,0" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI"/>
+                <Label Content="×" HorizontalAlignment="Left" Margin="84,12,0,0" VerticalAlignment="Top" FontWeight="Normal" FontSize="14"/>
+                <Button Content="取合适21:9" HorizontalAlignment="Left" Margin="20,45,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click21_9" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal"/>
+                <ComboBox x:Name="GameXY" HorizontalAlignment="Left" Height="16" Margin="20,120,0,0" VerticalAlignment="Top" Width="147" SelectionChanged="XY_SelectionChanged">
+
+                </ComboBox>
+                <CheckBox x:Name="PopupUP" Content="无边框" HorizontalAlignment="Left" Margin="104,94,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+                <Button Content="取合适4:3" HorizontalAlignment="Left" Margin="20,83,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click4_3" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal"/>
             </Grid>
         </GroupBox>
         <Button x:Name="setSave" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="保存" HorizontalAlignment="Left" Margin="560,237,0,0" VerticalAlignment="Top" Height="28" Width="64" Click="setSave_Click" FontFamily="Microsoft YaHei UI" FontSize="12" />
-        <TextBox mah:TextBoxHelper.Watermark="游戏路径，例：C:\Genshin Impact\" x:Name="GamePath" x:FieldModifier="public" Height="23" Margin="10,206,201,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+        <TextBox mah:TextBoxHelper.Watermark="官方启动器所在目录，如游戏本体路径与启动器分离则填游戏上一级目录" x:Name="GamePath" x:FieldModifier="public" Height="23" Margin="10,206,201,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
         <RadioButton x:Name="BIliS" Content="B服启动" HorizontalAlignment="Left" Margin="89,242,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
         <RadioButton x:Name="MiS" Content="官服启动" HorizontalAlignment="Left" Margin="10,242,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
         <Label x:Name="SDKlive" Content="SDK:未知" HorizontalAlignment="Left" Margin="314,239,0,0" VerticalAlignment="Top" Width="65"/>

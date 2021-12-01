@@ -41,12 +41,34 @@ namespace GenShin_LauncherDIY.Config
         /// <param name="defValue">未读取到值时的默认值</param>  
         /// <param name="filePath">文件路径</param>  
         /// <returns></returns>  
-        public static string ReadIni(string section, string key)
+        public static string ReadIniInt(string section, string key)
         {
             string IniFilePath = @"Config\Setting.ini";
             StringBuilder temp = new StringBuilder(255);
             int i = GetPrivateProfileString(section, key, "", temp, 255, IniFilePath);
-            return temp.ToString();
+            if (i == 0)
+                return "1";
+            else
+                return temp.ToString();
+        }
+
+        /// <summary>  
+        /// 读ini文件  
+        /// </summary>  
+        /// <param name="section">节</param>  
+        /// <param name="key">键</param>  
+        /// <param name="defValue">未读取到值时的默认值</param>  
+        /// <param name="filePath">文件路径</param>  
+        /// <returns></returns>  
+        public static string ReadIniStr(string section, string key)
+        {
+            string IniFilePath = @"Config\Setting.ini";
+            StringBuilder temp = new StringBuilder(255);
+            int i = GetPrivateProfileString(section, key, "", temp, 255, IniFilePath);
+            if (i == 0)
+                return "false";
+            else
+                return temp.ToString();
         }
 
         /// <summary>  
@@ -98,7 +120,7 @@ namespace GenShin_LauncherDIY.Config
         {
             get
             {
-                _gamePath = IniControl.ReadIni("setup", "GamePath");
+                _gamePath = IniControl.ReadIniStr("setup", "GamePath");
                 return _gamePath;
             }
             set
@@ -118,7 +140,7 @@ namespace GenShin_LauncherDIY.Config
         {
             get
             {
-                _isAutoSize = Convert.ToBoolean(IniControl.ReadIni("setup", "isAutoSize"));
+                _isAutoSize = Convert.ToBoolean(IniControl.ReadIniStr("setup", "isAutoSize"));
                 return _isAutoSize;
             }
             set
@@ -128,6 +150,26 @@ namespace GenShin_LauncherDIY.Config
             }
         }
 
+        private static bool _isPopup;
+        /// <summary>
+        /// 是否无边框属性
+        /// </summary>
+        public static bool isPopup
+        {
+            get
+            {
+                _isPopup = Convert.ToBoolean(IniControl.ReadIniStr("setup", "isPopup"));
+                return _isPopup;
+            }
+            set
+            {
+                _isPopup = value;
+                IniControl.WriteIni("setup", "isPopup", Convert.ToString(_isPopup));
+            }
+        }
+
+
+
         private static ushort _Width;
         /// <summary>
         /// X尺寸属性
@@ -136,7 +178,7 @@ namespace GenShin_LauncherDIY.Config
         {
             get
             {
-                _Width = Convert.ToUInt16(IniControl.ReadIni("setup", "Width"));
+                _Width = Convert.ToUInt16(IniControl.ReadIniInt("setup", "Width"));
                 return _Width;
             }
             set
@@ -154,7 +196,7 @@ namespace GenShin_LauncherDIY.Config
         {
             get
             {
-                _Height = Convert.ToUInt16(IniControl.ReadIni("setup", "Height"));
+                _Height = Convert.ToUInt16(IniControl.ReadIniInt("setup", "Height"));
                 return _Height;
             }
             set
@@ -172,7 +214,7 @@ namespace GenShin_LauncherDIY.Config
         {
             get
             {
-                _BiOrMi = Convert.ToUInt16(IniControl.ReadIni("setup", "isMihoyo"));
+                _BiOrMi = Convert.ToUInt16(IniControl.ReadIniInt("setup", "isMihoyo"));
                 return _BiOrMi;
             }
             set

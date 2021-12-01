@@ -34,11 +34,17 @@ namespace GenShin_LauncherDIY
             InitializeComponent();
             this.Closing += Window_Closing;
             GamePath.Text = Config.IniGS.gamePath;//游戏路径
-            Config.Settings.GameMovePath=Config.IniGS.gamePath;
+            Config.Settings.GameMovePath = Config.IniGS.gamePath;
             if (!Config.IniGS.isAutoSize)//全屏
                 FullF.IsChecked = true;
             else
                 FullT.IsChecked = true;
+            if (PopupUP.IsChecked != false)
+                Config.IniGS.isPopup = false;
+            if (!Config.IniGS.isPopup)//无边框
+                PopupUP.IsChecked = false;
+            else
+                PopupUP.IsChecked = true;
             GHeight.Text = Config.IniGS.Height.ToString();//高度
             GWidth.Text = Config.IniGS.Width.ToString();//宽度
             IsGlobal();
@@ -56,8 +62,25 @@ namespace GenShin_LauncherDIY
                 GlobalS.IsChecked = true;
             if (GamePath.Text == "")
                 ToGlobal.IsEnabled = false;
+            { //设置绑定分辨率数据源
+                List<Display_list> list = new List<Display_list>();
+                list.Add(new Display_list { Name = "2560×1080-21:9", ID = 0, X = 1 });
+                list.Add(new Display_list { Name = "1920×1080-16:9", ID = 1, X = 2 });
+                list.Add(new Display_list { Name = "1600×900-16:9", ID = 2, X = 3 });
+                list.Add(new Display_list { Name = "1360×768-16:9", ID = 3, X = 4 });
+                list.Add(new Display_list { Name = "1280×1024-4:3", ID = 4, X = 5 });
+                list.Add(new Display_list { Name = "1280×720-16:9", ID = 5, X = 6 });
+                GameXY.ItemsSource = list;
+                GameXY.DisplayMemberPath = "Name";
+                GameXY.SelectedValuePath = "X";
+                GameXY.SelectedIndex = -1;
+            }
             ReadUser();
             IsSDK();
+        }
+        public void DragWindow(object sender, MouseButtonEventArgs args)
+        {
+            this.DragMove();
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -131,6 +154,15 @@ namespace GenShin_LauncherDIY
             else
             {
                 Config.IniGS.BiOrMi = 3;
+            }
+            //无边框窗口化
+            if (PopupUP.IsChecked == true)
+            {
+                Config.IniGS.isPopup = true;
+            }
+            else
+            {
+                Config.IniGS.isPopup = false;
             }
             //选择启动的账号
             WriteUser();
@@ -506,5 +538,46 @@ namespace GenShin_LauncherDIY
                 this.ShowMessageAsync("错误", "请选择要删除的账户再进行操作", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
         }
+
+        private void XY_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            object a;
+            a = GameXY.SelectedValue;
+            switch (a)
+            {
+                case 1:
+                    GWidth.Text = "2560";
+                    GHeight.Text = "1080";
+                    break;
+                case 2:
+                    GWidth.Text = "1920";
+                    GHeight.Text = "1080";
+                    break;
+                case 3:
+                    GWidth.Text = "1600";
+                    GHeight.Text = "900";
+                    break;
+                case 4:
+                    GWidth.Text = "1360";
+                    GHeight.Text = "768";
+                    break;
+                case 5:
+                    GWidth.Text = "1280";
+                    GHeight.Text = "1024";
+                    break;
+                case 6:
+                    GWidth.Text = "1280";
+                    GHeight.Text = "720";
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    public class Display_list
+    {
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public int X { get; set; }
     }
 }
