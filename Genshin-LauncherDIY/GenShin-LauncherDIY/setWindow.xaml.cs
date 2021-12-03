@@ -39,9 +39,13 @@ namespace GenShin_LauncherDIY
                 FullF.IsChecked = true;
             else
                 FullT.IsChecked = true;
-            if (PopupUP.IsChecked != false)
+            if(Config.IniGS.isUnFPS==true)
+                isUnFPS.IsChecked = true;
+            else
+                isUnFPS.IsChecked = false;
+            if (PopupUP.IsChecked != false)//无边框
                 Config.IniGS.isPopup = false;
-            if (!Config.IniGS.isPopup)//无边框
+            if (!Config.IniGS.isPopup)
                 PopupUP.IsChecked = false;
             else
                 PopupUP.IsChecked = true;
@@ -63,13 +67,14 @@ namespace GenShin_LauncherDIY
             if (GamePath.Text == "")
                 ToGlobal.IsEnabled = false;
             { //设置绑定分辨率数据源
-                List<Display_list> list = new List<Display_list>();
-                list.Add(new Display_list { Name = "2560×1080-21:9", ID = 0, X = 1 });
-                list.Add(new Display_list { Name = "1920×1080-16:9", ID = 1, X = 2 });
-                list.Add(new Display_list { Name = "1600×900-16:9", ID = 2, X = 3 });
-                list.Add(new Display_list { Name = "1360×768-16:9", ID = 3, X = 4 });
-                list.Add(new Display_list { Name = "1280×1024-4:3", ID = 4, X = 5 });
-                list.Add(new Display_list { Name = "1280×720-16:9", ID = 5, X = 6 });
+                List<Utils.Display_list> list = new List<Utils.Display_list>();
+                list.Add(new Utils.Display_list { Name = "3840×2160-21:9", ID = 0, X = 1 });
+                list.Add(new Utils.Display_list { Name = "2560×1080-21:9", ID = 0, X = 2 });
+                list.Add(new Utils.Display_list { Name = "1920×1080-16:9", ID = 1, X = 3 });
+                list.Add(new Utils.Display_list { Name = "1600×900-16:9", ID = 2, X = 4 });
+                list.Add(new Utils.Display_list { Name = "1360×768-16:9", ID = 3, X = 5 });
+                list.Add(new Utils.Display_list { Name = "1280×1024-4:3", ID = 4, X = 6 });
+                list.Add(new Utils.Display_list { Name = "1280×720-16:9", ID = 5, X = 7 });
                 GameXY.ItemsSource = list;
                 GameXY.DisplayMemberPath = "Name";
                 GameXY.SelectedValuePath = "X";
@@ -157,13 +162,14 @@ namespace GenShin_LauncherDIY
             }
             //无边框窗口化
             if (PopupUP.IsChecked == true)
-            {
                 Config.IniGS.isPopup = true;
-            }
-            else
-            {
+            else        
                 Config.IniGS.isPopup = false;
-            }
+            //解锁帧率启动
+            if(isUnFPS.IsChecked == true)
+                Config.IniGS.isUnFPS = true;
+            else
+                Config.IniGS.isUnFPS = false;
             //选择启动的账号
             WriteUser();
             Config.setConfig.checkini();
@@ -171,17 +177,34 @@ namespace GenShin_LauncherDIY
         }
         private void Button_Click21_9(object sender, RoutedEventArgs e)
         {
-            int x = (int)SystemParameters.WorkArea.Width - 80;
-            int y = (int)(SystemParameters.WorkArea.Width - 80) * 9 / 21;
-            GWidth.Text = Convert.ToString(x);
-            GHeight.Text = Convert.ToString(y);
+            if (GHeight.Text == "" && GWidth.Text != "")
+            {
+                int x = Convert.ToInt32(GWidth.Text);
+                int y = x * 9 / 21;
+                GWidth.Text = Convert.ToString(x);
+                GHeight.Text = Convert.ToString(y);
+            }
+            else if (GWidth.Text == "" && GHeight.Text != "")
+            {
+                int y = Convert.ToInt32(GHeight.Text);
+                int x = y * 21 / 9;
+                GWidth.Text = Convert.ToString(x);
+                GHeight.Text = Convert.ToString(y);
+            }
+            else
+            {
+                this.ShowMessageAsync("提醒", "在上面随便一个框填上想要的宽或者高另一个框留空使用本按钮自动取21:9比例分辨率", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            }
         }
-        private void Button_Click4_3(object sender, RoutedEventArgs e)
+        private async void UnFps_Click(object sender, RoutedEventArgs e)
         {
-            int x = (int)(SystemParameters.WorkArea.Height - 80) * 4 / 3;
-            int y = (int)SystemParameters.WorkArea.Height - 80;
-            GWidth.Text = Convert.ToString(x);
-            GHeight.Text = Convert.ToString(y);
+            if (isUnFPS.IsChecked == true)
+            {
+                if ((await this.ShowMessageAsync("超级警告", "此操作涉及修改游戏客户端进程，我也不知道会不会出现封号风险，出现问题请自行承担后果！如之前没使用过UnlockFPS的建议不要使用！\r\n\r\n只解锁到144(大部分人屏幕应该都是144Hz)", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "不同意", NegativeButtonText = "同意" })) != MessageDialogResult.Affirmative)
+                    isUnFPS.IsChecked = true;
+                else
+                    isUnFPS.IsChecked = false;
+            }
         }
         private void IsSDK()
         {
@@ -546,26 +569,30 @@ namespace GenShin_LauncherDIY
             switch (a)
             {
                 case 1:
+                    GWidth.Text = "3840";
+                    GHeight.Text = "2160";
+                    break;
+                case 2:
                     GWidth.Text = "2560";
                     GHeight.Text = "1080";
                     break;
-                case 2:
+                case 3:
                     GWidth.Text = "1920";
                     GHeight.Text = "1080";
                     break;
-                case 3:
+                case 4:
                     GWidth.Text = "1600";
                     GHeight.Text = "900";
                     break;
-                case 4:
+                case 45:
                     GWidth.Text = "1360";
                     GHeight.Text = "768";
                     break;
-                case 5:
+                case 6:
                     GWidth.Text = "1280";
                     GHeight.Text = "1024";
                     break;
-                case 6:
+                case 7:
                     GWidth.Text = "1280";
                     GHeight.Text = "720";
                     break;
@@ -573,11 +600,5 @@ namespace GenShin_LauncherDIY
                     break;
             }
         }
-    }
-    public class Display_list
-    {
-        public string Name { get; set; }
-        public int ID { get; set; }
-        public int X { get; set; }
     }
 }

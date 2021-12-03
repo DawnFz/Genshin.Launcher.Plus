@@ -15,12 +15,12 @@
                 <RadioButton x:Name="FullT" Content="全屏化" HorizontalAlignment="Left" Margin="104,45,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
                 <RadioButton x:Name="FullF" Content="窗口化" HorizontalAlignment="Left" Margin="104,0,0,0" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI"/>
                 <Label Content="×" HorizontalAlignment="Left" Margin="84,12,0,0" VerticalAlignment="Top" FontWeight="Normal" FontSize="14"/>
-                <Button Content="取合适21:9" HorizontalAlignment="Left" Margin="20,45,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click21_9" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal"/>
+                <Button Content="取合适比例" HorizontalAlignment="Left" Margin="20,52,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click21_9" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal"/>
                 <ComboBox x:Name="GameXY" HorizontalAlignment="Left" Height="16" Margin="20,120,0,0" VerticalAlignment="Top" Width="147" SelectionChanged="XY_SelectionChanged">
 
                 </ComboBox>
                 <CheckBox x:Name="PopupUP" Content="无边框" HorizontalAlignment="Left" Margin="104,94,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
-                <Button Content="取合适4:3" HorizontalAlignment="Left" Margin="20,83,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click4_3" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal"/>
+                <CheckBox x:Name="isUnFPS" Content="解锁FPS" HorizontalAlignment="Left" Margin="22,94,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" Click="UnFps_Click"/>
             </Grid>
         </GroupBox>
         <Button x:Name="setSave" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="保存" HorizontalAlignment="Left" Margin="560,237,0,0" VerticalAlignment="Top" Height="28" Width="64" Click="setSave_Click" FontFamily="Microsoft YaHei UI" FontSize="12" />

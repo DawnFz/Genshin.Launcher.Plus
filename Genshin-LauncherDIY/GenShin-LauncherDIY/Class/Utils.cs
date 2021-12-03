@@ -463,4 +463,10 @@ namespace GenShin_LauncherDIY.Utils
         }
         #endregion
     }
+    public class Display_list
+    {
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public int X { get; set; }
+    }
 }

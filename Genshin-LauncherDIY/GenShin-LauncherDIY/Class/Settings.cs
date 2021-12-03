@@ -101,7 +101,10 @@ namespace GenShin_LauncherDIY.Config
             "项目地址：https://github.com/MahApps/MahApps.Metro \r\n" +
             "————————————————————————————\r\n" +
             "[ICSharpCode.SharpZipLib]\r\n" +
-            "项目地址：https://github.com/icsharpcode \r\n\r\n");
+            "项目地址：https://github.com/icsharpcode \r\n" +
+            "————————————————————————————\r\n" +
+            "[genshin-fps-unlock]\r\n" +
+            "项目地址：https://gitee.com/Euphony_Facetious/genshin-fps-unlock \r\n");
 
         public static string hajimete =
             ("这是一个由WPF编写的原神启动器\r\n\r\n" +

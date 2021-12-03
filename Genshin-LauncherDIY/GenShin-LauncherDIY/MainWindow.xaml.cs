@@ -60,9 +60,6 @@ namespace GenShin_LauncherDIY
                     Config.setConfig.checkini();
                 }
             }
-            {//首次启动向导 
-                //this.ShowMessageAsync("首次启动向导", Config.Settings.hajimete, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-            }
         }
         public void DragWindow(object sender, MouseButtonEventArgs args)
         {
@@ -81,35 +78,113 @@ namespace GenShin_LauncherDIY
                 Config.Settings.GamePopup = "";
             else
                 Config.Settings.GamePopup = " -popupwindow";
-            if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)//启动国服
+            if (Config.IniGS.isUnFPS == true)
             {
-                Thread game = new Thread(() =>
+                if (!File.Exists(@"unlockfps.exe"))
                 {
-                    //次线程，防止UI假死
-                    Dispatcher.Invoke(new Action(() =>
+                    var fpsUri = "pack://application:,,,/Res/unlockfps.dll";
+                    var uri = new Uri(fpsUri, UriKind.RelativeOrAbsolute);
+                    var stream = Application.GetResourceStream(uri).Stream;
+                    Utils.UtilsTools.StreamToFile(stream, @"unlockfps.exe");
+                }
+                if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)//启动国服
+                {
+                    Process.Start(@"unlockfps.exe");
+                    Thread game = new Thread(() =>
                     {
-                        UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
-                    }));
-                });
-                game.Start();
-                WindowState = WindowState.Minimized;
+                        //次线程，防止UI假死
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
+                        }));
+                    });
+                    game.Start();
+                    WindowState = WindowState.Minimized;
+                }
+                else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)//启动国际服
+                {
+                    Process.Start(@"unlockfps.exe");
+                    Thread game = new Thread(() =>
+                    {
+                        //次线程，防止UI假死
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
+                        }));
+                    });
+                    game.Start();
+                    WindowState = WindowState.Minimized;
+                }
+                else
+                {
+                    this.ShowMessageAsync("错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                }
             }
-            else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)//启动国际服
+            else if (Config.IniGS.isUnFPS == false)
             {
-                Thread game = new Thread(() =>
+                if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)//启动国服
                 {
-                    //次线程，防止UI假死
-                    Dispatcher.Invoke(new Action(() =>
+                    Thread game = new Thread(() =>
                     {
-                        UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
-                    }));
-                });
-                game.Start();
-                WindowState = WindowState.Minimized;
+                        //次线程，防止UI假死
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
+                        }));
+                    });
+                    game.Start();
+                    WindowState = WindowState.Minimized;
+                }
+                else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)//启动国际服
+                {
+                    Thread game = new Thread(() =>
+                    {
+                        //次线程，防止UI假死
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
+                        }));
+                    });
+                    game.Start();
+                    WindowState = WindowState.Minimized;
+                }
+                else
+                {
+                    this.ShowMessageAsync("错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                }
             }
             else
             {
-                this.ShowMessageAsync("错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)//启动国服
+                {
+                    Thread game = new Thread(() =>
+                    {
+                    //次线程，防止UI假死
+                    Dispatcher.Invoke(new Action(() =>
+                        {
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
+                        }));
+                    });
+                    game.Start();
+                    WindowState = WindowState.Minimized;
+                }
+                else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)//启动国际服
+                {
+                    Thread game = new Thread(() =>
+                    {
+                    //次线程，防止UI假死
+                    Dispatcher.Invoke(new Action(() =>
+                        {
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
+                        }));
+                    });
+                    game.Start();
+                    WindowState = WindowState.Minimized;
+                }
+                else
+                {
+                    this.ShowMessageAsync("错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                }
             }
         }
 
@@ -132,7 +207,7 @@ namespace GenShin_LauncherDIY
             }
             else
             {
-                this.ShowMessageAsync("错误", "请先输入正确的游戏路径！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                this.ShowMessageAsync("错误提示", "本功能为打开游戏内截图照相保存目录\r\n没有检测到照相文件或者请先输入正确的游戏路径！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
         }
 

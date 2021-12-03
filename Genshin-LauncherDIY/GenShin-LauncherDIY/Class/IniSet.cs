@@ -223,6 +223,24 @@ namespace GenShin_LauncherDIY.Config
                 IniControl.WriteIni("setup", "isMihoyo", Convert.ToString(_BiOrMi));
             }
         }
+
+        private static bool _isUnFPS;
+        /// <summary>
+        /// 是否无边框属性
+        /// </summary>
+        public static bool isUnFPS
+        {
+            get
+            {
+                _isUnFPS = Convert.ToBoolean(IniControl.ReadIniStr("setup", "isUnFPS"));
+                return _isUnFPS;
+            }
+            set
+            {
+                _isUnFPS = value;
+                IniControl.WriteIni("setup", "isUnFPS", Convert.ToString(_isUnFPS));
+            }
+        }
     }
     class YuanshenIni
     {
