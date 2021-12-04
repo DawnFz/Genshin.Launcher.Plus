@@ -68,7 +68,7 @@ namespace GenShin_LauncherDIY
                 ToGlobal.IsEnabled = false;
             { //设置绑定分辨率数据源
                 List<Utils.Display_list> list = new List<Utils.Display_list>();
-                list.Add(new Utils.Display_list { Name = "3840×2160-21:9", ID = 0, X = 1 });
+                list.Add(new Utils.Display_list { Name = "3840×2160-16:9", ID = 0, X = 1 });
                 list.Add(new Utils.Display_list { Name = "2560×1080-21:9", ID = 0, X = 2 });
                 list.Add(new Utils.Display_list { Name = "1920×1080-16:9", ID = 1, X = 3 });
                 list.Add(new Utils.Display_list { Name = "1600×900-16:9", ID = 2, X = 4 });
@@ -200,7 +200,7 @@ namespace GenShin_LauncherDIY
         {
             if (isUnFPS.IsChecked == true)
             {
-                if ((await this.ShowMessageAsync("超级警告", "此操作涉及修改游戏客户端进程，我也不知道会不会出现封号风险，出现问题请自行承担后果！如之前没使用过UnlockFPS的建议不要使用！\r\n\r\n只解锁到144(大部分人屏幕应该都是144Hz)", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "不同意", NegativeButtonText = "同意" })) != MessageDialogResult.Affirmative)
+                if ((await this.ShowMessageAsync("超级警告", "此操作涉及修改游戏客户端进程，我也不知道会不会出现封号风险，出现问题请自行承担后果！如之前没使用过UnlockFPS的建议不要使用！\r\n\r\n只解锁到160(大部分人屏幕应该都是144Hz)", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "不同意", NegativeButtonText = "同意" })) != MessageDialogResult.Affirmative)
                     isUnFPS.IsChecked = true;
                 else
                     isUnFPS.IsChecked = false;

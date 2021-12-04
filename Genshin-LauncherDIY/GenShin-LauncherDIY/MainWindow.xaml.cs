@@ -251,7 +251,7 @@ namespace GenShin_LauncherDIY
 
         private void Help_Click(object sender, RoutedEventArgs e)
         {
-
+            Process.Start("https://www.bilibili.com/video/BV1hr4y1Q7Qm");
         }
     }
 }

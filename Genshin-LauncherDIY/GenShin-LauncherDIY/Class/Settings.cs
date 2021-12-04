@@ -139,6 +139,7 @@ namespace GenShin_LauncherDIY.Config
                 //bilibiliormihayo
                 IniGS.BiOrMi = 1;
                 IniGS.isPopup = false;
+                IniGS.isUnFPS = false;
             }
             catch
             {

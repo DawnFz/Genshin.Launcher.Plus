@@ -72,6 +72,25 @@ namespace GenShin_LauncherDIY.Config
         }
 
         /// <summary>  
+        /// 读ini文件  
+        /// </summary>  
+        /// <param name="section">节</param>  
+        /// <param name="key">键</param>  
+        /// <param name="defValue">未读取到值时的默认值</param>  
+        /// <param name="filePath">文件路径</param>  
+        /// <returns></returns>  
+        public static string ReadIniPath(string section, string key)
+        {
+            string IniFilePath = @"Config\Setting.ini";
+            StringBuilder temp = new StringBuilder(255);
+            int i = GetPrivateProfileString(section, key, "", temp, 255, IniFilePath);
+            if (i == 0)
+                return "";
+            else
+                return temp.ToString();
+        }
+
+        /// <summary>  
         /// 写入ini文件  
         /// </summary>  
         /// <param name="section">节</param>  
@@ -120,7 +139,7 @@ namespace GenShin_LauncherDIY.Config
         {
             get
             {
-                _gamePath = IniControl.ReadIniStr("setup", "GamePath");
+                _gamePath = IniControl.ReadIniPath("setup", "GamePath");
                 return _gamePath;
             }
             set
