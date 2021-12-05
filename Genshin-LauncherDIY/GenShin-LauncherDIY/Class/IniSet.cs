@@ -260,6 +260,25 @@ namespace GenShin_LauncherDIY.Config
                 IniControl.WriteIni("setup", "isUnFPS", Convert.ToString(_isUnFPS));
             }
         }
+
+
+        private static string _MaxFps;
+        /// <summary>
+        /// X尺寸属性
+        /// </summary>
+        public static string MaxFps
+        {
+            get
+            {
+                _MaxFps = IniControl.ReadIniPath("setup", "MaxFps");
+                return _MaxFps;
+            }
+            set
+            {
+                _MaxFps = value;
+                IniControl.WriteIni("setup", "MaxFps", _MaxFps);
+            }
+        }
     }
     class YuanshenIni
     {

@@ -80,7 +80,15 @@ namespace GenShin_LauncherDIY
                 Config.Settings.GamePopup = " -popupwindow";
             if (Config.IniGS.isUnFPS == true)
             {
-                if (!File.Exists(@"unlockfps.exe"))
+                if (File.Exists(@"unlockfps.exe"))
+                {
+                    File.Delete(@"unlockfps.exe");
+                    var fpsUri = "pack://application:,,,/Res/unlockfps.dll";
+                    var uri = new Uri(fpsUri, UriKind.RelativeOrAbsolute);
+                    var stream = Application.GetResourceStream(uri).Stream;
+                    Utils.UtilsTools.StreamToFile(stream, @"unlockfps.exe");
+                }
+                else
                 {
                     var fpsUri = "pack://application:,,,/Res/unlockfps.dll";
                     var uri = new Uri(fpsUri, UriKind.RelativeOrAbsolute);

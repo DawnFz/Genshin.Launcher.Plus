@@ -39,8 +39,12 @@ namespace GenShin_LauncherDIY
                 FullF.IsChecked = true;
             else
                 FullT.IsChecked = true;
-            if(Config.IniGS.isUnFPS==true)
+            if (Config.IniGS.isUnFPS == true)
+            {
                 isUnFPS.IsChecked = true;
+                MaxFPS.IsEnabled = true;
+                MaxFPS.Text = Convert.ToString(Config.IniGS.MaxFps);
+            }
             else
                 isUnFPS.IsChecked = false;
             if (PopupUP.IsChecked != false)//无边框
@@ -163,13 +167,27 @@ namespace GenShin_LauncherDIY
             //无边框窗口化
             if (PopupUP.IsChecked == true)
                 Config.IniGS.isPopup = true;
-            else        
+            else
                 Config.IniGS.isPopup = false;
             //解锁帧率启动
-            if(isUnFPS.IsChecked == true)
-                Config.IniGS.isUnFPS = true;
+            if (isUnFPS.IsChecked == true)
+            {
+                if (!Utils.checkTool.IsNumber(MaxFPS.Text))
+                {
+                    this.ShowMessageAsync("警告", "帧率错误, 请输入正确的数字！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    return;
+                }
+                else
+                {
+                    Config.IniGS.MaxFps = MaxFPS.Text;
+                    Config.IniGS.isUnFPS = true;
+                }
+            }
             else
+            {
                 Config.IniGS.isUnFPS = false;
+                Config.IniGS.MaxFps = "144";
+            }
             //选择启动的账号
             WriteUser();
             Config.setConfig.checkini();
@@ -201,9 +219,22 @@ namespace GenShin_LauncherDIY
             if (isUnFPS.IsChecked == true)
             {
                 if ((await this.ShowMessageAsync("超级警告", "此操作涉及修改游戏客户端进程，我也不知道会不会出现封号风险，出现问题请自行承担后果！如之前没使用过UnlockFPS的建议不要使用！\r\n\r\n只解锁到160(大部分人屏幕应该都是144Hz)", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "不同意", NegativeButtonText = "同意" })) != MessageDialogResult.Affirmative)
+                {
                     isUnFPS.IsChecked = true;
+                    MaxFPS.IsEnabled = true;
+                    MaxFPS.Text = Config.IniGS.MaxFps;
+                }
+
                 else
+                {
                     isUnFPS.IsChecked = false;
+                    MaxFPS.IsEnabled = false;
+                }
+            }
+            else
+            {
+                MaxFPS.IsEnabled = false;
+                MaxFPS.Text = "";
             }
         }
         private void IsSDK()
@@ -524,7 +555,6 @@ namespace GenShin_LauncherDIY
         {
             this.ShowMessageAsync("提示", "访问密码：etxd\r\n已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             Clipboard.SetText("etxd");
-            Thread.Sleep(1500);
             Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
         }
 
@@ -600,5 +630,6 @@ namespace GenShin_LauncherDIY
                     break;
             }
         }
+
     }
 }

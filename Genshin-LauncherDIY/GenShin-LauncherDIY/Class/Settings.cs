@@ -11,6 +11,7 @@ namespace GenShin_LauncherDIY.Config
 {
     public class Settings
     {
+        public static int isRun;
         public static string Height = IniGS.Height.ToString();
         public static string Width = IniGS.Width.ToString();
         public static string GamePath = IniGS.gamePath.ToString();
