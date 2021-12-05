@@ -298,7 +298,7 @@ namespace GenShin_LauncherDIY.Config
         /// <returns></returns>  
         public static string ReadIni(string section, string key)
         {
-            string IniFilePath = Config.IniGS.gamePath + @"\\Genshin Impact Game\\config.ini";
+            string IniFilePath = Config.IniGS.gamePath + @"\\config.ini";
             StringBuilder temp = new StringBuilder(255);
             int i = GetPrivateProfileString(section, key, "", temp, 255, IniFilePath);
             return temp.ToString();
@@ -314,7 +314,7 @@ namespace GenShin_LauncherDIY.Config
         /// <returns></returns>  
         public static void WriteIni(string section, string key, string value)
         {
-            string IniFilePath = Config.IniGS.gamePath + @"\\Genshin Impact Game\\config.ini";
+            string IniFilePath = Config.IniGS.gamePath + @"\\config.ini";
             WritePrivateProfileString(section, key, value, IniFilePath);
         }
         /// <summary>  
@@ -325,7 +325,7 @@ namespace GenShin_LauncherDIY.Config
         /// <returns></returns>  
         public static long DeleteSection(string section)
         {
-            string IniFilePath = Config.IniGS.gamePath + @"\\Genshin Impact Game\\config.ini";
+            string IniFilePath = Config.IniGS.gamePath + @"\\config.ini";
             return WritePrivateProfileString(section, null, null, IniFilePath);
         }
 
@@ -338,7 +338,7 @@ namespace GenShin_LauncherDIY.Config
         /// <returns></returns>  
         public static long DeleteKey(string section, string key)
         {
-            string IniFilePath = Config.IniGS.gamePath + @"\\Genshin Impact Game\\config.ini";
+            string IniFilePath = Config.IniGS.gamePath + @"\\config.ini";
             return WritePrivateProfileString(section, key, null, IniFilePath);
         }
     }

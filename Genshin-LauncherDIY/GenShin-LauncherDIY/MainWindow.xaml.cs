@@ -87,7 +87,7 @@ namespace GenShin_LauncherDIY
                     var stream = Application.GetResourceStream(uri).Stream;
                     Utils.UtilsTools.StreamToFile(stream, @"unlockfps.exe");
                 }
-                if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)//启动国服
+                if (File.Exists(Config.Settings.GamePath + "//YuanShen.exe") == true)//启动国服
                 {
                     Process.Start(@"unlockfps.exe");
                     Thread game = new Thread(() =>
@@ -95,13 +95,13 @@ namespace GenShin_LauncherDIY
                         //次线程，防止UI假死
                         Dispatcher.Invoke(new Action(() =>
                         {
-                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
                         }));
                     });
                     game.Start();
                     WindowState = WindowState.Minimized;
                 }
-                else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)//启动国际服
+                else if (File.Exists(Config.Settings.GamePath + "//GenshinImpact.exe") == true)//启动国际服
                 {
                     Process.Start(@"unlockfps.exe");
                     Thread game = new Thread(() =>
@@ -109,7 +109,7 @@ namespace GenShin_LauncherDIY
                         //次线程，防止UI假死
                         Dispatcher.Invoke(new Action(() =>
                         {
-                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath , "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
                         }));
                     });
                     game.Start();
@@ -122,27 +122,27 @@ namespace GenShin_LauncherDIY
             }
             else if (Config.IniGS.isUnFPS == false)
             {
-                if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)//启动国服
+                if (File.Exists(Config.Settings.GamePath + "//YuanShen.exe") == true)//启动国服
                 {
                     Thread game = new Thread(() =>
                     {
                         //次线程，防止UI假死
                         Dispatcher.Invoke(new Action(() =>
                         {
-                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath, "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
                         }));
                     });
                     game.Start();
                     WindowState = WindowState.Minimized;
                 }
-                else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)//启动国际服
+                else if (File.Exists(Config.Settings.GamePath + "//GenshinImpact.exe") == true)//启动国际服
                 {
                     Thread game = new Thread(() =>
                     {
                         //次线程，防止UI假死
                         Dispatcher.Invoke(new Action(() =>
                         {
-                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath, "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
                         }));
                     });
                     game.Start();
@@ -155,27 +155,27 @@ namespace GenShin_LauncherDIY
             }
             else
             {
-                if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)//启动国服
+                if (File.Exists(Config.Settings.GamePath + "//YuanShen.exe") == true)//启动国服
                 {
                     Thread game = new Thread(() =>
                     {
                     //次线程，防止UI假死
                     Dispatcher.Invoke(new Action(() =>
                         {
-                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath, "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
                         }));
                     });
                     game.Start();
                     WindowState = WindowState.Minimized;
                 }
-                else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)//启动国际服
+                else if (File.Exists(Config.Settings.GamePath + "//GenshinImpact.exe") == true)//启动国际服
                 {
                     Thread game = new Thread(() =>
                     {
                     //次线程，防止UI假死
                     Dispatcher.Invoke(new Action(() =>
                         {
-                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath, "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
                         }));
                     });
                     game.Start();
@@ -200,9 +200,9 @@ namespace GenShin_LauncherDIY
 
         private void ScreenSrc_Click(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(Config.Settings.GamePath + "//Genshin Impact Game//ScreenShot") == true)
+            if (Directory.Exists(Config.Settings.GamePath + "//ScreenShot") == true)
             {
-                Process.Start(Config.Settings.GamePath + "//Genshin Impact Game//ScreenShot");
+                Process.Start(Config.Settings.GamePath + "//ScreenShot");
 
             }
             else

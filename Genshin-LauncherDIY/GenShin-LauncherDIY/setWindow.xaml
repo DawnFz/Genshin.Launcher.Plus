@@ -24,7 +24,7 @@
             </Grid>
         </GroupBox>
         <Button x:Name="setSave" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="保存" HorizontalAlignment="Left" Margin="560,237,0,0" VerticalAlignment="Top" Height="28" Width="64" Click="setSave_Click" FontFamily="Microsoft YaHei UI" FontSize="12" />
-        <TextBox mah:TextBoxHelper.Watermark="官方启动器所在目录，如游戏本体路径与启动器分离则填游戏上一级目录" x:Name="GamePath" x:FieldModifier="public" Height="23" Margin="10,206,201,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+        <TextBox mah:TextBoxHelper.Watermark="官方启动器文件位置 或 游戏本体文件位置" x:Name="GamePath" x:FieldModifier="public" Height="23" Margin="10,206,201,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
         <RadioButton x:Name="BIliS" Content="B服启动" HorizontalAlignment="Left" Margin="89,242,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
         <RadioButton x:Name="MiS" Content="官服启动" HorizontalAlignment="Left" Margin="10,242,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
         <Label x:Name="SDKlive" Content="SDK:未知" HorizontalAlignment="Left" Margin="314,239,0,0" VerticalAlignment="Top" Width="65"/>
