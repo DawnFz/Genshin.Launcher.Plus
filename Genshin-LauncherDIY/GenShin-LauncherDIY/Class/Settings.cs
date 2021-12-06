@@ -11,7 +11,6 @@ namespace GenShin_LauncherDIY.Config
 {
     public class Settings
     {
-        public static int isRun;
         public static string Height = IniGS.Height.ToString();
         public static string Width = IniGS.Width.ToString();
         public static string GamePath = IniGS.gamePath.ToString();
@@ -19,7 +18,7 @@ namespace GenShin_LauncherDIY.Config
         public static string FullS;
         public static string Biomi;
         public static string GameMovePath;
-        //下面是检查需要替换的国际服文件的路径
+        //需要替换的国际服文件的路径
         public static string[] globalfiles = new string[] 
         { "//GenshinImpact_Data//app.info",
           "//GenshinImpact_Data//globalgamemanagers",
@@ -48,7 +47,7 @@ namespace GenShin_LauncherDIY.Config
           "//pkg_version",
           "//UnityPlayer.dll"
         };
-        //下面是检查需要替换的国内双服的文件的路径
+        //需要替换的国内双服的文件的路径
         public static string[] cnfiles = new string[]
         { "//YuanShen_Data//app.info",
           "//YuanShen_Data//globalgamemanagers",
@@ -106,20 +105,6 @@ namespace GenShin_LauncherDIY.Config
             "————————————————————————————\r\n" +
             "[genshin-fps-unlock]\r\n" +
             "项目地址：https://gitee.com/Euphony_Facetious/genshin-fps-unlock \r\n");
-
-        public static string hajimete =
-            ("这是一个由WPF编写的原神启动器\r\n\r\n" +
-            "你可以使用本启动器做到以下操作：\r\n" +
-            "1.快速跳转到游戏的照相保存文件夹\r\n" +
-            "2.自定义任意分辨率和是否全屏启动游戏\r\n" +
-            "3.选择哔哩服,官服或者国际服进行启动\r\n" +
-            "4.修复MihoyoSDK缺失导致的解析错误或未初始化\r\n" +
-            "5.保存原神账户凭证可选快速切换账号启动\r\n" +
-            "—————————————————————————————\r\n" +
-            "注意，以上功能涉及到注册表修改和文件替换，部分杀毒软\r\n" +
-            "件可能会报毒，为了客户端数据完整建议关闭杀软后再运行\r\n" +
-            "本程序完全开源，并不会将用户数据公布到网络，\r\n" +
-            "本启动器需要联网部分的代码仅为版本检测和公告获取\r\n");
     }
 
     class setConfig
@@ -146,11 +131,8 @@ namespace GenShin_LauncherDIY.Config
             {
             }
         }
-
-
-
         /// <summary>
-        /// 检查ini文件是否存在并且版本正确，否则新建
+        /// 检查ini文件是否存在，否则新建
         /// </summary>
         public static void checkini()
         {
@@ -168,28 +150,6 @@ namespace GenShin_LauncherDIY.Config
             }
             catch
             {
-            }
-        }
-
-        /// <summary>
-        /// ini文件是否正常
-        /// </summary>
-        public static bool isRightIni()
-        {
-            try
-            {
-                if (!Directory.Exists(@"Config") || !File.Exists(@"Config\Setting.ini"))
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
             }
         }
     }

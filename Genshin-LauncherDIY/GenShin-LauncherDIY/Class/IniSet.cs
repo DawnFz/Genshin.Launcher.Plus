@@ -34,7 +34,7 @@ namespace GenShin_LauncherDIY.Config
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
         /// <summary>  
-        /// 读ini文件  
+        /// 读ini文件不存在则返回1
         /// </summary>  
         /// <param name="section">节</param>  
         /// <param name="key">键</param>  
@@ -53,7 +53,7 @@ namespace GenShin_LauncherDIY.Config
         }
 
         /// <summary>  
-        /// 读ini文件  
+        /// 读ini文件不存在则返回false  
         /// </summary>  
         /// <param name="section">节</param>  
         /// <param name="key">键</param>  
@@ -72,7 +72,7 @@ namespace GenShin_LauncherDIY.Config
         }
 
         /// <summary>  
-        /// 读ini文件  
+        /// 读ini文件不存在则返回空  
         /// </summary>  
         /// <param name="section">节</param>  
         /// <param name="key">键</param>  
@@ -227,7 +227,7 @@ namespace GenShin_LauncherDIY.Config
 
         private static ushort _BiOrMi;
         /// <summary>
-        /// Y尺寸属性
+        /// 客户端服务器接口
         /// </summary>
         public static ushort BiOrMi
         {
@@ -245,7 +245,7 @@ namespace GenShin_LauncherDIY.Config
 
         private static bool _isUnFPS;
         /// <summary>
-        /// 是否无边框属性
+        /// 是否解锁帧率上限
         /// </summary>
         public static bool isUnFPS
         {
@@ -264,7 +264,7 @@ namespace GenShin_LauncherDIY.Config
 
         private static string _MaxFps;
         /// <summary>
-        /// X尺寸属性
+        /// 最高FPS上限
         /// </summary>
         public static string MaxFps
         {
@@ -293,36 +293,6 @@ namespace GenShin_LauncherDIY.Config
         [DllImport("kernel32")]
         private static extern long WritePrivateProfileString(string section, string key, string value, string filePath);
 
-
-        /// <summary>  
-        /// 读操作  
-        /// </summary>  
-        /// <param name="section">节</param>  
-        /// <param name="key">键</param>  
-        /// <param name="def">未读取到的默认值</param>  
-        /// <param name="retVal">读取到的值</param>  
-        /// <param name="size">大小</param>  
-        /// <param name="filePath">路径</param>  
-        /// <returns></returns>  
-        [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
-
-        /// <summary>  
-        /// 读ini文件  
-        /// </summary>  
-        /// <param name="section">节</param>  
-        /// <param name="key">键</param>  
-        /// <param name="defValue">未读取到值时的默认值</param>  
-        /// <param name="filePath">文件路径</param>  
-        /// <returns></returns>  
-        public static string ReadIni(string section, string key)
-        {
-            string IniFilePath = Config.IniGS.gamePath + @"\\Genshin Impact Game\\config.ini";
-            StringBuilder temp = new StringBuilder(255);
-            int i = GetPrivateProfileString(section, key, "", temp, 255, IniFilePath);
-            return temp.ToString();
-        }
-
         /// <summary>  
         /// 写入ini文件  
         /// </summary>  
@@ -336,87 +306,31 @@ namespace GenShin_LauncherDIY.Config
             string IniFilePath = Config.IniGS.gamePath + @"\\Genshin Impact Game\\config.ini";
             WritePrivateProfileString(section, key, value, IniFilePath);
         }
-        /// <summary>  
-        /// 删除节  
-        /// </summary>  
-        /// <param name="section">节</param>  
-        /// <param name="filePath"></param>  
-        /// <returns></returns>  
-        public static long DeleteSection(string section)
-        {
-            string IniFilePath = Config.IniGS.gamePath + @"\\Genshin Impact Game\\config.ini";
-            return WritePrivateProfileString(section, null, null, IniFilePath);
-        }
-
-        /// <summary>  
-        /// 删除键  
-        /// </summary>  
-        /// <param name="section">节</param>  
-        /// <param name="key">键</param>  
-        /// <param name="filePath">文件路径</param>  
-        /// <returns></returns>  
-        public static long DeleteKey(string section, string key)
-        {
-            string IniFilePath = Config.IniGS.gamePath + @"\\Genshin Impact Game\\config.ini";
-            return WritePrivateProfileString(section, key, null, IniFilePath);
-        }
     }
     class BOM
     {
-        private static ushort _Channel;
         /// <summary>
         /// Channel属性
         /// </summary>
-        public static ushort Channel
+        public static void Channel(string value)
         {
-            get
-            {
-                _Channel = Convert.ToUInt16(YuanshenIni.ReadIni("General", "channel"));
-                return _Channel;
-            }
-            set
-            {
-                _Channel = value;
-                YuanshenIni.WriteIni("General", "channel", Convert.ToString(_Channel));
-            }
+            YuanshenIni.WriteIni("General", "channel", value);
         }
 
-        private static ushort _Sub_channel;
         /// <summary>
         /// SUB_Channel属性
         /// </summary>
-        public static ushort Sub_channel
+        public static void Sub_channel(string value)
         {
-            get
-            {
-                _Sub_channel = Convert.ToUInt16(YuanshenIni.ReadIni("General", "sub_channel"));
-                return _Sub_channel;
-            }
-            set
-            {
-                _Sub_channel = value;
-                YuanshenIni.WriteIni("General", "sub_channel", Convert.ToString(_Sub_channel));
-            }
+            YuanshenIni.WriteIni("General", "sub_channel", value);
         }
 
-
-        private static string _Cps;
         /// <summary>
-        /// SUB_Channel属性
+        /// CPS属性
         /// </summary>
-        public static string Cps
+        public static void Cps(string value)
         {
-            get
-            {
-                _Cps = Convert.ToString(YuanshenIni.ReadIni("General", "cps"));
-                return _Cps;
-            }
-            set
-            {
-                _Cps = value;
-                YuanshenIni.WriteIni("General", "cps", Convert.ToString(_Cps));
-            }
+            YuanshenIni.WriteIni("General", "cps",value);
         }
     }
-    //
 }

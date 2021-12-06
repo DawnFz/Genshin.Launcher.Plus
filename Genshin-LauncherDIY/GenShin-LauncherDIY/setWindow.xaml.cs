@@ -56,8 +56,9 @@ namespace GenShin_LauncherDIY
             GHeight.Text = Config.IniGS.Height.ToString();//高度
             GWidth.Text = Config.IniGS.Width.ToString();//宽度
             IsGlobal();
+            //读取服务器
             if (Config.IniGS.BiOrMi == 1)
-            { //读取服务器
+            { 
                 MiS.IsChecked = true;
                 GlobalS.IsEnabled = false;
             }
@@ -70,7 +71,8 @@ namespace GenShin_LauncherDIY
                 GlobalS.IsChecked = true;
             if (GamePath.Text == "")
                 ToGlobal.IsEnabled = false;
-            { //设置绑定分辨率数据源
+            //设置绑定分辨率数据源
+            {
                 List<Utils.Display_list> list = new List<Utils.Display_list>();
                 list.Add(new Utils.Display_list { Name = "3840×2160-16:9", ID = 0, X = 1 });
                 list.Add(new Utils.Display_list { Name = "2560×1080-21:9", ID = 0, X = 2 });
@@ -149,16 +151,16 @@ namespace GenShin_LauncherDIY
             if (MiS.IsChecked == true)
             {
                 Config.IniGS.BiOrMi = 1;
-                BOM.Sub_channel = 1;
-                BOM.Channel = 1;
-                BOM.Cps = "mihoyo";
+                BOM.Sub_channel("1");
+                BOM.Channel("1");
+                BOM.Cps("mihoyo");
             }
             else if (BIliS.IsChecked == true)
             {
                 Config.IniGS.BiOrMi = 2;
-                BOM.Sub_channel = 0;
-                BOM.Channel = 14;
-                BOM.Cps = "bilibili";
+                BOM.Sub_channel("0");
+                BOM.Channel("14");
+                BOM.Cps("bilibili");
             }
             else
             {
@@ -251,7 +253,7 @@ namespace GenShin_LauncherDIY
                     SDKlive.Content = "SDK:存在";
                     Fixbtn.IsEnabled = false;
                 }
-                else if (File.Exists(GamePath.Text + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll") == true)
+                else if (File.Exists(GamePath.Text + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll") != true)
                 {
                     SDKlive.Content = "SDK:无需";
                     Fixbtn.IsEnabled = false;
@@ -282,7 +284,7 @@ namespace GenShin_LauncherDIY
 
             }
         }
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void ToGlobal_Click(object sender, RoutedEventArgs e)
         {
             if ((await this.ShowMessageAsync("警告！！", "转换或还原将会执行重命名，替换，删除等操作修改客户端文件，该过程大概率会触发杀软报毒！为了防止客户端损坏导致不完整，执行前检查杀软（包括 Windows Defender）是否完全关闭或将本启动器加入白名单，并检查游戏是否彻底关闭，否则可能将导致客户端文件缺失！！\r\n\r\n提示：如游戏大版本更新时请执行还原转换为国内服使用游戏自带启动器更新！", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消转换", NegativeButtonText = "确定转换" })) != MessageDialogResult.Affirmative)
             {
@@ -319,10 +321,11 @@ namespace GenShin_LauncherDIY
                     }
                     if (!error)
                     {
-                        //开始转换                    
-                        MoveFile();
-                        bqload.Visibility = Visibility.Hidden;
-                        setSave.IsEnabled = true;
+                        Thread StartMove = new Thread(() => MoveFile());
+                        setSave.IsEnabled = false;
+                        ToGlobal.IsEnabled = false;
+                        TimeStatus.Content = "当前状态：正在替换资源";
+                        StartMove.Start();                                                                  
                     }
                     else
                     {
@@ -365,12 +368,10 @@ namespace GenShin_LauncherDIY
                 }
                 if (!error)
                 {
-                    //开始转换                    
                     MoveFile();
                     this.Dispatcher.Invoke(new Action(delegate ()
                     {
                         bqload.Visibility = Visibility.Hidden;
-                        setSave.IsEnabled = true;
                     }));
                 }
                 else
@@ -442,14 +443,14 @@ namespace GenShin_LauncherDIY
             if (File.Exists(Config.Settings.GameMovePath + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll") == true)
                 File.Delete(Config.Settings.GameMovePath + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll");
             Config.IniGS.BiOrMi = 3;
-            BOM.Sub_channel = 0;
-            BOM.Channel = 1;
+            BOM.Sub_channel("0");
+            BOM.Channel("1");
             this.Dispatcher.Invoke(new Action(delegate ()
             {
                 ToGlobal.IsEnabled = true;
                 IsSDK();
                 IsGlobal();
-                //
+                setSave.IsEnabled = true;
                 this.ShowMessageAsync("提示", "转换完毕，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }));
         }
@@ -540,8 +541,8 @@ namespace GenShin_LauncherDIY
                 MiS.IsEnabled = true;
                 TimeStatus.Content = "当前状态：无状态";
                 Config.IniGS.BiOrMi = 1;
-                BOM.Sub_channel = 1;
-                BOM.Channel = 1;
+                BOM.Sub_channel("1");
+                BOM.Channel("1");
                 Config.setConfig.checkini();
                 bqload.Visibility = Visibility.Hidden;
                 setSave.IsEnabled = true;
@@ -557,7 +558,6 @@ namespace GenShin_LauncherDIY
             Clipboard.SetText("etxd");
             Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
         }
-
         //读取保存的账户文件
         private void ReadUser()
         {
@@ -575,7 +575,6 @@ namespace GenShin_LauncherDIY
                 acct.WriteToRegedit();
             }
         }
-
         private async void DelUser_Click(object sender, RoutedEventArgs e)
         {
             if (UserList.SelectedIndex != -1)
@@ -591,7 +590,6 @@ namespace GenShin_LauncherDIY
                 this.ShowMessageAsync("错误", "请选择要删除的账户再进行操作", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
         }
-
         private void XY_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             object a;

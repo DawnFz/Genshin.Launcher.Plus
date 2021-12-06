@@ -14,20 +14,18 @@ namespace GenShin_LauncherDIY.Utils
     {
         public static void StreamToFile(Stream stream, string fileName)
         {
-            // 把 Stream 转换成 byte[] 
+            //把Stream转换成byte[]
             byte[] bytes = new byte[stream.Length];
             stream.Read(bytes, 0, bytes.Length);
-            // 设置当前流的位置为流的开始 
+            //设置当前流的位置为流的开始
             stream.Seek(0, SeekOrigin.Begin);
-
-            // 把 byte[] 写入文件 
+            //把byte[]写入文件 
             FileStream fs = new FileStream(fileName, FileMode.Create);
             BinaryWriter bw = new BinaryWriter(fs);
             bw.Write(bytes);
             bw.Close();
             fs.Close();
         }
-
         public static string ReadHTML(string url, string encoding)//读HTML，用于获取版本信息和通知公告【其实是作者没钱开服务器贪图方便】
         {
             string strHTML = "";
@@ -53,8 +51,6 @@ namespace GenShin_LauncherDIY.Utils
             tempStr = tempStr.Substring(0, tempStr.IndexOf(nextStr));
             return tempStr;
         }
-
-
         public static bool UnZip(string zipFile, string directory)
         {
             try
@@ -92,7 +88,6 @@ namespace GenShin_LauncherDIY.Utils
             }
             catch { return false; }
         }
-
         public static void Rungenshin(params string[] command)
         {
             using (Process pc = new Process())

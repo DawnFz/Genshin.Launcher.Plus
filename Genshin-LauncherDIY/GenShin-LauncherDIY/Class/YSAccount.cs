@@ -15,11 +15,8 @@ namespace GenShin_LauncherDIY
     public class YSAccount
     {
         public string Name { get; set; }
-
         public string MIHOYOSDK_ADL_PROD_CN_h3123967166 { get; set; }
-
         public string GENERAL_DATA_h2389025596 { get; set; }
-
         public static YSAccount ReadFromDisk(string name)
         {
             string p = Path.Combine(Directory.GetCurrentDirectory(), "UserData", name);
@@ -27,17 +24,10 @@ namespace GenShin_LauncherDIY
             YSAccount acct = new JavaScriptSerializer().Deserialize<YSAccount>(json);
             return acct;
         }
-
         public void WriteToDisk()
         {
             File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), new JavaScriptSerializer().Serialize(this));
         }
-
-        public static void DeleteFromDisk(string name)
-        {
-            File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "UserData", name));
-        }
-
         public static YSAccount ReadFromRegedit(bool needSettings)
         {
             YSAccount acct = new YSAccount();
@@ -48,7 +38,6 @@ namespace GenShin_LauncherDIY
             }
             return acct;
         }
-
         public void WriteToRegedit()
         {
             if (string.IsNullOrWhiteSpace(MIHOYOSDK_ADL_PROD_CN_h3123967166))
@@ -62,20 +51,16 @@ namespace GenShin_LauncherDIY
                 {
                     SetStringToRegedit("GENERAL_DATA_h2389025596", GENERAL_DATA_h2389025596);
                 }
-
             }
         }
-
         private static string GetStringFromRegedit(string key)
         {
             object value = Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\原神", key, "");
             return Encoding.UTF8.GetString((byte[])value);
         }
-
         private static void SetStringToRegedit(string key, string value)
         {
             Registry.SetValue(@"HKEY_CURRENT_USER\Software\miHoYo\原神", key, Encoding.UTF8.GetBytes(value));
         }
-
     }
 }

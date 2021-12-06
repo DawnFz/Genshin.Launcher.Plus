@@ -33,7 +33,7 @@
         <GroupBox HorizontalAlignment="Left" Height="185" Header="国际服 | 国内双服转换" Margin="179,10,0,0" VerticalAlignment="Top" Width="184">
             <Grid>
                 <mah:MetroProgressBar x:Name="bqload"  Margin="18,126,71,14" IsIndeterminate="True" Maximum="100" Minimum="0" Value="{Binding Value, ElementName=horizSlider}" Foreground="#CC76608A" Visibility="Hidden"/>
-                <Button x:Name="ToGlobal" Content="转换" HorizontalAlignment="Left" Margin="116,119,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="48" Click="Button_Click"/>
+                <Button x:Name="ToGlobal" Content="转换" HorizontalAlignment="Left" Margin="116,119,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="48" Click="ToGlobal_Click"/>
                 <Label x:Name="TimeStatus" Content="当前状态：无状态" HorizontalAlignment="Center" Height="27" Margin="0,2,0,0" VerticalAlignment="Top" Width="153"/>
                 <Label x:Name="LogBox" Content="操作日志：" HorizontalAlignment="Center" Height="47" VerticalAlignment="Top" Width="154" Margin="0,29,0,0" Background="#CC76608A" Foreground="White"/>
                 <Button x:Name="DownRes" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="下载国际服转换资源包" HorizontalAlignment="Center" Margin="0,84,0,0" VerticalAlignment="Top" Height="28" Width="154" Click="DownRes_Click" FontFamily="Microsoft YaHei UI" FontSize="12" />
