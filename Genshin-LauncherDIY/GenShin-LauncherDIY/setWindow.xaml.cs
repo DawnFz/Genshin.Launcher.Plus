@@ -253,7 +253,7 @@ namespace GenShin_LauncherDIY
                     SDKlive.Content = "SDK:存在";
                     Fixbtn.IsEnabled = false;
                 }
-                else if (File.Exists(GamePath.Text + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll") != true)
+                else if (GlobalS.IsChecked == true)
                 {
                     SDKlive.Content = "SDK:无需";
                     Fixbtn.IsEnabled = false;
@@ -322,6 +322,7 @@ namespace GenShin_LauncherDIY
                     if (!error)
                     {
                         Thread StartMove = new Thread(() => MoveFile());
+                        bqload.Visibility = Visibility.Visible;
                         setSave.IsEnabled = false;
                         ToGlobal.IsEnabled = false;
                         TimeStatus.Content = "当前状态：正在替换资源";
@@ -448,9 +449,10 @@ namespace GenShin_LauncherDIY
             this.Dispatcher.Invoke(new Action(delegate ()
             {
                 ToGlobal.IsEnabled = true;
-                IsSDK();
                 IsGlobal();
+                IsSDK();
                 setSave.IsEnabled = true;
+                bqload.Visibility = Visibility.Hidden;
                 this.ShowMessageAsync("提示", "转换完毕，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }));
         }
