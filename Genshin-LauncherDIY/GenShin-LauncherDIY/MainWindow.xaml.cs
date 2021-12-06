@@ -120,7 +120,7 @@ namespace GenShin_LauncherDIY
                     {
                         Dispatcher.Invoke(new Action(() =>
                         {
-                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
+                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
                         }));
                     });
                     game.Start();
