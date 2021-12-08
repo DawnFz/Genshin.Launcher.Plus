@@ -14,6 +14,7 @@ namespace GenShin_LauncherDIY.Config
         public static string Height = IniGS.Height.ToString();
         public static string Width = IniGS.Width.ToString();
         public static string GamePath = IniGS.gamePath.ToString();
+        public static string[] regIsGlobal = new string[] { "原神", "MIHOYOSDK_ADL_PROD_CN_h3123967166" };
         public static string GamePopup;
         public static string FullS;
         public static string Biomi;

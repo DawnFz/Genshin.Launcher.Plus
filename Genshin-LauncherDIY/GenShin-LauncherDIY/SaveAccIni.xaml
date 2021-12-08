@@ -6,14 +6,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenShin_LauncherDIY"
         mc:Ignorable="d"
-        Title="保存账号数据" Height="162" Width="370" WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  ShowCloseButton="False" ShowMinButton="False" Background="#CC76608A">
+        Title="保存账号数据" Height="193" Width="370" WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  ShowCloseButton="False" ShowMinButton="False" Background="#CC76608A">
     <Grid>
         <GroupBox Header="保存上次登录的账号数据-不支持哔服">
             <Grid Background="White">
                 <Label Content="输入保存的游戏账号名字以便读取" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18"/>
                 <TextBox x:Name="saveFilename" mah:TextBoxHelper.Watermark="将保存为文件，请勿输入文件名不支持的符号" HorizontalAlignment="Center" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="280" Margin="0,48,0,0" FontFamily="Microsoft YaHei UI"/>
-                <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" x:Name="Save" Content="保存" HorizontalAlignment="Left" Margin="85,88,0,0" VerticalAlignment="Top" Width="80" Click="Save_Click"/>
-                <Button Style="{DynamicResource MahApps.Styles.Button.Square}" Content="取消" HorizontalAlignment="Left" Margin="193,88,0,0" VerticalAlignment="Top" Width="80" Click="Button_Click"/>
+                <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" x:Name="Save" Content="保存" HorizontalAlignment="Left" Margin="85,114,0,0" VerticalAlignment="Top" Width="80" Click="Save_Click"/>
+                <Button Style="{DynamicResource MahApps.Styles.Button.Square}" Content="取消" HorizontalAlignment="Left" Margin="193,114,0,0" VerticalAlignment="Top" Width="80" Click="Button_Click"/>
+                <RadioButton x:Name="IsCN" Content="国服" HorizontalAlignment="Left" Margin="117,82,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+                <RadioButton x:Name="IsGlobal" Content="国际服" HorizontalAlignment="Left" Margin="193,82,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
             </Grid>
         </GroupBox>
 

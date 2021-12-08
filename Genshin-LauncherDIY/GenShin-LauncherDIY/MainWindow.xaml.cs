@@ -33,6 +33,9 @@ namespace GenShin_LauncherDIY
             InitializeComponent();
             RunLoad();
         }
+
+
+
         //窗口随意拖动
         public void DragWindow(object sender, MouseButtonEventArgs args)
         {
@@ -223,6 +226,10 @@ namespace GenShin_LauncherDIY
                     Config.setConfig.checkini();
                 }
             }
+
+
+
+
         }
     }
 }

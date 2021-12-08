@@ -37,15 +37,42 @@ namespace GenShin_LauncherDIY
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(saveFilename.Text))
+            if(IsCN.IsChecked==true)
             {
-                this.ShowMessageAsync("错误", "请先输入正确名字！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                return;
+                if (string.IsNullOrWhiteSpace(saveFilename.Text))
+                {
+                    this.ShowMessageAsync("错误", "请先输入正确名字！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    return;
+                }
+                Config.Settings.regIsGlobal[0] = "原神";
+                Config.Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_CN_h3123967166";
+                YSAccount acct = YSAccount.ReadFromRegedit(false);
+                acct.Name = "国服-"+saveFilename.Text;
+                acct.WriteToDisk();
+                this.Close();
             }
-            YSAccount acct = YSAccount.ReadFromRegedit(false);
-            acct.Name = saveFilename.Text;
-            acct.WriteToDisk();
-            this.Close();
+            else if(IsGlobal.IsChecked==true)
+            {
+                if (string.IsNullOrWhiteSpace(saveFilename.Text))
+                {
+                    this.ShowMessageAsync("错误", "请先输入正确名字！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    return;
+                }
+                Config.Settings.regIsGlobal[0] = "Genshin Impact";
+                Config.Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810";
+                YSAccount acct = YSAccount.ReadFromRegedit(false);
+                acct.Name = "国际服-"+saveFilename.Text;
+                acct.WriteToDisk();
+                this.Close();
+            }
+            else
+            {
+                this.ShowMessageAsync("错误", "请选择保存的账号服务器类型！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            }
         }
+
+
+
+
     }
 }

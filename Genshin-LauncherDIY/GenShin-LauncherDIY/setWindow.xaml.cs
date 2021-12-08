@@ -153,7 +153,7 @@ namespace GenShin_LauncherDIY
                 Config.IniGS.BiOrMi = 1;
                 BOM.Sub_channel("1");
                 BOM.Channel("1");
-                BOM.Cps("mihoyo");
+                BOM.Cps("pcadbdpz");
             }
             else if (BIliS.IsChecked == true)
             {
@@ -165,6 +165,7 @@ namespace GenShin_LauncherDIY
             else
             {
                 Config.IniGS.BiOrMi = 3;
+                BOM.Cps("mihoyo");
             }
             //无边框窗口化
             if (PopupUP.IsChecked == true)
@@ -190,10 +191,11 @@ namespace GenShin_LauncherDIY
                 Config.IniGS.isUnFPS = false;
                 Config.IniGS.MaxFps = "144";
             }
-            //选择启动的账号
-            WriteUser();
             Config.setConfig.checkini();
+            //选择启动的账号            
+            WriteUser();
             this.Close();
+
         }
         private void Button_Click21_9(object sender, RoutedEventArgs e)
         {
@@ -573,8 +575,27 @@ namespace GenShin_LauncherDIY
             if (UserList.SelectedIndex != -1)
             {
                 string name = (UserList as ListBox).SelectedItem.ToString();
-                YSAccount acct = YSAccount.ReadFromDisk(name);
-                acct.WriteToRegedit();
+                if (name.StartsWith("国服-") == true)
+                {
+                    Config.Settings.regIsGlobal[0] = "原神";
+                    Config.Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_CN_h3123967166";
+                    YSAccount acct = YSAccount.ReadFromDisk(name);
+                    acct.WriteToRegedit();
+                }
+                else if(name.StartsWith("国际服-")==true)
+                {
+                    Config.Settings.regIsGlobal[0] = "Genshin Impact";
+                    Config.Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810";
+                    YSAccount acct = YSAccount.ReadFromDisk(name);
+                    acct.WriteToRegedit();
+                }
+                else
+                {
+                    Config.Settings.regIsGlobal[0] = "原神";
+                    Config.Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_CN_h3123967166";
+                    YSAccount acct = YSAccount.ReadFromDisk(name);
+                    acct.WriteToRegedit();
+                }
             }
         }
         private async void DelUser_Click(object sender, RoutedEventArgs e)
