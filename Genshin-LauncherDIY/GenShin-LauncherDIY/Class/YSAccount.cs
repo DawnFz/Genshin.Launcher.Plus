@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace GenShin_LauncherDIY
 {
-    //该类使用的方法来自：https://github.com/babalae/genshin-account 项目
+    //该类使用的方法来自：https://github.com/babalae/genshin-account 项目//
     [Serializable]
     public class YSAccount
     {
