@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -32,6 +33,15 @@ namespace GenShin_LauncherDIY
         {
             InitializeComponent();
             RunLoad();
+            //避免更新器需要置换，每次重新操作
+            {
+                var updUri = "pack://application:,,,/Res/Update.dll";
+                var uri = new Uri(updUri, UriKind.RelativeOrAbsolute);
+                var stream = Application.GetResourceStream(uri).Stream;
+                Utils.UtilsTools.StreamToFile(stream, @"Update.exe");
+            }
+            //每次启动写入当前文件名以便更新操作
+            Config.IniGS.EXEname(System.IO.Path.GetFileName(Assembly.GetEntryAssembly().Location));
         }
 
 
@@ -72,6 +82,7 @@ namespace GenShin_LauncherDIY
                     var stream = Application.GetResourceStream(uri).Stream;
                     Utils.UtilsTools.StreamToFile(stream, @"unlockfps.exe");
                 }
+
                 if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)
                 {
                     Process.Start(@"unlockfps.exe");
@@ -210,9 +221,7 @@ namespace GenShin_LauncherDIY
                     String msgtl = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$msgtl$]", "[#msgtl#]");
                     if ((await this.ShowMessageAsync(msgtl, notify, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "继续使用", NegativeButtonText = "下载更新" })) != MessageDialogResult.Affirmative)
                     {
-                        this.ShowMessageAsync("提示", "访问密码：etxd\r\n已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                        Clipboard.SetText("etxd");
-                        Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
+                        UpdateEXE();
                     }
                 }
             }
@@ -226,10 +235,83 @@ namespace GenShin_LauncherDIY
                     Config.setConfig.checkini();
                 }
             }
+        }
+        //启动更新
+        private void UpdateEXE()
+        {
+            if (HttpFileExist("https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png") == true)
+            {
+                Update.Visibility = Visibility.Visible;
+                DownloadHttpFile("https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png", @"UpdateTemp.upd");
+            }
+            else
+            {
+                this.ShowMessageAsync("错误提示", "网络更新文件资源不存在或服务器网络错误", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            }
+        }
+        //版本更新-下载文件
+        public void DownloadHttpFile(String http_url, String save_url)
+        {
+            WebResponse response = null;
+            WebRequest request = WebRequest.Create(http_url);
+            response = request.GetResponse();
+            if (response == null) return;
+            pbDown.Maximum = response.ContentLength;
+            ThreadPool.QueueUserWorkItem((obj) =>
+            {
+                Stream netStream = response.GetResponseStream();
+                Stream fileStream = new FileStream(save_url, FileMode.Create);
+                byte[] read = new byte[1024];
+                long progressBarValue = 0;
+                int realReadLen = netStream.Read(read, 0, read.Length);
+                while (realReadLen > 0)
+                {
+                    fileStream.Write(read, 0, realReadLen);
+                    progressBarValue += realReadLen;
+                    pbDown.Dispatcher.BeginInvoke(new ProgressBarSetter(SetProgressBar), progressBarValue);
+                    realReadLen = netStream.Read(read, 0, read.Length);
+                }
+                netStream.Close();
+                fileStream.Close();
 
-
-
-
+                this.Dispatcher.Invoke(new Action(async delegate ()
+                {
+                    if ((await this.ShowMessageAsync("提示", "下载完成，是否现在进行更新操作", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "确定" })) != MessageDialogResult.Affirmative)
+                    {
+                        Process.Start(@"Update.exe");
+                        this.Close();
+                    }
+                }));
+            }, null);
+        }
+        //判断网络资源是否存在
+        private bool HttpFileExist(string http_file_url)
+        {
+            WebResponse response = null;
+            bool result = false;
+            try
+            {
+                response = WebRequest.Create(http_file_url).GetResponse();
+                result = response == null ? false : true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
+            }
+            return result;
+        }
+        public delegate void ProgressBarSetter(double value);
+        public void SetProgressBar(double value)
+        {
+            pbDown.Value = value;
+            label1.Content = "下载进度:" + Convert.ToInt32((value / pbDown.Maximum) * 100) + "%";
         }
     }
 }

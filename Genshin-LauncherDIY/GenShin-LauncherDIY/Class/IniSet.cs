@@ -279,6 +279,14 @@ namespace GenShin_LauncherDIY.Config
                 IniControl.WriteIni("setup", "MaxFps", _MaxFps);
             }
         }
+
+        /// <summary>
+        /// EXE文件名字属性
+        /// </summary>
+        public static void EXEname(string value)
+        {
+            IniControl.WriteIni("setup", "LauncherPlusName", value);
+        }
     }
     class YuanshenIni
     {

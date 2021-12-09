@@ -53,5 +53,12 @@
         </Grid>
         <Button x:Name="Help_Copy" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="?" HorizontalAlignment="Left" Margin="10,684,0,0" VerticalAlignment="Top" Click="Help_Click" Height="36" Width="36" BorderBrush="#7F000000" BorderThickness="4" Background="#7F808080" Foreground="White" FontSize="18" FontFamily="Microsoft YaHei UI" FontWeight="Bold">
         </Button>
+        <Grid x:Name="Update" Background="#7F000000" Visibility="Hidden">
+            <Grid HorizontalAlignment="Center" Height="338" Margin="0,204,0,0" VerticalAlignment="Top" Width="1280" Background="#FF716182">
+                <Label x:Name="TitleUP" Content="正在更新-请勿关闭启动器..." HorizontalAlignment="Center" Margin="0,83,0,0" VerticalAlignment="Top" Foreground="White" FontSize="28"/>
+                <mah:MetroProgressBar x:Name="pbDown" HorizontalAlignment="Center" Height="30" VerticalAlignment="Top" Width="736" Foreground="White" Margin="0,206,0,0"/>
+                <Label x:Name="label1" Content="下载进度" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="20"/>
+            </Grid>
+        </Grid>
     </Grid>
 </mah:MetroWindow>
