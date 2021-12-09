@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -127,6 +128,7 @@ namespace GenShin_LauncherDIY.Config
                 IniGS.BiOrMi = 1;
                 IniGS.isPopup = false;
                 IniGS.isUnFPS = false;
+                IniGS.EXEname(System.IO.Path.GetFileName(Assembly.GetEntryAssembly().Location));
             }
             catch
             {
