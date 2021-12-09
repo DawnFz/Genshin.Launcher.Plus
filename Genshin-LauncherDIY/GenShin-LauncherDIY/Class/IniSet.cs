@@ -17,7 +17,8 @@ namespace GenShin_LauncherDIY.Config
         /// <param name="filePath">文件路径</param>  
         /// <returns></returns>  
         [DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section, string key, string value, string filePath);
+
+        private static extern long WritePrivateProfileString(string section, byte[] key, byte[] value, string filePath);
 
 
         /// <summary>  
@@ -101,31 +102,7 @@ namespace GenShin_LauncherDIY.Config
         public static void WriteIni(string section, string key, string value)
         {
             string IniFilePath = @"Config\Setting.ini";
-            WritePrivateProfileString(section, key, value, IniFilePath);
-        }
-        /// <summary>  
-        /// 删除节  
-        /// </summary>  
-        /// <param name="section">节</param>  
-        /// <param name="filePath"></param>  
-        /// <returns></returns>  
-        public static long DeleteSection(string section)
-        {
-            string IniFilePath = @"Config\Setting.ini";
-            return WritePrivateProfileString(section, null, null, IniFilePath);
-        }
-
-        /// <summary>  
-        /// 删除键  
-        /// </summary>  
-        /// <param name="section">节</param>  
-        /// <param name="key">键</param>  
-        /// <param name="filePath">文件路径</param>  
-        /// <returns></returns>  
-        public static long DeleteKey(string section, string key)
-        {
-            string IniFilePath = @"Config\Setting.ini";
-            return WritePrivateProfileString(section, key, null, IniFilePath);
+            WritePrivateProfileString(section, Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(value), IniFilePath);
         }
     }
     class IniGS
