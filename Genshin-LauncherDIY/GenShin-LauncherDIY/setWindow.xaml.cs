@@ -2,6 +2,8 @@
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.VisualBasic.Devices;
+using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,11 +27,11 @@ using System.Windows.Shapes;
 namespace GenShin_LauncherDIY
 {
     /// <summary>
-    /// setWindow.xaml 的交互逻辑
+    /// SetWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class setWindow : MetroWindow
+    public partial class SetWindow : MetroWindow
     {
-        public setWindow()
+        public SetWindow()
         {
             InitializeComponent();
             this.Closing += Window_Closing;
@@ -392,7 +394,9 @@ namespace GenShin_LauncherDIY
                 this.Dispatcher.Invoke(new Action(delegate ()
                 {
 
-                    this.ShowMessageAsync("提示", "没有找到资源[GlobalFile.pkg]或解压失败\r\n请重试或前往下载转换资源包", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    this.ShowMessageAsync("提示", "没有找到资源[GlobalFile.pkg]或解压失败\r\n已打开到下载资源页面，访问密码已复制到剪贴板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    Clipboard.SetText("etxd");
+                    Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
                     bqload.Visibility = Visibility.Hidden;
                     ToGlobal.IsEnabled = true;
                     TimeStatus.Content = "当前状态：未找到资源包";
@@ -651,6 +655,16 @@ namespace GenShin_LauncherDIY
                     break;
             }
         }
+        //手动选择目录
 
+        private void Dir_Click(object sender, RoutedEventArgs e)
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog("请选择原神启动器所在文件夹或游戏本体上一级目录");
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                GamePath.Text = dialog.FileName;
+            }
+        }
     }
 }

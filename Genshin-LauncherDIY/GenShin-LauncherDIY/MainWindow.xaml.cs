@@ -1,6 +1,8 @@
 ﻿using GenShin_LauncherDIY.Utils;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,6 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -42,6 +45,8 @@ namespace GenShin_LauncherDIY
             }
             //每次启动写入当前文件名以便更新操作
             Config.IniGS.EXEname(System.IO.Path.GetFileName(Assembly.GetEntryAssembly().Location));
+            //
+            Readjson();
         }
 
 
@@ -172,7 +177,11 @@ namespace GenShin_LauncherDIY
         //设置按钮事件
         private void Setting_Click(object sender, RoutedEventArgs e)
         {
-            setWindow set = new setWindow();
+            Window set = new SetWindow();
+            HwndSource winformWindow = (System.Windows.Interop.HwndSource.FromDependencyObject(this) as System.Windows.Interop.HwndSource);
+            if (winformWindow != null)
+                new WindowInteropHelper(set) { Owner = winformWindow.Handle };
+
             set.ShowDialog();
         }
         //QQ群按钮事件
@@ -183,7 +192,11 @@ namespace GenShin_LauncherDIY
         //保存账号按钮事件
         private void SaveAcc_Click(object sender, RoutedEventArgs e)
         {
-            SaveAccIni save = new SaveAccIni();
+            Window save = new SaveAccIni();
+            HwndSource winformWindow = (System.Windows.Interop.HwndSource.FromDependencyObject(this) as System.Windows.Interop.HwndSource);
+            if (winformWindow != null)
+                new WindowInteropHelper(save) { Owner = winformWindow.Handle };
+
             save.ShowDialog();
         }
         //关于按钮事件
@@ -313,5 +326,42 @@ namespace GenShin_LauncherDIY
             pbDown.Value = value;
             label1.Content = "下载进度:" + Convert.ToInt32((value / pbDown.Maximum) * 100) + "%";
         }
+
+        //
+
+        /// 读取JSON文件
+        /// </summary>
+        /// <param name="key">JSON文件中的key值</param>
+        /// <returns>JSON文件中的value值</returns>
+        public void Readjson()
+        {
+            string JsonFile = Utils.UtilsTools.ReadHTML("https://hk4e-api.mihoyo.com/common/hk4e_cn/announcement/api/getAnnList?game=hk4e&game_biz=hk4e_cn&lang=zh-cn&bundle_id=hk4e_cn&platform=pc&region=cn_gf01&level=55&uid=100000000", "UTF-8");
+            Stream s = new MemoryStream(Encoding.UTF8.GetBytes(JsonFile));
+            StreamReader file = new StreamReader(s);
+            JsonTextReader reader = new JsonTextReader(file);
+            JObject jsonObject = (JObject)JToken.ReadFrom(reader);
+            //公告
+            Page1.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[0]["title"].ToString();
+            Page2.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[1]["title"].ToString();
+            Page3.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[2]["title"].ToString();
+            Page4.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[3]["title"].ToString();
+            Page5.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[4]["title"].ToString();
+            //时间
+            Page6.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[0]["end_time"].ToString().Substring(0, 10);
+            Page7.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[1]["end_time"].ToString().Substring(0, 10);
+            Page8.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[2]["end_time"].ToString().Substring(0, 10);
+            Page9.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[3]["end_time"].ToString().Substring(0, 10);
+            Page10.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[4]["end_time"].ToString().Substring(0, 10);
+            file.Close();
+        }
+
+
+
+
+
+
+
+
+        //
     }
 }

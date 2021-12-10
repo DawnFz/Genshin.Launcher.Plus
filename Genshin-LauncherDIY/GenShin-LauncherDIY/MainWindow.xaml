@@ -53,6 +53,30 @@
         </Grid>
         <Button x:Name="Help_Copy" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="?" HorizontalAlignment="Left" Margin="10,684,0,0" VerticalAlignment="Top" Click="Help_Click" Height="36" Width="36" BorderBrush="#7F000000" BorderThickness="4" Background="#7F808080" Foreground="White" FontSize="18" FontFamily="Microsoft YaHei UI" FontWeight="Bold">
         </Button>
+        <Grid HorizontalAlignment="Left" Height="199" Margin="58,470,0,0" VerticalAlignment="Top" Width="498" Background="#3D000000">
+            <Label Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#B22D2D2D" Foreground="White" FontSize="16"/>
+            <Label Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#B22D2D2D" Foreground="White" FontSize="16" Margin="353,0,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page1" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,33,0,0"/>
+            <Label x:Name="Page2" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,66,0,0"/>
+            <Label x:Name="Page3" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,99,0,0"/>
+            <Label x:Name="Page4" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,132,0,0"/>
+            <Label x:Name="Page5" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,165,0,0"/>
+            <Label x:Name="Page6" Content=" 结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,33,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page7" Content=" 结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,66,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page8" Content=" 结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,99,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page9" Content=" 结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,132,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page10" Content=" 结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,165,0,0" HorizontalContentAlignment="Center"/>
+            <Grid HorizontalAlignment="Left" Height="199" Margin="351,0,0,0" VerticalAlignment="Center" Width="3" Background="#7F000000" RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+            </Grid>
+        </Grid>
         <Grid x:Name="Update" Background="#7F000000" Visibility="Hidden">
             <Grid HorizontalAlignment="Center" Height="338" Margin="0,204,0,0" VerticalAlignment="Top" Width="1280" Background="#FF716182">
                 <Label x:Name="TitleUP" Content="正在更新-请勿关闭启动器..." HorizontalAlignment="Center" Margin="0,83,0,0" VerticalAlignment="Top" Foreground="White" FontSize="28"/>
@@ -61,4 +85,5 @@
             </Grid>
         </Grid>
     </Grid>
+
 </mah:MetroWindow>

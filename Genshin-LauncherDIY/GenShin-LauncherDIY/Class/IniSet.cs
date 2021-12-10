@@ -19,8 +19,6 @@ namespace GenShin_LauncherDIY.Config
         [DllImport("kernel32")]
 
         private static extern long WritePrivateProfileString(string section, byte[] key, byte[] value, string filePath);
-
-
         /// <summary>  
         /// 读操作  
         /// </summary>  
@@ -32,25 +30,22 @@ namespace GenShin_LauncherDIY.Config
         /// <param name="filePath">路径</param>  
         /// <returns></returns>  
         [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
-        /// <summary>  
-        /// 读ini文件不存在则返回1
-        /// </summary>  
-        /// <param name="section">节</param>  
-        /// <param name="key">键</param>  
-        /// <param name="defValue">未读取到值时的默认值</param>  
-        /// <param name="filePath">文件路径</param>  
-        /// <returns></returns>  
+        private static extern int GetPrivateProfileString(string section, string key, string def, byte[] retVal, int size, string filePath);
         public static string ReadIniInt(string section, string key)
         {
-            string IniFilePath = @"Config\Setting.ini";
-            StringBuilder temp = new StringBuilder(255);
-            int i = GetPrivateProfileString(section, key, "", temp, 255, IniFilePath);
-            if (i == 0)
+            string IniFileName = string.Format(@"Config\Setting.ini");
+            byte[] Buffer = new byte[1024];
+            int bufLen = GetPrivateProfileString(section, key, "", Buffer, Buffer.GetUpperBound(0), IniFileName);
+            if (bufLen == 0)
+            {
                 return "1";
+            }
             else
-                return temp.ToString();
+            {
+                string s = Encoding.UTF8.GetString(Buffer, 0, bufLen);
+                return s;
+            }
         }
 
         /// <summary>  
@@ -63,13 +58,18 @@ namespace GenShin_LauncherDIY.Config
         /// <returns></returns>  
         public static string ReadIniStr(string section, string key)
         {
-            string IniFilePath = @"Config\Setting.ini";
-            StringBuilder temp = new StringBuilder(255);
-            int i = GetPrivateProfileString(section, key, "", temp, 255, IniFilePath);
-            if (i == 0)
-                return "false";
+            string IniFileName = string.Format(@"Config\Setting.ini");
+            byte[] Buffer = new byte[1024];
+            int bufLen = GetPrivateProfileString(section, key, "", Buffer, Buffer.GetUpperBound(0), IniFileName);
+            if (bufLen == 0)
+            {
+                return "False";
+            }
             else
-                return temp.ToString();
+            {
+                string s = Encoding.UTF8.GetString(Buffer, 0, bufLen);
+                return s;
+            }
         }
 
         /// <summary>  
@@ -82,13 +82,18 @@ namespace GenShin_LauncherDIY.Config
         /// <returns></returns>  
         public static string ReadIniPath(string section, string key)
         {
-            string IniFilePath = @"Config\Setting.ini";
-            StringBuilder temp = new StringBuilder(255);
-            int i = GetPrivateProfileString(section, key, "", temp, 255, IniFilePath);
-            if (i == 0)
+            string IniFileName = string.Format(@"Config\Setting.ini");
+            byte[] Buffer = new byte[1024];
+            int bufLen = GetPrivateProfileString(section, key, "", Buffer, Buffer.GetUpperBound(0), IniFileName);
+            if (bufLen == 0)
+            {
                 return "";
+            }
             else
-                return temp.ToString();
+            {
+                string s = Encoding.UTF8.GetString(Buffer, 0, bufLen);
+                return s;
+            }
         }
 
         /// <summary>  
@@ -126,8 +131,6 @@ namespace GenShin_LauncherDIY.Config
             }
         }
 
-
-
         private static bool _isAutoSize;
         /// <summary>
         /// 是否全屏属性
@@ -163,8 +166,6 @@ namespace GenShin_LauncherDIY.Config
                 IniControl.WriteIni("setup", "isPopup", Convert.ToString(_isPopup));
             }
         }
-
-
 
         private static ushort _Width;
         /// <summary>
@@ -237,7 +238,6 @@ namespace GenShin_LauncherDIY.Config
                 IniControl.WriteIni("setup", "isUnFPS", Convert.ToString(_isUnFPS));
             }
         }
-
 
         private static string _MaxFps;
         /// <summary>
@@ -315,7 +315,7 @@ namespace GenShin_LauncherDIY.Config
         /// </summary>
         public static void Cps(string value)
         {
-            YuanshenIni.WriteIni("General", "cps",value);
+            YuanshenIni.WriteIni("General", "cps", value);
         }
     }
 }

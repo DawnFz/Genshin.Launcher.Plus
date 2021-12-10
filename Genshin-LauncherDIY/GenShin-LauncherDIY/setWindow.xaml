@@ -1,49 +1,55 @@
-﻿<mah:MetroWindow x:Class="GenShin_LauncherDIY.setWindow"
+﻿<mah:MetroWindow x:Class="GenShin_LauncherDIY.SetWindow"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="设置" Height="306" Width="566" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal" MouseLeftButtonDown="DragWindow">
+        Title="设置" Height="359" Width="392" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal" MouseLeftButtonDown="DragWindow">
 
     <Grid>
-        <GroupBox HorizontalAlignment="Left" Height="185" Margin="10,10,0,0" VerticalAlignment="Top" Width="160" Header="附加与窗口分辨率-快速设置">
-            <Grid>
-                <TextBox mah:TextBoxHelper.Watermark="高度" x:Name="GHeight" HorizontalAlignment="Left" Margin="87,10,0,0" TextWrapping="Wrap" Text="720" VerticalAlignment="Top" Width="54" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
-                <TextBox mah:TextBoxHelper.Watermark="宽度" x:Name="GWidth" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="1280" VerticalAlignment="Top" Width="54" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
-                <RadioButton x:Name="FullT" Content="全屏化" HorizontalAlignment="Left" Margin="81,64,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
-                <RadioButton x:Name="FullF" Content="窗口化" HorizontalAlignment="Left" Margin="81,41,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
-                <Label Content="×" HorizontalAlignment="Center" Margin="0,8,0,0" VerticalAlignment="Top" FontWeight="Normal" FontSize="14" Width="20"/>
-                <Button Content="自动取21:9" HorizontalAlignment="Left" Margin="10,87,0,0" VerticalAlignment="Top" Width="63" Click="Button_Click21_9" FontFamily="Microsoft YaHei UI" FontSize="10" FontWeight="Normal"/>
-                <ComboBox x:Name="GameXY" HorizontalAlignment="Left" Height="16" Margin="10,119,0,0" VerticalAlignment="Top" Width="131" SelectionChanged="XY_SelectionChanged">
-
-                </ComboBox>
-                <CheckBox x:Name="PopupUP" Content="无边框" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
-                <CheckBox x:Name="isUnFPS" Content="解锁FPS" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" Click="UnFps_Click"/>
-                <TextBox mah:TextBoxHelper.Watermark="FPS上限" x:Name="MaxFPS" HorizontalAlignment="Left" Margin="78,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="False"/>
-            </Grid>
-        </GroupBox>
-        <Button x:Name="setSave" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="保存" HorizontalAlignment="Left" Margin="492,236,0,0" VerticalAlignment="Top" Height="28" Width="64" Click="setSave_Click" FontFamily="Microsoft YaHei UI" FontSize="12" />
-        <TextBox mah:TextBoxHelper.Watermark="官方启动器目录，如游戏本体与之分离则填游戏上级目录" x:Name="GamePath" x:FieldModifier="public" Height="23" Margin="43,202,201,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
-        <RadioButton x:Name="BIliS" Content="B服启动" HorizontalAlignment="Left" Margin="89,241,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
-        <RadioButton x:Name="MiS" Content="官服启动" HorizontalAlignment="Left" Margin="10,241,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
-        <Label x:Name="SDKlive" Content="SDK:未知" HorizontalAlignment="Left" Margin="245,238,0,0" VerticalAlignment="Top" Width="64"/>
-        <Button x:Name="Fixbtn" Content="修复" HorizontalAlignment="Left" Margin="314,236,0,0" VerticalAlignment="Top" Height="28" Width="49" Click="Fix_Click" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal" />
-        <GroupBox HorizontalAlignment="Left" Height="185" Header="国际服 | 国内双服转换" Margin="179,10,0,0" VerticalAlignment="Top" Width="184">
-            <Grid>
-                <mah:MetroProgressBar x:Name="bqload"  Margin="18,126,71,14" IsIndeterminate="True" Maximum="100" Minimum="0" Value="{Binding Value, ElementName=horizSlider}" Foreground="#CC76608A" Visibility="Hidden"/>
-                <Button x:Name="ToGlobal" Content="转换" HorizontalAlignment="Left" Margin="116,119,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="48" Click="ToGlobal_Click"/>
-                <Label x:Name="TimeStatus" Content="当前状态：无状态" HorizontalAlignment="Center" Height="27" Margin="0,2,0,0" VerticalAlignment="Top" Width="153"/>
-                <Label x:Name="LogBox" Content="操作日志：" HorizontalAlignment="Center" Height="47" VerticalAlignment="Top" Width="154" Margin="0,29,0,0" Background="#CC76608A" Foreground="White"/>
-                <Button x:Name="DownRes" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="下载国际服转换资源包" HorizontalAlignment="Center" Margin="0,84,0,0" VerticalAlignment="Top" Height="28" Width="154" Click="DownRes_Click" FontFamily="Microsoft YaHei UI" FontSize="12" />
-            </Grid>
-        </GroupBox>
-        <RadioButton x:Name="GlobalS" Content="国际服" HorizontalAlignment="Left" Margin="166,241,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
-        <GroupBox HorizontalAlignment="Left" Height="218" Header="选择账号启动" Margin="371,10,0,0" VerticalAlignment="Top" Width="185">
-            <ListBox x:Name="UserList" d:ItemsSource="{d:SampleData ItemCount=5}"></ListBox>
-        </GroupBox>
-        <Button x:Name="DelUser" Style="{DynamicResource MahApps.Styles.Button.Square}" Content="删除选中的用户" HorizontalAlignment="Left" Margin="371,236,0,0" VerticalAlignment="Top" Width="114" Click="DelUser_Click"/>
-        <Label Content="路径:" HorizontalAlignment="Left" Margin="6,202,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="setSave" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="保存设置" HorizontalAlignment="Left" Margin="298,287,0,0" VerticalAlignment="Top" Height="28" Width="81" Click="setSave_Click" FontFamily="Microsoft YaHei UI" FontSize="12" />
+        <TextBox mah:TextBoxHelper.Watermark="官方启动器目录，或游戏上级目录" x:Name="GamePath" x:FieldModifier="public" Height="23" Margin="13,250,48,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+        <Button x:Name="Dirchoose" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="..." HorizontalAlignment="Left" Margin="342,250,0,0" VerticalAlignment="Top" Height="26" Width="37" Click="Dir_Click" FontFamily="Microsoft YaHei UI" FontSize="12" BorderBrush="#CC76608A" />
+        <TabControl HorizontalAlignment="Center" Height="250" VerticalAlignment="Top" Width="392" mah:HeaderedControlHelper.HeaderFontSize="14" mah:HeaderedControlHelper.HeaderFontStretch="Medium" Background="White">
+            <TabItem Header="快速设置" mah:ControlsHelper.ContentCharacterCasing="Normal" mah:HeaderedControlHelper.HeaderFontSize="14">
+                <Grid Background="White">
+                    <GroupBox HorizontalAlignment="Center" Height="185" VerticalAlignment="Top" Width="366" Header="附加与窗口分辨率-快速换号">
+                        <Grid>
+                            <TextBox mah:TextBoxHelper.Watermark="高度" x:Name="GHeight" HorizontalAlignment="Left" Margin="94,10,0,0" TextWrapping="Wrap" Text="720" VerticalAlignment="Top" Width="54" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                            <TextBox mah:TextBoxHelper.Watermark="宽度" x:Name="GWidth" HorizontalAlignment="Left" Margin="17,10,0,0" TextWrapping="Wrap" Text="1280" VerticalAlignment="Top" Width="54" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                            <RadioButton x:Name="FullT" Content="全屏化" HorizontalAlignment="Left" Margin="88,64,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+                            <RadioButton x:Name="FullF" Content="窗口化" HorizontalAlignment="Left" Margin="88,41,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+                            <Label Content="×" HorizontalAlignment="Left" Margin="73,8,0,0" VerticalAlignment="Top" FontWeight="Normal" FontSize="14" Width="20"/>
+                            <Button Content="自动取21:9" HorizontalAlignment="Left" Margin="17,87,0,0" VerticalAlignment="Top" Width="63" Click="Button_Click21_9" FontFamily="Microsoft YaHei UI" FontSize="10" FontWeight="Normal"/>
+                            <ComboBox x:Name="GameXY" HorizontalAlignment="Left" Height="16" Margin="17,119,0,0" VerticalAlignment="Top" Width="131" SelectionChanged="XY_SelectionChanged"/>
+                            <CheckBox x:Name="PopupUP" Content="无边框" HorizontalAlignment="Left" Margin="17,41,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+                            <CheckBox x:Name="isUnFPS" Content="解锁FPS" HorizontalAlignment="Left" Margin="17,64,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" Click="UnFps_Click"/>
+                            <TextBox mah:TextBoxHelper.Watermark="FPS上限" x:Name="MaxFPS" HorizontalAlignment="Left" Margin="85,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="False"/>
+                            <ListBox x:Name="UserList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="167,0,0,0"/>
+                        </Grid>
+                    </GroupBox>
+                    <RadioButton x:Name="BIliS" Content="哔服" HorizontalAlignment="Left" Margin="70,195,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+                    <RadioButton x:Name="MiS" Content="官服" HorizontalAlignment="Left" Margin="17,195,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+                    <RadioButton x:Name="GlobalS" Content="国际" HorizontalAlignment="Left" Margin="123,195,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+                    <Button x:Name="DelUser" Style="{DynamicResource MahApps.Styles.Button.Square}" Content="删除选中的用户" HorizontalAlignment="Left" Margin="262,190,0,0" VerticalAlignment="Top" Width="114" Click="DelUser_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="国际服转换" mah:ControlsHelper.ContentCharacterCasing="Normal" mah:HeaderedControlHelper.HeaderFontSize="14">
+                <Grid Background="White">
+                    <GroupBox HorizontalAlignment="Left" Height="185" Header="国际服 | 国内双服转换" Margin="10,0,0,0" VerticalAlignment="Top" Width="187">
+                        <Grid>
+                            <mah:MetroProgressBar x:Name="bqload"  Margin="16,125,72,15" IsIndeterminate="True" Maximum="100" Minimum="0" Value="{Binding Value, ElementName=horizSlider}" Foreground="#CC76608A" Visibility="Hidden"/>
+                            <Button x:Name="ToGlobal" Content="转换" HorizontalAlignment="Left" Margin="121,117,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="48" Click="ToGlobal_Click"/>
+                            <Label x:Name="TimeStatus" Content="当前状态：无状态" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="153" Margin="8,0,0,0"/>
+                            <Label x:Name="LogBox" Content="操作日志：" HorizontalAlignment="Left" Height="78" VerticalAlignment="Top" Width="161" Margin="8,30,0,0" Background="#9976608A" Foreground="White"/>
+                        </Grid>
+                    </GroupBox>
+                    <Label x:Name="SDKlive_Copy" Content="Tips:此页右边留空部分后续增加原国际服转国服" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="276" Foreground="#4C000000"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Label x:Name="SDKlive" Content="SDK:未知" HorizontalAlignment="Left" Margin="14,287,0,0" VerticalAlignment="Top" Width="64"/>
+        <Button x:Name="Fixbtn" Content="修复" HorizontalAlignment="Left" Margin="89,286,0,0" VerticalAlignment="Top" Height="28" Width="49" Click="Fix_Click" FontFamily="Microsoft YaHei UI" FontSize="12" FontWeight="Normal" />
     </Grid>
 </mah:MetroWindow>
