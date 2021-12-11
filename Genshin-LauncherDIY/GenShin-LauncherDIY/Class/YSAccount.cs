@@ -1,10 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
 
@@ -31,7 +28,7 @@ namespace GenShin_LauncherDIY
         public static YSAccount ReadFromRegedit(bool needSettings)
         {
             YSAccount acct = new YSAccount();
-            acct.MIHOYOSDK_ADL_PROD_CN_h3123967166 = GetStringFromRegedit(Config.Settings.regIsGlobal[1]);
+            acct.MIHOYOSDK_ADL_PROD_CN_h3123967166 = GetStringFromRegedit(Settings.regIsGlobal[1]);
             if (needSettings)
             {
                 acct.GENERAL_DATA_h2389025596 = GetStringFromRegedit("GENERAL_DATA_h2389025596");
@@ -46,8 +43,7 @@ namespace GenShin_LauncherDIY
             }
             else
             {
-                //MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810
-                SetStringToRegedit(Config.Settings.regIsGlobal[1], MIHOYOSDK_ADL_PROD_CN_h3123967166);
+                SetStringToRegedit(Settings.regIsGlobal[1], MIHOYOSDK_ADL_PROD_CN_h3123967166);
                 if (!string.IsNullOrWhiteSpace(GENERAL_DATA_h2389025596))
                 {
                     SetStringToRegedit("GENERAL_DATA_h2389025596", GENERAL_DATA_h2389025596);
@@ -56,12 +52,12 @@ namespace GenShin_LauncherDIY
         }
         private static string GetStringFromRegedit(string key)
         {
-            object value = Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\"+Config.Settings.regIsGlobal[0], key, "");
+            object value = Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\" + Settings.regIsGlobal[0], key, "");
             return Encoding.UTF8.GetString((byte[])value);
         }
         private static void SetStringToRegedit(string key, string value)
         {
-            Registry.SetValue(@"HKEY_CURRENT_USER\Software\miHoYo\" + Config.Settings.regIsGlobal[0], key, Encoding.UTF8.GetBytes(value));
+            Registry.SetValue(@"HKEY_CURRENT_USER\Software\miHoYo\" + Settings.regIsGlobal[0], key, Encoding.UTF8.GetBytes(value));
         }
     }
 }

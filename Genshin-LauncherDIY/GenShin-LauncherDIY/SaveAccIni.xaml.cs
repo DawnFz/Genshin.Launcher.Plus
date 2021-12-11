@@ -44,8 +44,8 @@ namespace GenShin_LauncherDIY
                     this.ShowMessageAsync("错误", "请先输入正确名字！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                     return;
                 }
-                Config.Settings.regIsGlobal[0] = "原神";
-                Config.Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_CN_h3123967166";
+                Settings.regIsGlobal[0] = "原神";
+                Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_CN_h3123967166";
                 YSAccount acct = YSAccount.ReadFromRegedit(false);
                 acct.Name = "国服-"+saveFilename.Text;
                 acct.WriteToDisk();
@@ -58,8 +58,8 @@ namespace GenShin_LauncherDIY
                     this.ShowMessageAsync("错误", "请先输入正确名字！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                     return;
                 }
-                Config.Settings.regIsGlobal[0] = "Genshin Impact";
-                Config.Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810";
+                Settings.regIsGlobal[0] = "Genshin Impact";
+                Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810";
                 YSAccount acct = YSAccount.ReadFromRegedit(false);
                 acct.Name = "国际服-"+saveFilename.Text;
                 acct.WriteToDisk();

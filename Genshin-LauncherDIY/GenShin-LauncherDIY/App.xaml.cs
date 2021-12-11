@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hardcodet.Wpf.TaskbarNotification;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -15,5 +16,7 @@ namespace GenShin_LauncherDIY
     /// App.xaml 的交互逻辑
     /// </summary>
     public partial class App : Application
-    {}
+    {
+
+    }
 }

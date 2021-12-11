@@ -1,28 +1,15 @@
-﻿using GenShin_LauncherDIY.Config;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.VisualBasic.Devices;
-using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Resources;
-using System.Windows.Shapes;
 
 namespace GenShin_LauncherDIY
 {
@@ -34,66 +21,14 @@ namespace GenShin_LauncherDIY
         public SetWindow()
         {
             InitializeComponent();
-            this.Closing += Window_Closing;
-            GamePath.Text = Config.IniGS.gamePath;//游戏路径
-            Config.Settings.GameMovePath = Config.IniGS.gamePath;
-            if (!Config.IniGS.isAutoSize)//全屏
-                FullF.IsChecked = true;
-            else
-                FullT.IsChecked = true;
-            if (Config.IniGS.isUnFPS == true)
-            {
-                isUnFPS.IsChecked = true;
-                MaxFPS.IsEnabled = true;
-                MaxFPS.Text = Convert.ToString(Config.IniGS.MaxFps);
-            }
-            else
-                isUnFPS.IsChecked = false;
-            if (PopupUP.IsChecked != false)//无边框
-                Config.IniGS.isPopup = false;
-            if (!Config.IniGS.isPopup)
-                PopupUP.IsChecked = false;
-            else
-                PopupUP.IsChecked = true;
-            GHeight.Text = Config.IniGS.Height.ToString();//高度
-            GWidth.Text = Config.IniGS.Width.ToString();//宽度
-            IsGlobal();
-            //读取服务器
-            if (Config.IniGS.BiOrMi == 1)
-            { 
-                MiS.IsChecked = true;
-                GlobalS.IsEnabled = false;
-            }
-            else if (Config.IniGS.BiOrMi == 2)
-            {
-                BIliS.IsChecked = true;
-                GlobalS.IsEnabled = false;
-            }
-            else
-                GlobalS.IsChecked = true;
-            if (GamePath.Text == "")
-                ToGlobal.IsEnabled = false;
-            //设置绑定分辨率数据源
-            {
-                List<Utils.Display_list> list = new List<Utils.Display_list>();
-                list.Add(new Utils.Display_list { Name = "3840×2160-16:9", ID = 0, X = 1 });
-                list.Add(new Utils.Display_list { Name = "2560×1080-21:9", ID = 0, X = 2 });
-                list.Add(new Utils.Display_list { Name = "1920×1080-16:9", ID = 1, X = 3 });
-                list.Add(new Utils.Display_list { Name = "1600×900-16:9", ID = 2, X = 4 });
-                list.Add(new Utils.Display_list { Name = "1360×768-16:9", ID = 3, X = 5 });
-                list.Add(new Utils.Display_list { Name = "1280×1024-4:3", ID = 4, X = 6 });
-                list.Add(new Utils.Display_list { Name = "1280×720-16:9", ID = 5, X = 7 });
-                GameXY.ItemsSource = list;
-                GameXY.DisplayMemberPath = "Name";
-                GameXY.SelectedValuePath = "X";
-                GameXY.SelectedIndex = -1;
-            }
+            Closing += Window_Closing;
+            RunLoad();
             ReadUser();
             IsSDK();
         }
         public void DragWindow(object sender, MouseButtonEventArgs args)
         {
-            this.DragMove();
+            DragMove();
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -109,95 +44,104 @@ namespace GenShin_LauncherDIY
         }
         private void setSave_Click(object sender, RoutedEventArgs e)
         {
-            //游戏路径保存
-            if (string.IsNullOrWhiteSpace(GamePath.Text))
+            if (string.IsNullOrWhiteSpace(LauncherPath.Text))
             {
-                this.ShowMessageAsync("警告", "游戏路径为空,请输入游戏路径！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                this.ShowMessageAsync("警告", "路径为空,请输入游戏路径！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                 return;
             }
-            else if (Directory.Exists(GamePath.Text) == false)
+            else if (Directory.Exists(Path.Combine(LauncherPath.Text, "Genshin Impact Game")) == false)
             {
-                this.ShowMessageAsync("错误", "游戏路径不存在,请输入正确的游戏路径！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                this.ShowMessageAsync("错误", "官方启动器路径不存在,请输入正确的路径！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                 return;
             }
             else
             {
-                Config.IniGS.gamePath = GamePath.Text;
-                Config.Settings.GamePath = GamePath.Text;
+                Settings.launcherPath = LauncherPath.Text;
+                IniControl.GamePath = LauncherPath.Text;
+                Settings.gameMain = Path.Combine(LauncherPath.Text, "Genshin Impact Game/YuanShen.exe");
             }
-            //游戏分辨率保存
-            if (!Utils.checkTool.IsNumber(GWidth.Text) || !Utils.checkTool.IsNumber(GHeight.Text))
+
+            if (!CheckTool.IsNumber(GWidth.Text) || !CheckTool.IsNumber(GHeight.Text))
             {
                 this.ShowMessageAsync("警告", "窗口大小错误, 请输入正确的分辨率！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                 return;
             }
             else
             {
-                Settings.Height = GHeight.Text;
-                Settings.Width = GWidth.Text;
-                Config.IniGS.Width = Convert.ToUInt16(GWidth.Text);
-                Config.IniGS.Height = Convert.ToUInt16(GHeight.Text);
+                IniControl.Width = GWidth.Text;
+                IniControl.Height = GHeight.Text;
             }
-            //是否全屏
-            if (FullF.IsChecked == true)
+
+            if (PopupUP.IsChecked == false)
+                IniControl.isPopup = false;
+            else
+                IniControl.isPopup = true;
+
+            if (IsFullscreen.SelectedIndex == 0)
+                IniControl.isAutoSize = false;
+            else
+                IniControl.isAutoSize = true;
+
+            if (GamePort.SelectedIndex == 1)
             {
-                Settings.FullS = "0";
-                Config.IniGS.isAutoSize = false;
+                IniControl.isMihoyo = 2;
+                IniControl.Sub_channel("0", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                IniControl.Channel("14", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                IniControl.Cps("bilibili", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
             }
-            else if (FullT.IsChecked == true)
+            else if (GamePort.SelectedIndex == 2)
             {
-                Settings.FullS = "1";
-                Config.IniGS.isAutoSize = true;
-            }
-            //B服或官服
-            if (MiS.IsChecked == true)
-            {
-                Config.IniGS.BiOrMi = 1;
-                BOM.Sub_channel("1");
-                BOM.Channel("1");
-                BOM.Cps("pcadbdpz");
-            }
-            else if (BIliS.IsChecked == true)
-            {
-                Config.IniGS.BiOrMi = 2;
-                BOM.Sub_channel("0");
-                BOM.Channel("14");
-                BOM.Cps("bilibili");
+                IniControl.isMihoyo = 3;
+                IniControl.Cps("mihoyo", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
             }
             else
             {
-                Config.IniGS.BiOrMi = 3;
-                BOM.Cps("mihoyo");
+                IniControl.isMihoyo = 1;
+                IniControl.Sub_channel("1", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                IniControl.Channel("1", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                IniControl.Cps("pcadbdpz", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
             }
-            //无边框窗口化
-            if (PopupUP.IsChecked == true)
-                Config.IniGS.isPopup = true;
-            else
-                Config.IniGS.isPopup = false;
-            //解锁帧率启动
+
             if (isUnFPS.IsChecked == true)
             {
-                if (!Utils.checkTool.IsNumber(MaxFPS.Text))
+                if (!CheckTool.IsNumber(MaxFPS.Text))
                 {
                     this.ShowMessageAsync("警告", "帧率错误, 请输入正确的数字！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                     return;
                 }
                 else
                 {
-                    Config.IniGS.MaxFps = MaxFPS.Text;
-                    Config.IniGS.isUnFPS = true;
+                    IniControl.MaxFps = MaxFPS.Text;
+                    IniControl.isUnFPS = true;
                 }
             }
             else
             {
-                Config.IniGS.isUnFPS = false;
-                Config.IniGS.MaxFps = "144";
+                IniControl.isUnFPS = false;
+                IniControl.MaxFps = "144";
             }
-            Config.setConfig.checkini();
-            //选择启动的账号            
-            WriteUser();
-            this.Close();
 
+            if (IsClose.IsChecked == true)
+                IniControl.isClose = true;
+            else
+                IniControl.isClose = false;
+
+            if (MainGridHide.IsChecked == true)
+            {
+                IniControl.isMainGridHide = true;
+                MainWindow mainWindow = new MainWindow();
+                (this.Owner as MainWindow).MainGrid.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                IniControl.isMainGridHide = false;
+                MainWindow mainWindow = new MainWindow();
+                (this.Owner as MainWindow).MainGrid.Visibility = Visibility.Visible;
+            }
+
+            AddConfig.CheckIni();
+            WriteUser();
+            Close();
         }
         private void Button_Click21_9(object sender, RoutedEventArgs e)
         {
@@ -228,9 +172,8 @@ namespace GenShin_LauncherDIY
                 {
                     isUnFPS.IsChecked = true;
                     MaxFPS.IsEnabled = true;
-                    MaxFPS.Text = Config.IniGS.MaxFps;
+                    MaxFPS.Text = IniControl.MaxFps;
                 }
-
                 else
                 {
                     isUnFPS.IsChecked = false;
@@ -243,23 +186,30 @@ namespace GenShin_LauncherDIY
                 MaxFPS.Text = "";
             }
         }
+
+        private async void IsClose_Click(object sender, RoutedEventArgs e)
+        {
+            if(IsClose.IsChecked==true)
+                await this.ShowMessageAsync("提醒", "选择后最小化和开始游戏时启动器将会遁入托盘图标，双击后可再次打开启动器主页面", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+        }
+
         private void IsSDK()
         {
-            if (GamePath.Text == "")
+            if (LauncherPath.Text == "")
             {
                 SDKlive.Content = "SDK:未知";
                 Fixbtn.IsEnabled = false;
             }
             else
             {
-                if (File.Exists(GamePath.Text + "\\Genshin Impact Game\\YuanShen_Data\\Plugins\\PCGameSDK.dll") == true)
-                {
-                    SDKlive.Content = "SDK:存在";
-                    Fixbtn.IsEnabled = false;
-                }
-                else if (GlobalS.IsChecked == true)
+                if (GamePort.SelectedIndex == 2 || GamePort.SelectedIndex == 0)
                 {
                     SDKlive.Content = "SDK:无需";
+                    Fixbtn.IsEnabled = false;
+                }
+                else if (GamePort.SelectedIndex == 1 && File.Exists(Path.Combine(Settings.gameMovePath, "Genshin Impact Game/YuanShen_Data/Plugins/PCGameSDK.dll")))
+                {
+                    SDKlive.Content = "SDK:存在";
                     Fixbtn.IsEnabled = false;
                 }
                 else
@@ -273,17 +223,15 @@ namespace GenShin_LauncherDIY
         {
             if ((await this.ShowMessageAsync("提醒", "修复SDK仅用于官转哔服，国际服无需修复", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "确定修复" })) != MessageDialogResult.Affirmative)
             {
-                if (Directory.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen_Data") == true)
+                if (Directory.Exists(Path.Combine(Settings.launcherPath, "Genshin Impact Game/YuanShen_Data")) == true)
                 {
-                    var sdkUri = "pack://application:,,,/Res/mihoyosdk.dll";
-                    var uri = new Uri(sdkUri, UriKind.RelativeOrAbsolute);
-                    var stream = Application.GetResourceStream(uri).Stream;
-                    Utils.UtilsTools.StreamToFile(stream, GamePath.Text + "\\Genshin Impact Game\\YuanShen_Data\\Plugins\\PCGameSDK.dll");
+                    UtilsTools utils = new UtilsTools();
+                    utils.FileWriter("Res/mihoyosdk.dll", Path.Combine(Settings.gameMovePath, "Genshin Impact Game/YuanShen_Data/Plugins/PCGameSDK.dll"));
                     IsSDK();
                 }
                 else
                 {
-                    this.ShowMessageAsync("提醒", "该端无需修复SDK文件", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    await this.ShowMessageAsync("提醒", "该端无需修复SDK文件", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                 }
 
             }
@@ -293,8 +241,8 @@ namespace GenShin_LauncherDIY
             if ((await this.ShowMessageAsync("警告！！", "转换或还原将会执行重命名，替换，删除等操作修改客户端文件，该过程大概率会触发杀软报毒！为了防止客户端损坏导致不完整，执行前检查杀软（包括 Windows Defender）是否完全关闭或将本启动器加入白名单，并检查游戏是否彻底关闭，否则可能将导致客户端文件缺失！！\r\n\r\n提示：如游戏大版本更新时请执行还原转换为国内服使用游戏自带启动器更新！", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消转换", NegativeButtonText = "确定转换" })) != MessageDialogResult.Affirmative)
             {
 
-                String pkgfile = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$pkg$]", "[#pkg#]");
-                if (ToGlobal.Content == "复原")
+                string pkgfile = UtilsTools.MiddleText(UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$pkg$]", "[#pkg#]");
+                if (Convert.ToString(ToGlobal.Content) == "复原")
                 {
                     Thread StartRe = new Thread(() => ReCnGame());
                     bqload.Visibility = Visibility.Visible;
@@ -305,7 +253,7 @@ namespace GenShin_LauncherDIY
                 }
                 else if ("2.3.0-2" != pkgfile)
                 {
-                    this.ShowMessageAsync("提示", "国际服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd  已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    await this.ShowMessageAsync("提示", "国际服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd  已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                     Clipboard.SetText("etxd");
                     Thread.Sleep(2500);
                     Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
@@ -330,11 +278,11 @@ namespace GenShin_LauncherDIY
                         setSave.IsEnabled = false;
                         ToGlobal.IsEnabled = false;
                         TimeStatus.Content = "当前状态：正在替换资源";
-                        StartMove.Start();                                                                  
+                        StartMove.Start();
                     }
                     else
                     {
-                        this.ShowMessageAsync("提示", "转换资源不完整\r\n请重新下载", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                        await this.ShowMessageAsync("提示", "转换资源不完整\r\n请重新下载", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                         bqload.Visibility = Visibility.Hidden;
                         setSave.IsEnabled = true;
                     }
@@ -352,21 +300,21 @@ namespace GenShin_LauncherDIY
         }
         private void UnFile()
         {
-            if (Utils.UtilsTools.UnZip(@"GlobalFile.pkg", @""))
+            if (UtilsTools.UnZip(@"GlobalFile.pkg", @""))
             {
                 bool error = false;
                 for (int i = 0; i < Settings.globalfiles.Length; i++)
                 {
                     if (File.Exists(@"GlobalFile//" + Settings.globalfiles[i]) == false)
                     {
-                        this.Dispatcher.Invoke(new Action(delegate ()
+                        Dispatcher.Invoke(new Action(delegate ()
                         {
                             LogBox.Content = Settings.globalfiles[i] + "文件不存在，请重新下载资源包或尝试重新操作";
                         }));
                         error = true;
                         break;
                     }
-                    this.Dispatcher.Invoke(new Action(delegate ()
+                    Dispatcher.Invoke(new Action(delegate ()
                     {
                         LogBox.Content = Settings.globalfiles[i] + "存在";
                     }));
@@ -374,14 +322,14 @@ namespace GenShin_LauncherDIY
                 if (!error)
                 {
                     MoveFile();
-                    this.Dispatcher.Invoke(new Action(delegate ()
+                    Dispatcher.Invoke(new Action(delegate ()
                     {
                         bqload.Visibility = Visibility.Hidden;
                     }));
                 }
                 else
                 {
-                    this.Dispatcher.Invoke(new Action(delegate ()
+                    Dispatcher.Invoke(new Action(delegate ()
                     {
                         this.ShowMessageAsync("提示", "资源解压完成但不完整\r\n请重新下载", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                         bqload.Visibility = Visibility.Hidden;
@@ -391,12 +339,11 @@ namespace GenShin_LauncherDIY
             }
             else
             {
-                this.Dispatcher.Invoke(new Action(delegate ()
+                Dispatcher.Invoke(new Action(async delegate ()
                 {
-
-                    this.ShowMessageAsync("提示", "没有找到资源[GlobalFile.pkg]或解压失败\r\n已打开到下载资源页面，访问密码已复制到剪贴板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    await this.ShowMessageAsync("提示", "没有找到资源[GlobalFile.pkg]或解压失败\r\n点击确定跳转到下载资源页面，访问密码已复制到剪贴板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                     Clipboard.SetText("etxd");
-                    Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
+                    Process.Start(Settings.htmlUrl[5]);
                     bqload.Visibility = Visibility.Hidden;
                     ToGlobal.IsEnabled = true;
                     TimeStatus.Content = "当前状态：未找到资源包";
@@ -407,52 +354,52 @@ namespace GenShin_LauncherDIY
         private void MoveFile()
         {
             Computer redir = new Computer();
-            this.Dispatcher.Invoke(new Action(delegate ()
+            Dispatcher.Invoke(new Action(delegate ()
             {
                 TimeStatus.Content = "当前状态：正在备份原文件";
             }));
             for (int a = 0; a < Settings.cnfiles.Length; a++)
             {
-                String newFileName = System.IO.Path.GetFileNameWithoutExtension(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]) + System.IO.Path.GetExtension(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]);
-                if (File.Exists(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]) == true)
+                String newFileName = Path.GetFileNameWithoutExtension(Settings.gameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]) + System.IO.Path.GetExtension(Settings.gameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]);
+                if (File.Exists(Settings.gameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]) == true)
                 {
-                    redir.FileSystem.RenameFile(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a], newFileName + ".bak");
-                    this.Dispatcher.Invoke(new Action(delegate ()
+                    redir.FileSystem.RenameFile(Settings.gameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a], newFileName + ".bak");
+                    Dispatcher.Invoke(new Action(delegate ()
                     {
                         LogBox.Content = newFileName + "备份成功";
                     }));
                 }
                 else
                 {
-                    this.Dispatcher.Invoke(new Action(delegate ()
+                    Dispatcher.Invoke(new Action(delegate ()
                     {
                         LogBox.Content = newFileName + "备份失败，跳过";
                     }));
                 }
             }
-            this.Dispatcher.Invoke(new Action(delegate ()
+            Dispatcher.Invoke(new Action(delegate ()
             {
                 TimeStatus.Content = "当前状态：开始替换资源";
             }));
-            redir.FileSystem.RenameDirectory(Config.Settings.GameMovePath + "//Genshin Impact Game//YuanShen_Data", "GenshinImpact_Data");
+            redir.FileSystem.RenameDirectory(Path.Combine(Settings.gameMovePath, "Genshin Impact Game", "YuanShen_Data"), "GenshinImpact_Data");
             for (int i = 0; i < Settings.globalfiles.Length; i++)
             {
-                File.Copy(@"GlobalFile//" + Settings.globalfiles[i], Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.globalfiles[i], true);
+                File.Copy(@"GlobalFile//" + Settings.globalfiles[i], Path.Combine(Settings.gameMovePath, "Genshin Impact Game" + Settings.globalfiles[i]), true);
                 this.Dispatcher.Invoke(new Action(delegate ()
                 {
                     LogBox.Content = Settings.globalfiles[i] + "替换成功";
                 }));
             };
-            this.Dispatcher.Invoke(new Action(delegate ()
+            Dispatcher.Invoke(new Action(delegate ()
             {
+                IniControl.Sub_channel("0", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                IniControl.Channel("1", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
                 TimeStatus.Content = "当前状态：无状态";
             }));
-            if (File.Exists(Config.Settings.GameMovePath + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll") == true)
-                File.Delete(Config.Settings.GameMovePath + "\\Genshin Impact Game\\GenshinImpact_Data\\Plugins\\PCGameSDK.dll");
-            Config.IniGS.BiOrMi = 3;
-            BOM.Sub_channel("0");
-            BOM.Channel("1");
-            this.Dispatcher.Invoke(new Action(delegate ()
+            if (File.Exists(Path.Combine(Settings.gameMovePath, "Genshin Impact Game/GenshinImpact_Data/Plugins/PCGameSDK.dll")) == true)
+                File.Delete(Path.Combine(Settings.gameMovePath, "Genshin Impact Game/GenshinImpact_Data/Plugins/PCGameSDK.dll"));
+            IniControl.isMihoyo = 3;
+            Dispatcher.Invoke(new Action(delegate ()
             {
                 ToGlobal.IsEnabled = true;
                 IsGlobal();
@@ -464,62 +411,58 @@ namespace GenShin_LauncherDIY
         }
         private void IsGlobal()
         {
-            if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)
+            if (File.Exists(Path.Combine(Settings.launcherPath, "Genshin Impact Game/YuanShen.exe")) == true)
             {
                 ToGlobal.Content = "转换";
-                GlobalS.IsEnabled = false;
-                BIliS.IsEnabled = true;
-                MiS.IsEnabled = true;
-                MiS.IsChecked = true;
+                GlobalItem.IsEnabled = false;
 
             }
-            else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)
+            else if (File.Exists(Path.Combine(Settings.launcherPath, "Genshin Impact Game", "GenshinImpact.exe")) == true)
             {
                 ToGlobal.Content = "复原";
-                GlobalS.IsChecked = true;
-                GlobalS.IsEnabled = true;
-                BIliS.IsEnabled = false;
-                MiS.IsEnabled = false;
+                GlobalItem.IsEnabled = true;
+                MihoyoItem.IsEnabled = false;
+                BiliItem.IsEnabled = false;
             }
         }
         private void ReCnGame()
         {
             Computer redir = new Computer();
-            this.Dispatcher.Invoke(new Action(delegate ()
+            Dispatcher.Invoke(new Action(delegate ()
             {
                 TimeStatus.Content = "当前状态：清理现存文件";
             }));
             for (int i = 0; i < Settings.globalfiles.Length; i++)
             {
-                if (File.Exists(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.globalfiles[i]) == true)
+                if (File.Exists(Path.Combine(Settings.gameMovePath, "Genshin Impact Game") + Settings.globalfiles[i]) == true)
                 {
-                    File.Delete(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.globalfiles[i]);
-                    this.Dispatcher.Invoke(new Action(delegate ()
+                    File.Delete(Path.Combine(Settings.gameMovePath, "Genshin Impact Game") + Settings.globalfiles[i]);
+                    Dispatcher.Invoke(new Action(delegate ()
                     {
                         LogBox.Content = Settings.globalfiles[i] + "清理完毕";
                     }));
                 }
                 else
                 {
-                    this.Dispatcher.Invoke(new Action(delegate ()
+                    Dispatcher.Invoke(new Action(delegate ()
                     {
                         LogBox.Content = Settings.globalfiles[i] + "文件不存在，已跳过";
                     }));
                 }
             }
-            this.Dispatcher.Invoke(new Action(delegate ()
+            Dispatcher.Invoke(new Action(delegate ()
             {
                 TimeStatus.Content = "当前状态：正在还原文件";
             }));
-            redir.FileSystem.RenameDirectory(Config.Settings.GameMovePath + "//Genshin Impact Game//GenshinImpact_Data", "YuanShen_Data");
+            redir.FileSystem.RenameDirectory(Path.Combine(Settings.gameMovePath, "Genshin Impact Game/GenshinImpact_Data"), "YuanShen_Data");
             int whole = 0, success = 0;
             for (int a = 0; a < Settings.cnfiles.Length; a++)
             {
-                String newFileName = System.IO.Path.GetFileNameWithoutExtension(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]) + System.IO.Path.GetExtension(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]); ;
-                if (File.Exists(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a] + ".bak") == true)
+                string newFileName = System.IO.Path.GetFileNameWithoutExtension(Path.Combine(Settings.gameMovePath, "Genshin Impact Game") + Settings.cnfiles[a]) + System.IO.Path.GetExtension(Settings.gameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a]); ;
+                if (File.Exists(Path.Combine(Settings.gameMovePath, "Genshin Impact Game") + Settings.cnfiles[a] + ".bak") == true)
                 {
-                    redir.FileSystem.RenameFile(Config.Settings.GameMovePath + "//Genshin Impact Game//" + Settings.cnfiles[a] + ".bak", newFileName);
-                    this.Dispatcher.Invoke(new Action(delegate ()
+                    redir.FileSystem.RenameFile(Path.Combine(Settings.gameMovePath, "Genshin Impact Game") + Settings.cnfiles[a] + ".bak", newFileName);
+                    Dispatcher.Invoke(new Action(delegate ()
                     {
                         LogBox.Content = Settings.cnfiles[a] + "还原成功";
                     }));
@@ -527,31 +470,28 @@ namespace GenShin_LauncherDIY
                 }
                 else
                 {
-                    this.Dispatcher.Invoke(new Action(delegate ()
+                    Dispatcher.Invoke(new Action(delegate ()
                     {
                         LogBox.Content = Settings.cnfiles[a] + "不存在，跳过还原";
                     }));
                     whole++;
                 }
             }
-            //复原SDK
-            var sdkUri = "pack://application:,,,/Res/mihoyosdk.dll";
-            var uri = new Uri(sdkUri, UriKind.RelativeOrAbsolute);
-            var stream = Application.GetResourceStream(uri).Stream;
-            Utils.UtilsTools.StreamToFile(stream, Config.Settings.GameMovePath + "\\Genshin Impact Game\\YuanShen_Data\\Plugins\\PCGameSDK.dll");
-            this.Dispatcher.Invoke(new Action(delegate ()
+            UtilsTools utils = new UtilsTools();
+            utils.FileWriter("Res/mihoyosdk.dll", Path.Combine(Settings.gameMovePath, "Genshin Impact Game/YuanShen_Data/Plugins/PCGameSDK.dll"));
+
+            Dispatcher.Invoke(new Action(delegate ()
             {
                 IsSDK();
-                GlobalS.IsChecked = false;
-                GlobalS.IsEnabled = false;
-                MiS.IsChecked = true;
-                BIliS.IsEnabled = true;
-                MiS.IsEnabled = true;
+                GlobalItem.IsEnabled = false;
+                MihoyoItem.IsEnabled = true;
+                BiliItem.IsEnabled = true;
+                GamePort.SelectedIndex = 0;
                 TimeStatus.Content = "当前状态：无状态";
-                Config.IniGS.BiOrMi = 1;
-                BOM.Sub_channel("1");
-                BOM.Channel("1");
-                Config.setConfig.checkini();
+                IniControl.isMihoyo = 1;
+                IniControl.Sub_channel("1", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                IniControl.Channel("1", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                AddConfig.CheckIni();
                 bqload.Visibility = Visibility.Hidden;
                 setSave.IsEnabled = true;
                 ToGlobal.Content = "转换";
@@ -560,55 +500,13 @@ namespace GenShin_LauncherDIY
             }));
         }
 
-        private void DownRes_Click(object sender, RoutedEventArgs e)
-        {
-            this.ShowMessageAsync("提示", "访问密码：etxd\r\n已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-            Clipboard.SetText("etxd");
-            Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
-        }
-        //读取保存的账户文件
-        private void ReadUser()
-        {
-            DirectoryInfo TheFolder = new DirectoryInfo(@"UserData");
-            foreach (FileInfo NextFile in TheFolder.GetFiles())
-                UserList.Items.Add(NextFile.Name);
-        }
-        //修改启动时切换的用户
-        private void WriteUser()
-        {
-            if (UserList.SelectedIndex != -1)
-            {
-                string name = (UserList as ListBox).SelectedItem.ToString();
-                if (name.StartsWith("国服-") == true)
-                {
-                    Config.Settings.regIsGlobal[0] = "原神";
-                    Config.Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_CN_h3123967166";
-                    YSAccount acct = YSAccount.ReadFromDisk(name);
-                    acct.WriteToRegedit();
-                }
-                else if(name.StartsWith("国际服-")==true)
-                {
-                    Config.Settings.regIsGlobal[0] = "Genshin Impact";
-                    Config.Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810";
-                    YSAccount acct = YSAccount.ReadFromDisk(name);
-                    acct.WriteToRegedit();
-                }
-                else
-                {
-                    Config.Settings.regIsGlobal[0] = "原神";
-                    Config.Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_CN_h3123967166";
-                    YSAccount acct = YSAccount.ReadFromDisk(name);
-                    acct.WriteToRegedit();
-                }
-            }
-        }
         private async void DelUser_Click(object sender, RoutedEventArgs e)
         {
             if (UserList.SelectedIndex != -1)
             {
                 if ((await this.ShowMessageAsync("警告", "您确定删除账号：" + (UserList as ListBox).SelectedItem.ToString() + "吗？！", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "删除" })) != MessageDialogResult.Affirmative)
                 {
-                    File.Delete(@"UserData\\" + (UserList as ListBox).SelectedItem.ToString());
+                    File.Delete(Path.Combine(@"UserData", (UserList as ListBox).SelectedItem.ToString()));
                     UserList.Items.RemoveAt(UserList.Items.IndexOf(UserList.SelectedItem));
                 }
             }
@@ -655,7 +553,40 @@ namespace GenShin_LauncherDIY
                     break;
             }
         }
-        //手动选择目录
+        private void ReadUser()
+        {
+            DirectoryInfo TheFolder = new DirectoryInfo(@"UserData");
+            foreach (FileInfo NextFile in TheFolder.GetFiles())
+                UserList.Items.Add(NextFile.Name);
+        }
+        private void WriteUser()
+        {
+            if (UserList.SelectedIndex != -1)
+            {
+                string name = (UserList as ListBox).SelectedItem.ToString();
+                if (name.StartsWith("国服-") == true)
+                {
+                    Settings.regIsGlobal[0] = "原神";
+                    Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_CN_h3123967166";
+                    YSAccount acct = YSAccount.ReadFromDisk(name);
+                    acct.WriteToRegedit();
+                }
+                else if (name.StartsWith("国际服-") == true)
+                {
+                    Settings.regIsGlobal[0] = "Genshin Impact";
+                    Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810";
+                    YSAccount acct = YSAccount.ReadFromDisk(name);
+                    acct.WriteToRegedit();
+                }
+                else
+                {
+                    Settings.regIsGlobal[0] = "原神";
+                    Settings.regIsGlobal[1] = "MIHOYOSDK_ADL_PROD_CN_h3123967166";
+                    YSAccount acct = YSAccount.ReadFromDisk(name);
+                    acct.WriteToRegedit();
+                }
+            }
+        }
 
         private void Dir_Click(object sender, RoutedEventArgs e)
         {
@@ -663,7 +594,81 @@ namespace GenShin_LauncherDIY
             dialog.IsFolderPicker = true;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                GamePath.Text = dialog.FileName;
+                LauncherPath.Text = dialog.FileName;
+            }
+        }
+
+        private void RunLoad()
+        {
+            LauncherPath.Text = IniControl.GamePath;
+
+            if (!IniControl.isAutoSize)
+                IsFullscreen.SelectedIndex = 0;
+            else
+                IsFullscreen.SelectedIndex = 1;
+
+            if (IniControl.isUnFPS == true)
+            {
+                isUnFPS.IsChecked = true;
+                MaxFPS.IsEnabled = true;
+                MaxFPS.Text = Convert.ToString(IniControl.MaxFps);
+            }
+            else
+                isUnFPS.IsChecked = false;
+
+            if (IniControl.isPopup == false)
+                PopupUP.IsChecked = false;
+            else
+                PopupUP.IsChecked = true;
+
+            GHeight.Text = IniControl.Height;
+            GWidth.Text = IniControl.Width;
+            IsGlobal();
+
+            if (IniControl.isMihoyo == 1)
+            {
+                GamePort.SelectedIndex = 0;
+                GlobalItem.IsEnabled = false;
+            }
+            else if (IniControl.isMihoyo == 2)
+            {
+                GamePort.SelectedIndex = 1;
+                GlobalItem.IsEnabled = false;
+            }
+            else
+            {
+                GamePort.SelectedIndex = 2;
+                GlobalItem.IsEnabled = true;
+                MihoyoItem.IsEnabled = false;
+                BiliItem.IsEnabled = false;
+            }
+
+            if (LauncherPath.Text == "")
+                ToGlobal.IsEnabled = false;
+
+            if (IniControl.isClose == true)
+                IsClose.IsChecked = true;
+            else
+                IsClose.IsChecked = false;
+
+            if(IniControl.isMainGridHide==true)
+                MainGridHide.IsChecked = true;
+            else
+                MainGridHide.IsChecked = false;
+
+            {
+                List<DisplayList> list = new List<DisplayList>();
+                list.Add(new DisplayList { Name = "3840×2160-16:9", ID = 0, X = 1 });
+                list.Add(new DisplayList { Name = "2560×1080-21:9", ID = 0, X = 2 });
+                list.Add(new DisplayList { Name = "1920×1080-16:9", ID = 1, X = 3 });
+                list.Add(new DisplayList { Name = "1600×900-16:9", ID = 2, X = 4 });
+                list.Add(new DisplayList { Name = "1360×768-16:9", ID = 3, X = 5 });
+                list.Add(new DisplayList { Name = "1280×1024-4:3", ID = 4, X = 6 });
+                list.Add(new DisplayList { Name = "1280×720-16:9", ID = 5, X = 7 });
+                GameXY.ItemsSource = list;
+                GameXY.DisplayMemberPath = "Name";
+                GameXY.SelectedValuePath = "X";
+                GameXY.SelectedIndex = -1;
             }
         }
     }

@@ -6,10 +6,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenShin_LauncherDIY"
         mc:Ignorable="d"
-        Title="原神启动器Plus" Height="730" Width="1280" WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  ShowCloseButton="False" ShowMinButton="False">
+        Title="原神启动器Plus" Height="730" Width="1280" WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  ShowCloseButton="False" ShowMinButton="False" Loaded="MetroWindow_Loaded">
     <Grid x:Name="BGW">
         <Grid.Background>
-            <ImageBrush ImageSource="/Res/BG.png"/>
+            <ImageBrush ImageSource="/Res/BG.png" Stretch="UniformToFill"/>
         </Grid.Background>
         <Button x:Name="RunGame" Content="开始游戏" HorizontalAlignment="Left" Margin="921,632,0,0" VerticalAlignment="Top" Click="RunGame_Click" Height="64" Width="238" FontSize="24" FontWeight="Normal" FontFamily="Microsoft YaHei" Foreground="#FF5D4400">
             <Button.Background>
@@ -53,7 +53,7 @@
         </Grid>
         <Button x:Name="Help_Copy" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="?" HorizontalAlignment="Left" Margin="10,684,0,0" VerticalAlignment="Top" Click="Help_Click" Height="36" Width="36" BorderBrush="#7F000000" BorderThickness="4" Background="#7F808080" Foreground="White" FontSize="18" FontFamily="Microsoft YaHei UI" FontWeight="Bold">
         </Button>
-        <Grid HorizontalAlignment="Left" Height="199" Margin="58,470,0,0" VerticalAlignment="Top" Width="498" Background="#3D000000">
+        <Grid x:Name="MainGrid" HorizontalAlignment="Left" Height="199" Margin="58,470,0,0" VerticalAlignment="Top" Width="498" Background="#3D000000">
             <Label Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#B22D2D2D" Foreground="White" FontSize="16"/>
             <Label Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#B22D2D2D" Foreground="White" FontSize="16" Margin="353,0,0,0" HorizontalContentAlignment="Center"/>
             <Label x:Name="Page1" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,33,0,0"/>
@@ -61,11 +61,11 @@
             <Label x:Name="Page3" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,99,0,0"/>
             <Label x:Name="Page4" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,132,0,0"/>
             <Label x:Name="Page5" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,165,0,0"/>
-            <Label x:Name="Page6" Content=" 结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,33,0,0" HorizontalContentAlignment="Center"/>
-            <Label x:Name="Page7" Content=" 结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,66,0,0" HorizontalContentAlignment="Center"/>
-            <Label x:Name="Page8" Content=" 结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,99,0,0" HorizontalContentAlignment="Center"/>
-            <Label x:Name="Page9" Content=" 结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,132,0,0" HorizontalContentAlignment="Center"/>
-            <Label x:Name="Page10" Content=" 结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,165,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page6" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,33,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page7" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,66,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page8" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,99,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page9" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,132,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page10" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,165,0,0" HorizontalContentAlignment="Center"/>
             <Grid HorizontalAlignment="Left" Height="199" Margin="351,0,0,0" VerticalAlignment="Center" Width="3" Background="#7F000000" RenderTransformOrigin="0.5,0.5">
                 <Grid.RenderTransform>
                     <TransformGroup>

@@ -1,29 +1,21 @@
-﻿using GenShin_LauncherDIY.Utils;
+﻿using Hardcodet.Wpf.TaskbarNotification;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GenShin_LauncherDIY
 {
@@ -35,235 +27,145 @@ namespace GenShin_LauncherDIY
         public MainWindow()
         {
             InitializeComponent();
-            RunLoad();
-            //避免更新器需要置换，每次重新操作
-            {
-                var updUri = "pack://application:,,,/Res/Update.dll";
-                var uri = new Uri(updUri, UriKind.RelativeOrAbsolute);
-                var stream = Application.GetResourceStream(uri).Stream;
-                Utils.UtilsTools.StreamToFile(stream, @"Update.exe");
-            }
-            //每次启动写入当前文件名以便更新操作
-            Config.IniGS.EXEname(System.IO.Path.GetFileName(Assembly.GetEntryAssembly().Location));
-            //
-            Readjson();
+            AddConfig.CheckIni();
+
+            UtilsTools utils = new UtilsTools();
+            utils.FileWriter("Res/Update.dll", @"Update.exe");
+            if (!File.Exists(@"unlockfps.exe"))
+                utils.FileWriter("Res/unlockfps.dll", @"unlockfps.exe");
+    
+            IniControl.EXEname(System.IO.Path.GetFileName(Assembly.GetEntryAssembly().Location));
+
         }
-
-
-
-        //窗口随意拖动
         public void DragWindow(object sender, MouseButtonEventArgs args)
         {
-            this.DragMove();
+            DragMove();
         }
-        //启动游戏按钮事件-使用CMD方式启动原神，否则更改服务器会失效
+
         private void RunGame_Click(object sender, RoutedEventArgs e)
         {
-            //自定义分辨率启动
-            if (!Config.IniGS.isAutoSize)
-                Config.Settings.FullS = "0";
-            else if (Config.IniGS.isAutoSize)
-                Config.Settings.FullS = "1";
-            //判断无边框
-            if (!Config.IniGS.isPopup)
-                Config.Settings.GamePopup = "";
-            else
-                Config.Settings.GamePopup = " -popupwindow";
-            //判断解锁帧率上限
-            if (Config.IniGS.isUnFPS == true)
-            {
-                if (File.Exists(@"unlockfps.exe"))
-                {
-                    File.Delete(@"unlockfps.exe");
-                    var fpsUri = "pack://application:,,,/Res/unlockfps.dll";
-                    var uri = new Uri(fpsUri, UriKind.RelativeOrAbsolute);
-                    var stream = Application.GetResourceStream(uri).Stream;
-                    Utils.UtilsTools.StreamToFile(stream, @"unlockfps.exe");
-                }
-                else
-                {
-                    var fpsUri = "pack://application:,,,/Res/unlockfps.dll";
-                    var uri = new Uri(fpsUri, UriKind.RelativeOrAbsolute);
-                    var stream = Application.GetResourceStream(uri).Stream;
-                    Utils.UtilsTools.StreamToFile(stream, @"unlockfps.exe");
-                }
+            if (IniControl.isUnFPS)
+                Process.Start(@"unlockfps.exe");
 
-                if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)
-                {
-                    Process.Start(@"unlockfps.exe");
-                    Thread game = new Thread(() =>
-                    {
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
-                        }));
-                    });
-                    game.Start();
-                    WindowState = WindowState.Minimized;
-                }
-                else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)
-                {
-                    Process.Start(@"unlockfps.exe");
-                    Thread game = new Thread(() =>
-                    {
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width);
-                        }));
-                    });
-                    game.Start();
-                    WindowState = WindowState.Minimized;
-                }
-                else
+            var argBuilder = new CommandLineBuilder();
+            argBuilder.AddOption(" screen-fullscreen ", IniControl.isAutoSize ? "1" : "0");
+            argBuilder.AddOption(" -screen-height ", IniControl.Height);
+            argBuilder.AddOption(" -screen-width ", IniControl.Width);
+            argBuilder.AddOption(" -pop ", IniControl.isPopup ? " -popupwindow " : "");
+
+            if (!File.Exists(Settings.gameMain))
+            {
+                Settings.gameMain = Path.Combine(Settings.launcherPath, "Genshin Impact Game/GenshinImpact.exe");
+                if (!File.Exists(Settings.gameMain))
                 {
                     this.ShowMessageAsync("错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    return;
                 }
+            }
+
+            ProcessStartInfo info = new ProcessStartInfo()
+            {
+                FileName = Settings.gameMain,
+                Verb = "runas",
+                WorkingDirectory = Path.Combine(Settings.launcherPath, "Genshin Impact Game"),
+                UseShellExecute = true,
+                Arguments = argBuilder.ToString()
+            };
+            Process.Start(info);
+
+            if (IniControl.isClose == true)
+            {
+                TaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
+                Close();
             }
             else
             {
-                if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//YuanShen.exe") == true)
-                {
-                    Thread game = new Thread(() =>
-                    {
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "YuanShen.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
-                        }));
-                    });
-                    game.Start();
-                    WindowState = WindowState.Minimized;
-                }
-                else if (File.Exists(Config.Settings.GamePath + "//Genshin Impact Game//GenshinImpact.exe") == true)
-                {
-                    Thread game = new Thread(() =>
-                    {
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            UtilsTools.Rungenshin(Config.Settings.GamePath.Substring(0, 1) + ":", "cd " + Config.Settings.GamePath + "//Genshin Impact Game", "GenshinImpact.exe " + "-screen-fullscreen " + Config.Settings.FullS + " -screen-height " + Config.Settings.Height + " -screen-width " + Config.Settings.Width + Config.Settings.GamePopup);
-                        }));
-                    });
-                    game.Start();
-                    WindowState = WindowState.Minimized;
-                }
-                else
-                {
-                    this.ShowMessageAsync("错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                }
+                WindowState = WindowState.Minimized;
             }
         }
-        //关闭按钮事件
+
         private void CloseW_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Environment.Exit(0);
         }
-        //最小化按钮事件
+
+        public static TaskbarIcon TaskbarIcon;
         private void Min_Click(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+            if (IniControl.isClose == true)
+            {
+                TaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
+                Close();
+            }
+            else
+            {
+                WindowState = WindowState.Minimized;
+            }
         }
-        //截图目录按钮事件
+
         private void ScreenSrc_Click(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(Config.Settings.GamePath + "//Genshin Impact Game//ScreenShot") == true)
+            if (Directory.Exists(Path.Combine(IniControl.GamePath, "Genshin Impact Game/ScreenShot")) == true)
             {
-                Process.Start(Config.Settings.GamePath + "//Genshin Impact Game//ScreenShot");
-
+                Process.Start(Path.Combine(IniControl.GamePath, "Genshin Impact Game/ScreenShot"));
             }
             else
             {
                 this.ShowMessageAsync("错误提示", "本功能为打开游戏内截图照相保存目录\r\n没有检测到照相文件或者请先输入正确的游戏路径！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
         }
-        //设置按钮事件
+
         private void Setting_Click(object sender, RoutedEventArgs e)
         {
             Window set = new SetWindow();
-            HwndSource winformWindow = (System.Windows.Interop.HwndSource.FromDependencyObject(this) as System.Windows.Interop.HwndSource);
+            HwndSource winformWindow = (PresentationSource.FromDependencyObject(this) as HwndSource);
             if (winformWindow != null)
                 new WindowInteropHelper(set) { Owner = winformWindow.Handle };
-
+            set.Owner = this;
             set.ShowDialog();
         }
-        //QQ群按钮事件
+
         private void QqG_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://jq.qq.com/?_wv=1027&k=Kxt00f0Y");
+            Process.Start(Settings.htmlUrl[1]);
         }
-        //保存账号按钮事件
+
         private void SaveAcc_Click(object sender, RoutedEventArgs e)
         {
             Window save = new SaveAccIni();
-            HwndSource winformWindow = (System.Windows.Interop.HwndSource.FromDependencyObject(this) as System.Windows.Interop.HwndSource);
+            HwndSource winformWindow = (PresentationSource.FromDependencyObject(this) as HwndSource);
             if (winformWindow != null)
                 new WindowInteropHelper(save) { Owner = winformWindow.Handle };
-
             save.ShowDialog();
         }
-        //关于按钮事件
+
         private async void About_Click(object sender, RoutedEventArgs e)
         {
-            if ((await this.ShowMessageAsync("关于", Config.Settings.aboutthis, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "确定", NegativeButtonText = "GitHub" })) != MessageDialogResult.Affirmative)
-            {
-                Process.Start("https://github.com/DawnFz/Genshin-LauncherDIY");
-            }
+            if ((await this.ShowMessageAsync("关于", Settings.aboutthis, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "确定", NegativeButtonText = "GitHub" })) != MessageDialogResult.Affirmative)
+                Process.Start(Settings.htmlUrl[2]);
         }
-        //帮助按钮事件
+
         private void Help_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://www.bilibili.com/video/BV1hr4y1Q7Qm");
+            Process.Start(Settings.htmlUrl[3]);
         }
-        //启动时事件
-        private async void RunLoad()
-        {
-            string Version = Application.ResourceAssembly.GetName().Version.ToString();
-            TitleMain.Content = "原神启动器Plus  " + Version;
-            if (File.Exists(@"Config\Bg.png"))
-            {//用bg.png
-                ImageBrush b = new ImageBrush();
-                Uri uri = new Uri(System.Environment.CurrentDirectory + @"\\Config\\Bg.png", UriKind.Absolute);
-                b.ImageSource = new BitmapImage(uri);
-                b.Stretch = Stretch.Fill;
-                BGW.Background = b;
-            }
-            {//判断版本
-                String ver = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$ver$]", "[#ver#]");
-                if (Version != ver)
-                {
-                    String notify = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$notify$]", "[#notify#]");
-                    notify = notify.Replace("/n/", Environment.NewLine);
-                    String msgtl = Utils.UtilsTools.MiddleText(Utils.UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$msgtl$]", "[#msgtl#]");
-                    if ((await this.ShowMessageAsync(msgtl, notify, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "继续使用", NegativeButtonText = "下载更新" })) != MessageDialogResult.Affirmative)
-                    {
-                        UpdateEXE();
-                    }
-                }
-            }
-            {//判断config是否存在
-                if (Directory.Exists(Environment.CurrentDirectory + @"\\Config") && Directory.Exists(Environment.CurrentDirectory + @"\\UserData"))
-                    Config.setConfig.checkini();
-                else
-                {
-                    Directory.CreateDirectory("Config");
-                    Directory.CreateDirectory("UserData");
-                    Config.setConfig.checkini();
-                }
-            }
-        }
-        //启动更新
+
         private void UpdateEXE()
         {
-            if (HttpFileExist("https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png") == true)
+            string downver = UtilsTools.MiddleText(UtilsTools.ReadHTML(Settings.htmlUrl[0], "UTF-8"), "[$gitv$]", "[#gitv#]");
+            
+            if (HttpFileExist($"https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY@{ downver }/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png") == true)
             {
                 Update.Visibility = Visibility.Visible;
-                DownloadHttpFile("https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png", @"UpdateTemp.upd");
+                DownloadHttpFile($"https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY@{ downver }/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png", @"UpdateTemp.upd");
             }
             else
             {
                 this.ShowMessageAsync("错误提示", "网络更新文件资源不存在或服务器网络错误", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
         }
-        //版本更新-下载文件
-        public void DownloadHttpFile(String http_url, String save_url)
+
+        public void DownloadHttpFile(string http_url, string save_url)
         {
             WebResponse response = null;
             WebRequest request = WebRequest.Create(http_url);
@@ -287,17 +189,16 @@ namespace GenShin_LauncherDIY
                 netStream.Close();
                 fileStream.Close();
 
-                this.Dispatcher.Invoke(new Action(async delegate ()
+                Dispatcher.Invoke(new Action(async delegate ()
                 {
                     if ((await this.ShowMessageAsync("提示", "下载完成，是否现在进行更新操作", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "确定" })) != MessageDialogResult.Affirmative)
                     {
                         Process.Start(@"Update.exe");
-                        this.Close();
+                        Environment.Exit(0);
                     }
                 }));
             }, null);
         }
-        //判断网络资源是否存在
         private bool HttpFileExist(string http_file_url)
         {
             WebResponse response = null;
@@ -327,41 +228,54 @@ namespace GenShin_LauncherDIY
             label1.Content = "下载进度:" + Convert.ToInt32((value / pbDown.Maximum) * 100) + "%";
         }
 
-        //
+        private async void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {           
+            string version = Application.ResourceAssembly.GetName().Version.ToString();
+            TitleMain.Content = "原神启动器Plus  " + version;
+            if (File.Exists(@"Config\Bg.png"))
+            {
+                ImageBrush b = new ImageBrush();
+                Uri uri = new Uri(Path.Combine(Environment.CurrentDirectory, "Config/Bg.png"), UriKind.Absolute);
+                b.ImageSource = new BitmapImage(uri);
+                b.Stretch = Stretch.UniformToFill;
+                BGW.Background = b;
+            }
 
-        /// 读取JSON文件
-        /// </summary>
-        /// <param name="key">JSON文件中的key值</param>
-        /// <returns>JSON文件中的value值</returns>
-        public void Readjson()
-        {
-            string JsonFile = Utils.UtilsTools.ReadHTML("https://hk4e-api.mihoyo.com/common/hk4e_cn/announcement/api/getAnnList?game=hk4e&game_biz=hk4e_cn&lang=zh-cn&bundle_id=hk4e_cn&platform=pc&region=cn_gf01&level=55&uid=100000000", "UTF-8");
+            if(IniControl.isMainGridHide==true)
+                MainGrid.Visibility = Visibility.Hidden;
+
+            string JsonFile = UtilsTools.ReadHTML(Settings.htmlUrl[4], "UTF-8");
             Stream s = new MemoryStream(Encoding.UTF8.GetBytes(JsonFile));
             StreamReader file = new StreamReader(s);
             JsonTextReader reader = new JsonTextReader(file);
             JObject jsonObject = (JObject)JToken.ReadFrom(reader);
-            //公告
+
             Page1.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[0]["title"].ToString();
             Page2.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[1]["title"].ToString();
             Page3.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[2]["title"].ToString();
             Page4.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[3]["title"].ToString();
             Page5.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[4]["title"].ToString();
-            //时间
+
             Page6.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[0]["end_time"].ToString().Substring(0, 10);
             Page7.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[1]["end_time"].ToString().Substring(0, 10);
             Page8.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[2]["end_time"].ToString().Substring(0, 10);
             Page9.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[3]["end_time"].ToString().Substring(0, 10);
             Page10.Content = (jsonObject["data"]["list"]).ToList()[0]["list"].ToList()[4]["end_time"].ToString().Substring(0, 10);
             file.Close();
+
+            string newver = UtilsTools.MiddleText(UtilsTools.ReadHTML(Settings.htmlUrl[0], "UTF-8"), "[$ver$]", "[#ver#]");
+            if (version != newver)
+            {
+                string notify = UtilsTools.MiddleText(UtilsTools.ReadHTML(Settings.htmlUrl[0], "UTF-8"), "[$notify$]", "[#notify#]");
+                notify = notify.Replace("/n/", Environment.NewLine);
+                string msgtl = UtilsTools.MiddleText(UtilsTools.ReadHTML(Settings.htmlUrl[0], "UTF-8"), "[$msgtl$]", "[#msgtl#]");
+                if ((await this.ShowMessageAsync(msgtl, notify, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "继续使用", NegativeButtonText = "下载更新" })) != MessageDialogResult.Affirmative)
+                {
+                    UpdateEXE();
+                }
+            }
         }
 
 
-
-
-
-
-
-
-        //
     }
 }

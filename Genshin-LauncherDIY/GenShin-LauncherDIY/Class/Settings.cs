@@ -1,27 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
 
-namespace GenShin_LauncherDIY.Config
+namespace GenShin_LauncherDIY
 {
     public class Settings
     {
-        public static string Height = IniGS.Height.ToString();
-        public static string Width = IniGS.Width.ToString();
-        public static string GamePath = IniGS.gamePath.ToString();
+        public static string launcherPath = IniControl.GamePath;
         public static string[] regIsGlobal = new string[] { "原神", "MIHOYOSDK_ADL_PROD_CN_h3123967166" };
-        public static string GamePopup;
-        public static string FullS;
-        public static string Biomi;
-        public static string GameMovePath;
-        //需要替换的国际服文件的路径
-        public static string[] globalfiles = new string[] 
+        public static string gameMain = Path.Combine(launcherPath, "Genshin Impact Game/YuanShen.exe");
+        public static string gameMovePath = IniControl.GamePath;
+
+        public static string[] globalfiles = new string[]
         { "//GenshinImpact_Data//app.info",
           "//GenshinImpact_Data//globalgamemanagers",
           "//GenshinImpact_Data//Managed//Metadata//global-metadata.dat" ,
@@ -49,7 +38,7 @@ namespace GenShin_LauncherDIY.Config
           "//pkg_version",
           "//UnityPlayer.dll"
         };
-        //需要替换的国内双服的文件的路径
+
         public static string[] cnfiles = new string[]
         { "//YuanShen_Data//app.info",
           "//YuanShen_Data//globalgamemanagers",
@@ -79,7 +68,7 @@ namespace GenShin_LauncherDIY.Config
           "//UnityPlayer.dll"
         };
 
-        public static string aboutthis = 
+        public static string aboutthis =
             ("这是一个由WPF编写的原神启动器\r\n\r\n" +
             "你可以使用本启动器做到以下操作：\r\n" +
             "1.快速跳转到游戏的照相保存文件夹\r\n" +
@@ -91,7 +80,7 @@ namespace GenShin_LauncherDIY.Config
             "注意，以上功能涉及到注册表修改和文件替换，部分杀毒软\r\n" +
             "件可能会报毒，为了客户端数据完整建议关闭杀软后再运行\r\n" +
             "本程序完全开源，并不会将用户数据公布到网络，\r\n" +
-            "本启动器需要联网部分的代码仅为版本检测和公告获取\r\n\r\n\r\n"+
+            "本启动器需要联网部分的代码仅为版本检测和公告获取\r\n\r\n\r\n" +
             "编写：DawnFz (ねねだん)\r\n" +
             "联系邮箱：admin@dawnfz.com\r\n" +
             "您可以跳转到Github以获取本项目源代码\r\n\r\n\r\n" +
@@ -107,54 +96,16 @@ namespace GenShin_LauncherDIY.Config
             "————————————————————————————\r\n" +
             "[genshin-fps-unlock]\r\n" +
             "项目地址：https://gitee.com/Euphony_Facetious/genshin-fps-unlock \r\n");
-    }
 
-    class setConfig
-    {
-        /// <summary>
-        /// 填补一个空的setting.ini配置文件
-        /// </summary>
-        public static void newini()
+        public static string[] htmlUrl =
         {
-            try
-            {
-                //gamepath
-                IniGS.gamePath = "";
-                //size
-                IniGS.isAutoSize = false;
-                IniGS.Width = 1280;
-                IniGS.Height = 720;
-                //bilibiliormihayo
-                IniGS.BiOrMi = 1;
-                IniGS.isPopup = false;
-                IniGS.isUnFPS = false;
-                IniGS.EXEname(System.IO.Path.GetFileName(Assembly.GetEntryAssembly().Location));
-            }
-            catch
-            {
-            }
-        }
-        /// <summary>
-        /// 检查ini文件是否存在，否则新建
-        /// </summary>
-        public static void checkini()
-        {
-            try
-            {
-                if (Directory.Exists(@"Config") == false)
-                {
-                    Directory.CreateDirectory("Config");
-                    setConfig.newini();
-                }
-                else if (File.Exists(@"Config\Setting.ini") == false)
-                {
-                    setConfig.newini();
-                }
-            }
-            catch
-            {
-            }
-        }
+            "https://www.cnblogs.com/DawnFz/p/7271382.html",
+            "https://jq.qq.com/?_wv=1027&k=Kxt00f0Y",
+            "https://github.com/DawnFz/Genshin-LauncherDIY",
+            "https://www.bilibili.com/video/BV1hr4y1Q7Qm",
+            "https://hk4e-api.mihoyo.com/common/hk4e_cn/announcement/api/getAnnList?game=hk4e&game_biz=hk4e_cn&lang=zh-cn&bundle_id=hk4e_cn&platform=pc&region=cn_gf01&level=55&uid=100000000",
+            "https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg",
+        };
     }
 
 }
