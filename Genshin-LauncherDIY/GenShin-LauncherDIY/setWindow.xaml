@@ -9,7 +9,7 @@
 
     <Grid>
         <Button x:Name="setSave" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="保存设置" HorizontalAlignment="Left" Margin="298,297,0,0" VerticalAlignment="Top" Height="28" Width="81" Click="setSave_Click" FontFamily="Microsoft YaHei UI" FontSize="12" />
-        <TextBox mah:TextBoxHelper.Watermark="官方启动器目录，或游戏上级目录" x:Name="LauncherPath" x:FieldModifier="public" Height="23" Margin="13,260,48,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+        <TextBox mah:TextBoxHelper.Watermark="官方启动器目录，或游戏上级目录" x:Name="LauncherPath" x:FieldModifier="public" Height="23" Margin="13,260,48,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" TextChanged="LauncherPath_Text"/>
         <Button x:Name="Dirchoose" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="..." HorizontalAlignment="Left" Margin="342,260,0,0" VerticalAlignment="Top" Height="26" Width="37" Click="Dir_Click" FontFamily="Microsoft YaHei UI" FontSize="12" BorderBrush="#CC76608A" />
         <TabControl HorizontalAlignment="Center" Height="255" VerticalAlignment="Top" Width="392" mah:HeaderedControlHelper.HeaderFontSize="14" mah:HeaderedControlHelper.HeaderFontStretch="Medium" Background="White">
             <TabItem Header="快速设置" mah:ControlsHelper.ContentCharacterCasing="Normal" mah:HeaderedControlHelper.HeaderFontSize="14">
@@ -24,10 +24,10 @@
                             <CheckBox x:Name="PopupUP" Content="无边框" HorizontalAlignment="Left" Margin="87,132,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
                             <CheckBox x:Name="isUnFPS" Content="解帧率" HorizontalAlignment="Left" Margin="17,132,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" Click="UnFps_Click"/>
                             <TextBox mah:TextBoxHelper.Watermark="FPS上限" x:Name="MaxFPS" HorizontalAlignment="Left" Margin="16,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="False"/>
-                            <ListBox x:Name="UserList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="169,0,0,0" Background="#199180A1"/>
+                            <ListBox x:Name="UserList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="169,0,0,0" BorderThickness="2,2,2,2" BorderBrush="#FF9180A1"/>
                             <ComboBox x:Name="GamePort" HorizontalAlignment="Left" Height="16" Margin="16,70,0,0" VerticalAlignment="Top" Width="64" FontFamily="Microsoft YaHei UI">
                                 <ComboBoxItem x:Name="MihoyoItem" Content="官服"/>
-                                <ComboBoxItem x:Name="BiliItem" Content="哔哩"/>
+                                <ComboBoxItem x:Name="BiliItem" Content="哔哩" Selected="BiliItem_Selected"/>
                                 <ComboBoxItem x:Name="GlobalItem" Content="国际"/>
                             </ComboBox>
                             <ComboBox x:Name="IsFullscreen" HorizontalAlignment="Left" Height="16" Margin="83,70,0,0" VerticalAlignment="Top" Width="64" FontFamily="Microsoft YaHei UI">
@@ -49,7 +49,9 @@
                             <mah:MetroProgressBar x:Name="bqload"  Margin="16,125,72,15" IsIndeterminate="True" Maximum="100" Minimum="0" Value="{Binding Value, ElementName=horizSlider}" Foreground="#CC76608A" Visibility="Hidden"/>
                             <Button x:Name="ToGlobal" Content="转换" HorizontalAlignment="Left" Margin="121,117,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="48" Click="ToGlobal_Click"/>
                             <Label x:Name="TimeStatus" Content="当前状态：无状态" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="153" Margin="8,0,0,0"/>
-                            <Label x:Name="LogBox" Content="操作日志：" HorizontalAlignment="Left" Height="78" VerticalAlignment="Top" Width="161" Margin="8,30,0,0" Background="#9976608A" Foreground="White"/>
+                            <Label HorizontalAlignment="Left" Height="78" VerticalAlignment="Top" Width="161" Margin="8,30,0,0" Background="#9976608A" Foreground="White">
+                                <TextBlock x:Name="LogBox" TextWrapping="Wrap" Text="操作日志"/>
+                            </Label>
                         </Grid>
                     </GroupBox>
                     <Label x:Name="SDKlive_Copy" Content="Tips:此页右边留空部分后续增加原国际服转国服" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="276" Foreground="#4C000000"/>

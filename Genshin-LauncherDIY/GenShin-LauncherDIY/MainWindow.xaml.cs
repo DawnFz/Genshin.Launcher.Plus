@@ -34,7 +34,7 @@ namespace GenShin_LauncherDIY
             if (!File.Exists(@"unlockfps.exe"))
                 utils.FileWriter("Res/unlockfps.dll", @"unlockfps.exe");
     
-            IniControl.EXEname(System.IO.Path.GetFileName(Assembly.GetEntryAssembly().Location));
+            IniControl.EXEname(Path.GetFileName(Assembly.GetEntryAssembly().Location));
 
         }
         public void DragWindow(object sender, MouseButtonEventArgs args)
@@ -48,31 +48,31 @@ namespace GenShin_LauncherDIY
                 Process.Start(@"unlockfps.exe");
 
             var argBuilder = new CommandLineBuilder();
-            argBuilder.AddOption(" screen-fullscreen ", IniControl.isAutoSize ? "1" : "0");
-            argBuilder.AddOption(" -screen-height ", IniControl.Height);
-            argBuilder.AddOption(" -screen-width ", IniControl.Width);
-            argBuilder.AddOption(" -pop ", IniControl.isPopup ? " -popupwindow " : "");
+            argBuilder.AddOption("-screen-fullscreen ", IniControl.isAutoSize ? "1" : "0");
+            argBuilder.AddOption("-screen-height ", IniControl.Height);
+            argBuilder.AddOption("-screen-width ", IniControl.Width);
+            argBuilder.AddOption("-pop ", IniControl.isPopup ? " -popupwindow " : "");
 
             if (!File.Exists(Settings.gameMain))
             {
-                Settings.gameMain = Path.Combine(Settings.launcherPath, "Genshin Impact Game/GenshinImpact.exe");
+                Settings.gameMain= Path.Combine(IniControl.GamePath, "Genshin Impact Game/GenshinImpact.exe");
                 if (!File.Exists(Settings.gameMain))
                 {
                     this.ShowMessageAsync("错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                     return;
                 }
             }
-
+            
             ProcessStartInfo info = new ProcessStartInfo()
             {
                 FileName = Settings.gameMain,
                 Verb = "runas",
-                WorkingDirectory = Path.Combine(Settings.launcherPath, "Genshin Impact Game"),
                 UseShellExecute = true,
+                WorkingDirectory = Path.Combine(Settings.launcherPath, "Genshin Impact Game"),
                 Arguments = argBuilder.ToString()
             };
             Process.Start(info);
-
+            
             if (IniControl.isClose == true)
             {
                 TaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
@@ -191,7 +191,7 @@ namespace GenShin_LauncherDIY
 
                 Dispatcher.Invoke(new Action(async delegate ()
                 {
-                    if ((await this.ShowMessageAsync("提示", "下载完成，是否现在进行更新操作", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "确定" })) != MessageDialogResult.Affirmative)
+                    if ((await this.ShowMessageAsync("提示", "下载完成，是否现在进行更新操作\r\n确定后只需等待5秒将自动启动新版本", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "确定" })) != MessageDialogResult.Affirmative)
                     {
                         Process.Start(@"Update.exe");
                         Environment.Exit(0);
@@ -275,7 +275,5 @@ namespace GenShin_LauncherDIY
                 }
             }
         }
-
-
     }
 }

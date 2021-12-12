@@ -460,7 +460,7 @@ namespace GenShin_LauncherDIY
             var s = new StringBuilder();
             foreach (var e in _options)
             {
-                s.Append("-");
+                s.Append(" ");
                 s.Append(e.Key);
                 s.Append(' ');
                 s.Append(e.Value);

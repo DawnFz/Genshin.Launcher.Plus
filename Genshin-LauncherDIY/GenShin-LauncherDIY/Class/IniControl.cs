@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
-using System.Reflection;
-using System.Text;
-using System.Windows;
 
 namespace GenShin_LauncherDIY
 {
@@ -23,7 +20,7 @@ namespace GenShin_LauncherDIY
             String currentRoot = null;
             String[] keyPair = null;
             iniFilePath = iniPath;
-            if (File.Exists(iniPath))
+        A: if (File.Exists(iniPath))
             {
                 try
                 {
@@ -66,7 +63,10 @@ namespace GenShin_LauncherDIY
                 }
             }
             else
-                throw new FileNotFoundException("Unable to locate " + iniPath);
+            {
+                AddConfig.CheckIni();
+                goto A;
+            }
         }
 
         public String GetSetting(String sectionName, String settingName, int i)
@@ -88,7 +88,6 @@ namespace GenShin_LauncherDIY
                         return "False";
                 default:
                     return (String)keyPairs[sectionPair];
-
             }
 
         }
