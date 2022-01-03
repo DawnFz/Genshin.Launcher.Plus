@@ -90,11 +90,13 @@ namespace GenShin_LauncherDIY
                 IniControl.Sub_channel("0", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
                 IniControl.Channel("14", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
                 IniControl.Cps("bilibili", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                (this.Owner as MainWindow).NowPort.Content = "当前客户端：哔哩服";
             }
             else if (GamePort.SelectedIndex == 2)
             {
                 IniControl.isMihoyo = 3;
                 IniControl.Cps("mihoyo", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                (this.Owner as MainWindow).NowPort.Content = "当前客户端：国际服";
             }
             else
             {
@@ -102,6 +104,7 @@ namespace GenShin_LauncherDIY
                 IniControl.Sub_channel("1", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
                 IniControl.Channel("1", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
                 IniControl.Cps("pcadbdpz", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                (this.Owner as MainWindow).NowPort.Content = "当前客户端：官方服";
             }
 
             if (isUnFPS.IsChecked == true)
@@ -414,6 +417,7 @@ namespace GenShin_LauncherDIY
                 IsSDK();
                 setSave.IsEnabled = true;
                 bqload.Visibility = Visibility.Hidden;
+                GamePort.SelectedIndex = 2;
                 this.ShowMessageAsync("提示", "转换完毕，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }));
         }

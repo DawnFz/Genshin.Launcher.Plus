@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenShin_LauncherDIY"
         mc:Ignorable="d"
-        Title="原神启动器Plus" Height="730" Width="1280" WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  ShowCloseButton="False" ShowMinButton="False" Loaded="MetroWindow_Loaded">
+        Title="原神启动器Plus" Height="730" Width="1280" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" ShowCloseButton="False" Loaded="MetroWindow_Loaded">
     <Grid x:Name="BGW">
         <Grid.Background>
             <ImageBrush ImageSource="/Res/BG.png" Stretch="UniformToFill"/>
@@ -20,32 +20,32 @@
             </Button.Background>
         </Button>
         <Grid HorizontalAlignment="Center" Height="45" VerticalAlignment="Top" Width="1280" Background="#FF272727">
-            <Button x:Name="CloseW" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FFFF5252" Content="" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="1245,0,0,0" VerticalAlignment="Center" Height="25" Width="25" Click="CloseW_Click" Foreground="White" FontSize="16"/>
-            <Button x:Name="MinW" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FF00AFEA" Content="" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="1210,0,0,0" VerticalAlignment="Center" Height="25" Width="25" Click="Min_Click" Foreground="White" FontSize="16"/>
+            <Button x:Name="CloseW" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FFFF5252" Content="❌" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="1245,0,0,0" VerticalAlignment="Center" Height="25" Width="25" Click="CloseW_Click" Foreground="White" FontSize="10"/>
+            <Button x:Name="MinW" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FF777777" Content="➖" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="1210,0,0,0" VerticalAlignment="Center" Height="25" Width="25" Click="Min_Click" Foreground="White" FontSize="10"/>
             <Label x:Name="TitleMain" Content="原神启动器Plus" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
         </Grid>
         <Grid HorizontalAlignment="Left" Height="685" Margin="1197,45,0,0" VerticalAlignment="Top" Width="83" Background="#66717171">
-            <Button x:Name="ScreenSrc" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content=""  BorderBrush="{x:Null}" HorizontalAlignment="Center" Margin="0,176,0,0" VerticalAlignment="Top" Height="50" Width="50" Click="ScreenSrc_Click"  BorderThickness="5">
+            <Button x:Name="ScreenSrc" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content=""  BorderBrush="#59000000" HorizontalAlignment="Center" Margin="0,176,0,0" VerticalAlignment="Top" Height="50" Width="50" Click="ScreenSrc_Click"  BorderThickness="4">
                 <Button.Background>
                     <ImageBrush ImageSource="/Res/img.png"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="Setting" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,246,0,0" VerticalAlignment="Top" Click="Setting_Click" Height="50" Width="50" BorderBrush="{x:Null}" BorderThickness="5">
+            <Button x:Name="Setting" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,246,0,0" VerticalAlignment="Top" Click="Setting_Click" Height="50" Width="50" BorderBrush="#59000000" BorderThickness="4">
                 <Button.Background>
                     <ImageBrush ImageSource="/Res/setting.png"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="QQGroup" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" VerticalAlignment="Top" Click="QqG_Click" Height="50" Width="50" BorderBrush="{x:Null}" BorderThickness="5" Margin="0,316,0,0">
+            <Button x:Name="QQGroup" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" VerticalAlignment="Top" Click="QqG_Click" Height="50" Width="50" BorderBrush="#59000000" BorderThickness="4" Margin="0,316,0,0">
                 <Button.Background>
                     <ImageBrush ImageSource="/Res/qqg.png"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="saveAcc" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,386,0,0" VerticalAlignment="Top" Click="SaveAcc_Click" Height="50" Width="50" BorderBrush="{x:Null}" BorderThickness="5">
+            <Button x:Name="saveAcc" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,386,0,0" VerticalAlignment="Top" Click="SaveAcc_Click" Height="50" Width="50" BorderBrush="#59000000" BorderThickness="4">
                 <Button.Background>
                     <ImageBrush ImageSource="/Res/user.png"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="About" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,456,0,0" VerticalAlignment="Top" Click="About_Click" Height="50" Width="50" BorderBrush="{x:Null}" BorderThickness="5">
+            <Button x:Name="About" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,456,0,0" VerticalAlignment="Top" Click="About_Click" Height="50" Width="50" BorderBrush="#59000000" BorderThickness="4">
                 <Button.Background>
                     <ImageBrush ImageSource="/Res/about.png"/>
                 </Button.Background>
@@ -66,7 +66,7 @@
             <Label x:Name="Page8" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,99,0,0" HorizontalContentAlignment="Center"/>
             <Label x:Name="Page9" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,132,0,0" HorizontalContentAlignment="Center"/>
             <Label x:Name="Page10" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,165,0,0" HorizontalContentAlignment="Center"/>
-            <Grid HorizontalAlignment="Left" Height="199" Margin="351,0,0,0" VerticalAlignment="Center" Width="3" Background="#7F000000" RenderTransformOrigin="0.5,0.5">
+            <Grid HorizontalAlignment="Left" Height="199" Margin="351,0,0,0" VerticalAlignment="Center" Width="3" Background="#33000000" RenderTransformOrigin="0.5,0.5">
                 <Grid.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -84,6 +84,7 @@
                 <Label x:Name="label1" Content="下载进度" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="20"/>
             </Grid>
         </Grid>
+        <Label x:Name="NowPort" Content="当前客户端：哔哩服" HorizontalAlignment="Left" VerticalAlignment="Top" Width="155" Background="#592D2D2D" Foreground="White" FontSize="16" Margin="761,666,0,0"/>
     </Grid>
 
 </mah:MetroWindow>

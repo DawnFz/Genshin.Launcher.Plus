@@ -35,7 +35,14 @@ namespace GenShin_LauncherDIY
                 utils.FileWriter("Res/unlockfps.dll", @"unlockfps.exe");
     
             IniControl.EXEname(Path.GetFileName(Assembly.GetEntryAssembly().Location));
-
+            if (IniControl.isMihoyo == 1)
+                NowPort.Content = "当前客户端：官方服";
+            else if (IniControl.isMihoyo == 2)
+                NowPort.Content = "当前客户端：哔哩服";
+            else if (IniControl.isMihoyo == 3)
+                NowPort.Content = "当前客户端：国际服";
+            else
+                NowPort.Content = "当前客户端：未知";
         }
         public void DragWindow(object sender, MouseButtonEventArgs args)
         {
@@ -196,6 +203,8 @@ namespace GenShin_LauncherDIY
                         Process.Start(@"Update.exe");
                         Environment.Exit(0);
                     }
+                    else
+                        Update.Visibility = Visibility.Hidden;
                 }));
             }, null);
         }
