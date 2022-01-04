@@ -8,14 +8,17 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace GenShin_LauncherDIY
 {
@@ -32,17 +35,31 @@ namespace GenShin_LauncherDIY
             UtilsTools utils = new UtilsTools();
             utils.FileWriter("Res/Update.dll", @"Update.exe");
             if (!File.Exists(@"unlockfps.exe"))
+            {
                 utils.FileWriter("Res/unlockfps.dll", @"unlockfps.exe");
-    
+            }
             IniControl.EXEname(Path.GetFileName(Assembly.GetEntryAssembly().Location));
             if (IniControl.isMihoyo == 1)
-                NowPort.Content = "当前客户端：官方服";
+            {
+                NowPort.Content = "当前客户端：米哈游官服";
+            }
             else if (IniControl.isMihoyo == 2)
-                NowPort.Content = "当前客户端：哔哩服";
+            {
+                NowPort.Content = "当前客户端：哔哩哔哩服";
+            }
             else if (IniControl.isMihoyo == 3)
-                NowPort.Content = "当前客户端：国际服";
+            {
+                NowPort.Content = "当前客户端：通用国际服";
+            }
             else
+            {
                 NowPort.Content = "当前客户端：未知";
+            }
+            if (IniControl.SwitchUser != null&&IniControl.SwitchUser!="")
+            {
+                NowUser.Visibility = Visibility.Visible;
+                NowUser.Content = $"账号：{ IniControl.SwitchUser}";
+            }
         }
         public void DragWindow(object sender, MouseButtonEventArgs args)
         {
@@ -52,8 +69,9 @@ namespace GenShin_LauncherDIY
         private void RunGame_Click(object sender, RoutedEventArgs e)
         {
             if (IniControl.isUnFPS)
+            {
                 Process.Start(@"unlockfps.exe");
-
+            }
             var argBuilder = new CommandLineBuilder();
             argBuilder.AddOption("-screen-fullscreen ", IniControl.isAutoSize ? "1" : "0");
             argBuilder.AddOption("-screen-height ", IniControl.Height);
@@ -62,14 +80,14 @@ namespace GenShin_LauncherDIY
 
             if (!File.Exists(Settings.gameMain))
             {
-                Settings.gameMain= Path.Combine(IniControl.GamePath, "Genshin Impact Game/GenshinImpact.exe");
+                Settings.gameMain = Path.Combine(IniControl.GamePath, "Genshin Impact Game/GenshinImpact.exe");
                 if (!File.Exists(Settings.gameMain))
                 {
                     this.ShowMessageAsync("错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                     return;
                 }
             }
-            
+
             ProcessStartInfo info = new ProcessStartInfo()
             {
                 FileName = Settings.gameMain,
@@ -79,7 +97,7 @@ namespace GenShin_LauncherDIY
                 Arguments = argBuilder.ToString()
             };
             Process.Start(info);
-            
+
             if (IniControl.isClose == true)
             {
                 TaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
@@ -127,7 +145,9 @@ namespace GenShin_LauncherDIY
             Window set = new SetWindow();
             HwndSource winformWindow = (PresentationSource.FromDependencyObject(this) as HwndSource);
             if (winformWindow != null)
+            {
                 new WindowInteropHelper(set) { Owner = winformWindow.Handle };
+            }
             set.Owner = this;
             set.ShowDialog();
         }
@@ -142,14 +162,18 @@ namespace GenShin_LauncherDIY
             Window save = new SaveAccIni();
             HwndSource winformWindow = (PresentationSource.FromDependencyObject(this) as HwndSource);
             if (winformWindow != null)
+            {
                 new WindowInteropHelper(save) { Owner = winformWindow.Handle };
+            }
             save.ShowDialog();
         }
 
         private async void About_Click(object sender, RoutedEventArgs e)
         {
             if ((await this.ShowMessageAsync("关于", Settings.aboutthis, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "确定", NegativeButtonText = "GitHub" })) != MessageDialogResult.Affirmative)
+            {
                 Process.Start(Settings.htmlUrl[2]);
+            }
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)
@@ -157,88 +181,84 @@ namespace GenShin_LauncherDIY
             Process.Start(Settings.htmlUrl[3]);
         }
 
-        private void UpdateEXE()
+        private async void UpdateEXE()
         {
+            Update.Visibility = Visibility.Visible;
             string downver = UtilsTools.MiddleText(UtilsTools.ReadHTML(Settings.htmlUrl[0], "UTF-8"), "[$gitv$]", "[#gitv#]");
-            
-            if (HttpFileExist($"https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY@{ downver }/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png") == true)
-            {
-                Update.Visibility = Visibility.Visible;
-                DownloadHttpFile($"https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY@{ downver }/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png", @"UpdateTemp.upd");
+            if (await HttpFileExistAsync($"https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY@{ downver }/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png") == true)
+            {               
+                await DownloadHttpFileAsync($"https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY@{ downver }/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png", @"UpdateTemp.upd");
             }
             else
             {
-                this.ShowMessageAsync("错误提示", "网络更新文件资源不存在或服务器网络错误", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                await this.ShowMessageAsync("错误提示", "网络更新文件资源不存在或服务器网络错误", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                Update.Visibility = Visibility.Hidden;
             }
         }
 
-        public void DownloadHttpFile(string http_url, string save_url)
-        {
-            WebResponse response = null;
-            WebRequest request = WebRequest.Create(http_url);
-            response = request.GetResponse();
-            if (response == null) return;
-            pbDown.Maximum = response.ContentLength;
-            ThreadPool.QueueUserWorkItem((obj) =>
-            {
-                Stream netStream = response.GetResponseStream();
-                Stream fileStream = new FileStream(save_url, FileMode.Create);
-                byte[] read = new byte[1024];
-                long progressBarValue = 0;
-                int realReadLen = netStream.Read(read, 0, read.Length);
-                while (realReadLen > 0)
-                {
-                    fileStream.Write(read, 0, realReadLen);
-                    progressBarValue += realReadLen;
-                    pbDown.Dispatcher.BeginInvoke(new ProgressBarSetter(SetProgressBar), progressBarValue);
-                    realReadLen = netStream.Read(read, 0, read.Length);
-                }
-                netStream.Close();
-                fileStream.Close();
+        private Lazy<HttpClient> LazyClient { get; } = new Lazy<HttpClient>(() => new HttpClient() { Timeout = Timeout.InfiniteTimeSpan });
 
-                Dispatcher.Invoke(new Action(async delegate ()
-                {
-                    if ((await this.ShowMessageAsync("提示", "下载完成，是否现在进行更新操作\r\n确定后只需等待5秒将自动启动新版本", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "确定" })) != MessageDialogResult.Affirmative)
-                    {
-                        Process.Start(@"Update.exe");
-                        Environment.Exit(0);
-                    }
-                    else
-                        Update.Visibility = Visibility.Hidden;
-                }));
-            }, null);
-        }
-        private bool HttpFileExist(string http_file_url)
+        public async Task DownloadHttpFileAsync(string url, string fileName)
         {
-            WebResponse response = null;
-            bool result = false;
+            HttpResponseMessage response = await LazyClient.Value.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+            if (!response.IsSuccessStatusCode)
+            {
+                return;
+            }
+            pbDown.Maximum = (double)response.Content.Headers.ContentLength;
+
+            using (Stream responseStream = await response.Content.ReadAsStreamAsync())
+            {
+                int bufferSize = 1024;
+                using (FileStream fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize, true))
+                {
+                    byte[] buffer = new byte[bufferSize];
+                    long progressBarValue = 0;
+                    int bytesRead = 0;
+                    do
+                    {
+                        bytesRead = await responseStream.ReadAsync(buffer, 0, buffer.Length);
+                        await fileStream.WriteAsync(buffer, 0, bytesRead);
+                        progressBarValue += bytesRead;
+                        //fire and forget
+                        _ = Dispatcher.InvokeAsync(() => SetProgressBar(progressBarValue));
+                    }
+                    while (bytesRead > 0);
+                }
+            }
+
+            await Dispatcher.Invoke(async () =>
+            {
+                if ((await this.ShowMessageAsync("提示", "下载完成，是否现在进行更新操作\r\n确定后只需等待5秒将自动启动新版本", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "确定" })) != MessageDialogResult.Affirmative)
+                {
+                    Process.Start(@"Update.exe");
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Update.Visibility = Visibility.Hidden;
+                }
+            });
+        }
+        private async Task<bool> HttpFileExistAsync(string url)
+        {
             try
             {
-                response = WebRequest.Create(http_file_url).GetResponse();
-                result = response == null ? false : true;
+                HttpResponseMessage response = await LazyClient.Value.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+                return response.IsSuccessStatusCode;
             }
-            catch (Exception ex)
-            {
-                result = false;
-            }
-            finally
-            {
-                if (response != null)
-                {
-                    response.Close();
-                }
-            }
-            return result;
+            catch { }
+            return false;
         }
         public delegate void ProgressBarSetter(double value);
         public void SetProgressBar(double value)
         {
             pbDown.Value = value;
-            label1.Content = "下载进度:" + Convert.ToInt32((value / pbDown.Maximum) * 100) + "%";
+            label1.Content = $"下载进度:{value / pbDown.Maximum:p2}";
         }
 
         private async void MetroWindow_Loaded(object sender, RoutedEventArgs e)
-        {           
+        {
             string version = Application.ResourceAssembly.GetName().Version.ToString();
             TitleMain.Content = "原神启动器Plus  " + version;
             if (File.Exists(@"Config\Bg.png"))
@@ -249,10 +269,19 @@ namespace GenShin_LauncherDIY
                 b.Stretch = Stretch.UniformToFill;
                 BGW.Background = b;
             }
+            else if(IniControl.isWebBg==true)
+            {
+                ImageBrush b = new ImageBrush();
+                Uri uri = new Uri(UtilsTools.MiddleText(UtilsTools.ReadHTML(Settings.htmlUrl[0], "UTF-8"), "[$bg$]", "[#bg#]"), UriKind.Absolute);
+                b.ImageSource = new BitmapImage(uri);
+                b.Stretch = Stretch.UniformToFill;
+                BGW.Background = b;
+            }
 
-            if(IniControl.isMainGridHide==true)
+            if (IniControl.isMainGridHide == true)
+            {
                 MainGrid.Visibility = Visibility.Hidden;
-
+            }
             string JsonFile = UtilsTools.ReadHTML(Settings.htmlUrl[4], "UTF-8");
             Stream s = new MemoryStream(Encoding.UTF8.GetBytes(JsonFile));
             StreamReader file = new StreamReader(s);

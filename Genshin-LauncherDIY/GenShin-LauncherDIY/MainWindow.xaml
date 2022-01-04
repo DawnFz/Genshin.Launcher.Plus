@@ -56,35 +56,31 @@
         <Grid x:Name="MainGrid" HorizontalAlignment="Left" Height="199" Margin="58,470,0,0" VerticalAlignment="Top" Width="498" Background="#3D000000">
             <Label Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#B22D2D2D" Foreground="White" FontSize="16"/>
             <Label Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#B22D2D2D" Foreground="White" FontSize="16" Margin="353,0,0,0" HorizontalContentAlignment="Center"/>
-            <Label x:Name="Page1" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,33,0,0"/>
-            <Label x:Name="Page2" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,66,0,0"/>
-            <Label x:Name="Page3" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,99,0,0"/>
-            <Label x:Name="Page4" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,132,0,0"/>
-            <Label x:Name="Page5" Content=" 原神官方公告" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,165,0,0"/>
-            <Label x:Name="Page6" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,33,0,0" HorizontalContentAlignment="Center"/>
-            <Label x:Name="Page7" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,66,0,0" HorizontalContentAlignment="Center"/>
-            <Label x:Name="Page8" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,99,0,0" HorizontalContentAlignment="Center"/>
-            <Label x:Name="Page9" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,132,0,0" HorizontalContentAlignment="Center"/>
-            <Label x:Name="Page10" Content="结束时间" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,165,0,0" HorizontalContentAlignment="Center"/>
-            <Grid HorizontalAlignment="Left" Height="199" Margin="351,0,0,0" VerticalAlignment="Center" Width="3" Background="#33000000" RenderTransformOrigin="0.5,0.5">
-                <Grid.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleX="-1"/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Grid.RenderTransform>
-            </Grid>
+            <Label x:Name="Page1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,33,0,0"/>
+            <Label x:Name="Page2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,66,0,0"/>
+            <Label x:Name="Page3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,99,0,0"/>
+            <Label x:Name="Page4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,132,0,0"/>
+            <Label x:Name="Page5" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="353" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="0,165,0,0"/>
+            <Label x:Name="Page6" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,33,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page7" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,66,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page8" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,99,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page9" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,132,0,0" HorizontalContentAlignment="Center"/>
+            <Label x:Name="Page10" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="145" Background="#3F2D2D2D" Foreground="White" FontSize="16" Margin="353,165,0,0" HorizontalContentAlignment="Center"/>
+            <Grid HorizontalAlignment="Left" Height="199" Margin="351,0,0,0" VerticalAlignment="Center" Width="3" Background="#33000000" RenderTransformOrigin="0.5,0.5"/>
         </Grid>
+        <Label x:Name="NowPort" HorizontalContentAlignment="Center" Content="游戏：" HorizontalAlignment="Left" VerticalAlignment="Top" Width="189" Background="#592D2D2D" Foreground="White" FontSize="16" Margin="727,666,0,0"/>
+        <Grid x:Name="TestGrid" Height="369" Width="392" Margin="58,79,830,282">
+
+        </Grid>
+        <Label x:Name="NowUser" HorizontalContentAlignment="Center" Content="账号：" HorizontalAlignment="Left" VerticalAlignment="Top" Width="189" Background="#592D2D2D" Foreground="White" FontSize="16" Margin="727,633,0,0" Visibility="Hidden"/>
         <Grid x:Name="Update" Background="#7F000000" Visibility="Hidden">
-            <Grid HorizontalAlignment="Center" Height="338" Margin="0,204,0,0" VerticalAlignment="Top" Width="1280" Background="#FF716182">
+            <Grid HorizontalAlignment="Center" Height="338" Margin="0,204,0,0" VerticalAlignment="Top" Width="1280" Background="#FF5C6B75">
                 <Label x:Name="TitleUP" Content="正在更新-请勿关闭启动器..." HorizontalAlignment="Center" Margin="0,83,0,0" VerticalAlignment="Top" Foreground="White" FontSize="28"/>
                 <mah:MetroProgressBar x:Name="pbDown" HorizontalAlignment="Center" Height="30" VerticalAlignment="Top" Width="736" Foreground="White" Margin="0,206,0,0"/>
                 <Label x:Name="label1" Content="下载进度" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="20"/>
+                <Label x:Name="label3" Content="因CDN缓存问题下载可能会有点慢，请耐心等待" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#3FFFFFFF" FontSize="16" Margin="0,291,0,0" Background="Transparent"/>
             </Grid>
         </Grid>
-        <Label x:Name="NowPort" Content="当前客户端：哔哩服" HorizontalAlignment="Left" VerticalAlignment="Top" Width="155" Background="#592D2D2D" Foreground="White" FontSize="16" Margin="761,666,0,0"/>
     </Grid>
 
 </mah:MetroWindow>

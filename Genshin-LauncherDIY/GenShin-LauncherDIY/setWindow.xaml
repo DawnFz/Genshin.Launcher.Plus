@@ -4,13 +4,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GenShin_LauncherDIY"
         mc:Ignorable="d"
         Title="设置" Height="369" Width="392" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal" MouseLeftButtonDown="DragWindow">
-
     <Grid>
         <Button x:Name="setSave" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="保存设置" HorizontalAlignment="Left" Margin="298,297,0,0" VerticalAlignment="Top" Height="28" Width="81" Click="setSave_Click" FontFamily="Microsoft YaHei UI" FontSize="12" />
         <TextBox mah:TextBoxHelper.Watermark="官方启动器目录，或游戏上级目录" x:Name="LauncherPath" x:FieldModifier="public" Height="23" Margin="13,260,48,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" TextChanged="LauncherPath_Text"/>
-        <Button x:Name="Dirchoose" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="..." HorizontalAlignment="Left" Margin="342,260,0,0" VerticalAlignment="Top" Height="26" Width="37" Click="Dir_Click" FontFamily="Microsoft YaHei UI" FontSize="12" BorderBrush="#CC76608A" />
+        <Button x:Name="Dirchoose" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="..." HorizontalAlignment="Left" Margin="342,260,0,0" VerticalAlignment="Top" Height="26" Width="37" Click="Dir_Click" FontFamily="Microsoft YaHei UI" FontSize="12" BorderBrush="#FF83919F" />
         <TabControl HorizontalAlignment="Center" Height="255" VerticalAlignment="Top" Width="392" mah:HeaderedControlHelper.HeaderFontSize="14" mah:HeaderedControlHelper.HeaderFontStretch="Medium" Background="White">
             <TabItem Header="快速设置" mah:ControlsHelper.ContentCharacterCasing="Normal" mah:HeaderedControlHelper.HeaderFontSize="14">
                 <Grid Background="White">
@@ -24,7 +24,7 @@
                             <CheckBox x:Name="PopupUP" Content="无边框" HorizontalAlignment="Left" Margin="87,132,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
                             <CheckBox x:Name="isUnFPS" Content="解帧率" HorizontalAlignment="Left" Margin="17,132,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" Click="UnFps_Click"/>
                             <TextBox mah:TextBoxHelper.Watermark="FPS上限" x:Name="MaxFPS" HorizontalAlignment="Left" Margin="16,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="False"/>
-                            <ListBox x:Name="UserList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="169,0,0,0" BorderThickness="2,2,2,2" BorderBrush="#FF9180A1"/>
+                            <ListBox x:Name="UserList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="169,0,0,0" BorderThickness="2,2,2,2" BorderBrush="#FF9CA7B2"/>
                             <ComboBox x:Name="GamePort" HorizontalAlignment="Left" Height="16" Margin="16,70,0,0" VerticalAlignment="Top" Width="64" FontFamily="Microsoft YaHei UI">
                                 <ComboBoxItem x:Name="MihoyoItem" Content="官服"/>
                                 <ComboBoxItem x:Name="BiliItem" Content="哔哩" Selected="BiliItem_Selected"/>
@@ -38,23 +38,30 @@
                         </Grid>
                     </GroupBox>
                     <Button x:Name="DelUser" Style="{DynamicResource MahApps.Styles.Button.Square}" Content="删除选中的用户" HorizontalAlignment="Left" Margin="262,201,0,0" VerticalAlignment="Top" Width="114" Click="DelUser_Click"/>
-                    <CheckBox x:Name="IsClose" Content="最小化到托盘" HorizontalAlignment="Left" Margin="10,205,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" Click="IsClose_Click"/>
-                    <CheckBox x:Name="MainGridHide" Content="关闭公告" HorizontalAlignment="Left" Margin="113,205,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
+                    <CheckBox x:Name="MainGridHide" Content="关闭主页面公告" HorizontalAlignment="Left" Margin="10,205,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI"/>
                 </Grid>
             </TabItem>
             <TabItem Header="国际服转换" mah:ControlsHelper.ContentCharacterCasing="Normal" mah:HeaderedControlHelper.HeaderFontSize="14">
                 <Grid Background="White">
                     <GroupBox HorizontalAlignment="Left" Height="185" Header="国际服 | 国内双服转换" Margin="10,0,0,0" VerticalAlignment="Top" Width="187">
                         <Grid>
-                            <mah:MetroProgressBar x:Name="bqload"  Margin="16,125,72,15" IsIndeterminate="True" Maximum="100" Minimum="0" Value="{Binding Value, ElementName=horizSlider}" Foreground="#CC76608A" Visibility="Hidden"/>
+                            <mah:MetroProgressBar x:Name="bqload"  Margin="16,125,72,15" IsIndeterminate="True" Maximum="100" Minimum="0" Foreground="#CC76608A" Visibility="Hidden"/>
                             <Button x:Name="ToGlobal" Content="转换" HorizontalAlignment="Left" Margin="121,117,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="48" Click="ToGlobal_Click"/>
                             <Label x:Name="TimeStatus" Content="当前状态：无状态" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="153" Margin="8,0,0,0"/>
-                            <Label HorizontalAlignment="Left" Height="78" VerticalAlignment="Top" Width="161" Margin="8,30,0,0" Background="#9976608A" Foreground="White">
+                            <Label HorizontalAlignment="Left" Height="78" VerticalAlignment="Top" Width="161" Margin="8,30,0,0" Background="#CC83919F" Foreground="White">
                                 <TextBlock x:Name="LogBox" TextWrapping="Wrap" Text="操作日志"/>
                             </Label>
                         </Grid>
                     </GroupBox>
                     <Label x:Name="SDKlive_Copy" Content="Tips:此页右边留空部分后续增加原国际服转国服" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="276" Foreground="#4C000000"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="实验性设置" mah:ControlsHelper.ContentCharacterCasing="Normal" mah:HeaderedControlHelper.HeaderFontSize="14">
+                <Grid Background="White">
+                    <CheckBox x:Name="IsClose" Content="最小化到托盘" HorizontalAlignment="Left" Margin="16,16,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" Click="IsClose_Click"/>
+                    <Label x:Name="SDKlive_Copy1" Content="Tips:本页提供的功能可能存在一些小问题" HorizontalAlignment="Left" Margin="10,162,0,0" VerticalAlignment="Top" Width="276" Foreground="#4C000000"/>
+                    <CheckBox x:Name="IsWebBg" Content="默认使用网络背景" HorizontalAlignment="Left" Margin="16,44,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" Click="IsWebBg_Click"/>
+                    <Label x:Name="SDKlive_Copy2" Content="Tips:自定义背景请将bg.png放到Config文件夹即可" HorizontalAlignment="Left" Margin="10,192,0,0" VerticalAlignment="Top" Width="299" Foreground="#4C000000"/>
                 </Grid>
             </TabItem>
         </TabControl>

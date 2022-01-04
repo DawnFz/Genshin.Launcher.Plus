@@ -141,6 +141,7 @@ namespace GenShin_LauncherDIY
     }
     class IniControl
     {
+
         private static string _GamePath;
         public static string GamePath
         {
@@ -213,6 +214,24 @@ namespace GenShin_LauncherDIY
             }
         }
 
+        private static string _SwitchUser;
+        public static string SwitchUser
+        {
+            get
+            {
+                IniParser parser = new IniParser();
+                _SwitchUser = parser.GetSetting("setup", "SwitchUser", 0);
+                return _SwitchUser;
+            }
+            set
+            {
+                IniParser parser = new IniParser();
+                _SwitchUser = value;
+                parser.AddSetting("setup", "SwitchUser", _SwitchUser);
+                parser.SaveSettings();
+            }
+        }
+
         private static bool _isPopup;
         public static bool isPopup
         {
@@ -230,6 +249,28 @@ namespace GenShin_LauncherDIY
                 parser.SaveSettings();
             }
         }
+
+
+        private static bool _isWebBg;
+        public static bool isWebBg
+        {
+            get
+            {
+                IniParser parser = new IniParser();
+                _isWebBg = Convert.ToBoolean(parser.GetSetting("setup", "isWebBg", 2));
+                return _isWebBg;
+            }
+            set
+            {
+                IniParser parser = new IniParser();
+                _isWebBg = value;
+                parser.AddSetting("setup", "isWebBg", Convert.ToString(_isWebBg));
+                parser.SaveSettings();
+            }
+        }
+
+
+
 
         private static bool _isClose;
         public static bool isClose

@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenShin_LauncherDIY"
         mc:Ignorable="d"
-        Title="保存账号数据" Height="193" Width="370" WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  ShowCloseButton="False" ShowMinButton="False" Background="#CC76608A">
+        Title="保存账号数据" Height="193" Width="370" WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  ShowCloseButton="False" ShowMinButton="False" Background="#FF83919F">
     <Grid>
         <GroupBox Header="保存上次登录的账号数据-不支持哔服">
             <Grid Background="White">
