@@ -12,6 +12,7 @@ namespace GenShin_LauncherDIY
         public static string[] globalfiles = new string[]
         { "GenshinImpact_Data/app.info",
           "GenshinImpact_Data/globalgamemanagers",
+          "GenshinImpact_Data/upload_crash.exe",
           "GenshinImpact_Data/Managed/Metadata/global-metadata.dat" ,
           "GenshinImpact_Data/Native/Data/Metadata/global-metadata.dat",
           "GenshinImpact_Data/Native/UserAssembly.dll",
@@ -41,6 +42,7 @@ namespace GenShin_LauncherDIY
         public static string[] cnfiles = new string[]
         { "YuanShen_Data/app.info",
           "YuanShen_Data/globalgamemanagers",
+          "YuanShen_Data/upload_crash.exe",
           "YuanShen_Data/Managed/Metadata/global-metadata.dat" ,
           "YuanShen_Data/Native/Data/Metadata/global-metadata.dat",
           "YuanShen_Data/Native/UserAssembly.dll",

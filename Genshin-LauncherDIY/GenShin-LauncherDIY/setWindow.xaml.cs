@@ -265,13 +265,7 @@ namespace GenShin_LauncherDIY
                         TimeStatus.Content = "当前状态：正在还原游戏";
                         StartRe.Start();
                     }
-                    else if ("2.3.0-2" != pkgfile)
-                    {
-                        await this.ShowMessageAsync("提示", "国际服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd  已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                        Clipboard.SetText("etxd");
-                        Thread.Sleep(2500);
-                        Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
-                    }
+                   
                     else if (Directory.Exists(@"GlobalFile") == true)
                     {
                         bool error = false;
@@ -285,7 +279,13 @@ namespace GenShin_LauncherDIY
                             }
                             LogBox.Text = Settings.globalfiles[i] + "存在";
                         }
-                        if (!error)
+                        if (!File.Exists($"GlobalFile/{ pkgfile}"))
+                        {
+                            await this.ShowMessageAsync("提示", "请先删除旧版解压的GlobalFile文件夹或国际服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd  已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                            Clipboard.SetText("etxd");
+                            Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
+                        }
+                        else if (!error)
                         {
                             Thread StartMove = new Thread(() => MoveFile());
                             bqload.Visibility = Visibility.Visible;
