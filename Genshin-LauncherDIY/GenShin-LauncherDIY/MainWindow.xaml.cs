@@ -327,16 +327,17 @@ namespace GenShin_LauncherDIY
             if (IniControl.isClose)
             {
                 TaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
+                Stream iconStream = Application.GetResourceStream(new Uri("pack://application:,,,/ICON.ico")).Stream;
                 var _notifyIcon = new System.Windows.Forms.NotifyIcon
                 {
                     BalloonTipText = @"原神启动器已最小化到托盘！",
-                    Icon = new Icon("ICON.ico"),
+                    Icon = new Icon(iconStream),
                     Visible = true
                 };
                 _notifyIcon.ShowBalloonTip(2000);
                 Thread thread = new Thread(() => 
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(500);
                     _notifyIcon.Visible = false;
                 });
                 thread.Start();              

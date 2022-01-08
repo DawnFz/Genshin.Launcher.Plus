@@ -49,7 +49,7 @@
                             <Button x:Name="ToGlobal" Content="转换" HorizontalAlignment="Left" Margin="267,146,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="79" Click="ToGlobal_Click"/>
                             <Label x:Name="TimeStatus" Content="当前状态：无状态" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="153" Margin="8,0,0,0"/>
                             <TextBox x:Name="LogBox" HorizontalAlignment="Center" Height="104" VerticalAlignment="Top" Width="338" Margin="0,30,0,0" Background="#CC83919F" Foreground="White" TextWrapping="Wrap" Text=""/>
-                            <ComboBox x:Name="ChangeMode" HorizontalAlignment="Left" Height="16" Margin="10,147,0,0" VerticalAlignment="Top" Width="109" FontFamily="Microsoft YaHei UI" SelectedIndex="0">
+                            <ComboBox x:Name="ChangeMode" HorizontalAlignment="Left" Height="16" Margin="10,147,0,0" VerticalAlignment="Top" Width="109" FontFamily="Microsoft YaHei UI" SelectedIndex="0" IsEnabled="False">
                                 <ComboBoxItem Content="选择转换模式"/>
                                 <ComboBoxItem x:Name="CN_ToGloble" Content="国内->国际"/>
                                 <ComboBoxItem x:Name="Globle_ToCN" Content="国际->国内"/>
