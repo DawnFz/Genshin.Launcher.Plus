@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -30,13 +31,18 @@ namespace GenShin_LauncherDIY
         public MainWindow()
         {
             InitializeComponent();
-            AddConfig.CheckIni();
 
+
+            AddConfig.CheckIni();
             UtilsTools utils = new UtilsTools();
             utils.FileWriter("Res/Update.dll", @"Update.exe");
-            if (!File.Exists(@"unlockfps.exe"))
+            try
             {
                 utils.FileWriter("Res/unlockfps.dll", @"unlockfps.exe");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
             IniControl.EXEname(Path.GetFileName(Assembly.GetEntryAssembly().Location));
             if (IniControl.isMihoyo == 1)
@@ -55,7 +61,7 @@ namespace GenShin_LauncherDIY
             {
                 NowPort.Content = "当前客户端：未知";
             }
-            if (IniControl.SwitchUser != null&&IniControl.SwitchUser!="")
+            if (IniControl.SwitchUser != null && IniControl.SwitchUser != "")
             {
                 NowUser.Visibility = Visibility.Visible;
                 NowUser.Content = $"账号：{ IniControl.SwitchUser}";
@@ -88,19 +94,22 @@ namespace GenShin_LauncherDIY
                 }
             }
 
-            ProcessStartInfo info = new ProcessStartInfo()
+            Thread StartGame = new Thread(() =>
             {
-                FileName = Settings.gameMain,
-                Verb = "runas",
-                UseShellExecute = true,
-                WorkingDirectory = Path.Combine(Settings.launcherPath, "Genshin Impact Game"),
-                Arguments = argBuilder.ToString()
-            };
-            Process.Start(info);
+                ProcessStartInfo info = new ProcessStartInfo()
+                {
+                    FileName = Settings.gameMain,
+                    Verb = "runas",
+                    UseShellExecute = true,
+                    WorkingDirectory = Path.Combine(Settings.launcherPath, "Genshin Impact Game"),
+                    Arguments = argBuilder.ToString()
+                };
+                Process.Start(info);
+            });
+            StartGame.Start();
 
             if (IniControl.isClose == true)
-            {
-                TaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
+            { 
                 Close();
             }
             else
@@ -119,7 +128,6 @@ namespace GenShin_LauncherDIY
         {
             if (IniControl.isClose == true)
             {
-                TaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
                 Close();
             }
             else
@@ -186,7 +194,7 @@ namespace GenShin_LauncherDIY
             Update.Visibility = Visibility.Visible;
             string downver = UtilsTools.MiddleText(UtilsTools.ReadHTML(Settings.htmlUrl[0], "UTF-8"), "[$gitv$]", "[#gitv#]");
             if (await HttpFileExistAsync($"https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY@{ downver }/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png") == true)
-            {               
+            {
                 await DownloadHttpFileAsync($"https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY@{ downver }/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png", @"UpdateTemp.upd");
             }
             else
@@ -269,7 +277,7 @@ namespace GenShin_LauncherDIY
                 b.Stretch = Stretch.UniformToFill;
                 BGW.Background = b;
             }
-            else if(IniControl.isWebBg==true)
+            else if (IniControl.isWebBg == true)
             {
                 ImageBrush b = new ImageBrush();
                 Uri uri = new Uri(UtilsTools.MiddleText(UtilsTools.ReadHTML(Settings.htmlUrl[0], "UTF-8"), "[$bg$]", "[#bg#]"), UriKind.Absolute);
@@ -311,6 +319,31 @@ namespace GenShin_LauncherDIY
                 {
                     UpdateEXE();
                 }
+            }
+        }
+
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (IniControl.isClose)
+            {
+                TaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
+                var _notifyIcon = new System.Windows.Forms.NotifyIcon
+                {
+                    BalloonTipText = @"原神启动器已最小化到托盘！",
+                    Icon = new Icon("ICON.ico"),
+                    Visible = true
+                };
+                _notifyIcon.ShowBalloonTip(2000);
+                Thread thread = new Thread(() => 
+                {
+                    Thread.Sleep(100);
+                    _notifyIcon.Visible = false;
+                });
+                thread.Start();              
+            }
+            else
+            {
+                Environment.Exit(0);
             }
         }
     }

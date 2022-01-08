@@ -6,10 +6,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenShin_LauncherDIY"
         mc:Ignorable="d"
-        Title="原神启动器Plus" Height="730" Width="1280" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" ShowCloseButton="False" Loaded="MetroWindow_Loaded">
+        Title="原神启动器Plus" Height="730" Width="1280" MouseLeftButtonDown="DragWindow" WindowStartupLocation="CenterScreen" ShowIconOnTitleBar="False"  WindowStyle="None" ResizeMode="NoResize" ShowTitleBar="False" ShowCloseButton="False" Loaded="MetroWindow_Loaded" Closing="MetroWindow_Closing">
     <Grid x:Name="BGW">
         <Grid.Background>
-            <ImageBrush ImageSource="/Res/BG.png" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="/Res/BG.jpg" Stretch="UniformToFill"/>
         </Grid.Background>
         <Button x:Name="RunGame" Content="开始游戏" HorizontalAlignment="Left" Margin="921,632,0,0" VerticalAlignment="Top" Click="RunGame_Click" Height="64" Width="238" FontSize="24" FontWeight="Normal" FontFamily="Microsoft YaHei" Foreground="#FF5D4400">
             <Button.Background>

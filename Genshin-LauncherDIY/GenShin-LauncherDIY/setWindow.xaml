@@ -43,17 +43,19 @@
             </TabItem>
             <TabItem Header="国际服转换" mah:ControlsHelper.ContentCharacterCasing="Normal" mah:HeaderedControlHelper.HeaderFontSize="14">
                 <Grid Background="White">
-                    <GroupBox HorizontalAlignment="Left" Height="185" Header="国际服 | 国内双服转换" Margin="10,0,0,0" VerticalAlignment="Top" Width="187">
+                    <GroupBox HorizontalAlignment="Center" Height="217" Header="国际服 | 国内双服转换" VerticalAlignment="Top" Width="366">
                         <Grid>
-                            <mah:MetroProgressBar x:Name="bqload"  Margin="16,125,72,15" IsIndeterminate="True" Maximum="100" Minimum="0" Foreground="#CC76608A" Visibility="Hidden"/>
-                            <Button x:Name="ToGlobal" Content="转换" HorizontalAlignment="Left" Margin="121,117,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="48" Click="ToGlobal_Click"/>
+                            <mah:MetroProgressBar x:Name="bqload"  Margin="126,138,95,2" IsIndeterminate="True" Maximum="100" Minimum="0" Foreground="#FF9CA7B2" Visibility="Hidden"/>
+                            <Button x:Name="ToGlobal" Content="转换" HorizontalAlignment="Left" Margin="267,146,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="79" Click="ToGlobal_Click"/>
                             <Label x:Name="TimeStatus" Content="当前状态：无状态" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="153" Margin="8,0,0,0"/>
-                            <Label HorizontalAlignment="Left" Height="78" VerticalAlignment="Top" Width="161" Margin="8,30,0,0" Background="#CC83919F" Foreground="White">
-                                <TextBlock x:Name="LogBox" TextWrapping="Wrap" Text="操作日志"/>
-                            </Label>
+                            <TextBox x:Name="LogBox" HorizontalAlignment="Center" Height="104" VerticalAlignment="Top" Width="338" Margin="0,30,0,0" Background="#CC83919F" Foreground="White" TextWrapping="Wrap" Text=""/>
+                            <ComboBox x:Name="ChangeMode" HorizontalAlignment="Left" Height="16" Margin="10,147,0,0" VerticalAlignment="Top" Width="109" FontFamily="Microsoft YaHei UI" SelectedIndex="0">
+                                <ComboBoxItem Content="选择转换模式"/>
+                                <ComboBoxItem x:Name="CN_ToGloble" Content="国内->国际"/>
+                                <ComboBoxItem x:Name="Globle_ToCN" Content="国际->国内"/>
+                            </ComboBox>
                         </Grid>
                     </GroupBox>
-                    <Label x:Name="SDKlive_Copy" Content="Tips:此页右边留空部分后续增加原国际服转国服" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="276" Foreground="#4C000000"/>
                 </Grid>
             </TabItem>
             <TabItem Header="实验性设置" mah:ControlsHelper.ContentCharacterCasing="Normal" mah:HeaderedControlHelper.HeaderFontSize="14">

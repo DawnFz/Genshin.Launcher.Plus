@@ -5,6 +5,7 @@
              xmlns:local="clr-namespace:GenShin_LauncherDIY"
              ShutdownMode="OnExplicitShutdown"
              StartupUri="MainWindow.xaml">
+              
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

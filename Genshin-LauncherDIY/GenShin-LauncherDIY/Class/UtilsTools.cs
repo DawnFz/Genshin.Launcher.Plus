@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -440,7 +441,37 @@ namespace GenShin_LauncherDIY
             return inputData;
         }
         #endregion
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr _lopen(string lpPathName, int iReadWrite);
+
+        [DllImport("kernel32.dll")]
+        public static extern bool CloseHandle(IntPtr hObject);
+        public const int OF_READWRITE = 2;
+        public const int OF_SHARE_DENY_NONE = 0x40;
+        public static readonly IntPtr HFILE_ERROR = new IntPtr(-1);
+
+        /// <summary>
+        /// 文件是否被打开
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool IsFileOpen(string path)
+        {
+            if (!File.Exists(path))
+            {
+                return false;
+            }
+            IntPtr vHandle = _lopen(path, OF_READWRITE | OF_SHARE_DENY_NONE);//windows Api上面有定义扩展方法
+            if (vHandle == HFILE_ERROR)
+            {
+                return true;
+            }
+            CloseHandle(vHandle);
+            return false;
+        }
     }
+
+
     public class DisplayList
     {
         public string Name { get; set; }
