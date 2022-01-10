@@ -326,7 +326,6 @@ namespace GenShin_LauncherDIY
         {
             if (IniControl.isClose)
             {
-                TaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
                 Stream iconStream = Application.GetResourceStream(new Uri("pack://application:,,,/ICON.ico")).Stream;
                 var _notifyIcon = new System.Windows.Forms.NotifyIcon
                 {
@@ -337,10 +336,11 @@ namespace GenShin_LauncherDIY
                 _notifyIcon.ShowBalloonTip(2000);
                 Thread thread = new Thread(() => 
                 {
-                    Thread.Sleep(500);
+                    Thread.Sleep(250);
                     _notifyIcon.Visible = false;
                 });
-                thread.Start();              
+                thread.Start();
+                TaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
             }
             else
             {

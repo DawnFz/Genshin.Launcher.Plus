@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -141,7 +142,7 @@ namespace GenShin_LauncherDIY
             if (UserList.SelectedIndex != -1)
             {
                 string user = (UserList as ListBox).SelectedItem.ToString();
-                IniControl.SwitchUser =user ;
+                IniControl.SwitchUser = user;
                 (this.Owner as MainWindow).NowUser.Content = $"账号：{user}";
                 (this.Owner as MainWindow).NowUser.Visibility = Visibility.Visible;
             }
@@ -256,65 +257,156 @@ namespace GenShin_LauncherDIY
                 if (Directory.Exists(Path.Combine(LauncherPath.Text, "Genshin Impact Game")) == true)
                 {
                     string pkgfile = UtilsTools.MiddleText(UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$pkg$]", "[#pkg#]");
-                    if (Convert.ToString(ToGlobal.Content) == "复原")
+                    if (ChangeMode.SelectedIndex == 2)
                     {
-                        Thread StartRe = new Thread(() => ReCnGame());
-                        bqload.Visibility = Visibility.Visible;
-                        setSave.IsEnabled = false;
-                        ToGlobal.IsEnabled = false;
-                        TimeStatus.Content = "当前状态：正在还原游戏";
-                        StartRe.Start();
-                    }
-                   
-                    else if (Directory.Exists(@"GlobalFile") == true)
-                    {
-                        bool error = false;
-                        for (int i = 0; i < Settings.globalfiles.Length; i++)
+                        Task cnToGlobal = new Task(() =>
                         {
-                            if (File.Exists(@"GlobalFile//" + Settings.globalfiles[i]) == false)
+                            if (CheckFileIntegrity(Path.Combine(Settings.launcherPath, "Genshin Impact Game"), Settings.globalfiles, 1, ".bak"))
                             {
-                                LogBox.Text = Settings.globalfiles[i] + "文件不存在，请重新下载资源包或尝试重新操作";
-                                LogBox.ScrollToEnd();
-                                error = true;
-                                break;
+                                if (Directory.Exists(@"CnFile"))
+                                {
+                                    if (!File.Exists($"CnFile/{pkgfile}"))
+                                    {
+                                        Dispatcher.Invoke(async () =>
+                                        {
+                                            DirectoryInfo di = new DirectoryInfo(@"CnFile");
+                                            di.Delete(true);
+                                            await this.ShowMessageAsync("提示", "国服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd  已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                            Clipboard.SetText("etxd");
+                                            Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
+                                        });
+                                    }
+                                    else if (!CheckFileIntegrity(@"CnFile", Settings.cnfiles, 0))
+                                    {
+                                        Task startToGameFileRevise = new Task(() => StartToGameFileRevise(@"CnFile.pkg", 2, false));
+                                        startToGameFileRevise.Start();
+                                    }
+                                    else
+                                    {
+                                        DirectoryInfo di = new DirectoryInfo(@"CnFile");
+                                        di.Delete(true);
+                                        Dispatcher.Invoke(() =>
+                                        {
+                                            this.ShowMessageAsync("提示", "文件缺失或解压出现问题，请重新下载资源包或尝试重新操作", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                        });
+                                    }
+                                }
+                                else if (File.Exists(@"CnFile.pkg"))
+                                {
+                                    Task startToGameFileRevise = new Task(() => StartToGameFileRevise(@"CnFile.pkg", 2, true));
+                                    Dispatcher.Invoke(() =>
+                                    {
+                                        bqload.Visibility = Visibility.Visible;
+                                        setSave.IsEnabled = false;
+                                        ToGlobal.IsEnabled = false;
+                                        TimeStatus.Content = "当前状态：正在解压资源";
+                                        LogBox.Text += "正在解压转换服文件，请耐心稍等！\n";
+                                        LogBox.ScrollToEnd();
+                                    });
+                                    startToGameFileRevise.Start();
+                                }
+                                else
+                                {
+                                    Dispatcher.Invoke(() =>
+                                    {
+                                        this.ShowMessageAsync("提示", "转换资源不完整\r\n请重新下载", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                        bqload.Visibility = Visibility.Hidden;
+                                        setSave.IsEnabled = true;
+                                    });
+                                }
                             }
-                            LogBox.Text += Settings.globalfiles[i] + "存在\n";
-                            LogBox.ScrollToEnd();
-                        }
-                        if (!File.Exists($"GlobalFile/{ pkgfile}"))
+                            else
+                            {
+                                Task startRe = new Task(() => ReCnGame());
+                                Dispatcher.Invoke(() =>
+                                {
+                                    bqload.Visibility = Visibility.Visible;
+                                    setSave.IsEnabled = false;
+                                    ToGlobal.IsEnabled = false;
+                                    TimeStatus.Content = "当前状态：正在还原游戏";
+                                });
+                                startRe.Start();
+                            }
+                        });
+                        cnToGlobal.Start();
+                    }
+
+                    else if (ChangeMode.SelectedIndex == 1)
+                    {
+                        Task globalToGlobal = new Task(() =>
                         {
-                            DirectoryInfo di = new DirectoryInfo(@"GlobalFile");
-                            di.Delete(true);
-                            await this.ShowMessageAsync("提示", "国际服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd  已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                            Clipboard.SetText("etxd");
-                            Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
-                        }
-                        else if (!error)
-                        {
-                            Thread StartMove = new Thread(() => MoveFile());
-                            bqload.Visibility = Visibility.Visible;
-                            setSave.IsEnabled = false;
-                            ToGlobal.IsEnabled = false;
-                            TimeStatus.Content = "当前状态：正在替换资源";
-                            StartMove.Start();
-                        }
-                        else
-                        {
-                            await this.ShowMessageAsync("提示", "转换资源不完整\r\n请重新下载", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                            bqload.Visibility = Visibility.Hidden;
-                            setSave.IsEnabled = true;
-                        }
+                            if (CheckFileIntegrity(Path.Combine(Settings.launcherPath, "Genshin Impact Game"), Settings.cnfiles, 1, ".bak"))
+                            {
+                                if (Directory.Exists(@"GlobalFile"))
+                                {
+                                    if (!File.Exists($"GlobalFile/{pkgfile}"))
+                                    {
+                                        Dispatcher.Invoke(async () =>
+                                        {
+                                            DirectoryInfo di = new DirectoryInfo(@"GlobalFile");
+                                            di.Delete(true);
+                                            await this.ShowMessageAsync("提示", "国际服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd  已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                            Clipboard.SetText("etxd");
+                                            Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
+                                        });
+                                    }
+                                    else if (!CheckFileIntegrity(@"GlobalFile", Settings.globalfiles, 0))
+                                    {
+                                        Task startToGameFileRevise = new Task(() => StartToGameFileRevise(@"GlobalFile.pkg", 1, false));
+                                        startToGameFileRevise.Start();
+                                    }
+                                    else
+                                    {
+                                        DirectoryInfo di = new DirectoryInfo(@"GlobalFile");
+                                        di.Delete(true);
+                                        Dispatcher.Invoke(() =>
+                                        {
+                                            this.ShowMessageAsync("提示", "文件缺失或解压出现问题，请重新下载资源包或尝试重新操作", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                        });
+                                    }
+                                }
+                                else if (File.Exists(@"GlobalFile.pkg"))
+                                {
+                                    Task startToGameFileRevise = new Task(() => StartToGameFileRevise(@"GlobalFile.pkg", 1, true));
+                                    Dispatcher.Invoke(() =>
+                                    {
+                                        bqload.Visibility = Visibility.Visible;
+                                        setSave.IsEnabled = false;
+                                        ToGlobal.IsEnabled = false;
+                                        TimeStatus.Content = "当前状态：正在解压资源";
+                                        LogBox.Text += "正在解压转换服文件，请耐心稍等！\n";
+                                        LogBox.ScrollToEnd();
+                                    });
+                                    startToGameFileRevise.Start();
+                                }
+                                else
+                                {
+                                    Dispatcher.Invoke(() =>
+                                    {
+                                        this.ShowMessageAsync("提示", "转换资源不完整\r\n请重新下载", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                        bqload.Visibility = Visibility.Hidden;
+                                        setSave.IsEnabled = true;
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                Task startRe = new Task(() => ReGlobalGame());
+                                Dispatcher.Invoke(() =>
+                                {
+                                    bqload.Visibility = Visibility.Visible;
+                                    setSave.IsEnabled = false;
+                                    ToGlobal.IsEnabled = false;
+                                    TimeStatus.Content = "当前状态：正在还原游戏";
+                                });
+                                startRe.Start();
+                            }
+                        });
+                        globalToGlobal.Start();
                     }
                     else
                     {
-                        Thread StartUn = new Thread(() => UnFile());
-                        bqload.Visibility = Visibility.Visible;
-                        setSave.IsEnabled = false;
-                        ToGlobal.IsEnabled = false;
-                        TimeStatus.Content = "当前状态：正在解压资源";
-                        LogBox.Text += "正在解压转换服文件，请耐心稍等！\n";
-                        LogBox.ScrollToEnd();
-                        StartUn.Start();
+                        this.ShowMessageAsync("提示", "请选择你要转换的类型", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                     }
                 }
                 else
@@ -327,62 +419,97 @@ namespace GenShin_LauncherDIY
                 }
             }
         }
-        private void UnFile()
+        private void StartToGameFileRevise(string pkgfile, int port, bool unzip)
         {
-            if (UtilsTools.UnZip(@"GlobalFile.pkg", @""))
+            string pkgver = UtilsTools.MiddleText(UtilsTools.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$pkg$]", "[#pkg#]");
+            if (unzip)
             {
-                bool error = false;
-                for (int i = 0; i < Settings.globalfiles.Length; i++)
+                if (UtilsTools.UnZip(pkgfile, @""))
                 {
-                    if (File.Exists(@"GlobalFile//" + Settings.globalfiles[i]) == false)
+                    Dispatcher.Invoke(() =>
                     {
-                        Dispatcher.Invoke(() =>
+                        bqload.Visibility = Visibility.Visible;
+                        setSave.IsEnabled = false;
+                        ToGlobal.IsEnabled = false;
+                        TimeStatus.Content = "当前状态：正在转换";
+                    });
+                    if (port == 1)
+                    {
+                        if (!File.Exists($"GlobalFile/{pkgver}"))
                         {
-                            LogBox.Text += Settings.globalfiles[i] + "文件不存在，请重新下载资源包或尝试重新操作\n";
-                            LogBox.ScrollToEnd();
-                        });
-                        error = true;
-                        break;
+                            Dispatcher.Invoke(async () =>
+                            {
+                                DirectoryInfo di = new DirectoryInfo(@"GlobalFile");
+                                di.Delete(true);
+                                await this.ShowMessageAsync("提示", "国际服转换包有新版本：" + pkgver + "\r\n访问密码：etxd  已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                Clipboard.SetText("etxd");
+                                Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
+                                ToGlobal.IsEnabled = true;
+                                setSave.IsEnabled = true;
+                                bqload.Visibility = Visibility.Hidden;
+                            });
+                        }
+                        else
+                        {
+                            GlobalMoveFile();
+                        }
                     }
-                    Dispatcher.Invoke(() =>
+                    else if (port == 2)
                     {
-                        LogBox.Text += Settings.globalfiles[i] + "存在\n";
-                        LogBox.ScrollToEnd();
-                    });
-                }
-                if (!error)
-                {
-                    MoveFile();
-                    Dispatcher.Invoke(() =>
-                    {
-                        bqload.Visibility = Visibility.Hidden;
-                    });
+                        if (!File.Exists($"CnFile/{pkgver}"))
+                        {
+                            Dispatcher.Invoke(async () =>
+                            {
+                                DirectoryInfo di = new DirectoryInfo(@"CnFile");
+                                di.Delete(true);
+                                await this.ShowMessageAsync("提示", "国服转换包有新版本：" + pkgver + "\r\n访问密码：etxd  已复制到剪切板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                Clipboard.SetText("etxd");
+                                Process.Start("https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg");
+                                ToGlobal.IsEnabled = true;
+                                setSave.IsEnabled = true;
+                                bqload.Visibility = Visibility.Hidden;
+                            });
+                        }
+                        else
+                        {
+                            CnMoveFile();
+                        }
+                    }
                 }
                 else
                 {
-                    Dispatcher.Invoke(() =>
+                    Dispatcher.Invoke(async () =>
                     {
-                        this.ShowMessageAsync("提示", "资源解压完成但不完整\r\n请重新下载", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                        await this.ShowMessageAsync("提示", "没有找到资源[GlobalFile.pkg]或解压失败\r\n点击确定跳转到下载资源页面，访问密码已复制到剪贴板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                        Clipboard.SetText("etxd");
+                        Process.Start(Settings.htmlUrl[5]);
                         bqload.Visibility = Visibility.Hidden;
+                        ToGlobal.IsEnabled = true;
+                        TimeStatus.Content = "当前状态：未找到资源包";
                         setSave.IsEnabled = true;
                     });
                 }
             }
             else
             {
-                Dispatcher.Invoke(async() =>
+                Dispatcher.Invoke(() =>
                 {
-                    await this.ShowMessageAsync("提示", "没有找到资源[GlobalFile.pkg]或解压失败\r\n点击确定跳转到下载资源页面，访问密码已复制到剪贴板", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                    Clipboard.SetText("etxd");
-                    Process.Start(Settings.htmlUrl[5]);
-                    bqload.Visibility = Visibility.Hidden;
-                    ToGlobal.IsEnabled = true;
-                    TimeStatus.Content = "当前状态：未找到资源包";
-                    setSave.IsEnabled = true;
+                    bqload.Visibility = Visibility.Visible;
+                    setSave.IsEnabled = false;
+                    ToGlobal.IsEnabled = false;
+                    TimeStatus.Content = "当前状态：正在转换";
                 });
+                if (port == 1)
+                {
+                    GlobalMoveFile();
+                }
+                else if (port == 2)
+                {
+                    CnMoveFile();
+                }
             }
         }
-        private void MoveFile()
+        private void GlobalMoveFile()
         {
             Computer redir = new Computer();
             Dispatcher.Invoke(() =>
@@ -403,13 +530,13 @@ namespace GenShin_LauncherDIY
                         Dispatcher.Invoke(() =>
                         {
                             LogBox.Text += newFileName + "备份失败：原因：";
-                            LogBox.Text += ex.Message+"\n\n";
+                            LogBox.Text += ex.Message + "\n\n";
                             LogBox.ScrollToEnd();
                         });
                     }
                     Dispatcher.Invoke(() =>
                     {
-                        LogBox.Text += newFileName + "备份成功";
+                        LogBox.Text += newFileName + "备份成功\n";
                         LogBox.ScrollToEnd();
                     });
                 }
@@ -456,20 +583,103 @@ namespace GenShin_LauncherDIY
                 this.ShowMessageAsync("提示", "转换完毕，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             });
         }
+
+        private void CnMoveFile()
+        {
+            Computer redir = new Computer();
+            Dispatcher.Invoke(() =>
+            {
+                TimeStatus.Content = "当前状态：正在备份原文件";
+            });
+            for (int a = 0; a < Settings.globalfiles.Length; a++)
+            {
+                String newFileName = Path.GetFileNameWithoutExtension(Path.Combine(Settings.launcherPath, "Genshin Impact Game/") + Settings.globalfiles[a]) + Path.GetExtension(Path.Combine(Settings.launcherPath, "Genshin Impact Game/") + Settings.globalfiles[a]);
+                if (File.Exists(Path.Combine(Settings.launcherPath, "Genshin Impact Game", Settings.globalfiles[a])) == true)
+                {
+                    try
+                    {
+                        redir.FileSystem.RenameFile(Path.Combine(Settings.launcherPath, "Genshin Impact Game", Settings.globalfiles[a]), newFileName + ".bak");
+                    }
+                    catch (Exception ex)
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            LogBox.Text += newFileName + "备份失败：原因：";
+                            LogBox.Text += ex.Message + "\n\n";
+                            LogBox.ScrollToEnd();
+                        });
+                    }
+                    Dispatcher.Invoke(() =>
+                    {
+                        LogBox.Text += newFileName + "备份成功\n";
+                        LogBox.ScrollToEnd();
+                    });
+                }
+                else
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        LogBox.Text += newFileName + "文件不存在，备份失败，跳过\n";
+                        LogBox.ScrollToEnd();
+                    });
+                }
+            }
+            Dispatcher.Invoke(() =>
+            {
+                TimeStatus.Content = "当前状态：开始替换资源";
+            });
+            redir.FileSystem.RenameDirectory(Path.Combine(Settings.launcherPath, "Genshin Impact Game", "GenshinImpact_Data"), "YuanShen_Data");
+            for (int i = 0; i < Settings.cnfiles.Length; i++)
+            {
+                File.Copy(Path.Combine(@"CnFile", Settings.cnfiles[i]), Path.Combine(Settings.launcherPath, "Genshin Impact Game", Settings.cnfiles[i]), true);
+                this.Dispatcher.Invoke(() =>
+                {
+                    LogBox.Text += Settings.cnfiles[i] + "替换成功\n";
+                    LogBox.ScrollToEnd();
+                });
+            };
+            Dispatcher.Invoke(() =>
+            {
+                IniControl.Sub_channel("1", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                IniControl.Channel("1", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                TimeStatus.Content = "当前状态：无状态";
+            });
+            IniControl.isMihoyo = 1;
+            Dispatcher.Invoke(() =>
+            {
+                ToGlobal.IsEnabled = true;
+                IsGlobal();
+                IsSDK();
+                setSave.IsEnabled = true;
+                bqload.Visibility = Visibility.Hidden;
+                GamePort.SelectedIndex = 0;
+                this.ShowMessageAsync("提示", "转换完毕，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            });
+        }
+
         private void IsGlobal()
         {
             if (File.Exists(Path.Combine(Settings.launcherPath, "Genshin Impact Game/YuanShen.exe")) == true)
             {
-                ToGlobal.Content = "转换";
+                ChangeMode.SelectedIndex = 1;
                 GlobalItem.IsEnabled = false;
+                MihoyoItem.IsEnabled = true;
+                BiliItem.IsEnabled = true;
 
             }
             else if (File.Exists(Path.Combine(Settings.launcherPath, "Genshin Impact Game", "GenshinImpact.exe")) == true)
             {
-                ToGlobal.Content = "复原";
+                ChangeMode.SelectedIndex = 2;
                 GlobalItem.IsEnabled = true;
                 MihoyoItem.IsEnabled = false;
                 BiliItem.IsEnabled = false;
+            }
+            else
+            {
+                ChangeMode.SelectedIndex = 0;
+                GlobalItem.IsEnabled = true;
+                MihoyoItem.IsEnabled = true;
+                BiliItem.IsEnabled = true;
             }
         }
         private void ReCnGame()
@@ -543,11 +753,93 @@ namespace GenShin_LauncherDIY
                 AddConfig.CheckIni();
                 bqload.Visibility = Visibility.Hidden;
                 setSave.IsEnabled = true;
-                ToGlobal.Content = "转换";
+                ChangeMode.SelectedIndex = 1;
                 ToGlobal.IsEnabled = true;
                 this.ShowMessageAsync("提示", "还原完毕，本次还原成功" + success + "个文件，失败或缺失" + whole + "个文件", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             });
         }
+
+
+        private void ReGlobalGame()
+        {
+            Computer redir = new Computer();
+            Dispatcher.Invoke(() =>
+            {
+                TimeStatus.Content = "当前状态：清理现存文件";
+            });
+            for (int i = 0; i < Settings.cnfiles.Length; i++)
+            {
+                if (File.Exists(Path.Combine(Settings.launcherPath, "Genshin Impact Game", Settings.cnfiles[i])) == true)
+                {
+                    File.Delete(Path.Combine(Settings.launcherPath, "Genshin Impact Game", Settings.cnfiles[i]));
+                    Dispatcher.Invoke(() =>
+                    {
+                        LogBox.Text += Settings.cnfiles[i] + "清理完毕\n";
+                        LogBox.ScrollToEnd();
+                    });
+                }
+                else
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        LogBox.Text += Settings.cnfiles[i] + "文件不存在，已跳过\n";
+                        LogBox.ScrollToEnd();
+                    });
+                }
+            }
+            Dispatcher.Invoke(() =>
+            {
+                TimeStatus.Content = "当前状态：正在还原文件";
+            });
+            redir.FileSystem.RenameDirectory(Path.Combine(Settings.launcherPath, "Genshin Impact Game/YuanShen_Data"), "GenshinImpact_Data");
+            int whole = 0, success = 0;
+            for (int a = 0; a < Settings.globalfiles.Length; a++)
+            {
+                string newFileName = Path.GetFileNameWithoutExtension(Settings.globalfiles[a]) + Path.GetExtension(Settings.globalfiles[a]);
+                if (File.Exists(Path.Combine(Settings.launcherPath, "Genshin Impact Game", Settings.globalfiles[a] + ".bak")) == true)
+                {
+                    redir.FileSystem.RenameFile(Path.Combine(Settings.launcherPath, "Genshin Impact Game", Settings.globalfiles[a] + ".bak"), newFileName);
+                    Dispatcher.Invoke(() =>
+                    {
+                        LogBox.Text += Settings.globalfiles[a] + "还原成功\n";
+                        LogBox.ScrollToEnd();
+                    });
+                    success++;
+                }
+                else
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        LogBox.Text += Settings.globalfiles[a] + "不存在，跳过还原\n";
+                    });
+                    whole++;
+                }
+            }
+            UtilsTools utils = new UtilsTools();
+
+            Dispatcher.Invoke(() =>
+            {
+                IsSDK();
+                GlobalItem.IsEnabled = true;
+                MihoyoItem.IsEnabled = false;
+                BiliItem.IsEnabled = false;
+                GamePort.SelectedIndex = 2;
+                TimeStatus.Content = "当前状态：无状态";
+                IniControl.isMihoyo = 3;
+                IniControl.Sub_channel("0", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                IniControl.Channel("1", Path.Combine(LauncherPath.Text, "Genshin Impact Game/Config.ini"));
+                AddConfig.CheckIni();
+                bqload.Visibility = Visibility.Hidden;
+                setSave.IsEnabled = true;
+                ChangeMode.SelectedIndex = 2;
+                ToGlobal.IsEnabled = true;
+                this.ShowMessageAsync("提示", "还原完毕，本次还原成功" + success + "个文件，失败或缺失" + whole + "个文件", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            });
+        }
+
+
+
+
 
         private async void DelUser_Click(object sender, RoutedEventArgs e)
         {
@@ -654,7 +946,7 @@ namespace GenShin_LauncherDIY
             LauncherPath.Text = IniControl.GamePath;
             IsFullscreen.SelectedIndex = IniControl.isAutoSize ? 1 : 0;
             PopupUP.IsChecked = IniControl.isPopup ? true : false;
-            IsWebBg.IsChecked = IniControl.isWebBg? true : false;
+            IsWebBg.IsChecked = IniControl.isWebBg ? true : false;
             IsClose.IsChecked = IniControl.isClose ? true : false;
             MainGridHide.IsChecked = IniControl.isMainGridHide ? true : false;
             isUnFPS.IsChecked = IniControl.isUnFPS ? true : false;
@@ -674,12 +966,30 @@ namespace GenShin_LauncherDIY
                 GamePort.SelectedIndex = 1;
                 GlobalItem.IsEnabled = false;
             }
-            else
+            else if (IniControl.isMihoyo == 3)
             {
                 GamePort.SelectedIndex = 2;
                 GlobalItem.IsEnabled = true;
                 MihoyoItem.IsEnabled = false;
                 BiliItem.IsEnabled = false;
+            }
+            else
+            {
+                GamePort.SelectedIndex = 0;
+                GlobalItem.IsEnabled = true;
+            }
+
+            if (File.Exists(Path.Combine(IniControl.GamePath, "Genshin Impact Game", "YuanShen.exe")))
+            {
+                ChangeMode.SelectedIndex = 1;
+            }
+            else if (File.Exists(Path.Combine(IniControl.GamePath, "Genshin Impact Game", "GenshinImpact.exe")))
+            {
+                ChangeMode.SelectedIndex = 2;
+            }
+            else
+            {
+                ChangeMode.SelectedIndex = 0;
             }
 
             {
@@ -707,5 +1017,30 @@ namespace GenShin_LauncherDIY
             }
         }
 
+
+
+        private bool CheckFileIntegrity(string dirpath, string[] filepath, int len, string postfix = "")
+        {
+            bool error = false;
+            for (int i = 0; i < filepath.Length - len; i++)
+            {
+                if (File.Exists(Path.Combine(dirpath, filepath[i] + postfix)) == false)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        LogBox.Text += filepath[i] + postfix + "文件不存在，启动器将尝试下一步操作，若无反应请重新下载资源文件！\n";
+                        LogBox.ScrollToEnd();
+                    });
+                    error = true;
+                    break;
+                }
+                Dispatcher.Invoke(() =>
+                {
+                    LogBox.Text += filepath[i] + postfix + "存在\n";
+                    LogBox.ScrollToEnd();
+                });
+            }
+            return error;
+        }
     }
 }

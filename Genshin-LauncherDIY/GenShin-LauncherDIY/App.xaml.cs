@@ -1,38 +1,69 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
+﻿using Microsoft.VisualBasic.ApplicationServices;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace GenShin_LauncherDIY
 {
-    /// <summary>
-    /// App.xaml 的交互逻辑
-    /// </summary>
+    public class SingletonApp
+    {
+        [STAThread]
+        public static void Main(string[] args)
+        {
+            SingleInstanceManager manager = new SingleInstanceManager();
+            manager.Run(args);
+        }
+    }
     public partial class App : Application
     {
-        System.Threading.Mutex mutex;
-
         public App()
         {
-            this.Startup += new StartupEventHandler(App_Startup);
+            InitializeComponent();
         }
 
-        void App_Startup(object sender, StartupEventArgs e)
+        public void BringWindowTofront()
         {
-            bool ret;
-            mutex = new System.Threading.Mutex(true, "ElectronicNeedleTherapySystem", out ret);
-            if (!ret)
+            //判断是否为托盘状态（Close主窗口不存在）
+            if (Current.MainWindow == null)
             {
-                MessageBox.Show("你正在运行另一个原神启动器Plus，禁止重复打开！！");
-                Environment.Exit(0);
+                //置入托盘的话就新建主窗口并显示
+                Current.MainWindow = new MainWindow();
+                Current.MainWindow.Show();
+            }
+            else
+            {
+                //最小化到任务栏的话就直接还原到前台并激活
+                Current.MainWindow.Show();
+                Current.MainWindow.WindowState = WindowState.Normal;
+                Current.MainWindow.Topmost = true;
+                Current.MainWindow.Focus();
+                Current.MainWindow.Activate();
             }
         }
     }
+
+    public class SingleInstanceManager : Microsoft.VisualBasic.ApplicationServices.WindowsFormsApplicationBase
+    {
+        private App wpfapp;
+
+        public SingleInstanceManager()
+        {
+            this.IsSingleInstance = true;
+        }
+
+        protected override bool OnStartup(
+            Microsoft.VisualBasic.ApplicationServices.StartupEventArgs e)
+        {
+            wpfapp = new App();
+            wpfapp.Run();
+            return false;
+        }
+
+        protected override void OnStartupNextInstance(StartupNextInstanceEventArgs eventArgs)
+        {
+            base.OnStartupNextInstance(eventArgs);
+            wpfapp.BringWindowTofront();
+        }
+    }
+
+
 }

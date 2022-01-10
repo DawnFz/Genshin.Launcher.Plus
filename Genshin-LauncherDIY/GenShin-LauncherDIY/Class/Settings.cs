@@ -34,9 +34,9 @@ namespace GenShin_LauncherDIY
           "GenshinImpact_Data/Plugins/xlua.dll",
           "GenshinImpact_Data/StreamingAssets/20527480.blk",
           "Audio_Chinese_pkg_version",
-          "GenshinImpact.exe",
           "pkg_version",
-          "UnityPlayer.dll"
+          "UnityPlayer.dll",
+          "GenshinImpact.exe"
         };
 
         public static string[] cnfiles = new string[]
@@ -64,9 +64,9 @@ namespace GenShin_LauncherDIY
           "YuanShen_Data/Plugins/xlua.dll",
           "YuanShen_Data/StreamingAssets/20527480.blk",
           "Audio_Chinese_pkg_version",
-          "YuanShen.exe",
           "pkg_version",
-          "UnityPlayer.dll"
+          "UnityPlayer.dll",
+          "YuanShen.exe"
         };
 
         public static string aboutthis =
