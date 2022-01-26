@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="GenShin_Launcher_Plus.Views.AddUsersPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
+             mc:Ignorable="d" 
+             Height="685" Width="1197">
+    <Grid Height="180" Width="370" Background="#FF647687" Margin="450,252,377,253">
+        <GroupBox Header="保存上次登录的账号数据">
+            <Grid Background="White">
+                <Label Content="输入保存的游戏账号名字以便读取" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18"/>
+                <TextBox x:Name="saveFilename" mah:TextBoxHelper.Watermark="请勿输入特殊符号" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" Width="190" Margin="123,54,0,0" FontFamily="Microsoft YaHei UI"/>
+                <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" x:Name="Save" Content="保存" HorizontalAlignment="Left" Margin="85,102,0,0" VerticalAlignment="Top" Width="80" Click="RemoveThisPage" Command="{Binding SaveUserDataCommand}"/>
+                <Button Style="{DynamicResource MahApps.Styles.Button.Square}" Content="取消" HorizontalAlignment="Left" Margin="193,102,0,0" VerticalAlignment="Top" Width="80" Click="RemoveThisPage"/>
+                <ComboBox x:Name="GamePort" HorizontalAlignment="Left" Height="16" Margin="54,54,0,0" VerticalAlignment="Top" Width="64" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GamePortLists}" DisplayMemberPath="GamePort" SelectedValuePath="GamePort" SelectedValue="{Binding GamePort}"/>
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</UserControl>

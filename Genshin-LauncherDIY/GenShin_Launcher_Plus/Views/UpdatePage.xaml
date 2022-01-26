@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="GenShin_Launcher_Plus.Views.UpdatePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             Dialog:DialogParticipation.Register="{Binding}"
+             xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
+             mc:Ignorable="d" 
+             Height="730"
+             Width="1280">
+    <Grid Background="#FF5B6C75">
+        <Label Content="{Binding Title,Mode=OneWay}" d:Content="标题-设计时预览" HorizontalAlignment="Left" Margin="43,38,0,0" VerticalAlignment="Top" Foreground="White" FontSize="36"/>
+        <mah:MetroProgressBar HorizontalAlignment="Left" Height="43" VerticalAlignment="Top" Width="838" Margin="43,645,0,0" Maximum="{Binding DownloadBarMax}" Value="{Binding DownloadBarValue}" Foreground="#FF9FB2BD"/>
+        <Label Content="{Binding DownloadLabel}" d:Content="设计预览" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="20" Margin="887,649,0,0"/>
+        <Label Content="因CDN缓存问题下载可能会有点慢或者卡进度，请耐心等待" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#3FFFFFFF" FontSize="22" Margin="43,596,0,0" Background="Transparent"/>
+        <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="开始更新" HorizontalAlignment="Left" Margin="1076,642,0,0" VerticalAlignment="Top" Height="48" Width="160" FontFamily="Microsoft YaHei UI" FontSize="18" BorderThickness="3" FontWeight="Normal" Command="{Binding UpdateRunCommand}" IsEnabled="{Binding ButtonIsEnabled}"/>
+        <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="暂不更新" HorizontalAlignment="Left" Margin="1076,586,0,0" VerticalAlignment="Top" Height="48" Width="160" FontFamily="Microsoft YaHei UI" FontSize="18" BorderThickness="3" Background="#CC989898" Click="SkipButton_Click" FontWeight="Normal" IsEnabled="{Binding ButtonIsEnabled}" />
+        <TextBlock Margin="52,110,240,0" VerticalAlignment="Top" FontSize="24" TextWrapping="Wrap" Foreground="White" Height="478" ><Run Language="zh-cn" Text="{Binding Notify,Mode=OneWay}" d:Text="内容-设计时预览"/></TextBlock>
+    </Grid>
+</UserControl>
