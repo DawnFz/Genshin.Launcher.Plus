@@ -504,7 +504,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                             {
                                 if (JudgePkgVer("GlobalFile"))
                                 {
-                                    if (CheckFileIntegrity(@"GlobalFile", cnfiles, 0))
+                                    if (CheckFileIntegrity(@"GlobalFile", globalfiles, 0))
                                     {
                                         await GlobalMoveFile();
                                     }
