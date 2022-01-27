@@ -5,7 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Version>1.2.4.1</Version>
+    <Version>1.2.5</Version>
     <StartupObject>GenShin_Launcher_Plus.SingletonApp</StartupObject>
     <ApplicationIcon>ICON.ico</ApplicationIcon>
     <IsPublishable>True</IsPublishable>
@@ -23,11 +23,10 @@
     <None Remove="Images\MainBackground.jpg" />
     <None Remove="Images\SettingsButton.png" />
     <None Remove="Images\TencentGroupButton.png" />
-    <None Remove="Images\UI_0.PNG" />
-    <None Remove="Images\UI_1.PNG" />
-    <None Remove="Images\UI_2.PNG" />
-    <None Remove="Images\UI_3.png" />
-    <None Remove="Images\UI_4.png" />
+    <None Remove="Images\Tips.jpg" />
+    <None Remove="Images\UI_0.jpg" />
+    <None Remove="Images\UI_3.jpg" />
+    <None Remove="Images\UI_4.jpg" />
     <None Remove="StaticRes\Config.ini" />
     <None Remove="StaticRes\mihoyosdk.dll" />
     <None Remove="StaticRes\unlockfps.dll" />
@@ -39,13 +38,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="StaticRes\mihoyosdk.dll">
+    <Resource Include="Images\Tips.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Images\UI_4.png">
+    <Resource Include="Images\UI_0.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\UI_3.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\UI_4.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="StaticRes\mihoyosdk.dll">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
@@ -76,18 +81,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\AddUserButton.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\UI_0.PNG">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\UI_1.PNG">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\UI_2.PNG">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\UI_3.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="StaticRes\Config.ini">

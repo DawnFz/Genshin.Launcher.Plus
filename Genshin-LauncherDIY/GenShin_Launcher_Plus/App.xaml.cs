@@ -37,7 +37,6 @@ namespace GenShin_Launcher_Plus
                     //最小化到任务栏的话就直接还原到前台并激活
                     window.Show();
                     window.WindowState = WindowState.Normal;
-                    window.Topmost = true;
                     window.Focus();
                     window.Activate();
                 }

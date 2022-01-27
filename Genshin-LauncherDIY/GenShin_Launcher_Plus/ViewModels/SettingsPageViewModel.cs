@@ -121,7 +121,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             Task task = new(() =>
             {
-                SettingsTitle = "设置-【保存成功】";
+                SettingsTitle = "设置  [保存成功]";
                 SettingTitleColor = "#FF008C02";
                 Thread.Sleep(1500);
                 SettingsTitle = "设置";
@@ -355,7 +355,11 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         //保存设置的命令
         public DelegateCommand SaveSettingsCommand { get; set; }
-        private async void SaveSettings(object parameter)
+        private void SaveSettings(object parameter)
+        {
+            ObjSaveSettings();
+        }
+        private async void ObjSaveSettings()
         {
 
             if (IniModel.SwitchUser != null && IniModel.SwitchUser != "")
@@ -611,6 +615,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                     }
                     ProgressBar = "Hidden";
                     PageUiStatus = "true";
+                    ObjSaveSettings();
                 }
             });
             start.Start();
@@ -709,7 +714,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             IniModel.isMihoyo = 2;
             OnPropChanged("IniModel");
             TimeStatus = "当前状态：无状态";
-            await dialogCoordinator.ShowMessageAsync(this, "提示", "转换完毕，请记得保存，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            await dialogCoordinator.ShowMessageAsync(this, "提示", "转换完毕，按下确定自动保存，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
         }
 
         //国际转国内
@@ -750,7 +755,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             IniModel.isMihoyo = 0;
             OnPropChanged("IniModel");
             TimeStatus = "当前状态：无状态";
-            await dialogCoordinator.ShowMessageAsync(this, "提示", "转换完毕，请记得保存，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            await dialogCoordinator.ShowMessageAsync(this, "提示", "转换完毕，按下确定自动保存，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
         }
         //还原
         private async Task ReCnGame()
@@ -791,7 +796,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             TimeStatus = "当前状态：无状态";
             IniModel.isMihoyo = 0;
             OnPropChanged("IniModel");
-            await dialogCoordinator.ShowMessageAsync(this, "提示", "还原完毕，本次还原成功" + success + "个文件，失败或缺失" + whole + "个文件，请记得保存", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            await dialogCoordinator.ShowMessageAsync(this, "提示", "还原完毕，本次还原成功" + success + "个文件，失败或缺失" + whole + "个文件，按下确定自动保存，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
         }
 
         private async Task ReGlobalGame()
@@ -832,7 +837,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             TimeStatus = "当前状态：无状态";
             IniModel.isMihoyo = 2;
             OnPropChanged("IniModel");
-            await dialogCoordinator.ShowMessageAsync(this, "提示", "还原完毕，本次还原成功" + success + "个文件，失败或缺失" + whole + "个文件，请记得保存", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            await dialogCoordinator.ShowMessageAsync(this, "提示", "还原完毕，本次还原成功" + success + "个文件，失败或缺失" + whole + "个文件，按下确定自动保存，尽情享受吧！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
         }
     }
 }

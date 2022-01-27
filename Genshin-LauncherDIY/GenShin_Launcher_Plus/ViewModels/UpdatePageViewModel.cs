@@ -73,10 +73,10 @@ namespace GenShin_Launcher_Plus.ViewModels
         private async void UpdateRun(object parameter)
         {
             ButtonIsEnabled = false;
-            string downver = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$gitv$]", "[#gitv#]");
-            if (await HttpFileExistAsync($"https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY@{ downver }/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png") == true)
+            string updatefile = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$update$]", "[#update#]");
+            if (await HttpFileExistAsync(updatefile) == true)
             {
-                await DownloadHttpFileAsync($"https://cdn.jsdelivr.net/gh/DawnFz/GenShin-LauncherDIY@{ downver }/Genshin-LauncherDIY/UpdateFile/GenShinLauncher.png", @"UpdateTemp.upd");
+                await DownloadHttpFileAsync(updatefile, @"UpdateTemp.upd");
             }
             else
             {
