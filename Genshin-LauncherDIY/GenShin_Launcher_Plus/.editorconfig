@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# CS8602: 解引用可能出现空引用。
+dotnet_diagnostic.CS8602.severity = none
+
+# IDE0044: 添加只读修饰符
+dotnet_diagnostic.IDE0044.severity = none
+
+# CS8629: 可为 null 的值类型可为 null。
+dotnet_diagnostic.CS8629.severity = none

@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="GenShin_Launcher_Plus.Views.GuidePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
+             mc:Ignorable="d" 
+             Height="730" Width="1280" Background="White">
+    <Grid>
+        <mah:FlipView x:Name="FlipView" BannerOpacity="0" MouseHoverBorderBrush="White">
+            <mah:FlipView.Items>
+                <Grid Background="White">
+                    <TextBlock HorizontalAlignment="Center" Margin="0,38,0,0" VerticalAlignment="Top" FontSize="64" Foreground="Black" Width="1032" Height="106" TextAlignment="Center"><Run Text="欢迎使用原神启动器Plus"/><LineBreak/></TextBlock>
+                    <TextBox x:Name="GamePath" mah:TextBoxHelper.Watermark="游戏本体路径（默认的游戏本体目录为Genshin Impact Game文件夹）" HorizontalAlignment="Left" Height="44" Margin="189,592,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="830" FontSize="24" FontFamily="Microsoft YaHei UI" BorderThickness="3"/>
+                    <Button x:Name="Dirchoose" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="···" HorizontalAlignment="Left" Margin="1019,592,0,0" VerticalAlignment="Top" Height="44" Width="79" FontFamily="Microsoft YaHei UI" FontSize="16" BorderBrush="#FF83919F" Click="Dirchoose_Click"/>
+                    <TextBlock HorizontalAlignment="Center" Margin="0,177,0,0" VerticalAlignment="Top" FontSize="32" Foreground="Black" Width="1032" Height="65" TextAlignment="Center" Text="在开始前请先跟随引导熟悉一下使用方法和规范"/>
+                    <Image Source="/Images/UI_0.png" Height="180"/>
+                    <TextBlock  x:Name="ErrorTitle" HorizontalAlignment="Center" Margin="0,503,0,0" VerticalAlignment="Top" FontSize="32" Foreground="Black" Width="1032" Height="65" TextAlignment="Center"><Run Language="zh-cn" Text="首先在下面输入或者点击右侧[···]按钮选择游戏目录"/></TextBlock>
+                </Grid>
+                <Grid Background="White">
+                    <Image Source="/Images/UI_3.png"/>
+                </Grid>
+                <Grid Background="White">
+                    <Image Source="/Images/UI_4.png"/>
+                </Grid>
+                <Grid Background="White">
+                    <TextBlock HorizontalAlignment="Center" Margin="0,239,0,0" VerticalAlignment="Top" FontSize="64" Foreground="Black" Width="1032" Height="187" TextAlignment="Center"><Run Language="zh-cn" Text="向"/><Run Text="导到此结束啦"/><LineBreak/><Run Text="按下完成即可开始使用"/><LineBreak/></TextBlock>
+                    <Button x:Name="SaveButton" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="完成向导" HorizontalAlignment="Center" Margin="0,622,0,0" VerticalAlignment="Top" Height="57" Width="184" FontFamily="Microsoft YaHei UI" FontSize="20" Click="ThisPageRemove" BorderThickness="4" />
+                </Grid>
+            </mah:FlipView.Items>
+        </mah:FlipView>
+    </Grid>
+</UserControl>
