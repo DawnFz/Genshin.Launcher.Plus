@@ -21,16 +21,11 @@ namespace GenShin_Launcher_Plus.Views
     /// </summary>
     public partial class SettingsPage : UserControl
     {
+        
         public SettingsPage()
         {
             InitializeComponent();
             DataContext = new ViewModels.SettingsPageViewModel(DialogCoordinator.Instance);
-        }
-
-        private void ThisPageRemove(object sender, RoutedEventArgs e)
-        {
-            ((Grid)Parent).Children.Add(new HomePage());
-            ((Grid)Parent).Children.Remove(this);
         }
     }
 }

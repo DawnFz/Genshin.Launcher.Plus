@@ -102,6 +102,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             ChooseUnlockFpsCommand = new DelegateCommand { ExecuteAction = new Action<object>(ChooseUnlockFps) };
             GameFileConvertCommand = new DelegateCommand { ExecuteAction = new Action<object>(GameFileConvert) };
             Auto21x9Command = new DelegateCommand { ExecuteAction = new Action<object>(Auto21x9) };
+            ThisPageRemoveCommand = new DelegateCommand { ExecuteAction = new Action<object>(ThisPageRemove) };
         }
 
         //保存状态
@@ -129,6 +130,8 @@ namespace GenShin_Launcher_Plus.ViewModels
             });
             task.Start();
         }
+
+
 
         //选中分辨率的索引
         private int _DisplaySelectedIndex = -1;
@@ -425,6 +428,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 }
             }
             DelaySaveButtonTitle();
+            MainBase.noab.MainPagesIndex = 0;
         }
 
         //读取判断游戏客户端信息
@@ -486,139 +490,155 @@ namespace GenShin_Launcher_Plus.ViewModels
             OnPropChanged("IniModel");
         }
 
+
+        //关闭设置页面
+        public DelegateCommand ThisPageRemoveCommand { get; set; }
+        private void ThisPageRemove(object parameter)
+        {
+            MainBase.noab.MainPagesIndex = 0;
+        }
+
         //转换国际服及转换国服绑定命令
         public DelegateCommand GameFileConvertCommand { get; set; }
         private void GameFileConvert(object parameter)
         {
-            Task start = new(async () =>
+            if (!CheckControl.IsFileOpen(Path.Combine(IniControl.GamePath, "Yuanshen.exe")) && !CheckControl.IsFileOpen(Path.Combine(IniControl.GamePath, "GenshinImpact.exe")))
             {
-                if ((await dialogCoordinator.ShowMessageAsync(this, "警告！！", "转换或还原将会执行重命名，替换，删除等操作修改客户端文件，该过程大概率会触发杀软报毒！为了防止客户端损坏导致不完整，执行前检查杀软（包括 Windows Defender）是否完全关闭或将本启动器加入白名单，并检查游戏是否彻底关闭，否则可能将导致客户端文件缺失！！\r\n\r\n提示：如游戏大版本更新时请执行还原转换为国内服使用游戏自带启动器更新！", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消转换", NegativeButtonText = "确定转换" })) != MessageDialogResult.Affirmative)
+
+                Task start = new(async () =>
                 {
-                    PageUiStatus = "false";
-                    ProgressBar = "Visible";
+                    if ((await dialogCoordinator.ShowMessageAsync(this, "警告！！", "转换或还原将会执行重命名，替换，删除等操作修改客户端文件，该过程大概率会触发杀软报毒！为了防止客户端损坏导致不完整，执行前检查杀软（包括 Windows Defender）是否完全关闭或将本启动器加入白名单，并检查游戏是否彻底关闭，否则可能将导致客户端文件缺失！！\r\n\r\n提示：如游戏大版本更新时请执行还原转换为国内服使用游戏自带启动器更新！", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消转换", NegativeButtonText = "确定转换" })) != MessageDialogResult.Affirmative)
+                    {
+                        PageUiStatus = "false";
+                        ProgressBar = "Visible";
                     //判断客户端
                     string port = JudgeGamePort();
                     //判断Pkg是否正常
                     if (port == "YuanShen")
-                    {
-                        if (!CheckFileIntegrity(IniControl.GamePath, cnfiles, 1, ".bak"))
                         {
+                            if (!CheckFileIntegrity(IniControl.GamePath, cnfiles, 1, ".bak"))
+                            {
                             //没备份文件
                             if (Directory.Exists(@"GlobalFile"))
-                            {
-                                if (JudgePkgVer("GlobalFile"))
-                                {
-                                    if (CheckFileIntegrity(@"GlobalFile", globalfiles, 0))
-                                    {
-                                        await GlobalMoveFile();
-                                    }
-                                }
-                                else
-                                {
-                                    DirectoryInfo di = new(@"GlobalFile");
-                                    di.Delete(true);
-                                }
-                            }
-                            else if (File.Exists(@"GlobalFile.pkg"))
-                            {
-                                TimeStatus = "当前状态：正在解压PKG资源包";
-                                //解压Pkg
-                                if (FilesControl.UnZip("GlobalFile.pkg", @""))
                                 {
                                     if (JudgePkgVer("GlobalFile"))
                                     {
-                                        await GlobalMoveFile();
+                                        if (CheckFileIntegrity(@"GlobalFile", globalfiles, 0))
+                                        {
+                                            await GlobalMoveFile();
+                                        }
                                     }
                                     else
                                     {
                                         DirectoryInfo di = new(@"GlobalFile");
                                         di.Delete(true);
-                                        TimeStatus = "当前状态：Pkg有新版本";
                                     }
                                 }
+                                else if (File.Exists(@"GlobalFile.pkg"))
+                                {
+                                    TimeStatus = "当前状态：正在解压PKG资源包";
+                                //解压Pkg
+                                if (FilesControl.UnZip("GlobalFile.pkg", @""))
+                                    {
+                                        if (JudgePkgVer("GlobalFile"))
+                                        {
+                                            await GlobalMoveFile();
+                                        }
+                                        else
+                                        {
+                                            DirectoryInfo di = new(@"GlobalFile");
+                                            di.Delete(true);
+                                            TimeStatus = "当前状态：Pkg有新版本";
+                                        }
+                                    }
                                 //解压失败
                                 else
+                                    {
+                                        TimeStatus = "当前状态：解压失败，请检查";
+                                        GameSwitchLog += "没有找到资源[GlobalFile.pkg]或解压失败，请检查Pkg文件是否和本应用处于同一目录\r\n";
+                                        await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在或解压失败", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                    }
+                                }
+                                else
                                 {
-                                    TimeStatus = "当前状态：解压失败，请检查";
-                                    GameSwitchLog += "没有找到资源[GlobalFile.pkg]或解压失败，请检查Pkg文件是否和本应用处于同一目录\r\n";
-                                    await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在或解压失败", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                    TimeStatus = "当前状态：请检查Pkg文件";
+                                    GameSwitchLog += "没有找到资源[GlobalFile.pkg]，请检查Pkg文件是否和本应用处于同一目录\r\n";
+                                    await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                                 }
                             }
                             else
                             {
-                                TimeStatus = "当前状态：请检查Pkg文件";
-                                GameSwitchLog += "没有找到资源[GlobalFile.pkg]，请检查Pkg文件是否和本应用处于同一目录\r\n";
-                                await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                await ReGlobalGame();
                             }
                         }
                         else
                         {
-                            await ReGlobalGame();
-                        }
-                    }
-                    else
-                    {
-                        if (!CheckFileIntegrity(IniControl.GamePath, globalfiles, 1, ".bak"))
-                        {
+                            if (!CheckFileIntegrity(IniControl.GamePath, globalfiles, 1, ".bak"))
+                            {
                             //没备份文件
                             if (Directory.Exists(@"CnFile"))
-                            {
-                                if (JudgePkgVer("CnFile"))
-                                {
-                                    if (CheckFileIntegrity(@"CnFile", cnfiles, 0))
-                                    {
-                                        await CnMoveFile();
-                                    }
-                                }
-                                else
-                                {
-                                    DirectoryInfo di = new(@"CnFile");
-                                    di.Delete(true);
-                                }
-                            }
-                            else if (File.Exists(@"CnFile.pkg"))
-                            {
-                                TimeStatus = "当前状态：正在解压PKG资源包";
-                                //解压Pkg
-                                if (FilesControl.UnZip("CnFile.pkg", @""))
                                 {
                                     if (JudgePkgVer("CnFile"))
                                     {
-                                        await CnMoveFile();
+                                        if (CheckFileIntegrity(@"CnFile", cnfiles, 0))
+                                        {
+                                            await CnMoveFile();
+                                        }
                                     }
                                     else
                                     {
                                         DirectoryInfo di = new(@"CnFile");
                                         di.Delete(true);
-                                        TimeStatus = "当前状态：Pkg有新版本";
                                     }
                                 }
+                                else if (File.Exists(@"CnFile.pkg"))
+                                {
+                                    TimeStatus = "当前状态：正在解压PKG资源包";
+                                //解压Pkg
+                                if (FilesControl.UnZip("CnFile.pkg", @""))
+                                    {
+                                        if (JudgePkgVer("CnFile"))
+                                        {
+                                            await CnMoveFile();
+                                        }
+                                        else
+                                        {
+                                            DirectoryInfo di = new(@"CnFile");
+                                            di.Delete(true);
+                                            TimeStatus = "当前状态：Pkg有新版本";
+                                        }
+                                    }
                                 //解压失败
                                 else
+                                    {
+                                        TimeStatus = "当前状态：解压失败，请检查";
+                                        GameSwitchLog += "没有找到资源[CnFile.pkg]或解压失败，请检查Pkg文件是否和本应用处于同一目录\r\n";
+                                        await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在或解压失败", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                    }
+                                }
+                                else
                                 {
-                                    TimeStatus = "当前状态：解压失败，请检查";
-                                    GameSwitchLog += "没有找到资源[CnFile.pkg]或解压失败，请检查Pkg文件是否和本应用处于同一目录\r\n";
-                                    await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在或解压失败", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                    TimeStatus = "当前状态：请检查Pkg文件";
+                                    GameSwitchLog += "没有找到资源[CnFile.pkg]，请检查Pkg文件是否和本应用处于同一目录\r\n";
+                                    await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                                 }
                             }
                             else
                             {
-                                TimeStatus = "当前状态：请检查Pkg文件";
-                                GameSwitchLog += "没有找到资源[CnFile.pkg]，请检查Pkg文件是否和本应用处于同一目录\r\n";
-                                await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                await ReCnGame();
                             }
                         }
-                        else
-                        {
-                            await ReCnGame();
-                        }
+                        ProgressBar = "Hidden";
+                        PageUiStatus = "true";
+                        ObjSaveSettings();
                     }
-                    ProgressBar = "Hidden";
-                    PageUiStatus = "true";
-                    ObjSaveSettings();
-                }
-            });
-            start.Start();
+                });
+                start.Start();
+            }
+            else
+            {
+                dialogCoordinator.ShowMessageAsync(this, "错误", "请先关闭游戏再执行转换操作，如确定游戏已经完全关闭还是弹此提示请重启电脑再试或联系开发者！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            }
         }
 
         //转换国际服及转换国服核心逻辑-判断客户端

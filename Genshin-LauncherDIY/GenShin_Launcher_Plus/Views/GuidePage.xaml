@@ -15,10 +15,9 @@
                     <TextBox x:Name="GamePath" mah:TextBoxHelper.Watermark="游戏本体路径（默认的游戏本体目录为Genshin Impact Game文件夹）" HorizontalAlignment="Left" Height="44" Margin="189,652,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="830" FontSize="24" FontFamily="Microsoft YaHei UI" BorderThickness="3"/>
                     <Button x:Name="Dirchoose" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="···" HorizontalAlignment="Left" Margin="1019,652,0,0" VerticalAlignment="Top" Height="44" Width="79" FontFamily="Microsoft YaHei UI" FontSize="16" BorderBrush="#FF83919F" Click="Dirchoose_Click"/>
                     <TextBlock HorizontalAlignment="Center" Margin="0,94,0,0" VerticalAlignment="Top" FontSize="26" Foreground="Black" Width="1032" Height="65" TextAlignment="Center" Text="在开始前请先跟随引导熟悉一下使用方法和规范"/>
-                    <Image Source="/Images/UI_0.jpg" Height="180" Margin="45,-9,1152,551"/>
-                    <Image Source="/Images/Tips.jpg" Height="409"/>
+                    <Image Source="/Images/UI_0.jpg" Margin="552,262,552,289"/>
                     <TextBlock  x:Name="ErrorTitle" HorizontalAlignment="Center" Margin="0,579,0,0" VerticalAlignment="Top" FontSize="32" Foreground="Black" Width="1032" Height="65" TextAlignment="Center"><Run Text="输入或者点击右侧[···]按钮选择"/><Run Language="zh-cn" Text="如上图所示的"/><Run Text="游戏目录"/></TextBlock>
-                    <TextBlock Margin="454,517,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Foreground="Black" Width="520" Height="30" TextAlignment="Center"><Run Text="有箭头指着的这个文件和这个文件夹的目录才是游戏目录"/></TextBlock>
+                    <TextBlock Margin="0,528,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" Foreground="#FF848484" Width="956" Height="30" TextAlignment="Center"><Run Language="zh-cn" Text="游戏目录本体指Genshin Impact下的Genshin Impact Game目录"/></TextBlock>
                 </Grid>
                 <Grid Background="White">
                     <Image Source="/Images/UI_3.jpg"/>

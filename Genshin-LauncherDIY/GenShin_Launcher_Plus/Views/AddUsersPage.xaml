@@ -10,10 +10,10 @@
     <Grid Height="180" Width="370" Background="#FF647687" Margin="450,252,377,253">
         <GroupBox Header="保存上次登录的账号数据">
             <Grid Background="White">
-                <Label Content="输入保存的游戏账号名字以便读取" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18"/>
-                <TextBox x:Name="saveFilename" mah:TextBoxHelper.Watermark="请勿输入特殊符号" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" Width="190" Margin="123,54,0,0" FontFamily="Microsoft YaHei UI"/>
-                <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" x:Name="Save" Content="保存" HorizontalAlignment="Left" Margin="85,102,0,0" VerticalAlignment="Top" Width="80" Click="RemoveThisPage" Command="{Binding SaveUserDataCommand}"/>
-                <Button Style="{DynamicResource MahApps.Styles.Button.Square}" Content="取消" HorizontalAlignment="Left" Margin="193,102,0,0" VerticalAlignment="Top" Width="80" Click="RemoveThisPage"/>
+                <Label Content="输入保存的游戏账号名字以便读取" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="Microsoft YaHei UI"/>
+                <TextBox FontSize="12" x:Name="saveFilename" mah:TextBoxHelper.Watermark="请勿输入特殊符号" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" Width="190" Margin="123,54,0,0" FontFamily="Microsoft YaHei UI"/>
+                <Button FontSize="12" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" x:Name="Save" Content="保存" HorizontalAlignment="Left" Margin="85,102,0,0" VerticalAlignment="Top" Width="80" Click="RemoveThisPage" Command="{Binding SaveUserDataCommand}" FontFamily="Microsoft YaHei UI" FontWeight="Normal"/>
+                <Button FontSize="12" Style="{DynamicResource MahApps.Styles.Button.Square}" Content="取消" HorizontalAlignment="Left" Margin="193,102,0,0" VerticalAlignment="Top" Width="80" Click="RemoveThisPage" FontFamily="Microsoft YaHei UI" FontWeight="Normal"/>
                 <ComboBox x:Name="GamePort" HorizontalAlignment="Left" Height="16" Margin="54,54,0,0" VerticalAlignment="Top" Width="64" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GamePortLists}" DisplayMemberPath="GamePort" SelectedValuePath="GamePort" SelectedValue="{Binding GamePort}"/>
             </Grid>
         </GroupBox>

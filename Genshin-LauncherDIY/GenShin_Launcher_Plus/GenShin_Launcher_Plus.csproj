@@ -5,7 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Version>1.2.5</Version>
+    <Version>1.2.6</Version>
     <StartupObject>GenShin_Launcher_Plus.SingletonApp</StartupObject>
     <ApplicationIcon>ICON.ico</ApplicationIcon>
     <IsPublishable>True</IsPublishable>
@@ -23,7 +23,6 @@
     <None Remove="Images\MainBackground.jpg" />
     <None Remove="Images\SettingsButton.png" />
     <None Remove="Images\TencentGroupButton.png" />
-    <None Remove="Images\Tips.jpg" />
     <None Remove="Images\UI_0.jpg" />
     <None Remove="Images\UI_3.jpg" />
     <None Remove="Images\UI_4.jpg" />
@@ -38,9 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\Tips.jpg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Images\UI_0.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

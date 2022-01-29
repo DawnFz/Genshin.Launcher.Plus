@@ -27,8 +27,7 @@ namespace GenShin_Launcher_Plus.Views
 
         private void RemoveThisPage(object sender, RoutedEventArgs e)
         {
-            ((Grid)Parent).Children.Add(new HomePage());
-            ((Grid)Parent).Children.Remove(this);
+            MainBase.noab.MainPagesIndex = 0;
         }
     }
 }

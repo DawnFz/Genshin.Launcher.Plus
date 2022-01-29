@@ -26,7 +26,6 @@ namespace GenShin_Launcher_Plus.Views
             InitializeComponent();
             DataContext = new ViewModels.UpdatePageViewModel(DialogCoordinator.Instance);
         }
-
         private void SkipButton_Click(object sender, RoutedEventArgs e)
         {
             ((Grid)Parent).Children.Remove(this);

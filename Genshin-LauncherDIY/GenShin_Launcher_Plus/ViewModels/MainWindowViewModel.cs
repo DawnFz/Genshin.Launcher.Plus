@@ -117,13 +117,13 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             else if (IniControl.isWebBg == true)
             {
-                Uri uri = new Uri(FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$bg$]", "[#bg#]"), UriKind.Absolute);
+                Uri uri = new Uri("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
                 Background.ImageSource = new BitmapImage(uri);
                 Background.Stretch = Stretch.UniformToFill;
             }
             else
             {
-                Uri uri = new Uri("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
+                Uri uri = new Uri(FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$bg$]", "[#bg#]"), UriKind.Absolute);
                 Background.ImageSource = new BitmapImage(uri);
                 Background.Stretch = Stretch.UniformToFill;
             }

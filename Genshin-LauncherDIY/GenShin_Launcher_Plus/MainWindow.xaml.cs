@@ -29,7 +29,8 @@ namespace GenShin_Launcher_Plus
             InitializeComponent();
             AddConfig.CheckIni();
             DataContext = new ViewModels.MainWindowViewModel(DialogCoordinator.Instance);
-            ControlPage.Children.Add(new Views.HomePage());
+            MainFlipView.DataContext = ViewModels.MainBase.noab;
+            HomePage.Children.Add(new Views.HomePage());
             if (!File.Exists(Path.Combine(IniControl.GamePath, "Yuanshen.exe")) && !File.Exists(Path.Combine(IniControl.GamePath, "GenshinImpact.exe")))
             {
                 MainGrid.Children.Add(new Views.GuidePage());
@@ -49,19 +50,30 @@ namespace GenShin_Launcher_Plus
 
         private void SettingsPageButton_Click(object sender, RoutedEventArgs e)
         {
-            ControlPage.Children.Clear();
-            ControlPage.Children.Add(new Views.SettingsPage());
+            SettingsPage.Children.Clear();
+            SettingsPage.Children.Add(new Views.SettingsPage());
+            MainFlipView.SelectedIndex= 1;
         }
 
         private void AddUser_Click(object sender, RoutedEventArgs e)
         {
-            ControlPage.Children.Clear();
-            ControlPage.Children.Add(new Views.AddUsersPage());
+            AddUsersPage.Children.Clear();
+            AddUsersPage.Children.Add(new Views.AddUsersPage());
+            MainFlipView.SelectedIndex = 2;
         }
 
         private void Help_Copy_Click(object sender, RoutedEventArgs e)
         {
             MainGrid.Children.Add(new Views.HelpsPage());
+        }
+
+        private void MainFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MainFlipView.SelectedIndex == 0)
+            {
+                HomePage.Children.Clear();
+                HomePage.Children.Add(new Views.HomePage());
+            }
         }
     }
 }
