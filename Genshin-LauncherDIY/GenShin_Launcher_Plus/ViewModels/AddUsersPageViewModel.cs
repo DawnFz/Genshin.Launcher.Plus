@@ -1,21 +1,23 @@
-﻿using GenShin_Launcher_Plus.Command;
-using GenShin_Launcher_Plus.Core;
+﻿using GenShin_Launcher_Plus.Core;
 using GenShin_Launcher_Plus.Models;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
-    public class AddUsersPageViewModel : NotificationObject
+    public class AddUsersPageViewModel : ObservableObject
     {
 
         public AddUsersPageViewModel()
         {
             CreateGamePortList();
-            SaveUserDataCommand = new DelegateCommand { ExecuteAction = new Action<object>(SaveUserData) };
+            SaveUserDataCommand = new RelayCommand(SaveUserData);
         }
 
         public string GamePort { get; set; }
@@ -25,12 +27,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         private List<GamePortListModel> _GamePortLists;
         public List<GamePortListModel> GamePortLists
         {
-            get { return _GamePortLists; }
-            set
-            {
-                _GamePortLists = value;
-                OnPropChanged("GamePortLists");
-            }
+            get => _GamePortLists;
+            set => SetProperty(ref _GamePortLists, value);
         }
         private void CreateGamePortList()
         {
@@ -39,8 +37,8 @@ namespace GenShin_Launcher_Plus.ViewModels
             GamePortLists.Add(new GamePortListModel { GamePort = "国际" });
         }
 
-        public DelegateCommand SaveUserDataCommand { get; set; }
-        private void SaveUserData(object parameter)
+        public ICommand SaveUserDataCommand { get; set; }
+        private void SaveUserData()
         {
             if (GamePort == "国服" && Name != null)
             {

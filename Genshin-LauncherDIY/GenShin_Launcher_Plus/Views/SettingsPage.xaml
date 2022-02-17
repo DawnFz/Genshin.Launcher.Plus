@@ -18,7 +18,7 @@
             <Grid>
                 <mah:MetroProgressBar Margin="10,138,95,2" IsIndeterminate="True" Maximum="100" Minimum="0" Foreground="#FF9CA7B2" Visibility="{Binding ProgressBar}"/>
                 <Button FontSize="12" Content="转换" HorizontalAlignment="Left" Margin="279,147,0,0" VerticalAlignment="Top" IsEnabled="{Binding PageUiStatus}" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="68" Command="{Binding GameFileConvertCommand}"/>
-                <Label FontFamily="Microsoft YaHei UI" FontSize="12" Content="{Binding TimeStatus}" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="212" Margin="8,0,0,0"/>
+                <Label FontFamily="Microsoft YaHei UI" FontSize="12" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="212" Margin="8,0,0,0"/>
                 <TextBox  HorizontalAlignment="Center" Height="104" VerticalAlignment="Top" Width="338" Margin="0,30,0,0" Background="#CC83919F" Foreground="White" TextWrapping="Wrap" FontFamily="Microsoft YaHei UI" Text="{Binding GameSwitchLog}">
                     <b:Interaction.Triggers>
                         <b:EventTrigger EventName="TextChanged">
@@ -31,11 +31,11 @@
         <CheckBox Content="不使用网络背景" HorizontalAlignment="Left" Margin="13,531,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.isWebBg}"/>
         <GroupBox HorizontalAlignment="Left" Height="216" VerticalAlignment="Top" Width="173" Header="附加与窗口分辨率" Margin="13,48,0,0">
             <Grid>
-                <TextBox mah:TextBoxHelper.Watermark="高度" x:Name="DisHeight" HorizontalAlignment="Left" Margin="93,14,0,0" TextWrapping="Wrap" Text="{Binding IniModel.Height}" VerticalAlignment="Top" Width="54" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
-                <TextBox mah:TextBoxHelper.Watermark="宽度" x:Name="DisWidth" HorizontalAlignment="Left" Margin="16,14,0,0" TextWrapping="Wrap" Text="{Binding IniModel.Width}" VerticalAlignment="Top" Width="54" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                <TextBox mah:TextBoxHelper.Watermark="高度" x:Name="DisHeight" HorizontalAlignment="Left" Margin="93,14,0,0" TextWrapping="Wrap" Text="{Binding Height}" VerticalAlignment="Top" Width="54" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                <TextBox mah:TextBoxHelper.Watermark="宽度" x:Name="DisWidth" HorizontalAlignment="Left" Margin="16,14,0,0" TextWrapping="Wrap" Text="{Binding Width}" VerticalAlignment="Top" Width="54" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
                 <Label Content="×" HorizontalAlignment="Center" Margin="0,13,0,0" VerticalAlignment="Top" FontWeight="Normal" FontSize="14" Width="20"/>
                 <Button Content="自动取21:9" HorizontalAlignment="Left" Margin="84,111,0,0" VerticalAlignment="Top" Width="63" FontFamily="Microsoft YaHei UI" FontSize="10" FontWeight="Normal" Height="26" Command="{Binding Auto21x9Command}"/>
-                <ComboBox HorizontalAlignment="Center" Height="16" Margin="0,47,0,0" VerticalAlignment="Top" Width="131" ItemsSource="{Binding DisplaySizeLists}" DisplayMemberPath="DisplaySize" SelectedValuePath="DisplaySize"  SelectedIndex="{Binding DisplaySelectedIndex}"/>
+                <ComboBox HorizontalAlignment="Center" Height="16" Margin="0,47,0,0" VerticalAlignment="Top" Width="131" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding DisplaySizeLists}" DisplayMemberPath="DisplaySize" SelectedValuePath="DisplaySize"  SelectedIndex="{Binding DisplaySelectedIndex}"/>
                 <CheckBox Content="无边框" HorizontalAlignment="Left" Margin="87,144,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.isPopup}"/>
                 <CheckBox Content="解帧率" HorizontalAlignment="Left" Margin="17,144,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.isUnFPS}" Command="{Binding ChooseUnlockFpsCommand}"/>
                 <TextBox mah:TextBoxHelper.Watermark="FPS上限" HorizontalAlignment="Left" Margin="16,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="{Binding IniModel.isUnFPS}" Text="{Binding IniModel.MaxFps}"/>
@@ -44,7 +44,7 @@
             </Grid>
         </GroupBox>
         <Button FontSize="12" Style="{DynamicResource MahApps.Styles.Button.Square}" IsEnabled="{Binding PageUiStatus}" Content="删除选中的用户" HorizontalAlignment="Left" Margin="193,236,0,0" VerticalAlignment="Top" Width="186" Command="{Binding DeleteUserCommand}" FontFamily="Microsoft YaHei UI" />
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="193,71,11,335" BorderThickness="2,2,2,2" BorderBrush="#FF83919F" ItemsSource="{Binding UserLists}" DisplayMemberPath="UserName" SelectedValue="{Binding IniModel.SwitchUser, Mode=OneWayToSource}" SelectedValuePath="UserName"/>
+        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="193,71,11,335" BorderThickness="2,2,2,2" BorderBrush="#FF83919F" ItemsSource="{Binding UserLists}" DisplayMemberPath="UserName" SelectedValue="{Binding IniModel.SwitchUser, Mode=OneWayToSource}" SelectedValuePath="UserName" FontSize="12"/>
         <Grid HorizontalAlignment="Center" Height="36" VerticalAlignment="Top" Width="390" Background="{Binding SettingTitleColor}">
             <Label Content="{Binding SettingsTitle}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
             <Button FontSize="12" Content="关闭" HorizontalAlignment="Left" IsEnabled="{Binding PageUiStatus}" Margin="339,0,0,0" VerticalAlignment="Center" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="46" Command="{Binding ThisPageRemoveCommand}" Background="#FEFF6B79" BorderThickness="0" Height="10"/>

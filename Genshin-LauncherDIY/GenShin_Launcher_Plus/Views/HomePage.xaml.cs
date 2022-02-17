@@ -22,7 +22,7 @@ namespace GenShin_Launcher_Plus.Views
         public HomePage()
         {
             InitializeComponent();
-            DataContext = new ViewModels.HomePageViewModel(DialogCoordinator.Instance);//MVVM数据绑定
+            DataContext = new ViewModels.HomePageViewModel(DialogCoordinator.Instance);
         }
     }
 }

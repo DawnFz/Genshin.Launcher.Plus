@@ -2,29 +2,29 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
-using System.Text;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using GenShin_Launcher_Plus.Command;
 using GenShin_Launcher_Plus.Core;
 using MahApps.Metro.Controls.Dialogs;
+using System.Windows.Input;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
-    public class MainWindowViewModel : NotificationObject
+    public class MainWindowViewModel : ObservableObject
     {
         private IDialogCoordinator dialogCoordinator;
         public MainWindowViewModel(IDialogCoordinator instance)
         {
             dialogCoordinator = instance;
             MainWindowLoaded();
-            OpenImagesDirectoryCommand = new DelegateCommand { ExecuteAction = new Action<object>(OpenImagesDirectory) };
-            OpenAboutCommand = new DelegateCommand { ExecuteAction = new Action<object>(OpenAbout) };
-            OpenQQGroupUrlCommand = new DelegateCommand { ExecuteAction = new Action<object>(OpenQQGroupUrl) };
-            ExitProgramCommand = new DelegateCommand { ExecuteAction = new Action<object>(ExitProgram) };
-            MainMinimizedCommand = new DelegateCommand { ExecuteAction = new Action<object>(MainMinimized) };
+            OpenImagesDirectoryCommand = new RelayCommand(OpenImagesDirectory);
+            OpenAboutCommand = new RelayCommand(OpenAbout);
+            OpenQQGroupUrlCommand = new RelayCommand(OpenQQGroupUrl);
+            ExitProgramCommand = new RelayCommand(ExitProgram);
+            MainMinimizedCommand = new RelayCommand(MainMinimized);
             Title = $"原神启动器Plus {Application.ResourceAssembly.GetName().Version}";
             IniControl.EXEname(Path.GetFileName(Environment.ProcessPath));
         }
@@ -34,18 +34,14 @@ namespace GenShin_Launcher_Plus.ViewModels
         private ImageBrush _Background;
         public ImageBrush Background
         {
-            get { return _Background; }
-            set
-            {
-                _Background = value;
-                OnPropChanged("Background");
-            }
+            get => _Background;
+            set => SetProperty(ref _Background, value);
         }
 
 
 
-        public DelegateCommand OpenImagesDirectoryCommand { get; set; }
-        private async void OpenImagesDirectory(object parameter)
+        public ICommand OpenImagesDirectoryCommand { get; set; }
+        private async void OpenImagesDirectory()
         {
             if (Directory.Exists(Path.Combine(IniControl.GamePath, "ScreenShot")))
             {
@@ -64,8 +60,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
 
 
-        public DelegateCommand OpenAboutCommand { get; set; }
-        private async void OpenAbout(object parameter)
+        public ICommand OpenAboutCommand { get; set; }
+        private async void OpenAbout()
         {
             if ((await dialogCoordinator.ShowMessageAsync(this, "关于", aboutthis, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "确定", NegativeButtonText = "GitHub" })) != MessageDialogResult.Affirmative)
             {
@@ -78,8 +74,8 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
         }
 
-        public DelegateCommand OpenQQGroupUrlCommand { get; set; }
-        private void OpenQQGroupUrl(object parameter)
+        public ICommand OpenQQGroupUrlCommand { get; set; }
+        private void OpenQQGroupUrl()
         {
             ProcessStartInfo info = new()
             {
@@ -89,15 +85,15 @@ namespace GenShin_Launcher_Plus.ViewModels
             Process.Start(info);
         }
 
-        public DelegateCommand ExitProgramCommand { get; set; }
-        private void ExitProgram(object parameter)
+        public ICommand ExitProgramCommand { get; set; }
+        private void ExitProgram()
         {
             Environment.Exit(0);
         }
 
 
-        public DelegateCommand MainMinimizedCommand { get; set; }
-        private void MainMinimized(object parameter)
+        public ICommand MainMinimizedCommand { get; set; }
+        private void MainMinimized()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {

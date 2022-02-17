@@ -1,21 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using GenShin_Launcher_Plus.Command;
 using GenShin_Launcher_Plus.Core;
 using GenShin_Launcher_Plus.Models;
 using MahApps.Metro.Controls.Dialogs;
-
+using System.Windows.Input;
+using System.Collections.Generic;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
-    public class HomePageViewModel : NotificationObject
+    public class HomePageViewModel : ObservableObject
 
     {
         private IDialogCoordinator dialogCoordinator;
@@ -23,27 +23,23 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             IniModel = new SettingsIniModel();
             dialogCoordinator = instance;
-            RunGameCommand = new DelegateCommand { ExecuteAction = new Action<object>(RunGame) };
+            RunGameCommand = new RelayCommand(RunGame);
             IniModel.SwitchUser = $"账号：{IniControl.SwitchUser}";
 
             if (IniControl.SwitchUser != null && IniControl.SwitchUser != "")
-            { IniModel.IsSwitchUser = "Visible"; OnPropChanged("IniModel"); }
+            { IniModel.IsSwitchUser = "Visible"; }
             else
-            { IniModel.IsSwitchUser = "Hidden"; OnPropChanged("IniModel"); }
+            { IniModel.IsSwitchUser = "Hidden"; }
 
+            CreateGamePortList();
             GetGamePort();
-
         }
 
         private SettingsIniModel _IniModel;
         public SettingsIniModel IniModel
         {
-            get { return _IniModel; }
-            set
-            {
-                _IniModel = value;
-                OnPropChanged("IniModel");
-            }
+            get => _IniModel;
+            set => SetProperty(ref _IniModel, value);
         }
 
         private void GetGamePort()
@@ -51,20 +47,52 @@ namespace GenShin_Launcher_Plus.ViewModels
             if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")))
             {
                 if (IniControl.Cps == "pcadbdpz")
-                { IniModel.SwitchPort = "客户端：官方服务器"; OnPropChanged("IniModel"); }
+                { IniModel.SwitchPort = "客户端：官方服务器"; }
                 else if (IniControl.Cps == "bilibili")
-                { IniModel.SwitchPort = "客户端：哔哩哔哩服"; OnPropChanged("IniModel"); }
+                { IniModel.SwitchPort = "客户端：哔哩哔哩服"; }
                 else if (IniControl.Cps == "mihoyo")
-                { IniModel.SwitchPort = "客户端：通用国际服"; OnPropChanged("IniModel"); }
+                { IniModel.SwitchPort = "客户端：通用国际服"; }
                 else
-                { IniModel.SwitchPort = "客户端：未知客户端"; OnPropChanged("IniModel"); }
+                { IniModel.SwitchPort = "客户端：未知客户端"; }
             }
             else
-            { IniModel.SwitchPort = "客户端：未知客户端"; OnPropChanged("IniModel"); }
+            { IniModel.SwitchPort = "客户端：未知客户端"; }
         }
 
-        public DelegateCommand RunGameCommand { get; set; }
-        private async void RunGame(object parameter)
+        //用户列表
+        public List<UserListModel> _UserLists;
+        public List<UserListModel> UserLists
+        {
+            get => _UserLists;
+            set => SetProperty(ref _UserLists, value);
+        }
+        private void ReadUserList()
+        {
+            UserLists = new List<UserListModel>();
+            DirectoryInfo TheFolder = new(@"UserData");
+            foreach (FileInfo NextFile in TheFolder.GetFiles())
+            {
+                UserLists.Add(new UserListModel { UserName = NextFile.Name });
+            }
+        }
+
+        //游戏客户端列表
+        private List<GamePortListModel> _GamePortLists;
+        public List<GamePortListModel> GamePortLists
+        {
+            get => _GamePortLists;
+            set => SetProperty(ref _GamePortLists, value);
+        }
+        private void CreateGamePortList()
+        {
+            GamePortLists = new List<GamePortListModel>();
+            GamePortLists.Add(new GamePortListModel { GamePort = "官方" });
+            GamePortLists.Add(new GamePortListModel { GamePort = "哔哩" });
+            GamePortLists.Add(new GamePortListModel { GamePort = "国际" });
+        }
+
+        public ICommand RunGameCommand { get; set; }
+        private async void RunGame()
         {
             if (IniControl.isUnFPS)
             {

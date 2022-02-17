@@ -1,7 +1,8 @@
 ﻿using GenShin_Launcher_Plus.Core;
 using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Generic;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,17 +10,17 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using GenShin_Launcher_Plus.Command;
+using System.Windows.Input;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
-    public class UpdatePageViewModel : NotificationObject
+    public class UpdatePageViewModel : ObservableObject
     {
         private IDialogCoordinator dialogCoordinator;
         public UpdatePageViewModel(IDialogCoordinator instance)
         {
             dialogCoordinator = instance;
-            UpdateRunCommand = new DelegateCommand { ExecuteAction = new Action<object>(UpdateRun) };
+            UpdateRunCommand = new RelayCommand(UpdateRun);
         }
         public string Notify
         {
@@ -32,10 +33,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
         public string Title
         {
-            get
-            {
-                return FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$msgtl$]", "[#msgtl#]");
-            }
+            get => FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$msgtl$]", "[#msgtl#]");
         }
 
 
@@ -43,45 +41,52 @@ namespace GenShin_Launcher_Plus.ViewModels
         private bool _ButtonIsEnabled = true;
         public bool ButtonIsEnabled
         {
-            get { return _ButtonIsEnabled;}
-            set { _ButtonIsEnabled = value;OnPropChanged("ButtonIsEnabled"); }
+            get => _ButtonIsEnabled;
+            set => SetProperty(ref _ButtonIsEnabled, value);
         }
 
         private double _DownloadBarMax;
         public double DownloadBarMax
         {
-            get { return _DownloadBarMax; }
-            set { _DownloadBarMax = value; OnPropChanged("DownloadBarMax"); }
+            get => _DownloadBarMax;
+            set => SetProperty(ref _DownloadBarMax, value);
         }
 
         private double _DownloadBarValue;
         public double DownloadBarValue
         {
-            get { return _DownloadBarValue; }
-            set { _DownloadBarValue = value; OnPropChanged("DownloadBarValue"); }
+            get => _DownloadBarValue;
+            set => SetProperty(ref _DownloadBarValue, value);
         }
 
         private string _DownloadLabel;
         public string DownloadLabel
         {
-            get { return _DownloadLabel; }
-            set { _DownloadLabel = value; OnPropChanged("DownloadLabel"); }
+            get => _DownloadLabel;
+            set => SetProperty(ref _DownloadLabel, value);
         }
 
 
-        public DelegateCommand UpdateRunCommand { get; set; }
-        private async void UpdateRun(object parameter)
+        public ICommand UpdateRunCommand { get; set; }
+        private async void UpdateRun()
         {
-            ButtonIsEnabled = false;
-            string updatefile = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$update$]", "[#update#]");
-            if (await HttpFileExistAsync(updatefile) == true)
+            if (ButtonIsEnabled)
             {
-                await DownloadHttpFileAsync(updatefile, @"UpdateTemp.upd");
+                ButtonIsEnabled = false;
+                string updatefile = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$update$]", "[#update#]");
+                if (await HttpFileExistAsync(updatefile) == true)
+                {
+                    await DownloadHttpFileAsync(updatefile, @"UpdateTemp.upd");
+                }
+                else
+                {
+                    await dialogCoordinator.ShowMessageAsync(this, "错误提示", "网络更新文件资源不存在或服务器网络错误", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    ButtonIsEnabled = true;
+                }
             }
             else
             {
-                await dialogCoordinator.ShowMessageAsync(this, "错误提示", "网络更新文件资源不存在或服务器网络错误", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                ButtonIsEnabled = true;
+                await dialogCoordinator.ShowMessageAsync(this, "提示", "你正在进行更新操作，请勿重复操作", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
         }
 
@@ -120,7 +125,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 Process.Start(@"Update.exe");
                 Environment.Exit(0);
             }
-            else 
+            else
             {
                 ButtonIsEnabled = true;
             }

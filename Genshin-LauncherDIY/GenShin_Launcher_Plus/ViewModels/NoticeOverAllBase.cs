@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
-    public class NoticeOverAllBase:NotificationObject
+    public class NoticeOverAllBase: ObservableObject
     {
         public NoticeOverAllBase()
         {
@@ -16,8 +18,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         private int _MainPagesIndex;
         public int MainPagesIndex
         {
-            get { return _MainPagesIndex; }
-            set { _MainPagesIndex = value; OnPropChanged("MainPagesIndex"); }
+            get => _MainPagesIndex;
+            set => SetProperty(ref _MainPagesIndex,value);
         }
     }
 }

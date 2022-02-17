@@ -1,9 +1,9 @@
-﻿using GenShin_Launcher_Plus.Command;
-using GenShin_Launcher_Plus.Core;
+﻿using GenShin_Launcher_Plus.Core;
 using GenShin_Launcher_Plus.Models;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.VisualBasic.Devices;
-using Microsoft.Win32;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using System;
@@ -14,10 +14,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.ComponentModel;
+using System.Windows.Input;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
-    internal class SettingsPageViewModel : NotificationObject
+    internal class SettingsPageViewModel : ObservableObject
     {
         //转换文件列表
 
@@ -96,27 +98,27 @@ namespace GenShin_Launcher_Plus.ViewModels
             CreateGamePortList();
             CreateGameWindowModeList();
             ReadUserList();
-            SaveSettingsCommand = new DelegateCommand { ExecuteAction = new Action<object>(SaveSettings) };
-            DeleteUserCommand = new DelegateCommand { ExecuteAction = new Action<object>(DeleteUser) };
-            ChooseGamePathCommand = new DelegateCommand { ExecuteAction = new Action<object>(ChooseGamePath) };
-            ChooseUnlockFpsCommand = new DelegateCommand { ExecuteAction = new Action<object>(ChooseUnlockFps) };
-            GameFileConvertCommand = new DelegateCommand { ExecuteAction = new Action<object>(GameFileConvert) };
-            Auto21x9Command = new DelegateCommand { ExecuteAction = new Action<object>(Auto21x9) };
-            ThisPageRemoveCommand = new DelegateCommand { ExecuteAction = new Action<object>(ThisPageRemove) };
+            SaveSettingsCommand = new RelayCommand(SaveSettings);
+            DeleteUserCommand = new RelayCommand(DeleteUser);
+            ChooseGamePathCommand = new RelayCommand(ChooseGamePath);
+            ChooseUnlockFpsCommand = new RelayCommand(ChooseUnlockFps);
+            GameFileConvertCommand = new RelayCommand(GameFileConvert);
+            Auto21x9Command = new RelayCommand(Auto21x9);
+            ThisPageRemoveCommand = new RelayCommand(ThisPageRemove);
         }
 
         //保存状态
         private string _SettingsTitle = "设置";
         public string SettingsTitle
         {
-            get { return _SettingsTitle; }
-            set { _SettingsTitle = value; OnPropChanged("SettingsTitle"); }
+            get => _SettingsTitle;
+            set => SetProperty(ref _SettingsTitle, value);
         }
         private string _SettingTitleColor = "#FF272727";
         public string SettingTitleColor
         {
-            get { return _SettingTitleColor; }
-            set { _SettingTitleColor = value; OnPropChanged("SettingTitleColor"); }
+            get => _SettingTitleColor;
+            set => SetProperty(ref _SettingTitleColor, value);
         }
         private void DelaySaveButtonTitle()
         {
@@ -130,124 +132,114 @@ namespace GenShin_Launcher_Plus.ViewModels
             });
             task.Start();
         }
-
-
+        //分辨率宽高中间发送
+        private string _Width;
+        public string Width { get => _Width; set => SetProperty(ref _Width, value); }
+        private string _Height;
+        public string Height { get => _Height; set => SetProperty(ref _Height, value); }
 
         //选中分辨率的索引
         private int _DisplaySelectedIndex = -1;
         public int DisplaySelectedIndex
         {
-            get { return _DisplaySelectedIndex; }
+            get => _DisplaySelectedIndex;
             set
             {
-                _DisplaySelectedIndex = value;
-                DisplaySizeSelectionChanged();
+                switch (value)
+                {
+                    case 0:
+                        Width = "3840";
+                        Height = "2160";
+                        break;
+                    case 1:
+                        Width = "2560";
+                        Height = "1080";
+                        break;
+                    case 2:
+                        Width = "1920";
+                        Height = "1080";
+                        break;
+                    case 3:
+                        Width = "1600";
+                        Height = "900";
+                        break;
+                    case 4:
+                        Width = "1360";
+                        Height = "768";
+                        break;
+                    case 5:
+                        Width = "1280";
+                        Height = "1024";
+                        break;
+                    case 6:
+                        Width = "1280";
+                        Height = "720";
+                        break;
+                    case 7:
+                        Width = Convert.ToString(SystemParameters.PrimaryScreenWidth);
+                        Height = Convert.ToString(SystemParameters.PrimaryScreenHeight);
+                        break;
+                    default:
+                        break;
+                }
+                IniModel.Width = Width;
+                IniModel.Height = Height;
             }
         }
-
         //存放设置属性的实体类
         private SettingsIniModel _IniModel;
         public SettingsIniModel IniModel
         {
-            get { return _IniModel; }
-            set
-            {
-                _IniModel = value;
-                OnPropChanged("IniModel");
-            }
+            get => _IniModel;
+            set => SetProperty(ref _IniModel, value);
+
         }
 
         //转换时的日志列表
-        private string _GameSwitchLog = "启动器将自动判断要转换的方式并锁定下方选项\r\n";
+        private string _GameSwitchLog = "PKG转换文件度盘下载链接，密码：etxd\r\nhttps://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg\r\n";
         public string GameSwitchLog
         {
-            get { return _GameSwitchLog; }
-            set { _GameSwitchLog = value; OnPropChanged("GameSwitchLog"); }
+            get => _GameSwitchLog;
+            set => SetProperty(ref _GameSwitchLog, value);
         }
 
         //转换时的控件状态
         private string _PageUiStatus = "true";
         public string PageUiStatus
         {
-            get { return _PageUiStatus; }
-            set { _PageUiStatus = value; OnPropChanged("PageUiStatus"); }
+            get => _PageUiStatus;
+            set => SetProperty(ref _PageUiStatus, value);
         }
 
         //转换状态
         private string _TimeStatus = "当前状态：无状态";
         public string TimeStatus
         {
-            get { return _TimeStatus; }
-            set { _TimeStatus = value; OnPropChanged("TimeStatus"); }
-        }
-
-        //游戏分辨率列表
-        private void DisplaySizeSelectionChanged()
-        {
-            switch (DisplaySelectedIndex)
-            {
-                case 0:
-                    IniModel.Width = "3840";
-                    IniModel.Height = "2160";
-                    OnPropChanged("IniModel");
-                    break;
-                case 1:
-                    IniModel.Width = "2560";
-                    IniModel.Height = "1080";
-                    OnPropChanged("IniModel");
-                    break;
-                case 2:
-                    IniModel.Width = "1920";
-                    IniModel.Height = "1080";
-                    OnPropChanged("IniModel");
-                    break;
-                case 3:
-                    IniModel.Width = "1600";
-                    IniModel.Height = "900";
-                    OnPropChanged("IniModel");
-                    break;
-                case 4:
-                    IniModel.Width = "1360";
-                    IniModel.Height = "768";
-                    OnPropChanged("IniModel");
-                    break;
-                case 5:
-                    IniModel.Width = "1280";
-                    IniModel.Height = "1024";
-                    OnPropChanged("IniModel");
-                    break;
-                case 6:
-                    IniModel.Width = "1280";
-                    IniModel.Height = "720";
-                    OnPropChanged("IniModel");
-                    break;
-                default:
-                    break;
-            }
+            get => _TimeStatus;
+            set => SetProperty(ref _TimeStatus, value);
         }
         public List<DisplaySizeListModel> DisplaySizeLists { get; set; }
         private void CreateDisplaySizeList()
         {
-            DisplaySizeLists = new List<DisplaySizeListModel>();
-            DisplaySizeLists.Add(new DisplaySizeListModel { DisplaySize = "   3840 × 2160  |  16:9 " });
-            DisplaySizeLists.Add(new DisplaySizeListModel { DisplaySize = "   2560 × 1080  |  21:9 " });
-            DisplaySizeLists.Add(new DisplaySizeListModel { DisplaySize = "   1920 × 1080  |  16:9 " });
-            DisplaySizeLists.Add(new DisplaySizeListModel { DisplaySize = "   1600 × 900    |  16:9 " });
-            DisplaySizeLists.Add(new DisplaySizeListModel { DisplaySize = "   1360 × 768    |  16:9 " });
-            DisplaySizeLists.Add(new DisplaySizeListModel { DisplaySize = "   1280 × 1024  |   4:3 " });
-            DisplaySizeLists.Add(new DisplaySizeListModel { DisplaySize = "   1280 × 720    |  16:9 " });
+            DisplaySizeLists = new List<DisplaySizeListModel>
+            {
+                new DisplaySizeListModel { DisplaySize = "   3840 × 2160  |  16:9 " },
+                new DisplaySizeListModel { DisplaySize = "   2560 × 1080  |  21:9 " },
+                new DisplaySizeListModel { DisplaySize = "   1920 × 1080  |  16:9 " },
+                new DisplaySizeListModel { DisplaySize = "   1600 × 900    |  16:9 " },
+                new DisplaySizeListModel { DisplaySize = "   1360 × 768    |  16:9 " },
+                new DisplaySizeListModel { DisplaySize = "   1280 × 1024  |   4:3 " },
+                new DisplaySizeListModel { DisplaySize = "   1280 × 720    |  16:9 " },
+                new DisplaySizeListModel{ DisplaySize = "   当前屏幕最大分辨率" },
+            };
         }
 
         //用户列表
         public List<UserListModel> _UserLists;
         public List<UserListModel> UserLists
         {
-            get { return _UserLists; }
-            set
-            {
-                _UserLists = value;
-                OnPropChanged("UserLists");
-            }
+            get => _UserLists;
+            set => SetProperty(ref _UserLists, value);
         }
         private void ReadUserList()
         {
@@ -263,12 +255,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         private List<GamePortListModel> _GamePortLists;
         public List<GamePortListModel> GamePortLists
         {
-            get { return _GamePortLists; }
-            set
-            {
-                _GamePortLists = value;
-                OnPropChanged("GamePortLists");
-            }
+            get => _GamePortLists;
+            set => SetProperty(ref _GamePortLists, value);
         }
         private void CreateGamePortList()
         {
@@ -282,12 +270,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         private List<GameWindowModeListModel> _GameWindowModeList;
         public List<GameWindowModeListModel> GameWindowModeList
         {
-            get { return _GameWindowModeList; }
-            set
-            {
-                _GameWindowModeList = value;
-                OnPropChanged("CreateGamePortList");
-            }
+            get => _GameWindowModeList;
+            set => SetProperty(ref _GameWindowModeList, value);
         }
         private void CreateGameWindowModeList()
         {
@@ -297,15 +281,14 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
 
         //选择游戏路径的命令
-        public DelegateCommand ChooseGamePathCommand { get; set; }
-        private void ChooseGamePath(object parameter)
+        public ICommand ChooseGamePathCommand { get; set; }
+        private void ChooseGamePath()
         {
             CommonOpenFileDialog dialog = new("请选择原神游戏本体所在文件夹");
             dialog.IsFolderPicker = true;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 IniModel.GamePath = dialog.FileName;
-                OnPropChanged("IniModel");
             }
 
         }
@@ -314,32 +297,30 @@ namespace GenShin_Launcher_Plus.ViewModels
         private string _ProgressBar = "Hidden";
         public string ProgressBar
         {
-            get { return _ProgressBar; }
-            set { _ProgressBar = value; OnPropChanged("ProgressBar"); }
+            get => _ProgressBar;
+            set => SetProperty(ref _ProgressBar, value);
         }
 
         //选择解锁FPS的指令
-        public DelegateCommand ChooseUnlockFpsCommand { get; set; }
-        private async void ChooseUnlockFps(object parameter)
+        public ICommand ChooseUnlockFpsCommand { get; set; }
+        private async void ChooseUnlockFps()
         {
             if (IniModel.isUnFPS)
             {
                 if ((await dialogCoordinator.ShowMessageAsync(this, "超级警告", "此操作涉及修改游戏客户端进程，目前不知道确切会不会出现封号风险，出现问题请自行承担后果！如之前没使用过UnlockFPS的建议不要使用！按下同意代表使用本功能后的一切后果由自己承担！怕就不要用，用就不要怕！【注意：启用本功能后拉起游戏会慢一点，为正常现象】", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "同意" })) != MessageDialogResult.Affirmative)
                 {
                     IniModel.isUnFPS = true;
-                    OnPropChanged("IniModel");
                 }
                 else
                 {
                     IniModel.isUnFPS = false;
-                    OnPropChanged("IniModel");
                 }
             }
         }
 
         //删除账号的命令
-        public DelegateCommand DeleteUserCommand { get; set; }
-        private async void DeleteUser(object parameter)
+        public ICommand DeleteUserCommand { get; set; }
+        private async void DeleteUser()
         {
 
             if (IniModel.SwitchUser != "" && IniModel.SwitchUser != null)
@@ -357,12 +338,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
 
         //保存设置的命令
-        public DelegateCommand SaveSettingsCommand { get; set; }
-        private void SaveSettings(object parameter)
-        {
-            ObjSaveSettings();
-        }
-        private async void ObjSaveSettings()
+        public ICommand SaveSettingsCommand { get; set; }
+        private async void SaveSettings()
         {
 
             if (IniModel.SwitchUser != null && IniModel.SwitchUser != "")
@@ -437,16 +414,16 @@ namespace GenShin_Launcher_Plus.ViewModels
             if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")))
             {
                 if (IniControl.Cps == "pcadbdpz")
-                { IniModel.isMihoyo = 0; OnPropChanged("IniModel"); }
+                { IniModel.isMihoyo = 0; }
                 else if (IniControl.Cps == "bilibili")
-                { IniModel.isMihoyo = 1; OnPropChanged("IniModel"); }
+                { IniModel.isMihoyo = 1; }
                 else if (IniControl.Cps == "mihoyo")
-                { IniModel.isMihoyo = 2; OnPropChanged("IniModel"); }
+                { IniModel.isMihoyo = 2; }
                 else
-                { IniModel.isMihoyo = 3; OnPropChanged("IniModel"); }
+                { IniModel.isMihoyo = 3; }
             }
             else
-            { IniModel.isMihoyo = 3; OnPropChanged("IniModel"); }
+            { IniModel.isMihoyo = 3; }
         }
 
         //被创建时从Setting.ini文件读取给IniModel对象赋值
@@ -462,12 +439,14 @@ namespace GenShin_Launcher_Plus.ViewModels
             IniModel.isMainGridHide = IniControl.isMainGridHide;
             IniModel.isWebBg = IniControl.isWebBg;
             IniModel.FullSize = IniControl.FullSize;
+            Width = IniModel.Width;
+            Height = IniModel.Height;
             ReadGameConfig();
         }
 
         //自动取比例
-        public DelegateCommand Auto21x9Command { get; set; }
-        private async void Auto21x9(object parameter)
+        public ICommand Auto21x9Command { get; set; }
+        private async void Auto21x9()
         {
             if (IniModel.Height == "" && IniModel.Width != "")
             {
@@ -487,20 +466,19 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 await dialogCoordinator.ShowMessageAsync(this, "提醒", "在上面随便一个框填上想要的宽或者高另一个框留空使用本按钮自动取21:9比例分辨率", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
-            OnPropChanged("IniModel");
         }
 
 
         //关闭设置页面
-        public DelegateCommand ThisPageRemoveCommand { get; set; }
-        private void ThisPageRemove(object parameter)
+        public ICommand ThisPageRemoveCommand { get; set; }
+        private void ThisPageRemove()
         {
             MainBase.noab.MainPagesIndex = 0;
         }
 
         //转换国际服及转换国服绑定命令
-        public DelegateCommand GameFileConvertCommand { get; set; }
-        private void GameFileConvert(object parameter)
+        public ICommand GameFileConvertCommand { get; set; }
+        private void GameFileConvert()
         {
             if (!CheckControl.IsFileOpen(Path.Combine(IniControl.GamePath, "Yuanshen.exe")) && !CheckControl.IsFileOpen(Path.Combine(IniControl.GamePath, "GenshinImpact.exe")))
             {
@@ -511,15 +489,15 @@ namespace GenShin_Launcher_Plus.ViewModels
                     {
                         PageUiStatus = "false";
                         ProgressBar = "Visible";
-                    //判断客户端
-                    string port = JudgeGamePort();
-                    //判断Pkg是否正常
-                    if (port == "YuanShen")
+                        //判断客户端
+                        string port = JudgeGamePort();
+                        //判断Pkg是否正常
+                        if (port == "YuanShen")
                         {
                             if (!CheckFileIntegrity(IniControl.GamePath, cnfiles, 1, ".bak"))
                             {
-                            //没备份文件
-                            if (Directory.Exists(@"GlobalFile"))
+                                //没备份文件
+                                if (Directory.Exists(@"GlobalFile"))
                                 {
                                     if (JudgePkgVer("GlobalFile"))
                                     {
@@ -537,8 +515,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                                 else if (File.Exists(@"GlobalFile.pkg"))
                                 {
                                     TimeStatus = "当前状态：正在解压PKG资源包";
-                                //解压Pkg
-                                if (FilesControl.UnZip("GlobalFile.pkg", @""))
+                                    //解压Pkg
+                                    if (FilesControl.UnZip("GlobalFile.pkg", @""))
                                     {
                                         if (JudgePkgVer("GlobalFile"))
                                         {
@@ -551,8 +529,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                                             TimeStatus = "当前状态：Pkg有新版本";
                                         }
                                     }
-                                //解压失败
-                                else
+                                    //解压失败
+                                    else
                                     {
                                         TimeStatus = "当前状态：解压失败，请检查";
                                         GameSwitchLog += "没有找到资源[GlobalFile.pkg]或解压失败，请检查Pkg文件是否和本应用处于同一目录\r\n";
@@ -575,8 +553,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                         {
                             if (!CheckFileIntegrity(IniControl.GamePath, globalfiles, 1, ".bak"))
                             {
-                            //没备份文件
-                            if (Directory.Exists(@"CnFile"))
+                                //没备份文件
+                                if (Directory.Exists(@"CnFile"))
                                 {
                                     if (JudgePkgVer("CnFile"))
                                     {
@@ -594,8 +572,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                                 else if (File.Exists(@"CnFile.pkg"))
                                 {
                                     TimeStatus = "当前状态：正在解压PKG资源包";
-                                //解压Pkg
-                                if (FilesControl.UnZip("CnFile.pkg", @""))
+                                    //解压Pkg
+                                    if (FilesControl.UnZip("CnFile.pkg", @""))
                                     {
                                         if (JudgePkgVer("CnFile"))
                                         {
@@ -608,8 +586,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                                             TimeStatus = "当前状态：Pkg有新版本";
                                         }
                                     }
-                                //解压失败
-                                else
+                                    //解压失败
+                                    else
                                     {
                                         TimeStatus = "当前状态：解压失败，请检查";
                                         GameSwitchLog += "没有找到资源[CnFile.pkg]或解压失败，请检查Pkg文件是否和本应用处于同一目录\r\n";
@@ -630,7 +608,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                         }
                         ProgressBar = "Hidden";
                         PageUiStatus = "true";
-                        ObjSaveSettings();
+                        SaveSettings();
                     }
                 });
                 start.Start();
@@ -664,7 +642,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             string pkgfile = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$pkg$]", "[#pkg#]");
             if (!File.Exists($"{GamePort}/{pkgfile}"))
             {
-                dialogCoordinator.ShowMessageAsync(this, "提示", "国服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });               
+                dialogCoordinator.ShowMessageAsync(this, "提示", "国服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                 ProcessStartInfo info = new()
                 {
                     FileName = "https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg",
@@ -732,7 +710,6 @@ namespace GenShin_Launcher_Plus.ViewModels
                 GameSwitchLog += globalfiles[i] + "替换成功\n";
             };
             IniModel.isMihoyo = 2;
-            OnPropChanged("IniModel");
             TimeStatus = "当前状态：无状态";
             await dialogCoordinator.ShowMessageAsync(this, "提示", "转换完毕，按下确定自动保存，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
         }
@@ -773,7 +750,6 @@ namespace GenShin_Launcher_Plus.ViewModels
                 GameSwitchLog += cnfiles[i] + "替换成功\n";
             };
             IniModel.isMihoyo = 0;
-            OnPropChanged("IniModel");
             TimeStatus = "当前状态：无状态";
             await dialogCoordinator.ShowMessageAsync(this, "提示", "转换完毕，按下确定自动保存，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
         }
@@ -815,7 +791,6 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             TimeStatus = "当前状态：无状态";
             IniModel.isMihoyo = 0;
-            OnPropChanged("IniModel");
             await dialogCoordinator.ShowMessageAsync(this, "提示", "还原完毕，本次还原成功" + success + "个文件，失败或缺失" + whole + "个文件，按下确定自动保存，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
         }
 
@@ -856,7 +831,6 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             TimeStatus = "当前状态：无状态";
             IniModel.isMihoyo = 2;
-            OnPropChanged("IniModel");
             await dialogCoordinator.ShowMessageAsync(this, "提示", "还原完毕，本次还原成功" + success + "个文件，失败或缺失" + whole + "个文件，按下确定自动保存，尽情享受吧！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
         }
     }
