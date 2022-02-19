@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="GenShin_Launcher_Plus.Views.UserChange"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
+             mc:Ignorable="d" 
+             Height="685" Width="1197">
+    <Grid>
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="189" Margin="727,588,0,0">
+            <ComboBoxItem Content="ComboBoxItem1"/>
+            <ComboBoxItem Content="ComboBoxItem2"/>
+            <ComboBoxItem Content="ComboBoxItem3"/>
+        </ComboBox>
+
+    </Grid>
+</UserControl>

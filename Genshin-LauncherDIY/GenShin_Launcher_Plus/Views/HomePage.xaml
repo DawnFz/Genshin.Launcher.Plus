@@ -19,8 +19,10 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Label x:Name="NowUser" HorizontalContentAlignment="Center" d:Content="账号：设计时预览" Content="{Binding IniModel.SwitchUser}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="189" Background="#592D2D2D" Foreground="White" FontSize="16" Margin="727,588,0,0" Visibility="{Binding IniModel.IsSwitchUser}"/>
-        <Label x:Name="NowPort" HorizontalContentAlignment="Center" d:Content="客户端：设计时预览" Content="{Binding IniModel.SwitchPort}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="189" Background="#592D2D2D" Foreground="White" FontSize="16" Margin="727,621,0,0"/>
-
+        <Grid x:Name="LabGrid">
+            <Label HorizontalContentAlignment="Center" d:Content="账号：设计时预览" Content="{Binding SwitchUser}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="189" Background="#592D2D2D" Foreground="White" FontSize="16" Margin="727,588,0,0" Visibility="{Binding IsSwitchUser}"/>
+            <Label HorizontalContentAlignment="Center" d:Content="客户端：设计时预览" Content="{Binding SwitchPort}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="189" Background="#592D2D2D" Foreground="White" FontSize="16" Margin="727,621,0,0"/>
+        </Grid>
+        <ComboBox HorizontalAlignment="Left" Margin="727,588,0,0" VerticalAlignment="Top" Width="189" Height="30" Style="{StaticResource MahApps.Styles.ComboBox.DataGrid.Editing}" Foreground="{x:Null}" FontSize="16" Background="{x:Null}" HorizontalContentAlignment="Center" Visibility="{Binding IsSwitchUser}" ItemsSource="{Binding UserLists}" DisplayMemberPath="UserName" BorderBrush="{x:Null}" SelectedValuePath="UserName" SelectedValue="{Binding SwitchUserValue}"/>
     </Grid>
 </UserControl>

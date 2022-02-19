@@ -341,10 +341,11 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand SaveSettingsCommand { get; set; }
         private async void SaveSettings()
         {
-
             if (IniModel.SwitchUser != null && IniModel.SwitchUser != "")
             {
                 IniControl.SwitchUser = IniModel.SwitchUser;
+                MainBase.noab.SwitchUser = $"账号：{IniModel.SwitchUser}";
+                MainBase.noab.IsSwitchUser = "Visible";
                 RegistryControl registryControl = new();
                 registryControl.SetToRegedit(IniModel.SwitchUser);
             }
@@ -357,8 +358,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                 await dialogCoordinator.ShowMessageAsync(this, "错误", "路径为空或路径内不含游戏客户端，请重新选择！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                 return;
             }
-            IniControl.Width = IniModel.Width;
-            IniControl.Height = IniModel.Height;
+            IniControl.Width = Width;
+            IniControl.Height = Height;
             IniControl.isUnFPS = IniModel.isUnFPS;
             IniControl.MaxFps = IniModel.MaxFps;
             IniControl.isPopup = IniModel.isPopup;
@@ -375,6 +376,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                         IniControl.Sub_channel = 1;
                         if (File.Exists(Path.Combine(IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
                             File.Delete(Path.Combine(IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
+                        MainBase.noab.SwitchPort = "客户端：官方服务器";
                         break;
                     case 1:
                         IniControl.Cps = "bilibili";
@@ -392,6 +394,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                                 MessageBox.Show(ex.Message);
                             }
                         }
+                        MainBase.noab.SwitchPort = "客户端：哔哩哔哩服";
                         break;
                     case 2:
                         IniControl.Cps = "mihoyo";
@@ -399,6 +402,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                         IniControl.Sub_channel = 0;
                         if (File.Exists(Path.Combine(IniModel.GamePath, "GenshinImpact_Data/Plugins/PCGameSDK.dll")))
                             File.Delete(Path.Combine(IniModel.GamePath, "GenshinImpact_Data/Plugins/PCGameSDK.dll"));
+                        MainBase.noab.SwitchPort = "客户端：通用国际服";
                         break;
                     default:
                         break;
@@ -448,19 +452,19 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand Auto21x9Command { get; set; }
         private async void Auto21x9()
         {
-            if (IniModel.Height == "" && IniModel.Width != "")
+            if (Height == "" && Width != "")
             {
-                int x = Convert.ToInt32(IniModel.Width);
+                int x = Convert.ToInt32(Width);
                 int y = x * 9 / 21;
-                IniModel.Width = Convert.ToString(x);
-                IniModel.Height = Convert.ToString(y);
+                Width = Convert.ToString(x);
+                Height = Convert.ToString(y);
             }
-            else if (IniModel.Width == "" && IniModel.Height != "")
+            else if (Width == "" && Height != "")
             {
-                int y = Convert.ToInt32(IniModel.Height);
+                int y = Convert.ToInt32(Height);
                 int x = y * 21 / 9;
-                IniModel.Width = Convert.ToString(x);
-                IniModel.Height = Convert.ToString(y);
+                Width = Convert.ToString(x);
+                Height = Convert.ToString(y);
             }
             else
             {

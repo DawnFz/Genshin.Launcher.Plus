@@ -12,10 +12,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 
 namespace GenShin_Launcher_Plus
 {
@@ -52,7 +48,7 @@ namespace GenShin_Launcher_Plus
         {
             SettingsPage.Children.Clear();
             SettingsPage.Children.Add(new Views.SettingsPage());
-            MainFlipView.SelectedIndex= 1;
+            MainFlipView.SelectedIndex = 1;
         }
 
         private void AddUser_Click(object sender, RoutedEventArgs e)
@@ -65,15 +61,6 @@ namespace GenShin_Launcher_Plus
         private void Help_Click(object sender, RoutedEventArgs e)
         {
             MainGrid.Children.Add(new Views.HelpsPage());
-        }
-
-        private void MainFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (MainFlipView.SelectedIndex == 0)
-            {
-                HomePage.Children.Clear();
-                HomePage.Children.Add(new Views.HomePage());
-            }
         }
     }
 }

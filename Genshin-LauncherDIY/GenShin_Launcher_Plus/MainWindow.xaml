@@ -51,7 +51,7 @@
             </Button>
         </Grid>
         <Grid Height="685" Width="1197" Margin="0,45,83,0" x:Name="ControlPage">
-            <mah:FlipView x:Name="MainFlipView" MouseHoverBorderBrush="{x:Null}" IsBannerEnabled="False" IsNavigationEnabled="False" SelectedIndex="{Binding MainPagesIndex}" SelectionChanged="MainFlipView_SelectionChanged">
+            <mah:FlipView x:Name="MainFlipView" MouseHoverBorderBrush="{x:Null}" IsBannerEnabled="False" IsNavigationEnabled="False" SelectedIndex="{Binding MainPagesIndex}">
                 <Grid x:Name="HomePage"/>
                 <Grid x:Name="SettingsPage"/>
                 <Grid x:Name="AddUsersPage"/>

@@ -21,25 +21,23 @@ namespace GenShin_Launcher_Plus.ViewModels
         private IDialogCoordinator dialogCoordinator;
         public HomePageViewModel(IDialogCoordinator instance)
         {
-            IniModel = new SettingsIniModel();
             dialogCoordinator = instance;
             RunGameCommand = new RelayCommand(RunGame);
-            IniModel.SwitchUser = $"账号：{IniControl.SwitchUser}";
 
             if (IniControl.SwitchUser != null && IniControl.SwitchUser != "")
-            { IniModel.IsSwitchUser = "Visible"; }
+            {
+                MainBase.noab.IsSwitchUser = "Visible";
+                IsSwitchUser = "Visible";
+                MainBase.noab.SwitchUser = $"账号：{IniControl.SwitchUser}";
+            }
             else
-            { IniModel.IsSwitchUser = "Hidden"; }
+            {
+                MainBase.noab.IsSwitchUser = "Hidden";
+                IsSwitchUser = "Hidden";
+            }
 
-            CreateGamePortList();
+            ReadUserList();
             GetGamePort();
-        }
-
-        private SettingsIniModel _IniModel;
-        public SettingsIniModel IniModel
-        {
-            get => _IniModel;
-            set => SetProperty(ref _IniModel, value);
         }
 
         private void GetGamePort()
@@ -47,16 +45,41 @@ namespace GenShin_Launcher_Plus.ViewModels
             if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")))
             {
                 if (IniControl.Cps == "pcadbdpz")
-                { IniModel.SwitchPort = "客户端：官方服务器"; }
+                { MainBase.noab.SwitchPort = "客户端：官方服务器"; }
                 else if (IniControl.Cps == "bilibili")
-                { IniModel.SwitchPort = "客户端：哔哩哔哩服"; }
+                { MainBase.noab.SwitchPort = "客户端：哔哩哔哩服"; }
                 else if (IniControl.Cps == "mihoyo")
-                { IniModel.SwitchPort = "客户端：通用国际服"; }
+                { MainBase.noab.SwitchPort = "客户端：通用国际服"; }
                 else
-                { IniModel.SwitchPort = "客户端：未知客户端"; }
+                { MainBase.noab.SwitchPort = "客户端：未知客户端"; }
             }
             else
-            { IniModel.SwitchPort = "客户端：未知客户端"; }
+            { MainBase.noab.SwitchPort = "客户端：未知客户端"; }
+        }
+
+        private string _SwitchUserValue;
+        public string SwitchUserValue
+        {
+            get => _SwitchUserValue;
+            set
+            {
+                SetProperty(ref _SwitchUserValue, value);
+                if (SwitchUserValue != null && SwitchUserValue != "")
+                {
+                    MainBase.noab.SwitchUser = $"账号：{SwitchUserValue}";
+                    //更改注册表账号状态
+                    IniControl.SwitchUser = SwitchUserValue;
+                    RegistryControl registryControl = new();
+                    registryControl.SetToRegedit(SwitchUserValue);
+                }
+            }
+        }
+
+        private string _IsSwitchUser;
+        public string IsSwitchUser
+        {
+            get => _IsSwitchUser;
+            set => SetProperty(ref _IsSwitchUser, value);
         }
 
         //用户列表
@@ -66,6 +89,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             get => _UserLists;
             set => SetProperty(ref _UserLists, value);
         }
+
         private void ReadUserList()
         {
             UserLists = new List<UserListModel>();
@@ -76,35 +100,22 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
         }
 
-        //游戏客户端列表
-        private List<GamePortListModel> _GamePortLists;
-        public List<GamePortListModel> GamePortLists
-        {
-            get => _GamePortLists;
-            set => SetProperty(ref _GamePortLists, value);
-        }
-        private void CreateGamePortList()
-        {
-            GamePortLists = new List<GamePortListModel>();
-            GamePortLists.Add(new GamePortListModel { GamePort = "官方" });
-            GamePortLists.Add(new GamePortListModel { GamePort = "哔哩" });
-            GamePortLists.Add(new GamePortListModel { GamePort = "国际" });
-        }
-
         public ICommand RunGameCommand { get; set; }
         private async void RunGame()
         {
+            //判断是否开启UnlockFps
             if (IniControl.isUnFPS)
             {
                 Process.Start(@"unlockfps.exe");
             }
+            //从Config中读取启动参数
             string gameMain = Path.Combine(IniControl.GamePath, "YuanShen.exe");
             var argBuilder = new CommandLineBuilder();
             argBuilder.AddOption("-screen-fullscreen ", Convert.ToString(IniControl.FullSize));
             argBuilder.AddOption("-screen-height ", IniControl.Height);
             argBuilder.AddOption("-screen-width ", IniControl.Width);
             argBuilder.AddOption("-pop ", IniControl.isPopup ? " -popupwindow " : "");
-
+            //判断游戏文件、目录是否存在
             if (!File.Exists(gameMain))
             {
                 gameMain = Path.Combine(IniControl.GamePath, "GenshinImpact.exe");
@@ -114,7 +125,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                     return;
                 }
             }
-
+            //创建Task线程启动游戏
             Task StartGame = new(() =>
             {
                 ProcessStartInfo info = new()
