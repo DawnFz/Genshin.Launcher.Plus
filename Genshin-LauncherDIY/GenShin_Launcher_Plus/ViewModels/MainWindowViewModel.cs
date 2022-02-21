@@ -107,7 +107,13 @@ namespace GenShin_Launcher_Plus.ViewModels
             Background = new();
             if (File.Exists(@"Config\Bg.png"))
             {
-                Uri uri = new Uri(Path.Combine(Environment.CurrentDirectory, "Config/Bg.png"), UriKind.Absolute);
+                Uri uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.png"), UriKind.Absolute);
+                Background.ImageSource = new BitmapImage(uri);
+                Background.Stretch = Stretch.UniformToFill;
+            }
+            else if (File.Exists(@"Config\Bg.jpg"))
+            {
+                Uri uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.jpg"), UriKind.Absolute);       
                 Background.ImageSource = new BitmapImage(uri);
                 Background.Stretch = Stretch.UniformToFill;
             }

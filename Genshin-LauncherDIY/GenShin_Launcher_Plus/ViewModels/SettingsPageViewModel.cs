@@ -223,14 +223,14 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             DisplaySizeLists = new List<DisplaySizeListModel>
             {
-                new DisplaySizeListModel { DisplaySize = "   3840 × 2160  |  16:9 " },
-                new DisplaySizeListModel { DisplaySize = "   2560 × 1080  |  21:9 " },
-                new DisplaySizeListModel { DisplaySize = "   1920 × 1080  |  16:9 " },
-                new DisplaySizeListModel { DisplaySize = "   1600 × 900    |  16:9 " },
-                new DisplaySizeListModel { DisplaySize = "   1360 × 768    |  16:9 " },
-                new DisplaySizeListModel { DisplaySize = "   1280 × 1024  |   4:3 " },
-                new DisplaySizeListModel { DisplaySize = "   1280 × 720    |  16:9 " },
-                new DisplaySizeListModel{ DisplaySize = "   当前屏幕最大分辨率" },
+                new DisplaySizeListModel { DisplaySize = "3840 × 2160  | 16:9" },
+                new DisplaySizeListModel { DisplaySize = "2560 × 1080  | 21:9" },
+                new DisplaySizeListModel { DisplaySize = "1920 × 1080  | 16:9" },
+                new DisplaySizeListModel { DisplaySize = "1600 × 900    | 16:9" },
+                new DisplaySizeListModel { DisplaySize = "1360 × 768    | 16:9" },
+                new DisplaySizeListModel { DisplaySize = "1280 × 1024  |  4:3" },
+                new DisplaySizeListModel { DisplaySize = "1280 × 720    | 16:9" },
+                new DisplaySizeListModel{ DisplaySize = "自适应全屏" },
             };
         }
 

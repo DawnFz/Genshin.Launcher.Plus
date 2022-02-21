@@ -3,8 +3,6 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using GenShin_Launcher_Plus.Core;
@@ -35,7 +33,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 MainBase.noab.IsSwitchUser = "Hidden";
                 IsSwitchUser = "Hidden";
             }
-
+            CreateGamePortList();
             ReadUserList();
             GetGamePort();
         }
@@ -75,12 +73,104 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
         }
 
+        //选择账户Combobox控件状态
         private string _IsSwitchUser;
         public string IsSwitchUser
         {
             get => _IsSwitchUser;
             set => SetProperty(ref _IsSwitchUser, value);
         }
+
+
+        //选择游戏端口Combobox控件状态
+        private string _IsGamePortLists;
+        public string IsGamePortLists
+        {
+            get
+            {
+                if (IniControl.Cps == "mihoyo")
+                {
+                    _IsGamePortLists = "Hidden";
+                }
+                else
+                {
+                    _IsGamePortLists = "Visible";
+                }
+                return _IsGamePortLists;
+            }
+            set => SetProperty(ref _IsGamePortLists, value);
+        }
+        //游戏端口列表
+        private List<GamePortListModel> _GamePortLists;
+        public List<GamePortListModel> GamePortLists
+        {
+            get => _GamePortLists;
+            set => SetProperty(ref _GamePortLists, value);
+        }
+        private void CreateGamePortList()
+        {
+            GamePortLists = new List<GamePortListModel>();
+            GamePortLists.Add(new GamePortListModel { GamePort = "官方" });
+            GamePortLists.Add(new GamePortListModel { GamePort = "哔哩" });
+        }
+
+        //游戏端口列表索引
+        public int GamePortListIndex
+        {
+            get
+            {
+                return 0;
+            }
+            set
+            {
+                if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")) == true)
+                {
+                    if (IniControl.Cps == "mihoyo")
+                    {
+                        dialogCoordinator.ShowMessageAsync(this, "错误", "启动器检测到您当前游戏客户端为国际服，不可进行此操作，请到设置中转换为国内服后操作", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    }
+                    else
+                    {
+                        switch (value)
+                        {
+                            case 0:
+                                IniControl.Cps = "pcadbdpz";
+                                IniControl.Channel = 1;
+                                IniControl.Sub_channel = 1;
+                                if (File.Exists(Path.Combine(IniControl.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
+                                    File.Delete(Path.Combine(IniControl.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
+                                MainBase.noab.SwitchPort = "客户端：官方服务器";
+                                break;
+                            case 1:
+                                IniControl.Cps = "bilibili";
+                                IniControl.Channel = 14;
+                                IniControl.Sub_channel = 0;
+                                if (!File.Exists(Path.Combine(IniControl.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
+                                {
+                                    FilesControl utils = new();
+                                    try
+                                    {
+                                        utils.FileWriter("StaticRes/mihoyosdk.dll", Path.Combine(IniControl.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show(ex.Message);
+                                    }
+                                }
+                                MainBase.noab.SwitchPort = "客户端：哔哩哔哩服";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    dialogCoordinator.ShowMessageAsync(this, "错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                }
+            }
+        }
+
 
         //用户列表
         public List<UserListModel> _UserLists;
