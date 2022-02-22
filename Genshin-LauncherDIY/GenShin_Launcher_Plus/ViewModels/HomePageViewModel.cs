@@ -125,11 +125,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")) == true)
                 {
-                    if (IniControl.Cps == "mihoyo")
-                    {
-                        dialogCoordinator.ShowMessageAsync(this, "错误", "启动器检测到您当前游戏客户端为国际服，不可进行此操作，请到设置中转换为国内服后操作", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                    }
-                    else
+                    if (IniControl.Cps != "mihoyo")
                     {
                         switch (value)
                         {
