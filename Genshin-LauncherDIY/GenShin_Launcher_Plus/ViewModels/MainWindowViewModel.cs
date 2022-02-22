@@ -104,37 +104,41 @@ namespace GenShin_Launcher_Plus.ViewModels
         private void MainWindowLoaded()
         {
             Background = new();
-            try
+            if (File.Exists(@"Config\Bg.png"))
             {
-                if (File.Exists(@"Config\Bg.png"))
+                Uri uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.png"), UriKind.Absolute);
+                Background.ImageSource = new BitmapImage(uri);
+                Background.Stretch = Stretch.UniformToFill;
+            }
+            else if (File.Exists(@"Config\Bg.jpg"))
+            {
+                Uri uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.jpg"), UriKind.Absolute);
+                Background.ImageSource = new BitmapImage(uri);
+                Background.Stretch = Stretch.UniformToFill;
+            }
+            else if (IniControl.isWebBg == true)
+            {
+                Uri uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
+                Background.ImageSource = new BitmapImage(uri);
+                Background.Stretch = Stretch.UniformToFill;
+            }
+            else
+            {
+                string bgurl = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$bg$]", "[#bg#]");
+                if (bgurl != "读取错误，请检查网络后再试！")
                 {
-                    Uri uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.png"), UriKind.Absolute);
-                    Background.ImageSource = new BitmapImage(uri);
-                    Background.Stretch = Stretch.UniformToFill;
-                }
-                else if (File.Exists(@"Config\Bg.jpg"))
-                {
-                    Uri uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.jpg"), UriKind.Absolute);
-                    Background.ImageSource = new BitmapImage(uri);
-                    Background.Stretch = Stretch.UniformToFill;
-                }
-                else if (IniControl.isWebBg == true)
-                {
-                    Uri uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
+                    Uri uri = new(bgurl, UriKind.Absolute);
                     Background.ImageSource = new BitmapImage(uri);
                     Background.Stretch = Stretch.UniformToFill;
                 }
                 else
                 {
-                    Uri uri = new(FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$bg$]", "[#bg#]"), UriKind.Absolute);
+                    Uri uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
                     Background.ImageSource = new BitmapImage(uri);
                     Background.Stretch = Stretch.UniformToFill;
                 }
             }
-            catch (Exception ex)
-            {
-                dialogCoordinator.ShowMessageAsync(this, "错误提示", $"遇到了一些问题，错误信息：\r\n\r\n{ex}\r\n\r\n可能是网络连接不正确或文件格式不正确导致的", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-            }
+
             FilesControl utils = new();
             try
             {

@@ -88,13 +88,20 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             get
             {
-                if (IniControl.Cps == "mihoyo")
+                if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")))
                 {
-                    _IsGamePortLists = "Hidden";
+                    if (IniControl.Cps == "mihoyo")
+                    {
+                        _IsGamePortLists = "Hidden";
+                    }
+                    else
+                    {
+                        _IsGamePortLists = "Visible";
+                    }             
                 }
                 else
                 {
-                    _IsGamePortLists = "Visible";
+                    _IsGamePortLists = "Hidden";
                 }
                 return _IsGamePortLists;
             }
@@ -119,7 +126,35 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             get
             {
-                return 0;
+                if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")))
+                {
+                    if (IniControl.Cps == "pcadbdpz")
+                    { 
+                        MainBase.noab.SwitchPort = "客户端：官方服务器";
+                        return 0;
+                    }
+                    else if (IniControl.Cps == "bilibili")
+                    { 
+                        MainBase.noab.SwitchPort = "客户端：哔哩哔哩服";
+                        return 1;
+                    }
+                    else if (IniControl.Cps == "mihoyo")
+                    { 
+                        MainBase.noab.SwitchPort = "客户端：通用国际服";
+                        return -1;
+                    }
+                    else
+                    {
+                        MainBase.noab.SwitchPort = "客户端：未知客户端";
+                        return -1;
+                    }
+                }
+                else
+                { 
+                    MainBase.noab.SwitchPort = "客户端：未知客户端";
+                    return -1;
+                }
+                
             }
             set
             {
