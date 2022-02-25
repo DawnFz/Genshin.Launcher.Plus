@@ -146,9 +146,5 @@ namespace GenShin_Launcher_Plus.ViewModels
             DownloadBarValue = value;
             DownloadLabel = $"下载进度:{value / DownloadBarMax:p2}";
         }
-
-
-
-
     }
 }

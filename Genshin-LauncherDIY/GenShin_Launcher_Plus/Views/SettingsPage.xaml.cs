@@ -21,7 +21,7 @@ namespace GenShin_Launcher_Plus.Views
     /// </summary>
     public partial class SettingsPage : UserControl
     {
-        
+
         public SettingsPage()
         {
             InitializeComponent();

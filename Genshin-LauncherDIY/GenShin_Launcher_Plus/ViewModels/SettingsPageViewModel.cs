@@ -14,7 +14,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace GenShin_Launcher_Plus.ViewModels
@@ -260,10 +259,12 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
         private void CreateGamePortList()
         {
-            GamePortLists = new List<GamePortListModel>();
-            GamePortLists.Add(new GamePortListModel { GamePort = "官方" });
-            GamePortLists.Add(new GamePortListModel { GamePort = "哔哩" });
-            GamePortLists.Add(new GamePortListModel { GamePort = "国际" });
+            GamePortLists = new List<GamePortListModel>
+            {
+                new GamePortListModel { GamePort = "官方" },
+                new GamePortListModel { GamePort = "哔哩" },
+                new GamePortListModel { GamePort = "国际" }
+            };
         }
 
         //游戏窗口模式列表

@@ -31,12 +31,20 @@ namespace GenShin_Launcher_Plus
             {
                 MainGrid.Children.Add(new Views.GuidePage());
             }
-            string newver = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$ver$]", "[#ver#]");
-            string version = Application.ResourceAssembly.GetName().Version.ToString();
-            if (version != newver)
+            
+            Task checkupdate = new(() =>
             {
-                MainGrid.Children.Add(new Views.UpdatePage());
-            }
+                string newver = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$ver$]", "[#ver#]");
+                string version = Application.ResourceAssembly.GetName().Version.ToString();
+                if (version != newver)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        MainGrid.Children.Add(new Views.UpdatePage());
+                    });           
+                }
+            });
+            checkupdate.Start();
         }
 
         private void WindowDragMove(object sender, MouseButtonEventArgs e)

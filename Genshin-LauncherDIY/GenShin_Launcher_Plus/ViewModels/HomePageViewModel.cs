@@ -97,7 +97,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                     else
                     {
                         _IsGamePortLists = "Visible";
-                    }             
+                    }
                 }
                 else
                 {
@@ -129,17 +129,17 @@ namespace GenShin_Launcher_Plus.ViewModels
                 if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")))
                 {
                     if (IniControl.Cps == "pcadbdpz")
-                    { 
+                    {
                         MainBase.noab.SwitchPort = "客户端：官方服务器";
                         return 0;
                     }
                     else if (IniControl.Cps == "bilibili")
-                    { 
+                    {
                         MainBase.noab.SwitchPort = "客户端：哔哩哔哩服";
                         return 1;
                     }
                     else if (IniControl.Cps == "mihoyo")
-                    { 
+                    {
                         MainBase.noab.SwitchPort = "客户端：通用国际服";
                         return -1;
                     }
@@ -150,11 +150,11 @@ namespace GenShin_Launcher_Plus.ViewModels
                     }
                 }
                 else
-                { 
+                {
                     MainBase.noab.SwitchPort = "客户端：未知客户端";
                     return -1;
                 }
-                
+
             }
             set
             {

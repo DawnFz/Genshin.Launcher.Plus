@@ -15,10 +15,10 @@ namespace GenShin_Launcher_Plus.Models
     }
     public class GamePortListModel
     {
-        public string GamePort { get; set;}
+        public string GamePort { get; set; }
     }
     public class GameWindowModeListModel
     {
-        public string GameWindowMode { get; set;}
+        public string GameWindowMode { get; set; }
     }
 }

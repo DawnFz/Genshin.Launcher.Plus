@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using GenShin_Launcher_Plus.Core;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -18,7 +19,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         public MainWindowViewModel(IDialogCoordinator instance)
         {
             dialogCoordinator = instance;
-            MainWindowLoaded();
+            Mainloading();
             OpenImagesDirectoryCommand = new RelayCommand(OpenImagesDirectory);
             OpenAboutCommand = new RelayCommand(OpenAbout);
             OpenQQGroupUrlCommand = new RelayCommand(OpenQQGroupUrl);
@@ -37,7 +38,49 @@ namespace GenShin_Launcher_Plus.ViewModels
             set => SetProperty(ref _Background, value);
         }
 
-
+        private void Mainloading()
+        {
+            //
+            Background = new();
+            Uri uri;
+            if (File.Exists(@"Config\Bg.png"))
+            {
+                uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.png"), UriKind.Absolute);
+            }
+            else if (File.Exists(@"Config\Bg.jpg"))
+            {
+                uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.jpg"), UriKind.Absolute);
+            }
+            else if (IniControl.isWebBg == true)
+            {
+                uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
+            }
+            else
+            {
+                string bgurl = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$bg$]", "[#bg#]");
+                if (bgurl != "读取错误，请检查网络后再试！")
+                {
+                    uri = new(bgurl, UriKind.Absolute);
+                }
+                else
+                {
+                    uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
+                }
+            }
+            Background.ImageSource = new BitmapImage(uri);
+            Background.Stretch = Stretch.UniformToFill;
+            //
+            FilesControl utils = new();
+            try
+            {
+                utils.FileWriter("StaticRes/unlockfps.dll", @"unlockfps.exe");
+                utils.FileWriter("StaticRes/Update.dll", @"Update.exe");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
         public ICommand OpenImagesDirectoryCommand { get; set; }
         private async void OpenImagesDirectory()
@@ -55,7 +98,6 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 await dialogCoordinator.ShowMessageAsync(this, "错误提示", "本功能为打开游戏内截图照相保存目录\r\n没有检测到照相文件或者请先输入正确的游戏路径！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
             }
-
         }
 
 
@@ -99,58 +141,6 @@ namespace GenShin_Launcher_Plus.ViewModels
                 Application.Current.MainWindow.WindowState = WindowState.Minimized;
             });
         }
-
-
-        private void MainWindowLoaded()
-        {
-            Background = new();
-            if (File.Exists(@"Config\Bg.png"))
-            {
-                Uri uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.png"), UriKind.Absolute);
-                Background.ImageSource = new BitmapImage(uri);
-                Background.Stretch = Stretch.UniformToFill;
-            }
-            else if (File.Exists(@"Config\Bg.jpg"))
-            {
-                Uri uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.jpg"), UriKind.Absolute);
-                Background.ImageSource = new BitmapImage(uri);
-                Background.Stretch = Stretch.UniformToFill;
-            }
-            else if (IniControl.isWebBg == true)
-            {
-                Uri uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
-                Background.ImageSource = new BitmapImage(uri);
-                Background.Stretch = Stretch.UniformToFill;
-            }
-            else
-            {
-                string bgurl = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$bg$]", "[#bg#]");
-                if (bgurl != "读取错误，请检查网络后再试！")
-                {
-                    Uri uri = new(bgurl, UriKind.Absolute);
-                    Background.ImageSource = new BitmapImage(uri);
-                    Background.Stretch = Stretch.UniformToFill;
-                }
-                else
-                {
-                    Uri uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
-                    Background.ImageSource = new BitmapImage(uri);
-                    Background.Stretch = Stretch.UniformToFill;
-                }
-            }
-
-            FilesControl utils = new();
-            try
-            {
-                utils.FileWriter("StaticRes/unlockfps.dll", @"unlockfps.exe");
-                utils.FileWriter("StaticRes/Update.dll", @"Update.exe");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
 
         private string aboutthis =
             (
