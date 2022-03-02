@@ -21,10 +21,11 @@ namespace GenShin_Launcher_Plus.ViewModels
     internal class SettingsPageViewModel : ObservableObject
     {
         //转换文件列表
-
         private string[] globalfiles = new string[]
         { "GenshinImpact_Data/app.info",
           "GenshinImpact_Data/globalgamemanagers",
+          "GenshinImpact_Data/globalgamemanagers.assets",
+          "GenshinImpact_Data/globalgamemanagers.assets.resS",
           "GenshinImpact_Data/upload_crash.exe",
           "GenshinImpact_Data/Managed/Metadata/global-metadata.dat" ,
           "GenshinImpact_Data/Native/Data/Metadata/global-metadata.dat",
@@ -50,11 +51,13 @@ namespace GenShin_Launcher_Plus.ViewModels
           "pkg_version",
           "UnityPlayer.dll",
           "GenshinImpact.exe"
-        };
+};
 
         private string[] cnfiles = new string[]
         { "YuanShen_Data/app.info",
           "YuanShen_Data/globalgamemanagers",
+          "YuanShen_Data/globalgamemanagers.assets",
+          "YuanShen_Data/globalgamemanagers.assets.resS",
           "YuanShen_Data/upload_crash.exe",
           "YuanShen_Data/Managed/Metadata/global-metadata.dat" ,
           "YuanShen_Data/Native/Data/Metadata/global-metadata.dat",
@@ -81,8 +84,6 @@ namespace GenShin_Launcher_Plus.ViewModels
           "UnityPlayer.dll",
           "YuanShen.exe"
         };
-
-
 
         //
 
