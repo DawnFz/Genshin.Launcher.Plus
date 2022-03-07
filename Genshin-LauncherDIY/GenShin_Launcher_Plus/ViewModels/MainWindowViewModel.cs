@@ -10,6 +10,10 @@ using GenShin_Launcher_Plus.Core;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text.Json.Nodes;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -38,37 +42,92 @@ namespace GenShin_Launcher_Plus.ViewModels
             set => SetProperty(ref _Background, value);
         }
 
-        private void Mainloading()
+        private async void Mainloading()
         {
             //
             Background = new();
-            Uri uri;
-            if (File.Exists(@"Config\Bg.png"))
+            if (IniControl.UserXunkongWallpaper)
             {
-                uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.png"), UriKind.Absolute);
-            }
-            else if (File.Exists(@"Config\Bg.jpg"))
-            {
-                uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.jpg"), UriKind.Absolute);
-            }
-            else if (IniControl.isWebBg == true)
-            {
-                uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
+                Background.Stretch = Stretch.UniformToFill;
+                var uri = new Uri("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
+                try
+                {
+                    var file = Path.Combine(AppContext.BaseDirectory, "Config/XunkongWallpaper.jpg");
+                    if (File.Exists(file))
+                    {
+                        uri = new Uri(file);
+                        using var fs = File.OpenRead(file);
+                        var bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.StreamSource = fs;
+                        bitmap.EndInit();
+                        Background.ImageSource = bitmap;
+                    }
+                    else
+                    {
+                        Background.ImageSource = new BitmapImage(uri);
+                    }
+                    const string url = "https://api.xunkong.cc/v0.1/genshin/wallpaper/redirect/recommend";
+                    var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.All });
+                    client.DefaultRequestHeaders.Add("User-Agent", $"GenShinLauncher/{Application.ResourceAssembly.GetName().Version}");
+                    try
+                    {
+                        var UserName = Environment.UserName;
+                        var MachineGuid = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography\", "MachineGuid", UserName);
+                        var UserBytes = Encoding.UTF8.GetBytes(UserName + MachineGuid);
+                        var hash = MD5.HashData(UserBytes);
+                        var deviceId = Convert.ToHexString(hash);
+                        client.DefaultRequestHeaders.Add("X-Device-Id", deviceId);
+                    }
+                    catch { }
+                    var bytes = await client.GetByteArrayAsync(url);
+                    var ms = new MemoryStream(bytes);
+                    var newBitmap = new BitmapImage();
+                    newBitmap.BeginInit();
+                    newBitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    newBitmap.StreamSource = ms;
+                    newBitmap.EndInit();
+                    Background.ImageSource = newBitmap;
+                    await File.WriteAllBytesAsync(file, bytes);
+                }
+                catch
+                {
+                    Background.ImageSource = new BitmapImage(uri);
+                }
             }
             else
             {
-                string bgurl = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$bg$]", "[#bg#]");
-                if (bgurl != "读取错误，请检查网络后再试！")
+                Uri uri;
+                if (File.Exists(@"Config\Bg.png"))
                 {
-                    uri = new(bgurl, UriKind.Absolute);
+                    uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.png"), UriKind.Absolute);
                 }
-                else
+                else if (File.Exists(@"Config\Bg.jpg"))
+                {
+                    uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.jpg"), UriKind.Absolute);
+                }
+                else if (IniControl.isWebBg == true)
                 {
                     uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
                 }
+                else
+                {
+                    string bgurl = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$bg$]", "[#bg#]");
+                    if (bgurl != "读取错误，请检查网络后再试！")
+                    {
+                        uri = new(bgurl, UriKind.Absolute);
+                    }
+                    else
+                    {
+                        uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
+                    }
+                }
+                Background.ImageSource = new BitmapImage(uri);
+                Background.Stretch = Stretch.UniformToFill;
             }
-            Background.ImageSource = new BitmapImage(uri);
-            Background.Stretch = Stretch.UniformToFill;
+
+
             //
             FilesControl utils = new();
             try

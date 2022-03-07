@@ -20,5 +20,6 @@ namespace GenShin_Launcher_Plus.Models
         public ushort isMihoyo { get; set; }
         public string Width { get; set; }
         public string Height { get; set; }
+        public bool UseXunkongWallpaper { get; set; }
     }
 }

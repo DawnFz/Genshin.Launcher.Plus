@@ -368,6 +368,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             IniControl.isMainGridHide = IniModel.isMainGridHide;
             IniControl.isWebBg = IniModel.isWebBg;
             IniControl.FullSize = IniModel.FullSize;
+            IniControl.UserXunkongWallpaper = IniModel.UseXunkongWallpaper;
             if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")) == true)
             {
                 switch (IniModel.isMihoyo)
@@ -447,6 +448,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             IniModel.FullSize = IniControl.FullSize;
             Width = IniModel.Width;
             Height = IniModel.Height;
+            IniModel.UseXunkongWallpaper = IniControl.UserXunkongWallpaper;
             ReadGameConfig();
         }
 

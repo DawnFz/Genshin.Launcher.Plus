@@ -402,7 +402,7 @@ namespace GenShin_Launcher_Plus.Core
             {
                 IniParser parser = new IniParser(Path.Combine(GamePath, "Config.ini"));
                 _Channel = Convert.ToUInt16(parser.GetSetting("General", "channel", 1));
-                return _Channel; 
+                return _Channel;
             }
             set
             {
@@ -445,6 +445,24 @@ namespace GenShin_Launcher_Plus.Core
                 IniParser parser = new IniParser(Path.Combine(GamePath, "Config.ini"));
                 _Cps = value;
                 parser.AddSetting("General", "cps", _Cps);
+                parser.SaveSettings();
+            }
+        }
+
+        private static bool _UserXunkongWallpaper;
+        public static bool UserXunkongWallpaper
+        {
+            get
+            {
+                IniParser parser = new IniParser();
+                _UserXunkongWallpaper = Convert.ToBoolean(parser.GetSetting("setup", "UserXunkongWallpaper", 2));
+                return _UserXunkongWallpaper;
+            }
+            set
+            {
+                IniParser parser = new IniParser();
+                _UserXunkongWallpaper = value;
+                parser.AddSetting("setup", "UserXunkongWallpaper", Convert.ToString(_UserXunkongWallpaper));
                 parser.SaveSettings();
             }
         }
