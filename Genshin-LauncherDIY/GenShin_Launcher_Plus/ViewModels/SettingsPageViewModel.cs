@@ -132,11 +132,13 @@ namespace GenShin_Launcher_Plus.ViewModels
             });
             task.Start();
         }
-        //分辨率宽高中间发送
+        //设置界面UI刷新绑定数据
         private string _Width;
         public string Width { get => _Width; set => SetProperty(ref _Width, value); }
         private string _Height;
         public string Height { get => _Height; set => SetProperty(ref _Height, value); }
+        private bool _isUnFPS;
+        public bool isUnFPS { get => _isUnFPS; set => SetProperty(ref _isUnFPS, value); }
 
         //选中分辨率的索引
         private int _DisplaySelectedIndex = -1;
@@ -262,9 +264,9 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             GamePortLists = new List<GamePortListModel>
             {
-                new GamePortListModel { GamePort = "官方" },
-                new GamePortListModel { GamePort = "哔哩" },
-                new GamePortListModel { GamePort = "国际" }
+                new GamePortListModel { GamePort = "官方服务器" },
+                new GamePortListModel { GamePort = "哔哩哔哩服" },
+                new GamePortListModel { GamePort = "国际服务器" }
             };
         }
 
@@ -278,8 +280,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         private void CreateGameWindowModeList()
         {
             GameWindowModeList = new();
-            GameWindowModeList.Add(new GameWindowModeListModel { GameWindowMode = "窗口" });
-            GameWindowModeList.Add(new GameWindowModeListModel { GameWindowMode = "全屏" });
+            GameWindowModeList.Add(new GameWindowModeListModel { GameWindowMode = "窗口启动" });
+            GameWindowModeList.Add(new GameWindowModeListModel { GameWindowMode = "全屏启动" });
         }
 
         //选择游戏路径的命令
@@ -307,15 +309,17 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand ChooseUnlockFpsCommand { get; set; }
         private async void ChooseUnlockFps()
         {
-            if (IniModel.isUnFPS)
+            if (isUnFPS)
             {
                 if ((await dialogCoordinator.ShowMessageAsync(this, "超级警告", "此操作涉及修改游戏客户端进程，目前不知道确切会不会出现封号风险，出现问题请自行承担后果！如之前没使用过UnlockFPS的建议不要使用！按下同意代表使用本功能后的一切后果由自己承担！怕就不要用，用就不要怕！【注意：启用本功能后拉起游戏会慢一点，为正常现象】", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "同意" })) != MessageDialogResult.Affirmative)
                 {
-                    IniModel.isUnFPS = true;
+                    isUnFPS = true;
+                    IniModel.isUnFPS = isUnFPS;
                 }
                 else
                 {
-                    IniModel.isUnFPS = false;
+                    isUnFPS = false;
+                    IniModel.isUnFPS = isUnFPS;
                 }
             }
         }

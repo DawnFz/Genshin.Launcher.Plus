@@ -127,7 +127,6 @@ namespace GenShin_Launcher_Plus.ViewModels
                 Background.Stretch = Stretch.UniformToFill;
             }
 
-
             //
             FilesControl utils = new();
             try

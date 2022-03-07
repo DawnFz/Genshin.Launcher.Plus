@@ -32,24 +32,24 @@
         <CheckBox Content="使用寻空每日一图" HorizontalAlignment="Left" Margin="136,531,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.UseXunkongWallpaper}"/>
         <GroupBox HorizontalAlignment="Left" Height="216" VerticalAlignment="Top" Width="173" Header="附加与窗口分辨率" Margin="13,48,0,0">
             <Grid>
-                <TextBox mah:TextBoxHelper.Watermark="高度" x:Name="DisHeight" HorizontalAlignment="Left" Margin="93,14,0,0" TextWrapping="Wrap" Text="{Binding Height}" VerticalAlignment="Top" Width="54" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
-                <TextBox mah:TextBoxHelper.Watermark="宽度" x:Name="DisWidth" HorizontalAlignment="Left" Margin="16,14,0,0" TextWrapping="Wrap" Text="{Binding Width}" VerticalAlignment="Top" Width="54" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
-                <Label Content="×" HorizontalAlignment="Center" Margin="0,13,0,0" VerticalAlignment="Top" FontWeight="Normal" FontSize="14" Width="20"/>
-                <Button Content="自动取21:9" HorizontalAlignment="Left" Margin="84,111,0,0" VerticalAlignment="Top" Width="63" FontFamily="Microsoft YaHei UI" FontSize="10" FontWeight="Normal" Height="26" Command="{Binding Auto21x9Command}"/>
-                <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" Margin="0,47,0,0" VerticalAlignment="Top" Width="131" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding DisplaySizeLists}" DisplayMemberPath="DisplaySize" SelectedValuePath="DisplaySize"  SelectedIndex="{Binding DisplaySelectedIndex}"/>
-                <CheckBox Content="无边框" HorizontalAlignment="Left" Margin="87,144,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.isPopup}"/>
-                <CheckBox Content="解帧率" HorizontalAlignment="Left" Margin="17,144,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.isUnFPS}" Command="{Binding ChooseUnlockFpsCommand}"/>
-                <TextBox mah:TextBoxHelper.Watermark="FPS上限" HorizontalAlignment="Left" Margin="16,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="{Binding IniModel.isUnFPS}" Text="{Binding IniModel.MaxFps}"/>
-                <ComboBox HorizontalAlignment="Left" Height="16" Margin="16,1,0,0" VerticalAlignment="Center" Width="64" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GamePortLists}" DisplayMemberPath="GamePort" SelectedValuePath="GamePort" SelectedIndex="{Binding IniModel.isMihoyo}"/>
-                <ComboBox HorizontalAlignment="Left" Height="16" Margin="83,1,0,0" VerticalAlignment="Center" Width="64" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GameWindowModeList}" DisplayMemberPath="GameWindowMode" SelectedValuePath="GameWindowMode" SelectedIndex="{Binding IniModel.FullSize}"/>
+                <TextBox mah:TextBoxHelper.Watermark="高度" x:Name="DisHeight" HorizontalAlignment="Left" Margin="93,7,0,0" TextWrapping="Wrap" Text="{Binding Height}" VerticalAlignment="Top" Width="65" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                <TextBox mah:TextBoxHelper.Watermark="宽度" x:Name="DisWidth" HorizontalAlignment="Left" Margin="5,7,0,0" TextWrapping="Wrap" Text="{Binding Width}" VerticalAlignment="Top" Width="65" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                <Label Content="×" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontWeight="Normal" FontSize="14" Width="20"/>
+                <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" Margin="0,39,0,0" VerticalAlignment="Top" Width="153" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding DisplaySizeLists}" DisplayMemberPath="DisplaySize" SelectedValuePath="DisplaySize"  SelectedIndex="{Binding DisplaySelectedIndex}"/>
+                <CheckBox Content="采用无边框窗口启动" HorizontalAlignment="Left" Margin="5,159,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.isPopup}"/>
+                <CheckBox Content="解锁游戏内帧率上限" HorizontalAlignment="Left" Margin="5,135,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding isUnFPS}" Command="{Binding ChooseUnlockFpsCommand}"/>
+                <TextBox mah:TextBoxHelper.Watermark="帧上限" HorizontalAlignment="Left" Margin="102,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="56" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="{Binding isUnFPS}" Text="{Binding IniModel.MaxFps}"/>
+                <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" Margin="0,71,0,0" VerticalAlignment="Top" Width="153" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GamePortLists}" DisplayMemberPath="GamePort" SelectedValuePath="GamePort" SelectedIndex="{Binding IniModel.isMihoyo}"/>
+                <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="16" Margin="5,103,0,0" VerticalAlignment="Top" Width="94" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GameWindowModeList}" DisplayMemberPath="GameWindowMode" SelectedValuePath="GameWindowMode" SelectedIndex="{Binding IniModel.FullSize}"/>
             </Grid>
         </GroupBox>
         <Button FontSize="12" Style="{DynamicResource MahApps.Styles.Button.Square}" IsEnabled="{Binding PageUiStatus}" Content="删除选中的用户" HorizontalAlignment="Left" Margin="193,236,0,0" VerticalAlignment="Top" Width="186" Command="{Binding DeleteUserCommand}" FontFamily="Microsoft YaHei UI" />
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="193,71,11,335" BorderThickness="2,2,2,2" BorderBrush="#FF83919F" ItemsSource="{Binding UserLists}" DisplayMemberPath="UserName" SelectedValue="{Binding IniModel.SwitchUser, Mode=OneWayToSource}" SelectedValuePath="UserName" FontSize="12"/>
+        <GroupBox  Header="保存的账号列表" Margin="193,48,11,335">
+            <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding UserLists}" DisplayMemberPath="UserName" SelectedValue="{Binding IniModel.SwitchUser, Mode=OneWayToSource}" SelectedValuePath="UserName" FontSize="12"/>
+        </GroupBox>
         <Grid HorizontalAlignment="Center" Height="36" VerticalAlignment="Top" Width="390" Background="{Binding SettingTitleColor}">
             <Label Content="{Binding SettingsTitle}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
             <Button FontSize="12" Content="关闭" HorizontalAlignment="Left" IsEnabled="{Binding PageUiStatus}" Margin="339,0,0,0" VerticalAlignment="Center" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="46" Command="{Binding ThisPageRemoveCommand}" Background="#FEFF6B79" BorderThickness="0" Height="10"/>
         </Grid>
-        <Label FontSize="12" Content="保存的账号列表" HorizontalAlignment="Left" Height="25" Margin="193,48,0,0" VerticalAlignment="Top" Width="186" Foreground="White" Background="#FF83919F" FontFamily="Microsoft YaHei UI"/>
     </Grid>
 </UserControl>

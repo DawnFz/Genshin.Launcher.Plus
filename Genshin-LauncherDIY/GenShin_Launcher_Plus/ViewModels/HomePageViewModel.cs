@@ -117,8 +117,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         private void CreateGamePortList()
         {
             GamePortLists = new List<GamePortListModel>();
-            GamePortLists.Add(new GamePortListModel { GamePort = "官方" });
-            GamePortLists.Add(new GamePortListModel { GamePort = "哔哩" });
+            GamePortLists.Add(new GamePortListModel { GamePort = "官方服务器" });
+            GamePortLists.Add(new GamePortListModel { GamePort = "哔哩哔哩服" });
         }
 
         //游戏端口列表索引
