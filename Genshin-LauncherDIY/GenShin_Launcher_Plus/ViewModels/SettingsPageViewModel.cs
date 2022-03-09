@@ -51,7 +51,7 @@ namespace GenShin_Launcher_Plus.ViewModels
           "pkg_version",
           "UnityPlayer.dll",
           "GenshinImpact.exe"
-};
+        };
 
         private string[] cnfiles = new string[]
         { "YuanShen_Data/app.info",
@@ -85,13 +85,17 @@ namespace GenShin_Launcher_Plus.ViewModels
           "YuanShen.exe"
         };
 
-        //
-
         //构造器
         private IDialogCoordinator dialogCoordinator;
         public SettingsPageViewModel(IDialogCoordinator instance)
         {
             IniModel = new SettingsIniModel();
+            //
+            languages = MainBase.lang;
+            SettingsTitle = languages.SettingsTitle;
+            GameSwitchLog = languages.GameSwitchLogStr;
+            TimeStatus = languages.TimeStatusDefault;
+            //
             dialogCoordinator = instance;
             SettingsPageCreated();
             CreateDisplaySizeList();
@@ -106,9 +110,10 @@ namespace GenShin_Launcher_Plus.ViewModels
             Auto21x9Command = new RelayCommand(Auto21x9);
             ThisPageRemoveCommand = new RelayCommand(ThisPageRemove);
         }
+        public LanguagesModel languages { get; set; }
 
         //保存状态
-        private string _SettingsTitle = "设置";
+        private string _SettingsTitle;
         public string SettingsTitle
         {
             get => _SettingsTitle;
@@ -124,10 +129,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             Task task = new(() =>
             {
-                SettingsTitle = "设置  [保存成功]";
                 SettingTitleColor = "#FF008C02";
                 Thread.Sleep(1500);
-                SettingsTitle = "设置";
                 SettingTitleColor = "#FF272727";
             });
             task.Start();
@@ -198,7 +201,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
 
         //转换时的日志列表
-        private string _GameSwitchLog = "PKG转换文件度盘下载链接，密码：etxd\r\nhttps://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg\r\n";
+        private string _GameSwitchLog;
         public string GameSwitchLog
         {
             get => _GameSwitchLog;
@@ -214,7 +217,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
 
         //转换状态
-        private string _TimeStatus = "当前状态：无状态";
+        private string _TimeStatus;
         public string TimeStatus
         {
             get => _TimeStatus;
@@ -232,7 +235,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 new DisplaySizeListModel { DisplaySize = "1360 × 768    | 16:9" },
                 new DisplaySizeListModel { DisplaySize = "1280 × 1024  |  4:3" },
                 new DisplaySizeListModel { DisplaySize = "1280 × 720    | 16:9" },
-                new DisplaySizeListModel{ DisplaySize = "自适应全屏" },
+                new DisplaySizeListModel{ DisplaySize = languages.AdaptiveStr },
             };
         }
 
@@ -264,9 +267,9 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             GamePortLists = new List<GamePortListModel>
             {
-                new GamePortListModel { GamePort = "官方服务器" },
-                new GamePortListModel { GamePort = "哔哩哔哩服" },
-                new GamePortListModel { GamePort = "国际服务器" }
+                new GamePortListModel { GamePort = languages.GameClientTypePStr },
+                new GamePortListModel { GamePort = languages.GameClientTypeBStr },
+                new GamePortListModel { GamePort = languages.GameClientTypeMStr }
             };
         }
 
@@ -280,15 +283,15 @@ namespace GenShin_Launcher_Plus.ViewModels
         private void CreateGameWindowModeList()
         {
             GameWindowModeList = new();
-            GameWindowModeList.Add(new GameWindowModeListModel { GameWindowMode = "窗口启动" });
-            GameWindowModeList.Add(new GameWindowModeListModel { GameWindowMode = "全屏启动" });
+            GameWindowModeList.Add(new GameWindowModeListModel { GameWindowMode = languages.WindowMode });
+            GameWindowModeList.Add(new GameWindowModeListModel { GameWindowMode = languages.Fullscreen });
         }
 
         //选择游戏路径的命令
         public ICommand ChooseGamePathCommand { get; set; }
         private void ChooseGamePath()
         {
-            CommonOpenFileDialog dialog = new("请选择原神游戏本体所在文件夹");
+            CommonOpenFileDialog dialog = new(languages.GameDirMsg);
             dialog.IsFolderPicker = true;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
@@ -311,7 +314,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             if (isUnFPS)
             {
-                if ((await dialogCoordinator.ShowMessageAsync(this, "超级警告", "此操作涉及修改游戏客户端进程，目前不知道确切会不会出现封号风险，出现问题请自行承担后果！如之前没使用过UnlockFPS的建议不要使用！按下同意代表使用本功能后的一切后果由自己承担！怕就不要用，用就不要怕！【注意：启用本功能后拉起游戏会慢一点，为正常现象】", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "同意" })) != MessageDialogResult.Affirmative)
+                if ((await dialogCoordinator.ShowMessageAsync(this, languages.SevereWarning, languages.SevereWarningStr, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Cancel, NegativeButtonText = languages.Determine })) != MessageDialogResult.Affirmative)
                 {
                     isUnFPS = true;
                     IniModel.isUnFPS = isUnFPS;
@@ -331,7 +334,7 @@ namespace GenShin_Launcher_Plus.ViewModels
 
             if (IniModel.SwitchUser != "" && IniModel.SwitchUser != null)
             {
-                if ((await dialogCoordinator.ShowMessageAsync(this, "警告", $"您确定删除账号：{IniModel.SwitchUser} 吗？！", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "删除" })) != MessageDialogResult.Affirmative)
+                if ((await dialogCoordinator.ShowMessageAsync(this, languages.Warning, $"{languages.WarningDAW}[{IniModel.SwitchUser}] ? !", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Cancel, NegativeButtonText = languages.Determine })) != MessageDialogResult.Affirmative)
                 {
                     File.Delete(Path.Combine(@"UserData", IniModel.SwitchUser));
                     ReadUserList();
@@ -339,7 +342,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             else
             {
-                await dialogCoordinator.ShowMessageAsync(this, "错误", "请选中一个账号再使用本功能！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.ErrorSA, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
             }
         }
 
@@ -350,7 +353,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             if (IniModel.SwitchUser != null && IniModel.SwitchUser != "")
             {
                 IniControl.SwitchUser = IniModel.SwitchUser;
-                MainBase.noab.SwitchUser = $"账号：{IniModel.SwitchUser}";
+                MainBase.noab.SwitchUser = $"{languages.UserNameLab}：{IniModel.SwitchUser}";
                 MainBase.noab.IsSwitchUser = "Visible";
                 RegistryControl registryControl = new();
                 registryControl.SetToRegedit(IniModel.SwitchUser);
@@ -361,12 +364,12 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             else
             {
-                await dialogCoordinator.ShowMessageAsync(this, "错误", "路径为空或路径内不含游戏客户端，请重新选择！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PathErrorMessageStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
                 return;
             }
             IniControl.Width = Width;
             IniControl.Height = Height;
-            IniControl.isUnFPS = IniModel.isUnFPS;
+            IniControl.isUnFPS =isUnFPS;
             IniControl.MaxFps = IniModel.MaxFps;
             IniControl.isPopup = IniModel.isPopup;
             IniControl.isMainGridHide = IniModel.isMainGridHide;
@@ -383,7 +386,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                         IniControl.Sub_channel = 1;
                         if (File.Exists(Path.Combine(IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
                             File.Delete(Path.Combine(IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
-                        MainBase.noab.SwitchPort = "客户端：官方服务器";
+                        MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}";
                         break;
                     case 1:
                         IniControl.Cps = "bilibili";
@@ -401,7 +404,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                                 MessageBox.Show(ex.Message);
                             }
                         }
-                        MainBase.noab.SwitchPort = "客户端：哔哩哔哩服";
+                        MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}";
                         break;
                     case 2:
                         IniControl.Cps = "mihoyo";
@@ -409,13 +412,17 @@ namespace GenShin_Launcher_Plus.ViewModels
                         IniControl.Sub_channel = 0;
                         if (File.Exists(Path.Combine(IniModel.GamePath, "GenshinImpact_Data/Plugins/PCGameSDK.dll")))
                             File.Delete(Path.Combine(IniModel.GamePath, "GenshinImpact_Data/Plugins/PCGameSDK.dll"));
-                        MainBase.noab.SwitchPort = "客户端：通用国际服";
+                        MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeMStr}";
                         break;
                     default:
                         break;
                 }
             }
             DelaySaveButtonTitle();
+            //Test
+            LanguagesModel lang = new();
+            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", "Languagesssss"), JsonConvert.SerializeObject(lang));
+
             MainBase.noab.MainPagesIndex = 0;
         }
 
@@ -452,6 +459,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             IniModel.FullSize = IniControl.FullSize;
             Width = IniModel.Width;
             Height = IniModel.Height;
+            isUnFPS = IniModel.isUnFPS;
             IniModel.UseXunkongWallpaper = IniControl.UserXunkongWallpaper;
             ReadGameConfig();
         }
@@ -476,7 +484,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             else
             {
-                await dialogCoordinator.ShowMessageAsync(this, "提醒", "在上面随便一个框填上想要的宽或者高另一个框留空使用本按钮自动取21:9比例分辨率", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.ErrorEYJ, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
             }
         }
 
@@ -497,7 +505,7 @@ namespace GenShin_Launcher_Plus.ViewModels
 
                 Task start = new(async () =>
                 {
-                    if ((await dialogCoordinator.ShowMessageAsync(this, "警告！！", "转换或还原将会执行重命名，替换，删除等操作修改客户端文件，该过程大概率会触发杀软报毒！为了防止客户端损坏导致不完整，执行前检查杀软（包括 Windows Defender）是否完全关闭或将本启动器加入白名单，并检查游戏是否彻底关闭，否则可能将导致客户端文件缺失！！\r\n\r\n提示：如游戏大版本更新时请执行还原转换为国内服使用游戏自带启动器更新！", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消转换", NegativeButtonText = "确定转换" })) != MessageDialogResult.Affirmative)
+                    if ((await dialogCoordinator.ShowMessageAsync(this, $"{languages.Warning} ! !", languages.WarningCCStr, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Cancel, NegativeButtonText = languages.SwitchBtn })) != MessageDialogResult.Affirmative)
                     {
                         PageUiStatus = "false";
                         ProgressBar = "Visible";
@@ -526,7 +534,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                                 }
                                 else if (File.Exists(@"GlobalFile.pkg"))
                                 {
-                                    TimeStatus = "当前状态：正在解压PKG资源包";
+                                    TimeStatus = languages.TimeStatusUning;
                                     //解压Pkg
                                     if (FilesControl.UnZip("GlobalFile.pkg", @""))
                                     {
@@ -538,22 +546,22 @@ namespace GenShin_Launcher_Plus.ViewModels
                                         {
                                             DirectoryInfo di = new(@"GlobalFile");
                                             di.Delete(true);
-                                            TimeStatus = "当前状态：Pkg有新版本";
+                                            TimeStatus = languages.TimeStatusUpdate;
                                         }
                                     }
                                     //解压失败
                                     else
                                     {
-                                        TimeStatus = "当前状态：解压失败，请检查";
-                                        GameSwitchLog += "没有找到资源[GlobalFile.pkg]或解压失败，请检查Pkg文件是否和本应用处于同一目录\r\n";
-                                        await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在或解压失败", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                        TimeStatus = languages.TimeStatusUnErr;
+                                        GameSwitchLog += languages.ErrorGPkgNF;
+                                        await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PkgNoUnError, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
                                     }
                                 }
                                 else
                                 {
-                                    TimeStatus = "当前状态：请检查Pkg文件";
-                                    GameSwitchLog += "没有找到资源[GlobalFile.pkg]，请检查Pkg文件是否和本应用处于同一目录\r\n";
-                                    await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                    TimeStatus = languages.TimeStatusCheck;
+                                    GameSwitchLog += languages.ErrorGPkgNF;
+                                    await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PkgNoUnError, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
                                 }
                             }
                             else
@@ -583,7 +591,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                                 }
                                 else if (File.Exists(@"CnFile.pkg"))
                                 {
-                                    TimeStatus = "当前状态：正在解压PKG资源包";
+                                    TimeStatus = languages.TimeStatusUning;
                                     //解压Pkg
                                     if (FilesControl.UnZip("CnFile.pkg", @""))
                                     {
@@ -595,22 +603,22 @@ namespace GenShin_Launcher_Plus.ViewModels
                                         {
                                             DirectoryInfo di = new(@"CnFile");
                                             di.Delete(true);
-                                            TimeStatus = "当前状态：Pkg有新版本";
+                                            TimeStatus = languages.TimeStatusUpdate;
                                         }
                                     }
                                     //解压失败
                                     else
                                     {
-                                        TimeStatus = "当前状态：解压失败，请检查";
-                                        GameSwitchLog += "没有找到资源[CnFile.pkg]或解压失败，请检查Pkg文件是否和本应用处于同一目录\r\n";
-                                        await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在或解压失败", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                        TimeStatus = languages.TimeStatusUnErr;
+                                        GameSwitchLog += languages.ErrorCPkgNF;
+                                        await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PkgNoUnError, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                                     }
                                 }
                                 else
                                 {
-                                    TimeStatus = "当前状态：请检查Pkg文件";
-                                    GameSwitchLog += "没有找到资源[CnFile.pkg]，请检查Pkg文件是否和本应用处于同一目录\r\n";
-                                    await dialogCoordinator.ShowMessageAsync(this, "错误", "PKG文件不存在", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                                    TimeStatus = languages.TimeStatusCheck;
+                                    GameSwitchLog += languages.ErrorCPkgNF;
+                                    await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PkgNoUnError, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
                                 }
                             }
                             else
@@ -627,7 +635,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             else
             {
-                dialogCoordinator.ShowMessageAsync(this, "错误", "请先关闭游戏再执行转换操作，如确定游戏已经完全关闭还是弹此提示请重启电脑再试或联系开发者！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                dialogCoordinator.ShowMessageAsync(this, languages.Error, "请先关闭游戏再执行转换操作，如确定游戏已经完全关闭还是弹此提示请重启电脑再试或联系开发者！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
             }
         }
 
@@ -651,10 +659,10 @@ namespace GenShin_Launcher_Plus.ViewModels
         //转换国际服及转换国服核心逻辑-判断PKG文件版本
         private bool JudgePkgVer(string GamePort)
         {
-            string pkgfile = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$pkg$]", "[#pkg#]");
+            string pkgfile = MainBase.update.PkgVersion;
             if (!File.Exists($"{GamePort}/{pkgfile}"))
             {
-                dialogCoordinator.ShowMessageAsync(this, "提示", "国服转换包有新版本：" + pkgfile + "\r\n访问密码：etxd", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                dialogCoordinator.ShowMessageAsync(this, languages.Warning, $"{languages.NewPkgVer} : [{ pkgfile }]\r\n", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
                 ProcessStartInfo info = new()
                 {
                     FileName = "https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg",
@@ -677,11 +685,11 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 if (File.Exists(Path.Combine(dirpath, filepath[i] + postfix)) == false)
                 {
-                    GameSwitchLog += filepath[i] + postfix + "文件不存在，启动器将尝试下一步操作，若无反应请重新下载资源文件！\n";
+                    GameSwitchLog += $"{filepath[i]} {postfix} {languages.ErrorFileNF}\r\n";
                     notError = false;
                     break;
                 }
-                GameSwitchLog += filepath[i] + postfix + "存在\n";
+                GameSwitchLog += $"{filepath[i]} {postfix} {languages.FileExist}\r\n";
             }
             return notError;
         }
@@ -690,7 +698,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         private async Task GlobalMoveFile()
         {
             Computer redir = new();
-            TimeStatus = "当前状态：正在备份原文件";
+            TimeStatus = languages.TimeStatusBaking;
             for (int a = 0; a < cnfiles.Length; a++)
             {
                 String newFileName = Path.GetFileNameWithoutExtension(Path.Combine(IniControl.GamePath, cnfiles[a])) + Path.GetExtension(Path.Combine(IniControl.GamePath, cnfiles[a]));
@@ -702,35 +710,33 @@ namespace GenShin_Launcher_Plus.ViewModels
                     }
                     catch (Exception ex)
                     {
-
-                        GameSwitchLog += newFileName + "备份失败：原因：";
-                        GameSwitchLog += ex.Message + "\n\n";
+                        GameSwitchLog += $"{newFileName} {languages.ErrorBakF}";
+                        GameSwitchLog += $"{ex.Message}\r\n\r\n";
                     }
-
-                    GameSwitchLog += newFileName + "备份成功\n";
+                    GameSwitchLog += $"{newFileName} {languages.BakSuccess}\r\n";
                 }
                 else
                 {
-                    GameSwitchLog += newFileName + "文件不存在，备份失败，跳过\n";
+                    GameSwitchLog += $"{newFileName} {languages.BakFileNfSk}\r\n";
                 }
             }
-            TimeStatus = "当前状态：开始替换资源";
+            TimeStatus = languages.TimeStatusReping;
             redir.FileSystem.RenameDirectory(Path.Combine(IniControl.GamePath, "YuanShen_Data"), "GenshinImpact_Data");
             for (int i = 0; i < globalfiles.Length; i++)
             {
                 File.Copy(Path.Combine(@"GlobalFile", globalfiles[i]), Path.Combine(IniControl.GamePath, globalfiles[i]), true);
-                GameSwitchLog += globalfiles[i] + "替换成功\n";
+                GameSwitchLog += $"{globalfiles[i]} {languages.RepSuccess}\r\n";
             };
             IniModel.isMihoyo = 2;
-            TimeStatus = "当前状态：无状态";
-            await dialogCoordinator.ShowMessageAsync(this, "提示", "转换完毕，按下确定自动保存，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            TimeStatus = languages.TimeStatusDefault;
+            await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, languages.SwitchSucessStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
         }
 
         //国际转国内
         private async Task CnMoveFile()
         {
             Computer redir = new();
-            TimeStatus = "当前状态：正在备份原文件";
+            TimeStatus = languages.TimeStatusBaking;
             for (int a = 0; a < globalfiles.Length; a++)
             {
                 String newFileName = Path.GetFileNameWithoutExtension(Path.Combine(IniControl.GamePath, globalfiles[a])) + Path.GetExtension(Path.Combine(IniControl.GamePath, globalfiles[a]));
@@ -742,47 +748,45 @@ namespace GenShin_Launcher_Plus.ViewModels
                     }
                     catch (Exception ex)
                     {
-
-                        GameSwitchLog += newFileName + "备份失败：原因：";
-                        GameSwitchLog += ex.Message + "\n\n";
+                        GameSwitchLog += $"{newFileName} {languages.ErrorBakF}";
+                        GameSwitchLog += $"{ex.Message}\r\n\r\n";
                     }
-
-                    GameSwitchLog += newFileName + "备份成功\n";
+                    GameSwitchLog += $"{newFileName} {languages.BakSuccess}\r\n";
                 }
                 else
                 {
-                    GameSwitchLog += newFileName + "文件不存在，备份失败，跳过\n";
+                    GameSwitchLog += $"{newFileName} {languages.BakFileNfSk}\r\n";
                 }
             }
-            TimeStatus = "当前状态：开始替换资源";
+            TimeStatus = languages.TimeStatusReping;
             redir.FileSystem.RenameDirectory(Path.Combine(IniControl.GamePath, "GenshinImpact_Data"), "YuanShen_Data");
             for (int i = 0; i < cnfiles.Length; i++)
             {
                 File.Copy(Path.Combine(@"CnFile", cnfiles[i]), Path.Combine(IniControl.GamePath, cnfiles[i]), true);
-                GameSwitchLog += cnfiles[i] + "替换成功\n";
+                GameSwitchLog += $"{cnfiles[i]} {languages.RepSuccess}\r\n";
             };
             IniModel.isMihoyo = 0;
-            TimeStatus = "当前状态：无状态";
-            await dialogCoordinator.ShowMessageAsync(this, "提示", "转换完毕，按下确定自动保存，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            TimeStatus = languages.TimeStatusDefault;
+            await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, languages.SwitchSucessStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
         }
         //还原
         private async Task ReCnGame()
         {
             Computer redir = new();
-            TimeStatus = "当前状态：清理现存文件";
+            TimeStatus = languages.TimeStatusCleaning;
             for (int i = 0; i < globalfiles.Length; i++)
             {
                 if (File.Exists(Path.Combine(IniControl.GamePath, globalfiles[i])) == true)
                 {
                     File.Delete(Path.Combine(IniControl.GamePath, globalfiles[i]));
-                    GameSwitchLog += globalfiles[i] + "清理完毕\n";
+                    GameSwitchLog += $"{globalfiles[i]} {languages.CleanedStr}\r\n";
                 }
                 else
                 {
-                    GameSwitchLog += globalfiles[i] + "文件不存在，已跳过\n";
+                    GameSwitchLog += $"{globalfiles[i]} {languages.CleanSkipStr}\r\n";
                 }
             }
-            TimeStatus = "当前状态：正在还原文件";
+            TimeStatus = languages.TimeStatusRecover;
             redir.FileSystem.RenameDirectory(Path.Combine(IniControl.GamePath, "GenshinImpact_Data"), "YuanShen_Data");
             int whole = 0, success = 0;
             for (int a = 0; a < cnfiles.Length; a++)
@@ -791,38 +795,38 @@ namespace GenShin_Launcher_Plus.ViewModels
                 if (File.Exists(Path.Combine(IniControl.GamePath, cnfiles[a] + ".bak")) == true)
                 {
                     redir.FileSystem.RenameFile(Path.Combine(IniControl.GamePath, cnfiles[a] + ".bak"), newFileName);
-                    GameSwitchLog += cnfiles[a] + "还原成功\n";
+                    GameSwitchLog += $"{cnfiles[a]} {languages.RestoreSucess}\r\n";
                     success++;
                 }
                 else
                 {
 
-                    GameSwitchLog += cnfiles[a] + "不存在，跳过还原\n";
+                    GameSwitchLog += $"{cnfiles[a]} {languages.RestoreSkipStr}\r\n";
                     whole++;
                 }
             }
-            TimeStatus = "当前状态：无状态";
+            TimeStatus = languages.TimeStatusDefault;
             IniModel.isMihoyo = 0;
-            await dialogCoordinator.ShowMessageAsync(this, "提示", "还原完毕，本次还原成功" + success + "个文件，失败或缺失" + whole + "个文件，按下确定自动保存，尽情享受吧！~", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, $"{languages.RestoreOverTipsStr} , {languages.RestoreNum} : {success } ,{languages.RestoreErrNum} : {whole} , {languages.RestoreEndStr}", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
         }
 
         private async Task ReGlobalGame()
         {
             Computer redir = new();
-            TimeStatus = "当前状态：清理现存文件";
+            TimeStatus = languages.TimeStatusCleaning;
             for (int i = 0; i < cnfiles.Length; i++)
             {
                 if (File.Exists(Path.Combine(IniControl.GamePath, cnfiles[i])) == true)
                 {
                     File.Delete(Path.Combine(IniControl.GamePath, cnfiles[i]));
-                    GameSwitchLog += cnfiles[i] + "清理完毕\n";
+                    GameSwitchLog += $"{cnfiles[i]} {languages.CleanedStr}\r\n";
                 }
                 else
                 {
-                    GameSwitchLog += cnfiles[i] + "文件不存在，已跳过\n";
+                    GameSwitchLog += $"{cnfiles[i]} {languages.CleanSkipStr}\r\n";
                 }
             }
-            TimeStatus = "当前状态：正在还原文件";
+            TimeStatus = languages.TimeStatusRecover;
             redir.FileSystem.RenameDirectory(Path.Combine(IniControl.GamePath, "YuanShen_Data"), "GenshinImpact_Data");
             int whole = 0, success = 0;
             for (int a = 0; a < globalfiles.Length; a++)
@@ -831,19 +835,19 @@ namespace GenShin_Launcher_Plus.ViewModels
                 if (File.Exists(Path.Combine(IniControl.GamePath, globalfiles[a] + ".bak")) == true)
                 {
                     redir.FileSystem.RenameFile(Path.Combine(IniControl.GamePath, globalfiles[a] + ".bak"), newFileName);
-                    GameSwitchLog += globalfiles[a] + "还原成功\n";
+                    GameSwitchLog += $"{globalfiles[a]} {languages.RestoreSucess}\r\n";
                     success++;
                 }
                 else
                 {
 
-                    GameSwitchLog += globalfiles[a] + "不存在，跳过还原\n";
+                    GameSwitchLog += $"{globalfiles[a]} {languages.RestoreSkipStr}\r\n";
                     whole++;
                 }
             }
-            TimeStatus = "当前状态：无状态";
+            TimeStatus = languages.TimeStatusDefault;
             IniModel.isMihoyo = 2;
-            await dialogCoordinator.ShowMessageAsync(this, "提示", "还原完毕，本次还原成功" + success + "个文件，失败或缺失" + whole + "个文件，按下确定自动保存，尽情享受吧！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+            await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, $"{languages.RestoreOverTipsStr} , {languages.RestoreNum} : {success } ,{languages.RestoreErrNum} : {whole}", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
         }
     }
 }

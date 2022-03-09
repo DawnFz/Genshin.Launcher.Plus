@@ -111,8 +111,16 @@
 1. 增加了【寻空每日一图】，感谢@[**Scighost**](https://github.com/Scighost)
 1. 合入了一些新代码，以便更新多语言版本时使用
 
+### 1.3.3-Beta
 
+1. 加入了部分语言包功能-测试用未发布
 
-## 代码引用&参考
+### 1.3.4
 
-解锁FPS：[genshin-fps-unlock](https://gitee.com/Euphony_Facetious/genshin-fps-unlock)
+1. 增加了多语言的支持，您现在可以在主页面按下[L]按钮进行语言设置
+2. 修改了程序启动逻辑和更新判断逻辑，现在您可以更快的启动原神启动器Plus
+3. 修改和完善了设置界面、主页面、用户界面、引导界面的数据读取和消息
+4. 修复了上个已发布版本存在的选用解锁FPS后再次打开设置界面未正确读取问题
+5. 移除了原有的UnlockFps.exe，进而采用[[DGP.Genshin.FPSUnlocking]](https://github.com/DGP-Studio/DGP.Genshin.FPSUnlocking)的方式进行解锁
+5. 修改了启动游戏的逻辑代码，现在您应该不会出现游戏启动过于缓慢的现象了
+5. 移除了原有的帮助页面，现在点击[ ? ]按钮您可以直接跳转到[原启Plus帮助](https://www.dawnfz.com/document/)文档页面了

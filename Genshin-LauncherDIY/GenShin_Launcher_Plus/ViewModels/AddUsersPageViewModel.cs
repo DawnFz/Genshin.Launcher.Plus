@@ -16,9 +16,12 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         public AddUsersPageViewModel()
         {
+            languages = MainBase.lang;
             CreateGamePortList();
             SaveUserDataCommand = new RelayCommand(SaveUserData);
         }
+
+        public LanguagesModel languages { get; set; }
 
         public string GamePort { get; set; }
         public string Name { get; set; }
@@ -33,20 +36,20 @@ namespace GenShin_Launcher_Plus.ViewModels
         private void CreateGamePortList()
         {
             GamePortLists = new();
-            GamePortLists.Add(new GamePortListModel { GamePort = "国服" });
-            GamePortLists.Add(new GamePortListModel { GamePort = "国际" });
+            GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypePStr });
+            GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypeMStr });
         }
 
         public ICommand SaveUserDataCommand { get; set; }
         private void SaveUserData()
         {
-            if (GamePort == "国服" && Name != null)
+            if (GamePort == languages.GameClientTypePStr && Name != null)
             {
                 RegistryControl registryControl = new();
                 string userdata = registryControl.GetFromRegedit(Name, "CN");
                 File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
             }
-            else if (GamePort == "国际" && Name != null)
+            else if (GamePort == languages.GameClientTypeMStr && Name != null)
             {
                 RegistryControl registryControl = new();
                 string userdata = registryControl.GetFromRegedit(Name, "Global");
@@ -54,7 +57,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             else
             {
-                MessageBox.Show("未选择账号所属服务器或未输入保存的名称，本次保存不生效！");
+                MessageBox.Show(languages.AddUsersErrorMessageStr);
             }
         }
     }

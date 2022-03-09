@@ -10,10 +10,12 @@ using GenShin_Launcher_Plus.Core;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using GenShin_Launcher_Plus.Models;
 using System.Net.Http;
 using System.Text.Json.Nodes;
 using System.Security.Cryptography;
 using System.Text;
+using System.Collections.Generic;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -23,15 +25,19 @@ namespace GenShin_Launcher_Plus.ViewModels
         public MainWindowViewModel(IDialogCoordinator instance)
         {
             dialogCoordinator = instance;
+            languages = MainBase.lang;
             Mainloading();
             OpenImagesDirectoryCommand = new RelayCommand(OpenImagesDirectory);
             OpenAboutCommand = new RelayCommand(OpenAbout);
             OpenQQGroupUrlCommand = new RelayCommand(OpenQQGroupUrl);
             ExitProgramCommand = new RelayCommand(ExitProgram);
             MainMinimizedCommand = new RelayCommand(MainMinimized);
-            Title = $"原神启动器Plus {Application.ResourceAssembly.GetName().Version}";
+            Title = $"{languages.MainTitle} {Application.ResourceAssembly.GetName().Version}";
             IniControl.EXEname(Path.GetFileName(Environment.ProcessPath));
         }
+
+
+        public LanguagesModel languages { get; set; }
 
         public string Title { get; set; }
 
@@ -41,6 +47,8 @@ namespace GenShin_Launcher_Plus.ViewModels
             get => _Background;
             set => SetProperty(ref _Background, value);
         }
+
+
 
         private async void Mainloading()
         {
@@ -113,8 +121,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                 }
                 else
                 {
-                    string bgurl = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$bg$]", "[#bg#]");
-                    if (bgurl != "读取错误，请检查网络后再试！")
+                    string bgurl = languages.MainBackground;
+                    if (bgurl != ""&&bgurl!=null)
                     {
                         uri = new(bgurl, UriKind.Absolute);
                     }
@@ -131,7 +139,6 @@ namespace GenShin_Launcher_Plus.ViewModels
             FilesControl utils = new();
             try
             {
-                utils.FileWriter("StaticRes/unlockfps.dll", @"unlockfps.exe");
                 utils.FileWriter("StaticRes/Update.dll", @"Update.exe");
             }
             catch (Exception ex)
@@ -154,7 +161,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             else
             {
-                await dialogCoordinator.ShowMessageAsync(this, "错误提示", "本功能为打开游戏内截图照相保存目录\r\n没有检测到照相文件或者请先输入正确的游戏路径！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.ScreenPathErr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
             }
         }
 
@@ -162,7 +169,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand OpenAboutCommand { get; set; }
         private async void OpenAbout()
         {
-            if ((await dialogCoordinator.ShowMessageAsync(this, "关于", aboutthis, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "确定", NegativeButtonText = "GitHub" })) != MessageDialogResult.Affirmative)
+            if ((await dialogCoordinator.ShowMessageAsync(this, languages.AboutTitle, languages.AboutStr, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine, NegativeButtonText = "GitHub" })) != MessageDialogResult.Affirmative)
             {
                 ProcessStartInfo info = new()
                 {
@@ -198,23 +205,6 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 Application.Current.MainWindow.WindowState = WindowState.Minimized;
             });
-        }
-
-        private string aboutthis =
-            (
-            "注意，启动器涉及到注册表修改和文件替换，部分杀毒软\r\n" +
-            "件可能会报毒，为了客户端数据完整建议关闭杀软后再运行\r\n" +
-            "本程序完全开源，并不会将用户数据公布到网络，\r\n" +
-            "本启动器需要联网部分的代码仅为版本检测和公告获取\r\n\r\n\r\n" +
-            "编写：DawnFz (ねねだん)\r\n" +
-            "联系邮箱：admin@dawnfz.com\r\n" +
-            "技术支持：Lightczx（Github）【Snap.Genshin作者】\r\n" +
-            "您可以跳转到Github以获取本项目源代码\r\n\r\n\r\n" +
-            "————————本程序用到的代码及参考————————\r\n" +
-            "[Snap.Genshin]\r\n" +
-            "项目地址：https://github.com/DGP-Studio/Snap.Genshin \r\n" +
-            "————————————————————————————\r\n" +
-            "[genshin-fps-unlock]\r\n" +
-            "项目地址：https://gitee.com/Euphony_Facetious/genshin-fps-unlock \r\n");
+        }   
     }
 }

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GenShin_Launcher_Plus.Models;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -19,24 +20,19 @@ namespace GenShin_Launcher_Plus.ViewModels
         private IDialogCoordinator dialogCoordinator;
         public UpdatePageViewModel(IDialogCoordinator instance)
         {
+            languages = MainBase.lang;
             dialogCoordinator = instance;
             UpdateRunCommand = new RelayCommand(UpdateRun);
         }
+        public LanguagesModel languages { get; set; }
         public string Notify
         {
-            get
-            {
-                string temp = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$notify$]", "[#notify#]");
-                string notify = temp.Replace("/n/", Environment.NewLine);
-                return notify;
-            }
+            get => MainBase.update.Content;
         }
         public string Title
         {
-            get => FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$msgtl$]", "[#msgtl#]");
+            get => MainBase.update.Title;
         }
-
-
 
         private bool _ButtonIsEnabled = true;
         public bool ButtonIsEnabled
@@ -73,20 +69,20 @@ namespace GenShin_Launcher_Plus.ViewModels
             if (ButtonIsEnabled)
             {
                 ButtonIsEnabled = false;
-                string updatefile = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$update$]", "[#update#]");
+                string updatefile = MainBase.update.DownloadUrl;
                 if (await HttpFileExistAsync(updatefile) == true)
                 {
                     await DownloadHttpFileAsync(updatefile, @"UpdateTemp.upd");
                 }
                 else
                 {
-                    await dialogCoordinator.ShowMessageAsync(this, "错误提示", "网络更新文件资源不存在或服务器网络错误", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.DownFailedStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
                     ButtonIsEnabled = true;
                 }
             }
             else
             {
-                await dialogCoordinator.ShowMessageAsync(this, "提示", "你正在进行更新操作，请勿重复操作", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, languages.RepWarnStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
             }
         }
 
@@ -120,7 +116,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                     while (bytesRead > 0);
                 }
             }
-            if ((await dialogCoordinator.ShowMessageAsync(this, "提示", "下载完成，是否现在进行更新操作\r\n确定后只需等待5秒将自动启动新版本", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "取消", NegativeButtonText = "确定" })) != MessageDialogResult.Affirmative)
+            if ((await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, languages.DownloadComStr, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Cancel, NegativeButtonText = languages.Determine })) != MessageDialogResult.Affirmative)
             {
                 Process.Start(@"Update.exe");
                 Environment.Exit(0);
@@ -144,7 +140,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         public void SetProgressBar(double value)
         {
             DownloadBarValue = value;
-            DownloadLabel = $"下载进度:{value / DownloadBarMax:p2}";
+            DownloadLabel = $"{languages.DownProgress}:{value / DownloadBarMax:p2}";
         }
     }
 }

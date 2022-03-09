@@ -11,23 +11,20 @@
         <mah:FlipView x:Name="FlipView" BannerOpacity="0" MouseHoverBorderBrush="White">
             <mah:FlipView.Items>
                 <Grid Background="White">
-                    <TextBlock HorizontalAlignment="Center" Margin="0,24,0,0" VerticalAlignment="Top" FontSize="45" Foreground="Black" Width="1032" Height="106" TextAlignment="Center"><Run Text="欢迎使用原神启动器Plus"/><LineBreak/></TextBlock>
-                    <TextBox x:Name="GamePath" mah:TextBoxHelper.Watermark="游戏本体路径（默认的游戏本体目录为Genshin Impact Game文件夹）" HorizontalAlignment="Left" Height="44" Margin="189,652,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="830" FontSize="24" FontFamily="Microsoft YaHei UI" BorderThickness="3"/>
+                    <TextBlock HorizontalAlignment="Center" Margin="0,24,0,0" VerticalAlignment="Top" FontSize="45" Foreground="Black" Width="1032" Height="106" TextAlignment="Center"><Run d:Text="Welcome Title" Text="{Binding languages.WelcomeTitle}"/><LineBreak/></TextBlock>
+                    <TextBox x:Name="GamePath" mah:TextBoxHelper.Watermark="{Binding languages.PathBoxTips}" HorizontalAlignment="Left" Height="44" Margin="189,652,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="830" FontSize="24" FontFamily="Microsoft YaHei UI" BorderThickness="3"/>
                     <Button x:Name="Dirchoose" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="···" HorizontalAlignment="Left" Margin="1019,652,0,0" VerticalAlignment="Top" Height="44" Width="79" FontFamily="Microsoft YaHei UI" FontSize="16" BorderBrush="#FF83919F" Click="Dirchoose_Click"/>
-                    <TextBlock HorizontalAlignment="Center" Margin="0,94,0,0" VerticalAlignment="Top" FontSize="26" Foreground="Black" Width="1032" Height="65" TextAlignment="Center" Text="在开始前请先跟随引导熟悉一下使用方法和规范"/>
+                    <TextBlock HorizontalAlignment="Center" Margin="0,94,0,0" VerticalAlignment="Top" FontSize="26" Foreground="Black" Width="1032" Height="65" TextAlignment="Center" d:Text="Bootstrap Title" Text="{Binding languages.BootstrapTitle}"/>
                     <Image Source="/Images/UI_0.jpg" Margin="552,262,552,289"/>
-                    <TextBlock  x:Name="ErrorTitle" HorizontalAlignment="Center" Margin="0,579,0,0" VerticalAlignment="Top" FontSize="32" Foreground="Black" Width="1032" Height="65" TextAlignment="Center"><Run Text="输入或者点击右侧[···]按钮选择"/><Run Language="zh-cn" Text="如上图所示的"/><Run Text="游戏目录"/></TextBlock>
-                    <TextBlock Margin="0,528,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" Foreground="#FF848484" Width="956" Height="30" TextAlignment="Center"><Run Language="zh-cn" Text="游戏目录本体指Genshin Impact下的Genshin Impact Game目录"/></TextBlock>
+                    <TextBlock  x:Name="ErrorTitle" HorizontalAlignment="Center" Margin="0,579,0,0" VerticalAlignment="Top" FontSize="32" Foreground="Black" Width="1032" Height="65" TextAlignment="Center"><Run d:Text="Final Tips Label" Text="{Binding languages.FinalTipLabel}"/></TextBlock>
+                    <TextBlock Margin="0,528,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" Foreground="#FF848484" Width="956" Height="30" TextAlignment="Center"><Run Language="zh-cn" d:Text="Path Hint Label" Text="{Binding languages.PathHintLabel}"/></TextBlock>
                 </Grid>
                 <Grid Background="White">
                     <Image Source="/Images/UI_3.jpg"/>
                 </Grid>
                 <Grid Background="White">
                     <Image Source="/Images/UI_4.jpg"/>
-                </Grid>
-                <Grid Background="White">
-                    <TextBlock HorizontalAlignment="Center" Margin="0,239,0,0" VerticalAlignment="Top" FontSize="64" Foreground="Black" Width="1032" Height="187" TextAlignment="Center"><Run Language="zh-cn" Text="向"/><Run Text="导到此结束啦"/><LineBreak/><Run Text="按下完成即可开始使用"/><LineBreak/></TextBlock>
-                    <Button x:Name="SaveButton" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="完成向导" HorizontalAlignment="Center" Margin="0,622,0,0" VerticalAlignment="Top" Height="57" Width="184" FontFamily="Microsoft YaHei UI" FontSize="20" Click="ThisPageRemove" BorderThickness="4" />
+                    <Button x:Name="SaveButton" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="{Binding languages.GuideFinishBtn}" HorizontalAlignment="Left" Margin="1131,642,0,0" VerticalAlignment="Top" Height="57" Width="118" FontFamily="Microsoft YaHei UI" FontSize="18" Click="ThisPageRemove" BorderThickness="4" />
                 </Grid>
             </mah:FlipView.Items>
         </mah:FlipView>

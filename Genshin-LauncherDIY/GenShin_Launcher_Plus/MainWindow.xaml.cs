@@ -1,8 +1,10 @@
 ﻿using GenShin_Launcher_Plus.Core;
+using GenShin_Launcher_Plus.ViewModels;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,10 +24,15 @@ namespace GenShin_Launcher_Plus
     {
         public MainWindow()
         {
+            if(!LoadProgramCore.ReadLangList())
+            {
+                LoadProgramCore.LoadLanguageCore(IniControl.ReadLang);
+            }
+            LoadProgramCore.LoadUpdateCore();
             InitializeComponent();
             AddConfig.CheckIni();
-            DataContext = new ViewModels.MainWindowViewModel(DialogCoordinator.Instance);
-            MainFlipView.DataContext = ViewModels.MainBase.noab;
+            DataContext = new MainWindowViewModel(DialogCoordinator.Instance);
+            MainFlipView.DataContext = MainBase.noab;
             HomePage.Children.Add(new Views.HomePage());
             if (!File.Exists(Path.Combine(IniControl.GamePath, "Yuanshen.exe")) && !File.Exists(Path.Combine(IniControl.GamePath, "GenshinImpact.exe")))
             {
@@ -34,7 +41,7 @@ namespace GenShin_Launcher_Plus
             
             Task checkupdate = new(() =>
             {
-                string newver = FilesControl.MiddleText(FilesControl.ReadHTML("https://www.cnblogs.com/DawnFz/p/7271382.html", "UTF-8"), "[$ver$]", "[#ver#]");
+                string newver = MainBase.update.Version;
                 string version = Application.ResourceAssembly.GetName().Version.ToString();
                 if (version != newver)
                 {
@@ -44,7 +51,7 @@ namespace GenShin_Launcher_Plus
                     });           
                 }
             });
-            checkupdate.Start();
+            checkupdate.Start();    
         }
 
         private void WindowDragMove(object sender, MouseButtonEventArgs e)
@@ -66,9 +73,21 @@ namespace GenShin_Launcher_Plus
             MainFlipView.SelectedIndex = 2;
         }
 
-        private void Help_Click(object sender, RoutedEventArgs e)
+        private void LangBtn_Click(object sender, RoutedEventArgs e)
         {
-            MainGrid.Children.Add(new Views.HelpsPage());
+            SwitchLanguages.Children.Clear();
+            SwitchLanguages.Children.Add(new Views.SwitchLanguagesPage());
+            MainFlipView.SelectedIndex = 3;
+        }
+
+        private void Help_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            ProcessStartInfo info = new()
+            {
+                FileName = "https://www.dawnfz.com/document/",
+                UseShellExecute = true,
+            };
+            Process.Start(info);
         }
     }
 }

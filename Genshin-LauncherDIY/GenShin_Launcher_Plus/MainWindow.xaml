@@ -6,7 +6,6 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         Dialog:DialogParticipation.Register="{Binding}"
-        xmlns:local="clr-namespace:GenShin_Launcher_Plus"
         mc:Ignorable="d"
         MouseLeftButtonDown="WindowDragMove"
         Height="730" Width="1280"
@@ -49,14 +48,17 @@
                     <ImageBrush ImageSource="/Images/AboutButton.png"/>
                 </Button.Background>
             </Button>
+
         </Grid>
         <Grid Height="685" Width="1197" Margin="0,45,83,0" x:Name="ControlPage">
             <mah:FlipView x:Name="MainFlipView" MouseHoverBorderBrush="{x:Null}" IsBannerEnabled="False" IsNavigationEnabled="False" SelectedIndex="{Binding MainPagesIndex}">
                 <Grid x:Name="HomePage"/>
                 <Grid x:Name="SettingsPage"/>
                 <Grid x:Name="AddUsersPage"/>
+                <Grid x:Name="SwitchLanguages"/>
             </mah:FlipView>
         </Grid>
-        <Button x:Name="Help_Copy" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="?" HorizontalAlignment="Left" Margin="10,684,0,0" VerticalAlignment="Top" Height="36" Width="36" BorderBrush="#7F000000" BorderThickness="4" Background="#7F808080" Foreground="White" FontSize="18" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Click="Help_Click"/>
+        <Button x:Name="Help_Copy" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="?" HorizontalAlignment="Left" Margin="10,684,0,0" VerticalAlignment="Top" Height="36" Width="36" BorderBrush="#7F000000" BorderThickness="4" Background="#7F808080" Foreground="White" FontSize="18" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Click="Help_Copy_Click"/>
+        <Button x:Name="LangBtn" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="L" HorizontalAlignment="Left" Margin="52,684,0,0" VerticalAlignment="Top" Height="36" Width="36" BorderBrush="#7F000000" BorderThickness="4" Background="#7F808080" Foreground="White" FontSize="18" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Click="LangBtn_Click"/>
     </Grid>
 </mah:MetroWindow>

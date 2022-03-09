@@ -148,6 +148,24 @@ namespace GenShin_Launcher_Plus.Core
     class IniControl
     {
 
+        private static string _ReadLang;
+        public static string ReadLang
+        {
+            get
+            {
+                IniParser parser = new IniParser();
+                _ReadLang = parser.GetSetting("setup", "Language", 0);
+                return _ReadLang;
+            }
+            set
+            {
+                IniParser parser = new IniParser();
+                _ReadLang = value;
+                parser.AddSetting("setup", "Language", _ReadLang);
+                parser.SaveSettings();
+            }
+        }
+
         private static string _GamePath;
         public static string GamePath
         {
@@ -402,7 +420,7 @@ namespace GenShin_Launcher_Plus.Core
             {
                 IniParser parser = new IniParser(Path.Combine(GamePath, "Config.ini"));
                 _Channel = Convert.ToUInt16(parser.GetSetting("General", "channel", 1));
-                return _Channel;
+                return _Channel; 
             }
             set
             {

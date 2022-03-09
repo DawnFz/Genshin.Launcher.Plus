@@ -1,8 +1,7 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Net;
 using System.Windows;
 
 namespace GenShin_Launcher_Plus.Core
@@ -20,37 +19,7 @@ namespace GenShin_Launcher_Plus.Core
             bw.Close();
             fs.Close();
         }
-        public static string ReadHTML(string url, string encoding)
-        {
-            string strHTML = "";
-            try
-            {
-                System.Net.WebClient myWebClient = new();
-                myWebClient.Proxy = null;
-                Stream myStream = myWebClient.OpenRead(url);
-                StreamReader sr = new StreamReader(myStream, Encoding.GetEncoding(encoding));
-                strHTML = sr.ReadToEnd();
-                myStream.Close();
-            }
-            catch
-            {
-                return "";
-            }
-            return strHTML;
-        }
-        public static string MiddleText(string Str, string preStr, string nextStr)
-        {
-            try
-            {
-                string tempStr = Str.Substring(Str.IndexOf(preStr) + preStr.Length);
-                tempStr = tempStr.Substring(0, tempStr.IndexOf(nextStr));
-                return tempStr;
-            }
-            catch
-            {
-                return "读取错误，请检查网络后再试！";
-            }
-        }
+
         public static bool UnZip(string zipFile, string directory)
         {
             try
@@ -94,6 +63,30 @@ namespace GenShin_Launcher_Plus.Core
             var uri = new Uri(resUri, UriKind.RelativeOrAbsolute);
             var stream = Application.GetResourceStream(uri).Stream;
             StreamToFile(stream, fileName);
+        }
+
+        public bool DownloadFile(string url, string toDirectory, string fileName, int timeout = 2000)
+        {
+            if (!Directory.Exists(toDirectory))
+            {
+                Directory.CreateDirectory(toDirectory);
+            }
+
+            FileStream file = File.OpenWrite(fileName);
+            WebRequest request = WebRequest.Create(url);
+            request.Timeout = timeout;
+
+            try
+            {
+                request.GetResponse().GetResponseStream().CopyTo(file);
+            }
+            catch
+            {
+                return false;
+            }
+
+            file.Close();
+            return true;
         }
     }
 }

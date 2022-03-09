@@ -20,13 +20,14 @@ namespace GenShin_Launcher_Plus.ViewModels
         public HomePageViewModel(IDialogCoordinator instance)
         {
             dialogCoordinator = instance;
+            languages = MainBase.lang;
             RunGameCommand = new RelayCommand(RunGame);
 
             if (IniControl.SwitchUser != null && IniControl.SwitchUser != "")
             {
                 MainBase.noab.IsSwitchUser = "Visible";
                 IsSwitchUser = "Visible";
-                MainBase.noab.SwitchUser = $"账号：{IniControl.SwitchUser}";
+                MainBase.noab.SwitchUser = $"{languages.UserNameLab} : {IniControl.SwitchUser}";
             }
             else
             {
@@ -37,22 +38,22 @@ namespace GenShin_Launcher_Plus.ViewModels
             ReadUserList();
             GetGamePort();
         }
-
+        public LanguagesModel languages { get; set; }
         private void GetGamePort()
         {
             if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")))
             {
                 if (IniControl.Cps == "pcadbdpz")
-                { MainBase.noab.SwitchPort = "客户端：官方服务器"; }
+                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}"; }
                 else if (IniControl.Cps == "bilibili")
-                { MainBase.noab.SwitchPort = "客户端：哔哩哔哩服"; }
+                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}"; }
                 else if (IniControl.Cps == "mihoyo")
-                { MainBase.noab.SwitchPort = "客户端：通用国际服"; }
+                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeMStr}"; }
                 else
-                { MainBase.noab.SwitchPort = "客户端：未知客户端"; }
+                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeNullStr}"; }
             }
             else
-            { MainBase.noab.SwitchPort = "客户端：未知客户端"; }
+            { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeNullStr}"; }
         }
 
         private string _SwitchUserValue;
@@ -64,7 +65,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 SetProperty(ref _SwitchUserValue, value);
                 if (SwitchUserValue != null && SwitchUserValue != "")
                 {
-                    MainBase.noab.SwitchUser = $"账号：{SwitchUserValue}";
+                    MainBase.noab.SwitchUser = $"{languages.UserNameLab} : {SwitchUserValue}";
                     //更改注册表账号状态
                     IniControl.SwitchUser = SwitchUserValue;
                     RegistryControl registryControl = new();
@@ -117,8 +118,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         private void CreateGamePortList()
         {
             GamePortLists = new List<GamePortListModel>();
-            GamePortLists.Add(new GamePortListModel { GamePort = "官方服务器" });
-            GamePortLists.Add(new GamePortListModel { GamePort = "哔哩哔哩服" });
+            GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypePStr });
+            GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypeBStr });
         }
 
         //游戏端口列表索引
@@ -130,28 +131,28 @@ namespace GenShin_Launcher_Plus.ViewModels
                 {
                     if (IniControl.Cps == "pcadbdpz")
                     {
-                        MainBase.noab.SwitchPort = "客户端：官方服务器";
+                        MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}";
                         return 0;
                     }
                     else if (IniControl.Cps == "bilibili")
                     {
-                        MainBase.noab.SwitchPort = "客户端：哔哩哔哩服";
+                        MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}";
                         return 1;
                     }
                     else if (IniControl.Cps == "mihoyo")
                     {
-                        MainBase.noab.SwitchPort = "客户端：通用国际服";
+                        MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeMStr}";
                         return -1;
                     }
                     else
                     {
-                        MainBase.noab.SwitchPort = "客户端：未知客户端";
+                        MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeNullStr}";
                         return -1;
                     }
                 }
                 else
                 {
-                    MainBase.noab.SwitchPort = "客户端：未知客户端";
+                    MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeNullStr}";
                     return -1;
                 }
 
@@ -170,7 +171,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                                 IniControl.Sub_channel = 1;
                                 if (File.Exists(Path.Combine(IniControl.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
                                     File.Delete(Path.Combine(IniControl.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
-                                MainBase.noab.SwitchPort = "客户端：官方服务器";
+                                MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}";
                                 break;
                             case 1:
                                 IniControl.Cps = "bilibili";
@@ -188,7 +189,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                                         MessageBox.Show(ex.Message);
                                     }
                                 }
-                                MainBase.noab.SwitchPort = "客户端：哔哩哔哩服";
+                                MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}";
                                 break;
                             default:
                                 break;
@@ -197,7 +198,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 }
                 else
                 {
-                    dialogCoordinator.ShowMessageAsync(this, "错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PathErrorMessageStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
                 }
             }
         }
@@ -224,11 +225,6 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand RunGameCommand { get; set; }
         private async void RunGame()
         {
-            //判断是否开启UnlockFps
-            if (IniControl.isUnFPS)
-            {
-                Process.Start(@"unlockfps.exe");
-            }
             //从Config中读取启动参数
             string gameMain = Path.Combine(IniControl.GamePath, "YuanShen.exe");
             var argBuilder = new CommandLineBuilder();
@@ -242,22 +238,28 @@ namespace GenShin_Launcher_Plus.ViewModels
                 gameMain = Path.Combine(IniControl.GamePath, "GenshinImpact.exe");
                 if (!File.Exists(gameMain))
                 {
-                    await dialogCoordinator.ShowMessageAsync(this, "错误", "游戏路径为空或游戏文件不存在\r\n请点击右侧设置按钮进入设置填写游戏目录", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
+                    await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PathErrorMessageStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
                     return;
                 }
             }
             //创建Task线程启动游戏
-            Task StartGame = new(() =>
+            Task StartGame = new(async () =>
             {
-                ProcessStartInfo info = new()
+                Process game = new();
+                game.StartInfo.FileName = gameMain;
+                game.StartInfo.Verb = "runas";
+                game.StartInfo.UseShellExecute = true;
+                game.StartInfo.WorkingDirectory = IniControl.GamePath;
+                game.StartInfo.Arguments = argBuilder.ToString();
+                if (IniControl.isUnFPS)
                 {
-                    FileName = gameMain,
-                    Verb = "runas",
-                    UseShellExecute = true,
-                    WorkingDirectory = IniControl.GamePath,
-                    Arguments = argBuilder.ToString()
-                };
-                Process.Start(info);
+                    Unlocker unlocker = new(game, Convert.ToInt32(IniControl.MaxFps));
+                    var result = await unlocker.StartProcessAndUnlockAsync();
+                }
+                else
+                {
+                    game.Start();
+                }
             });
             StartGame.Start();
             Application.Current.Dispatcher.Invoke(() =>

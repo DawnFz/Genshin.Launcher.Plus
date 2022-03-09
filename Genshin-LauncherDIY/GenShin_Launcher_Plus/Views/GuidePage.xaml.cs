@@ -1,21 +1,10 @@
 ﻿using GenShin_Launcher_Plus.Core;
+using GenShin_Launcher_Plus.ViewModels;
 using MahApps.Metro.Controls;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GenShin_Launcher_Plus.Views
 {
@@ -27,6 +16,7 @@ namespace GenShin_Launcher_Plus.Views
         public GuidePage()
         {
             InitializeComponent();
+            DataContext = new GuidePageViewModel();
         }
 
         private void ThisPageRemove(object sender, RoutedEventArgs e)
@@ -34,7 +24,7 @@ namespace GenShin_Launcher_Plus.Views
             if (!File.Exists(System.IO.Path.Combine(GamePath.Text, "Yuanshen.exe")) && !File.Exists(System.IO.Path.Combine(GamePath.Text, "GenshinImpact.exe")))
             {
                 FlipView.SelectedIndex = 0;
-                ErrorTitle.Text = "路径不正确或路径内不含游戏客户端，请重新选择";
+                ErrorTitle.Text = MainBase.lang.PathErrorMessageStr;
             }
             else
             {
@@ -48,7 +38,7 @@ namespace GenShin_Launcher_Plus.Views
 
         private void Dirchoose_Click(object sender, RoutedEventArgs e)
         {
-            CommonOpenFileDialog dialog = new("请选择原神游戏本体所在文件夹");
+            CommonOpenFileDialog dialog = new(MainBase.lang.GameDirMsg);
             dialog.IsFolderPicker = true;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
