@@ -36,7 +36,3 @@ You can launch in customized resolution/ unlock FPS limitation.
 Saving accounts' data into "UserData/" to switch accounts soonly.
 
 NOTE: Don't have following characters in your name <br> \ / : * ? " < > |  <br> or you will have trouble. :(
-
-## Referrence:
-
-Unlock FPS：[genshin-fps-unlock](https://gitee.com/Euphony_Facetious/genshin-fps-unlock)
