@@ -16,7 +16,7 @@
 
 ## Download
 
-- You can download the latest version of GenShin Launcher Plus from the [Release](https://github.com/DawnFz/Genshin.Launcher.Plus/Releases) of Genshin Launcher Plus' GitHub repository
+- You can download the latest version of GenShin Launcher Plus from the [Release](https://github.com/DawnFz/Genshin.Launcher.Plus/releases) of Genshin Launcher Plus' GitHub repository
    - Users who cannot access Github can also download through [Coding](https://nenedan.coding.net/public/glp/GenShin_Launcher_Plus/git/files)
    - You can also download all files related to **Genshin Launcher Plus** from [Tencent QQ Group](https://jq.qq.com/?_wv=1027&k=hHtDKShK)
 
