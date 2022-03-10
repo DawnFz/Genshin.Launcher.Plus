@@ -2,10 +2,10 @@
 
 |README - 语言|
 |-|
-|[简体中文](./README.md)|
-|[繁体中文](Docs/README_CNT.md)|
+|[简体中文](../README.md)|
+|[繁体中文](./README_CNT.md)|
 |日本語 - 制作中|
-|[English](Docs/README_EN.md)|
+|[English](./README_EN.md)|
 
 ## 系统环境要求
 
@@ -16,7 +16,7 @@
 
 ## 下载 原启Plus
 
-- 你可以在 Genshin Launcher Plus 的 GitHub 仓库的 [发布页面](https://github.com/DawnFz/GenShin-LauncherDIY/releases) 下载最新版原启Plus
+- 你可以在 Genshin Launcher Plus 的 GitHub 仓库的 [发布页面](https://github.com/DawnFz/Genshin.Launcher.Plus/releases) 下载最新版原启Plus
   - 无法访问Github的用户亦可以通过 [Coding](https://nenedan.coding.net/public/glp/GenShin_Launcher_Plus/git/files) 分流下载
   - 你也可以从[原启Plus交流群](https://jq.qq.com/?_wv=1027&k=hHtDKShK)下载到所有和 **原神启动器Plus** 的相关文件
 
@@ -28,4 +28,3 @@
 ## 截图预览
 
 ![原启Plus主页](https://s2.loli.net/2022/03/08/UcaQSyRz6LJTen9.jpg)
-

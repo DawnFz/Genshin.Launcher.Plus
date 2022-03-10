@@ -419,10 +419,6 @@ namespace GenShin_Launcher_Plus.ViewModels
                 }
             }
             DelaySaveButtonTitle();
-            //Test
-            LanguagesModel lang = new();
-            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", "Languagesssss"), JsonConvert.SerializeObject(lang));
-
             MainBase.noab.MainPagesIndex = 0;
         }
 

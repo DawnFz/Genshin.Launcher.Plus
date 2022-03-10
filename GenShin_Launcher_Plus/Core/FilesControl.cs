@@ -65,7 +65,7 @@ namespace GenShin_Launcher_Plus.Core
             StreamToFile(stream, fileName);
         }
 
-        public bool DownloadFile(string url, string toDirectory, string fileName, int timeout = 2000)
+        public bool DownloadFile(string url, string toDirectory, string fileName, int timeout = 3000)
         {
             if (!Directory.Exists(toDirectory))
             {

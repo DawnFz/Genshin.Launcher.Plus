@@ -173,7 +173,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 ProcessStartInfo info = new()
                 {
-                    FileName = "https://github.com/DawnFz/Genshin-LauncherDIY",
+                    FileName = "https://github.com/DawnFz/Genshin.Launcher.Plus",
                     UseShellExecute = true,
                 };
                 Process.Start(info);

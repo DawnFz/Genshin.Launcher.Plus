@@ -22,24 +22,27 @@ namespace GenShin_Launcher_Plus.Core
             }
             //获取网络上的语言列表到Temp目录
             FilesControl fc = new();
-            if (!fc.DownloadFile("https://www.dawnfz.com/G.L.P/JsonData/List.json", Path.GetTempPath(), Path.Combine(Path.GetTempPath(), "List.json")))
+            if (fc.DownloadFile("https://www.dawnfz.com/G.L.P/JsonData/List.json", Path.GetTempPath(), Path.Combine(Path.GetTempPath(), "List.json")))
             {
-                MessageBox.Show("语言包列表获取失败，请检查网络");
-                Environment.Exit(0);
-            }
-
-            //从JSON字符串生成集合对象用于存放语言包列表
-            string file = Path.Combine(Path.GetTempPath(), "List.json");
-            string json = File.ReadAllText(file);
-            if (json != null && json != "")
-            {
-                MainBase.langlist = JsonConvert.DeserializeObject<List<LanguageListsModel>>(json);
+                string file = Path.Combine(Path.GetTempPath(), "List.json");
+                string json = File.ReadAllText(file);
+                if (json != null && json != "")
+                {
+                    MainBase.langlist = JsonConvert.DeserializeObject<List<LanguageListsModel>>(json);
+                }
+                else
+                {
+                    MessageBox.Show("错误：语言包列表为空，请检查网络！！");
+                    Environment.Exit(0);
+                }
             }
             else
             {
-                MessageBox.Show("错误：语言包列表为空，请检查网络！！");
-                Environment.Exit(0);
+                MessageBox.Show("语言包列表获取失败，可能是您的网络状态不佳或服务器错误\r\n即将尝试使用本地语言包，按下确定后进入，进入成功后您将无法更改语言");
             }
+
+            //从JSON字符串生成集合对象用于存放语言包列表
+
 
             if (!File.Exists($@"Config/{IniControl.ReadLang}"))
             {
