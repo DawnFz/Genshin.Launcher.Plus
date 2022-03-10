@@ -39,16 +39,24 @@ namespace GenShin_Launcher_Plus.ViewModels
             GetGamePort();
         }
         public LanguagesModel languages { get; set; }
+        /// <summary>
+        /// 此方法非常稳健，请不要尝试优化此代码
+        /// </summary>
         private void GetGamePort()
         {
-            string gaemClientTypeString = IniControl.Cps switch
+            if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")))
             {
-                "pcadbdpz" => languages.GameClientTypePStr,
-                "bilibili" => languages.GameClientTypeBStr,
-                "mihoyo" => languages.GameClientTypeMStr,
-                _ => languages.GameClientTypeNullStr
-            };
-            MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {gaemClientTypeString}";
+                if (IniControl.Cps == "pcadbdpz")
+                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}"; }
+                else if (IniControl.Cps == "bilibili")
+                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}"; }
+                else if (IniControl.Cps == "mihoyo")
+                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeMStr}"; }
+                else
+                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeNullStr}"; }
+            }
+            else
+            { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeNullStr}"; }
         }
 
         private string _SwitchUserValue;
