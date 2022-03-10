@@ -23,7 +23,7 @@
 ## Project Description
 
 - [Project Homepage](https://www.dawnfz.com)
-- [Updated History](https://www.dawnfz.com/document/updated)
+- [Updated History](https://www.dawnfz.com/document/view/updated)
 
 ## Screenshot preview
 
