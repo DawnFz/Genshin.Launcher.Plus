@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -17,7 +18,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             langlist = MainBase.langlist;
             languages = MainBase.lang;
-            SaveLangSetCommand = new RelayCommand(ThisPageRemove);
+            SaveLangSetCommand = new RelayCommand(ThisPageRemoveAsync);
         }
         public LanguagesModel languages { get; set; }
 
@@ -27,14 +28,18 @@ namespace GenShin_Launcher_Plus.ViewModels
         private string _SwitchLang;
         public string SwitchLang { get => _SwitchLang; set => SetProperty(ref _SwitchLang,value); }
         public ICommand SaveLangSetCommand { get; set; }
-        private void ThisPageRemove()
+        private async void ThisPageRemoveAsync()
         {
             IniControl.ReadLang = SwitchLang;
-            LoadProgramCore.LoadLanguageCore(SwitchLang);
+            await LoadLangCore();
             MainWindow mainWindow = new();
             mainWindow.Show();
             Application.Current.MainWindow.Close();
             Application.Current.MainWindow = mainWindow;
+        }
+        public async Task LoadLangCore()
+        {
+            LoadProgramCore.LoadLanguageCore(SwitchLang);
         }
     }
 }
