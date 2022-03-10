@@ -10,6 +10,7 @@ using GenShin_Launcher_Plus.Models;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Input;
 using System.Collections.Generic;
+using DGP.Genshin.FPSUnlocking;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {

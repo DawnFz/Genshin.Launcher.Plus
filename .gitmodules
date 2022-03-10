@@ -1,0 +1,3 @@
+[submodule "DGP.Genshin.FPSUnlocking"]
+	path = DGP.Genshin.FPSUnlocking
+	url = https://github.com/DGP-Studio/DGP.Genshin.FPSUnlocking.git

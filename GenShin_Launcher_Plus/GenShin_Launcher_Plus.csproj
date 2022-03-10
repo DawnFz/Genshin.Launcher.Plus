@@ -91,6 +91,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DGP.Genshin.FPSUnlocking\DGP.Genshin.FPSUnlocking.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ApplicationDefinition Update="App.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ApplicationDefinition>
