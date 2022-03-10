@@ -15,7 +15,6 @@ using DGP.Genshin.FPSUnlocking;
 namespace GenShin_Launcher_Plus.ViewModels
 {
     public class HomePageViewModel : ObservableObject
-
     {
         private IDialogCoordinator dialogCoordinator;
         public HomePageViewModel(IDialogCoordinator instance)

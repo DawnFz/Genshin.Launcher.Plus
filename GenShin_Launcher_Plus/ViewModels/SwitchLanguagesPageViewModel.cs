@@ -18,7 +18,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             langlist = MainBase.langlist;
             languages = MainBase.lang;
-            SaveLangSetCommand = new RelayCommand(ThisPageRemoveAsync);
+            SaveLangSetCommand = new RelayCommand(ThisPageRemove);
         }
         public LanguagesModel languages { get; set; }
 
@@ -28,16 +28,16 @@ namespace GenShin_Launcher_Plus.ViewModels
         private string _SwitchLang;
         public string SwitchLang { get => _SwitchLang; set => SetProperty(ref _SwitchLang,value); }
         public ICommand SaveLangSetCommand { get; set; }
-        private async void ThisPageRemoveAsync()
+        private void ThisPageRemove()
         {
             IniControl.ReadLang = SwitchLang;
-            await LoadLangCore();
+            LoadLangCore();
             MainWindow mainWindow = new();
             mainWindow.Show();
             Application.Current.MainWindow.Close();
             Application.Current.MainWindow = mainWindow;
         }
-        public async Task LoadLangCore()
+        public void LoadLangCore()
         {
             LoadProgramCore.LoadLanguageCore(SwitchLang);
         }
