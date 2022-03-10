@@ -22,7 +22,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             dialogCoordinator = instance;
             languages = MainBase.lang;
-            RunGameCommand = new RelayCommand(RunGame);
+            RunGameCommand = new AsyncRelayCommand(RunGameAsync);
 
             if (IniControl.SwitchUser != null && IniControl.SwitchUser != "")
             {
@@ -42,19 +42,14 @@ namespace GenShin_Launcher_Plus.ViewModels
         public LanguagesModel languages { get; set; }
         private void GetGamePort()
         {
-            if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")))
+            string gaemClientTypeString = IniControl.Cps switch
             {
-                if (IniControl.Cps == "pcadbdpz")
-                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}"; }
-                else if (IniControl.Cps == "bilibili")
-                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}"; }
-                else if (IniControl.Cps == "mihoyo")
-                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeMStr}"; }
-                else
-                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeNullStr}"; }
-            }
-            else
-            { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeNullStr}"; }
+                "pcadbdpz" => languages.GameClientTypePStr,
+                "bilibili" => languages.GameClientTypeBStr,
+                "mihoyo" => languages.GameClientTypeMStr,
+                _ => languages.GameClientTypeNullStr
+            };
+            MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {gaemClientTypeString}";
         }
 
         private string _SwitchUserValue;
@@ -118,9 +113,11 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
         private void CreateGamePortList()
         {
-            GamePortLists = new List<GamePortListModel>();
-            GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypePStr });
-            GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypeBStr });
+            GamePortLists = new List<GamePortListModel>
+            {
+                new GamePortListModel { GamePort = languages.GameClientTypePStr },
+                new GamePortListModel { GamePort = languages.GameClientTypeBStr }
+            };
         }
 
         //游戏端口列表索引
@@ -224,7 +221,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
 
         public ICommand RunGameCommand { get; set; }
-        private async void RunGame()
+        private async Task RunGameAsync()
         {
             //从Config中读取启动参数
             string gameMain = Path.Combine(IniControl.GamePath, "YuanShen.exe");
@@ -243,30 +240,43 @@ namespace GenShin_Launcher_Plus.ViewModels
                     return;
                 }
             }
-            //创建Task线程启动游戏
-            Task StartGame = new(async () =>
-            {
-                Process game = new();
-                game.StartInfo.FileName = gameMain;
-                game.StartInfo.Verb = "runas";
-                game.StartInfo.UseShellExecute = true;
-                game.StartInfo.WorkingDirectory = IniControl.GamePath;
-                game.StartInfo.Arguments = argBuilder.ToString();
-                if (IniControl.isUnFPS)
-                {
-                    Unlocker unlocker = new(game, Convert.ToInt32(IniControl.MaxFps));
-                    var result = await unlocker.StartProcessAndUnlockAsync();
-                }
-                else
-                {
-                    game.Start();
-                }
-            });
-            StartGame.Start();
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Application.Current.MainWindow.WindowState = WindowState.Minimized;
             });
+
+            Process game = new()
+            {
+                StartInfo = new()
+                {
+                    FileName = gameMain,
+                    Verb = "runas",
+                    UseShellExecute = true,
+                    WorkingDirectory = IniControl.GamePath,
+                    Arguments = argBuilder.ToString()
+                }
+            };
+            
+            if (IniControl.isUnFPS)
+            {
+                if (int.TryParse(IniControl.MaxFps, out int targetFps))
+                {
+                    Unlocker unlocker = new(game, targetFps);
+                    UnlockResult result = await unlocker.StartProcessAndUnlockAsync();
+                }
+                else
+                {
+                    //处理帧数非int
+                }
+            }
+            else
+            {
+                if (game.Start())
+                {
+                    await game.WaitForExitAsync();
+                }
+            }
         }
     }
 }

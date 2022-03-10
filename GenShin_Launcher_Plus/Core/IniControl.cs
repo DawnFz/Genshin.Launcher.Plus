@@ -1,11 +1,10 @@
-﻿using ICSharpCode.SharpZipLib.Zip;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace GenShin_Launcher_Plus.Core
@@ -19,13 +18,19 @@ namespace GenShin_Launcher_Plus.Core
             public String Section;
             public String Key;
         }
-        public IniParser(String iniPath = @"Config\Setting.ini")
+        public IniParser(String iniPath = @"Config\Setting.ini",
+            [CallerMemberName] string callerMemerName = null!,
+            [CallerFilePath] string callerFilePath = null!)
         {
+            Debug.WriteLine($"{callerMemerName} at {callerFilePath} called constructor");
+
             TextReader iniFile = null;
             String strLine = null;
             String currentRoot = null;
             String[] keyPair = null;
             iniFilePath = iniPath;
+            //这里的逻辑非常失败，如果有人看到了请帮忙改改
+            //Reviewed By @Github/Lightczx
         A: if (File.Exists(iniPath))
             {
                 try
@@ -58,9 +63,9 @@ namespace GenShin_Launcher_Plus.Core
                         strLine = iniFile.ReadLine();
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    throw ex;
+                    throw;
                 }
                 finally
                 {
@@ -139,9 +144,9 @@ namespace GenShin_Launcher_Plus.Core
                 tw.Write(strToSave);
                 tw.Close();
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
         }
     }

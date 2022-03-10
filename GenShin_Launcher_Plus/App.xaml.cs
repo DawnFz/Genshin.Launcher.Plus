@@ -22,25 +22,22 @@ namespace GenShin_Launcher_Plus
 
         public void BringWindowTofront()
         {
-            Current.Dispatcher.Invoke(() =>
+            Window window = Window.GetWindow(MainWindow);
+            //判断是否为托盘状态（Close主窗口不存在）
+            if (window == null)
             {
-                Window window = Window.GetWindow(MainWindow);
-                //判断是否为托盘状态（Close主窗口不存在）
-                if (window == null)
-                {
-                    //置入托盘的话就新建主窗口并显示
-                    Window mainwindow = new MainWindow();
-                    mainwindow.Show();
-                }
-                else
-                {
-                    //最小化到任务栏的话就直接还原到前台并激活
-                    window.Show();
-                    window.WindowState = WindowState.Normal;
-                    window.Focus();
-                    window.Activate();
-                }
-            });
+                //置入托盘的话就新建主窗口并显示
+                Window mainwindow = new MainWindow();
+                mainwindow.Show();
+            }
+            else
+            {
+                //最小化到任务栏的话就直接还原到前台并激活
+                window.Show();
+                window.WindowState = WindowState.Normal;
+                window.Focus();
+                window.Activate();
+            }
         }
     }
 
