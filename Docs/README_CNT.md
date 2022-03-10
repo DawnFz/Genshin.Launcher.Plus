@@ -23,7 +23,7 @@
 ## 项目简介
 
 -  [项目主页](https://www.dawnfz.com)
--  [更新历史](https://www.dawnfz.com/document/updated)
+-  [更新历史](https://www.dawnfz.com/document/view/updated)
 
 ## 截图预览
 
