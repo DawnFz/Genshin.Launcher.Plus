@@ -31,15 +31,10 @@ namespace GenShin_Launcher_Plus.ViewModels
         private void ThisPageRemove()
         {
             IniControl.ReadLang = SwitchLang;
-            LoadLangCore();
             MainWindow mainWindow = new();
             mainWindow.Show();
             Application.Current.MainWindow.Close();
             Application.Current.MainWindow = mainWindow;
-        }
-        public void LoadLangCore()
-        {
-            LoadProgramCore.LoadLanguageCore(SwitchLang);
         }
     }
 }

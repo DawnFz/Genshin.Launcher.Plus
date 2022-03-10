@@ -4,9 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace GenShin_Launcher_Plus.Core
@@ -18,50 +16,33 @@ namespace GenShin_Launcher_Plus.Core
             if (IniControl.ReadLang == "" || IniControl.ReadLang == null)
             {
                 IniControl.ReadLang = "Lang_CN.json";
-                LoadLanguageCore(IniControl.ReadLang);
             }
-            //获取网络上的语言列表到Temp目录
+            //获取网络上的语言列表
+
             FilesControl fc = new();
-            if(IniControl.ReadLang!= "Lang_CN.json")
+            string json = fc.GetJsonFromHtml("LangList");
+            if (IniControl.ReadLang != "Lang_CN.json")
             {
-                if (fc.DownloadFile("https://www.dawnfz.com/G.L.P/JsonData/List.json", Path.GetTempPath(), Path.Combine(Path.GetTempPath(), "List.json")))
+                if (json != null && json != "")
                 {
-                    string file = Path.Combine(Path.GetTempPath(), "List.json");
-                    string json = File.ReadAllText(file);
-                    if (json != null && json != "")
-                    {
-                        MainBase.langlist = JsonConvert.DeserializeObject<List<LanguageListsModel>>(json);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error: Language pack list is empty, please check the network! !");
-                        Environment.Exit(0);
-                    }
+                    MainBase.langlist = JsonConvert.DeserializeObject<List<LanguageListsModel>>(json);
                 }
                 else
                 {
-                    MessageBox.Show("Failed to get the language pack list, maybe your network status is not good or the server is wrong, You will try to use the local language pack, press OK to enter, you will not be able to change the language after successful entry");
+                    MessageBox.Show("Error: Language pack list is empty, please check the network! !");
+                    Environment.Exit(0);
                 }
             }
             else
             {
-                if (fc.DownloadFile("https://nenedan.coding.net/p/glp/d/dawnfz.github/git/raw/main/G.L.P/JsonData/List.json", Path.GetTempPath(), Path.Combine(Path.GetTempPath(), "List.json")))
+                if (json != null && json != "")
                 {
-                    string file = Path.Combine(Path.GetTempPath(), "List.json");
-                    string json = File.ReadAllText(file);
-                    if (json != null && json != "")
-                    {
-                        MainBase.langlist = JsonConvert.DeserializeObject<List<LanguageListsModel>>(json);
-                    }
-                    else
-                    {
-                        MessageBox.Show("错误：语言包列表为空，请检查网络！！");
-                        Environment.Exit(0);
-                    }
+                    MainBase.langlist = JsonConvert.DeserializeObject<List<LanguageListsModel>>(json);
                 }
                 else
                 {
-                    MessageBox.Show("语言包列表获取失败，可能是您的网络状态不佳或服务器错误\r\n即将尝试使用本地语言包，按下确定后进入，进入成功后您将无法更改语言");
+                    MessageBox.Show("错误：语言包列表为空，请检查网络！！");
+                    Environment.Exit(0);
                 }
             }
             //从JSON字符串生成集合对象用于存放语言包列表
@@ -102,65 +83,51 @@ namespace GenShin_Launcher_Plus.Core
 
         public static void LoadLanguageCore(string langfile)
         {
-            if (IniControl.ReadLang != "Lang_CN.json")
+            /*
+             * 此处的langID为博客园的Html静态页面的文件名
+             * 例如 https://www.cnblogs.com/DawnFz/p/15990791.html 
+             */
+            string langID = "0001";
+
+            /*
+             * 这里循环集合里的语言包文件名对比从传入的文件名是否相等，相等的话取出ID
+             * 然后使用这个ID去读取对应的Html到文本并且取里面的Json内容保存为文件
+             * 这么做虽然有损性能，但是大大节省了服务器经费，博客园静态Html文章页yyds
+             * 将取到的Html内容中的Json分离出来的方法见[Core.FilesControl]类
+             */
+            foreach (LanguageListsModel llnew in MainBase.langlist)
             {
-                FilesControl fc = new();
-                if (fc.DownloadFile($"https://www.dawnfz.com/G.L.P/JsonData/{langfile}", @"Config", $@"Config/{langfile}"))
+                if (llnew.LangFileName == langfile)
                 {
-                    string file = $@"Config/{langfile}";
-                    string json = File.ReadAllText(file);
-                    if (json != null && json != "")
-                    {
-                        MainBase.lang = JsonConvert.DeserializeObject<LanguagesModel>(json);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Unable to complete the initialization of the language pack, you can reopen the program and try again. If this message appears multiple times, please contact the developer!");
-                    Environment.Exit(0);
+                    langID = llnew.LangID;
                 }
             }
-            else
+            FilesControl fc = new();
+            string tmp = fc.GetLangFromHtml(langID);
+            File.WriteAllText($@"Config/{langfile}", tmp, Encoding.UTF8);
+            string file = $@"Config/{langfile}";
+            string json = File.ReadAllText(file);
+            if (json != null && json != "")
             {
-                FilesControl fc = new();
-                if (fc.DownloadFile($"https://nenedan.coding.net/p/glp/d/dawnfz.github/git/raw/main/G.L.P/JsonData/{langfile}", @"Config", $@"Config/{langfile}"))
-                {
-                    string file = $@"Config/{langfile}";
-                    string json = File.ReadAllText(file);
-                    if (json != null && json != "")
-                    {
-                        MainBase.lang = JsonConvert.DeserializeObject<LanguagesModel>(json);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("无法完成语言包初始化，您可以重新打开本程序重试，若多次出现本消息请联系开发者！");
-                    Environment.Exit(0);
-                }
+                MainBase.lang = JsonConvert.DeserializeObject<LanguagesModel>(json);
             }
+
+
+
 
         }
         public static void LoadUpdateCore()
         {
+            FilesControl fc = new();
             if (IniControl.ReadLang != "Lang_CN.json")
             {
-                FilesControl fc = new();
-                if (fc.DownloadFile("https://www.dawnfz.com/G.L.P/JsonData/Update_Global.Json", Path.GetTempPath(), Path.Combine(Path.GetTempPath(), "Update_Global.Json")))
-                {
-                    string file = Path.Combine(Path.GetTempPath(), "Update_Global.Json");
-                    string json = File.ReadAllText(file);
-                    MainBase.update = JsonConvert.DeserializeObject<UpdateContentModel>(json);
-                }
+                string json = fc.GetJsonFromHtml("UpdateGlobal");
+                MainBase.update = JsonConvert.DeserializeObject<UpdateContentModel>(json);
             }
             else
             {
-                FilesControl fc = new();
-                if (fc.DownloadFile("https://nenedan.coding.net/p/glp/d/dawnfz.github/git/raw/main/G.L.P/JsonData/Update_CN.Json", Path.GetTempPath(), Path.Combine(Path.GetTempPath(), "Update_CN.Json")))
-                {
-                    string file = Path.Combine(Path.GetTempPath(), "Update_CN.Json");
-                    string json = File.ReadAllText(file);
-                    MainBase.update = JsonConvert.DeserializeObject<UpdateContentModel>(json);
-                }
+                string json = fc.GetJsonFromHtml("UpdateCN");
+                MainBase.update = JsonConvert.DeserializeObject<UpdateContentModel>(json);
             }
         }
     }

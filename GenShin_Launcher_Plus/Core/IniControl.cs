@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace GenShin_Launcher_Plus.Core
@@ -18,19 +19,13 @@ namespace GenShin_Launcher_Plus.Core
             public String Section;
             public String Key;
         }
-        public IniParser(String iniPath = @"Config\Setting.ini",
-            [CallerMemberName] string callerMemerName = null!,
-            [CallerFilePath] string callerFilePath = null!)
+        public IniParser(String iniPath = @"Config\Setting.ini")
         {
-            Debug.WriteLine($"{callerMemerName} at {callerFilePath} called constructor");
-
             TextReader iniFile = null;
             String strLine = null;
             String currentRoot = null;
             String[] keyPair = null;
             iniFilePath = iniPath;
-            //这里的逻辑非常失败，如果有人看到了请帮忙改改
-            //Reviewed By @Github/Lightczx
         A: if (File.Exists(iniPath))
             {
                 try
@@ -63,9 +58,9 @@ namespace GenShin_Launcher_Plus.Core
                         strLine = iniFile.ReadLine();
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw;
+                    throw ex;
                 }
                 finally
                 {
@@ -144,15 +139,15 @@ namespace GenShin_Launcher_Plus.Core
                 tw.Write(strToSave);
                 tw.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
     }
     class IniControl
     {
-
+        IniParser parser = new IniParser();
         private static string _ReadLang;
         public static string ReadLang
         {
@@ -170,6 +165,7 @@ namespace GenShin_Launcher_Plus.Core
                 parser.SaveSettings();
             }
         }
+
 
         private static string _GamePath;
         public static string GamePath
@@ -425,7 +421,7 @@ namespace GenShin_Launcher_Plus.Core
             {
                 IniParser parser = new IniParser(Path.Combine(GamePath, "Config.ini"));
                 _Channel = Convert.ToUInt16(parser.GetSetting("General", "channel", 1));
-                return _Channel; 
+                return _Channel;
             }
             set
             {
