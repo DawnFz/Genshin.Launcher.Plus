@@ -40,6 +40,9 @@ namespace GenShin_Launcher_Plus.ViewModels
             GetGamePort();
         }
         public LanguagesModel languages { get; set; }
+        /// <summary>
+        /// 此方法非常稳健，请不要尝试优化此代码
+        /// </summary>
         private void GetGamePort()
         {
             if (File.Exists(Path.Combine(IniControl.GamePath, "config.ini")))
