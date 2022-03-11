@@ -1,0 +1,102 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <Version>1.3.6</Version>
+    <StartupObject>GenShin_Launcher_Plus.App</StartupObject>
+    <ApplicationIcon>ICON.ico</ApplicationIcon>
+    <IsPublishable>True</IsPublishable>
+    <Platforms>AnyCPU;x64</Platforms>
+    <DebugType>embedded</DebugType>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Authors>DawnFz</Authors>
+    <Product>原神启动器Plus</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\AboutButton.png" />
+    <None Remove="Images\AddUserButton.png" />
+    <None Remove="Images\ImagesButton.png" />
+    <None Remove="Images\MainBackground.jpg" />
+    <None Remove="Images\SettingsButton.png" />
+    <None Remove="Images\TencentGroupButton.png" />
+    <None Remove="Images\UI_0.jpg" />
+    <None Remove="Images\UI_3.jpg" />
+    <None Remove="Images\UI_4.jpg" />
+    <None Remove="StaticRes\mihoyosdk.dll" />
+    <None Remove="StaticRes\Setting.ini" />
+    <None Remove="StaticRes\Update.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ICON.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\UI_0.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\UI_3.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\UI_4.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="StaticRes\mihoyosdk.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="SharpZipLib" Version="1.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\AboutButton.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\MainBackground.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ImagesButton.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\TencentGroupButton.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\SettingsButton.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\AddUserButton.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="StaticRes\Setting.ini">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="StaticRes\Update.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DGP.Genshin.FPSUnlocking\DGP.Genshin.FPSUnlocking.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ApplicationDefinition>
+  </ItemGroup>
+
+</Project>
