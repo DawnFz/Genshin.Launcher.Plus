@@ -64,7 +64,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 var uri = new Uri("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
                 try
                 {
-                    var file = Path.Combine(AppContext.BaseDirectory, "Config/XunkongWallpaper.jpg");
+                    var file = Path.Combine(AppContext.BaseDirectory, "Config/XunkongWallpaper.webp");
                     if (File.Exists(file))
                     {
                         uri = new Uri(file);
@@ -80,7 +80,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                     {
                         Background.ImageSource = new BitmapImage(uri);
                     }
-                    const string url = "https://api.xunkong.cc/v0.1/genshin/wallpaper/redirect/recommend";
+                    const string url = "https://api.xunkong.cc/v0.1/wallpaper/recommend/redirect";
                     var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.All });
                     client.DefaultRequestHeaders.Add("User-Agent", $"GenShinLauncher/{Application.ResourceAssembly.GetName().Version}");
                     try
