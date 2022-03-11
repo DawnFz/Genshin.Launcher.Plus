@@ -47,13 +47,27 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 RegistryControl registryControl = new();
                 string userdata = registryControl.GetFromRegedit(Name, "CN");
-                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
+                try
+                {
+                    File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
+                }
+                catch
+                {
+                    MessageBox.Show($"Error : {Name}");
+                }
             }
             else if (GamePort == languages.GameClientTypeMStr && Name != null)
             {
                 RegistryControl registryControl = new();
                 string userdata = registryControl.GetFromRegedit(Name, "Global");
-                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
+                try
+                {
+                    File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
+                }
+                catch
+                {
+                    MessageBox.Show($"Error : {Name}");
+                }
             }
             else
             {

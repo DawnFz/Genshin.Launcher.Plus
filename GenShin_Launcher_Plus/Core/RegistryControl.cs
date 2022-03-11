@@ -13,6 +13,12 @@ namespace GenShin_Launcher_Plus.Core
 {
     public class RegistryControl
     {
+        private const string CnPathKey = @"HKEY_CURRENT_USER\Software\miHoYo\原神";
+        private const string CnSdkKey = "MIHOYOSDK_ADL_PROD_CN_h3123967166";
+        private const string GlobalPathKey = @"HKEY_CURRENT_USER\Software\miHoYo\Genshin Impact";
+        private const string GlobalSdkKey = "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810";
+        private const string DataKey = "GENERAL_DATA_h2389025596";
+
         public string GetFromRegedit(string name, string port)
         {
             UserRegistryModel userRegistry = new();
@@ -20,13 +26,17 @@ namespace GenShin_Launcher_Plus.Core
             userRegistry.Port = port;
             if (port == "CN")
             {
-                userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\原神", "MIHOYOSDK_ADL_PROD_CN_h3123967166", ""));
-                userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\原神", "GENERAL_DATA_h2389025596", ""));
+                object? cnsdk = Registry.GetValue(CnPathKey, CnSdkKey, string.Empty);
+                object? data = Registry.GetValue(CnPathKey, DataKey, string.Empty);
+                userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])cnsdk);
+                userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
             }
             else if (port == "Global")
             {
-                userRegistry.MIHOYOSDK_ADL_PROD = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\Genshin Impact", "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810", "");
-                userRegistry.GENERAL_DATA = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\Genshin Impact", "GENERAL_DATA_h2389025596", "");
+                object? globalsdk = Registry.GetValue(GlobalPathKey, GlobalSdkKey, string.Empty);
+                object? data = Registry.GetValue(GlobalPathKey, DataKey, string.Empty);
+                userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])globalsdk);
+                userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
             }
             return JsonConvert.SerializeObject(userRegistry);
         }
@@ -37,17 +47,17 @@ namespace GenShin_Launcher_Plus.Core
             UserRegistryModel userRegistry = JsonConvert.DeserializeObject<UserRegistryModel>(json);
             if (userRegistry.Port == "CN")
             {
-                Registry.SetValue(@"HKEY_CURRENT_USER\Software\miHoYo\原神", "MIHOYOSDK_ADL_PROD_CN_h3123967166", userRegistry.MIHOYOSDK_ADL_PROD);
-                Registry.SetValue(@"HKEY_CURRENT_USER\Software\miHoYo\原神", "GENERAL_DATA_h2389025596", userRegistry.GENERAL_DATA);
+                Registry.SetValue(CnPathKey, CnSdkKey, Encoding.UTF8.GetBytes(userRegistry.MIHOYOSDK_ADL_PROD));
+                Registry.SetValue(CnPathKey, DataKey, Encoding.UTF8.GetBytes(userRegistry.GENERAL_DATA));
             }
             else if (userRegistry.Port == "Global")
             {
-                Registry.SetValue(@"HKEY_CURRENT_USER\Software\miHoYo\Genshin Impact", "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810", userRegistry.MIHOYOSDK_ADL_PROD);
-                Registry.SetValue(@"HKEY_CURRENT_USER\Software\miHoYo\Genshin Impact", "GENERAL_DATA_h2389025596", userRegistry.GENERAL_DATA);
+                Registry.SetValue(GlobalPathKey, GlobalSdkKey, Encoding.UTF8.GetBytes(userRegistry.MIHOYOSDK_ADL_PROD));
+                Registry.SetValue(GlobalPathKey, DataKey, Encoding.UTF8.GetBytes(userRegistry.GENERAL_DATA));
             }
             else
             {
-                MessageBox.Show("账号文件错误！请检测此文件是否为 1.2.4 版本及后续版本保存的账号文件！");
+                MessageBox.Show("Error : The file does not support ! !");
             }
         }
     }
