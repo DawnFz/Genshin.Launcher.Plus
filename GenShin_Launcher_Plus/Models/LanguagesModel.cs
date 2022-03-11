@@ -125,8 +125,5 @@ namespace GenShin_Launcher_Plus.Models
 
         //GuidePageViewModel
 
-
-        //Background
-        public string MainBackground { get; set; }
     }
 }

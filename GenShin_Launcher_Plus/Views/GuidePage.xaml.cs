@@ -21,18 +21,19 @@ namespace GenShin_Launcher_Plus.Views
 
         private void ThisPageRemove(object sender, RoutedEventArgs e)
         {
-            if (!File.Exists(System.IO.Path.Combine(GamePath.Text, "Yuanshen.exe")) && !File.Exists(System.IO.Path.Combine(GamePath.Text, "GenshinImpact.exe")))
+            if (!File.Exists(Path.Combine(GamePath.Text, "Yuanshen.exe")) && !File.Exists(Path.Combine(GamePath.Text, "GenshinImpact.exe")))
             {
                 FlipView.SelectedIndex = 0;
                 ErrorTitle.Text = MainBase.lang.PathErrorMessageStr;
             }
             else
             {
-                IniControl.GamePath = GamePath.Text;
+                MainBase.IniModel.GamePath = GamePath.Text;
+                MainBase.IniModel = new();
                 MainWindow mainWindow = new();
-                Window window = Window.GetWindow(this);
-                window.Close();
                 mainWindow.Show();
+                Application.Current.MainWindow.Close();
+                Application.Current.MainWindow = mainWindow;
             }
         }
 

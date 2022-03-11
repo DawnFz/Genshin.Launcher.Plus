@@ -10,10 +10,6 @@ namespace GenShin_Launcher_Plus.ViewModels
 {
     public class GuidePageViewModel : ObservableObject
     {
-        public GuidePageViewModel()
-        {
-            languages = MainBase.lang;
-        }
-        public LanguagesModel languages { get; set; }
+        public LanguagesModel languages { get => MainBase.lang; }
     }
 }

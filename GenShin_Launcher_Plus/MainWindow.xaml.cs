@@ -24,17 +24,14 @@ namespace GenShin_Launcher_Plus
     {
         public MainWindow()
         {
-            if(!LoadProgramCore.ReadLangList())
-            {
-                LoadProgramCore.LoadLanguageCore(IniControl.ReadLang);
-            }
-            LoadProgramCore.LoadUpdateCore();
+            LoadProgramCore lpc = new ();
+            lpc.LoadLanguageCore(MainBase.IniModel.ReadLang);
+            lpc.LoadUpdateCore();
             InitializeComponent();
-            AddConfig.CheckIni();
             DataContext = new MainWindowViewModel(DialogCoordinator.Instance);
             MainFlipView.DataContext = MainBase.noab;
             HomePage.Children.Add(new Views.HomePage());
-            if (!File.Exists(Path.Combine(IniControl.GamePath, "Yuanshen.exe")) && !File.Exists(Path.Combine(IniControl.GamePath, "GenshinImpact.exe")))
+            if (!File.Exists(Path.Combine(MainBase.IniModel.GamePath==null?"": MainBase.IniModel.GamePath, "Yuanshen.exe")) && !File.Exists(Path.Combine(MainBase.IniModel.GamePath == null ? "" : MainBase.IniModel.GamePath, "GenshinImpact.exe")))
             {
                 MainGrid.Children.Add(new Views.GuidePage());
             }

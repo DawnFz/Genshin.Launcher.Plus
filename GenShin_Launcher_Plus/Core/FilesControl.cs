@@ -9,8 +9,6 @@ namespace GenShin_Launcher_Plus.Core
 {
     public class FilesControl
     {
-        //
-
         public string ReadHTML(string url)
         {
             string strHTML = "";
@@ -45,10 +43,6 @@ namespace GenShin_Launcher_Plus.Core
         public string GetJsonFromHtml(string tag)
         {
             return MiddleText(ReadHTML("https://www.cnblogs.com/DawnFz/p/15990791.html"),$"【{tag}++】",$"【{tag}--】");
-        }
-        public string GetLangFromHtml(string langID)
-        {
-            return MiddleText(ReadHTML($"https://www.cnblogs.com/DawnFz/p/15990971.html"), $"【++{langID}++】", $"【--{langID}--】");
         }
         //
 
@@ -108,30 +102,6 @@ namespace GenShin_Launcher_Plus.Core
             var uri = new Uri(resUri, UriKind.RelativeOrAbsolute);
             var stream = Application.GetResourceStream(uri).Stream;
             StreamToFile(stream, fileName);
-        }
-
-        public bool DownloadFile(string url, string toDirectory, string fileName, int timeout = 3000)
-        {
-            if (!Directory.Exists(toDirectory))
-            {
-                Directory.CreateDirectory(toDirectory);
-            }
-
-            FileStream file = File.OpenWrite(fileName);
-            WebRequest request = WebRequest.Create(url);
-            request.Timeout = timeout;
-
-            try
-            {
-                request.GetResponse().GetResponseStream().CopyTo(file);
-            }
-            catch
-            {
-                return false;
-            }
-
-            file.Close();
-            return true;
         }
     }
 }

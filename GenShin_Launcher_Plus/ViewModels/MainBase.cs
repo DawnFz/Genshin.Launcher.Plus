@@ -1,4 +1,5 @@
-﻿using GenShin_Launcher_Plus.Models;
+﻿using GenShin_Launcher_Plus.Core;
+using GenShin_Launcher_Plus.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace GenShin_Launcher_Plus.ViewModels
 {
     public class MainBase
     {
+        public static IniControl IniModel = new();
         public static List<LanguageListsModel> langlist = new();
         public static NoticeOverAllBase noab = new();
         public static LanguagesModel lang = new();

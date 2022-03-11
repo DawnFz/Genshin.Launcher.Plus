@@ -15,7 +15,7 @@ namespace GenShin_Launcher_Plus.Models
         public string DownloadUrl { get; set; }
         //Pkg文件包
         public string PkgVersion { get; set; }
-        public string PkgDownloadUrl { get; set; }
+        public string BgUrl { get; set; }
 
     }
 }

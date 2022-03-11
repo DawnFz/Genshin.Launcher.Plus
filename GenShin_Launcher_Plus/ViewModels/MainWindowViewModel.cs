@@ -25,6 +25,10 @@ namespace GenShin_Launcher_Plus.ViewModels
         public MainWindowViewModel(IDialogCoordinator instance)
         {
             dialogCoordinator = instance;
+            if (!Directory.Exists(@"UserData"))
+            {
+                Directory.CreateDirectory("UserData");
+            }
             languages = MainBase.lang;
             Mainloading();
             OpenImagesDirectoryCommand = new RelayCommand(OpenImagesDirectory);
@@ -33,7 +37,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             ExitProgramCommand = new RelayCommand(ExitProgram);
             MainMinimizedCommand = new RelayCommand(MainMinimized);
             Title = $"{languages.MainTitle} {Application.ResourceAssembly.GetName().Version}";
-            IniControl.EXEname(Path.GetFileName(Environment.ProcessPath));
+            MainBase.IniModel.EXEname(Path.GetFileName(Environment.ProcessPath));
         }
 
 
@@ -54,7 +58,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             //
             Background = new();
-            if (IniControl.UserXunkongWallpaper)
+            if (MainBase.IniModel.UseXunkongWallpaper)
             {
                 Background.Stretch = Stretch.UniformToFill;
                 var uri = new Uri("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
@@ -115,14 +119,14 @@ namespace GenShin_Launcher_Plus.ViewModels
                 {
                     uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.jpg"), UriKind.Absolute);
                 }
-                else if (IniControl.isWebBg == true)
+                else if (MainBase.IniModel.isWebBg == true)
                 {
                     uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
                 }
                 else
                 {
-                    string bgurl = languages.MainBackground;
-                    if (bgurl != ""&&bgurl!=null)
+                    string bgurl = MainBase.update.BgUrl;
+                    if (bgurl != "" && bgurl != null)
                     {
                         uri = new(bgurl, UriKind.Absolute);
                     }
@@ -150,11 +154,11 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand OpenImagesDirectoryCommand { get; set; }
         private async void OpenImagesDirectory()
         {
-            if (Directory.Exists(Path.Combine(IniControl.GamePath, "ScreenShot")))
+            if (Directory.Exists(Path.Combine(MainBase.IniModel.GamePath, "ScreenShot")))
             {
                 ProcessStartInfo info = new()
                 {
-                    FileName = Path.Combine(IniControl.GamePath, "ScreenShot"),
+                    FileName = Path.Combine(MainBase.IniModel.GamePath, "ScreenShot"),
                     UseShellExecute = true,
                 };
                 Process.Start(info);
@@ -205,6 +209,6 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 Application.Current.MainWindow.WindowState = WindowState.Minimized;
             });
-        }   
+        }
     }
 }

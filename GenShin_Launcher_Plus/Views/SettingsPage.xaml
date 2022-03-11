@@ -10,9 +10,9 @@
              xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
              mc:Ignorable="d" 
              Height="685" Width="1197">
-    <Grid Background="White" Margin="442,59,365,50">
+    <Grid Background="White" Margin="442,37,365,72">
         <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="{Binding languages.SaveBtn}" HorizontalAlignment="Left" Margin="298,536,0,0" VerticalAlignment="Top" Height="28" Width="81" FontFamily="Microsoft YaHei UI" FontSize="12" Command="{Binding SaveSettingsCommand}" IsEnabled="{Binding PageUiStatus}"/>
-        <TextBox mah:TextBoxHelper.Watermark="{Binding languages.PathBoxTips}" Height="23" Margin="13,482,11,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" Text="{Binding IniModel.GamePath}"/>
+        <TextBox mah:TextBoxHelper.Watermark="{Binding languages.PathBoxTips}" Height="23" Margin="13,482,11,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" Text="{Binding GamePath}"/>
         <Button IsEnabled="{Binding PageUiStatus}" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="..." HorizontalAlignment="Left" Margin="353,482,0,0" VerticalAlignment="Top" Height="26" Width="26" FontFamily="Microsoft YaHei UI" FontSize="12" BorderBrush="#FF83919F" Command="{Binding ChooseGamePathCommand}" />
         <GroupBox d:Header="Title" Height="204" Header="{Binding languages.ClientSwitchTitle}" VerticalAlignment="Top" Width="366" Margin="13,270,11,0">
             <Grid>
@@ -32,8 +32,8 @@
         <CheckBox Content="{Binding languages.BackgroundXK}" HorizontalAlignment="Left" Margin="13,546,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.UseXunkongWallpaper}"/>
         <GroupBox HorizontalAlignment="Left" Height="216" VerticalAlignment="Top" Width="173" Header="{Binding languages.AttachTitle}" Margin="13,48,0,0" d:Header="Title">
             <Grid>
-                <TextBox mah:TextBoxHelper.Watermark="{Binding languages.HeightStr}" x:Name="DisHeight" HorizontalAlignment="Left" Margin="93,7,0,0" TextWrapping="Wrap" Text="{Binding Height}" VerticalAlignment="Top" Width="65" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
-                <TextBox mah:TextBoxHelper.Watermark="{Binding languages.WitdhStr}" x:Name="DisWidth" HorizontalAlignment="Left" Margin="5,7,0,0" TextWrapping="Wrap" Text="{Binding Width}" VerticalAlignment="Top" Width="65" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                <TextBox mah:TextBoxHelper.Watermark="{Binding languages.HeightStr}" x:Name="DisHeight" HorizontalAlignment="Left" Margin="90,7,0,0" TextWrapping="Wrap" Text="{Binding Height}" VerticalAlignment="Top" Width="68" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                <TextBox mah:TextBoxHelper.Watermark="{Binding languages.WitdhStr}" x:Name="DisWidth" HorizontalAlignment="Left" Margin="5,7,0,0" TextWrapping="Wrap" Text="{Binding Width}" VerticalAlignment="Top" Width="68" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
                 <Label Content="×" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontWeight="Normal" FontSize="14" Width="20"/>
                 <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" Margin="0,39,0,0" VerticalAlignment="Top" Width="153" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding DisplaySizeLists}" DisplayMemberPath="DisplaySize" SelectedValuePath="DisplaySize"  SelectedIndex="{Binding DisplaySelectedIndex}"/>
                 <CheckBox Content="{Binding languages.BorderlessCkB}" HorizontalAlignment="Left" Margin="5,159,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.isPopup}"/>
@@ -45,7 +45,7 @@
         </GroupBox>
         <Button FontSize="12" Style="{DynamicResource MahApps.Styles.Button.Square}" IsEnabled="{Binding PageUiStatus}" Content="{Binding languages.DelUserBtn}" HorizontalAlignment="Left" Margin="193,237,0,0" VerticalAlignment="Top" Width="186" Command="{Binding DeleteUserCommand}" FontFamily="Microsoft YaHei UI" />
         <GroupBox  d:Header="Title" Header="{Binding languages.UserListTitle}" Margin="193,48,11,344">
-            <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding UserLists}" DisplayMemberPath="UserName" SelectedValue="{Binding IniModel.SwitchUser, Mode=OneWayToSource}" SelectedValuePath="UserName" FontSize="12"/>
+            <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding UserLists}" DisplayMemberPath="UserName" SelectedValue="{Binding SwitchUser, Mode=OneWayToSource}" SelectedValuePath="UserName" FontSize="12"/>
         </GroupBox>
         <Grid HorizontalAlignment="Center" Height="36" VerticalAlignment="Top" Width="390" Background="{Binding SettingTitleColor}">
             <Label Content="{Binding SettingsTitle}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>

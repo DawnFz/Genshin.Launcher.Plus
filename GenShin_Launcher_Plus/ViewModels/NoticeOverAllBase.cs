@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace GenShin_Launcher_Plus.ViewModels

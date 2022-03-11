@@ -20,13 +20,13 @@ namespace GenShin_Launcher_Plus.Core
             userRegistry.Port = port;
             if (port == "CN")
             {
-                userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\原神", "MIHOYOSDK_ADL_PROD_CN_h3123967166", ""));
-                userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\原神", "GENERAL_DATA_h2389025596", ""));
+                userRegistry.MIHOYOSDK_ADL_PROD = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\原神", "MIHOYOSDK_ADL_PROD_CN_h3123967166", "");
+                userRegistry.GENERAL_DATA = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\原神", "GENERAL_DATA_h2389025596", "");
             }
             else if (port == "Global")
             {
-                userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\Genshin Impact", "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810", ""));
-                userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\Genshin Impact", "GENERAL_DATA_h2389025596", ""));
+                userRegistry.MIHOYOSDK_ADL_PROD = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\Genshin Impact", "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810", "");
+                userRegistry.GENERAL_DATA = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\miHoYo\Genshin Impact", "GENERAL_DATA_h2389025596", "");
             }
             return JsonConvert.SerializeObject(userRegistry);
         }
