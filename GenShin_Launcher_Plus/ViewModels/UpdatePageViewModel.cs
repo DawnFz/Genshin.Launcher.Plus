@@ -24,6 +24,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             languages = MainBase.lang;
             dialogCoordinator = instance;
             UpdateRunCommand = new RelayCommand(UpdateRun);
+            ViewControlVisibility = "Hidden";
         }
         public LanguagesModel languages { get; set; }
         public string Notify
@@ -63,6 +64,19 @@ namespace GenShin_Launcher_Plus.ViewModels
             set => SetProperty(ref _DownloadLabel, value);
         }
 
+        private string _ViewControlVisibility;
+        public string ViewControlVisibility
+        {
+            get => _ViewControlVisibility;
+            set => SetProperty(ref _ViewControlVisibility, value);
+        }
+
+        private bool _UseGlobalUrlCheck;
+        public bool UseGlobalUrlCheck
+        {
+            get => _UseGlobalUrlCheck;
+            set => SetProperty(ref _UseGlobalUrlCheck, value);
+        }
 
         public ICommand UpdateRunCommand { get; set; }
         private async void UpdateRun()
@@ -70,7 +84,8 @@ namespace GenShin_Launcher_Plus.ViewModels
             if (ButtonIsEnabled)
             {
                 ButtonIsEnabled = false;
-                string updatefile = MainBase.update.DownloadUrl;
+                ViewControlVisibility = "Visibility";
+                string updatefile = UseGlobalUrlCheck ? MainBase.update.GlobalDownloadUrl : MainBase.update.DownloadUrl;
                 if (await HttpFileExistAsync(updatefile) == true)
                 {
                     await DownloadHttpFileAsync(updatefile, @"UpdateTemp.zip");
@@ -78,6 +93,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 else
                 {
                     await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.DownFailedStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
+                    ViewControlVisibility = "Hidden";
                     ButtonIsEnabled = true;
                 }
             }
@@ -128,13 +144,14 @@ namespace GenShin_Launcher_Plus.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show("解压更新文件失败，可能是文件已损坏");
+                    MessageBox.Show("解压更新文件失败，可能是文件已损坏 !");
                     File.Delete(@"UpdateTemp.zip");
                 }
             }
             else
             {
                 ButtonIsEnabled = true;
+                ViewControlVisibility = "Hidden";
             }
         }
         private async Task<bool> HttpFileExistAsync(string url)

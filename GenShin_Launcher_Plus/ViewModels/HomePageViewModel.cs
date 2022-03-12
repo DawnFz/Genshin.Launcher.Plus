@@ -283,7 +283,6 @@ namespace GenShin_Launcher_Plus.ViewModels
                 {
                     await game.WaitForExitAsync();
                     Application.Current.MainWindow.WindowState = WindowState.Normal;
-
                 }
             }
         }

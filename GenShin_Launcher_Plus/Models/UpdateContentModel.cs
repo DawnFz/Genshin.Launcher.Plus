@@ -13,6 +13,7 @@ namespace GenShin_Launcher_Plus.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public string DownloadUrl { get; set; }
+        public string GlobalDownloadUrl { get; set; }
         //Pkg文件包
         public string PkgVersion { get; set; }
         public string BgUrl { get; set; }

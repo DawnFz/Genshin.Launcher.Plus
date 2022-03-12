@@ -111,6 +111,7 @@ namespace GenShin_Launcher_Plus.Models
         public string DownPageTips { get; set; }
         public string UpdateSkipBtn { get; set; }
         public string DownStartBtn { get; set; }
+        public string UseGlobalUrl { get; set; }
         //updatePageViewModel
         public string DownFailedStr { get; set; }
         public string RepWarnStr { get; set; }
