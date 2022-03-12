@@ -60,7 +60,7 @@ namespace GenShin_Launcher_Plus.Core
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    MessageBox.Show($"Error : {ex.Message}");              
                 }
                 finally
                 {
@@ -143,7 +143,7 @@ namespace GenShin_Launcher_Plus.Core
             }
             catch (Exception ex)
             {
-                throw ex;
+                MessageBox.Show($"Error : {ex.Message}");
             }
         }
     }

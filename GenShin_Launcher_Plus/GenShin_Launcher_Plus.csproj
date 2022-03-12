@@ -27,7 +27,6 @@
     <None Remove="Images\UI_3.jpg" />
     <None Remove="Images\UI_4.jpg" />
     <None Remove="StaticRes\mihoyosdk.dll" />
-    <None Remove="StaticRes\Setting.ini" />
     <None Remove="StaticRes\Update.dll" />
   </ItemGroup>
 
@@ -75,9 +74,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\AddUserButton.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="StaticRes\Setting.ini">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="StaticRes\Update.dll">

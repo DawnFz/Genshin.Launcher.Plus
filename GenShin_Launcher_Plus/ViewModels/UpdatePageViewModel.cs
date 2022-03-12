@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GenShin_Launcher_Plus.Models;
+using System.Windows;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -72,7 +73,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 string updatefile = MainBase.update.DownloadUrl;
                 if (await HttpFileExistAsync(updatefile) == true)
                 {
-                    await DownloadHttpFileAsync(updatefile, @"UpdateTemp.upd");
+                    await DownloadHttpFileAsync(updatefile, @"UpdateTemp.zip");
                 }
                 else
                 {
@@ -118,8 +119,18 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             if ((await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, languages.DownloadComStr, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Cancel, NegativeButtonText = languages.Determine })) != MessageDialogResult.Affirmative)
             {
-                Process.Start(@"Update.exe");
-                Environment.Exit(0);
+                //解压更新了的ZIP文件
+                if (FilesControl.UnZip("UpdateTemp.zip", @""))
+                {
+                    File.Delete(@"UpdateTemp.zip");
+                    Process.Start(@"Update.exe");
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    MessageBox.Show("解压更新文件失败，可能是文件已损坏");
+                    File.Delete(@"UpdateTemp.zip");
+                }
             }
             else
             {

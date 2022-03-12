@@ -47,6 +47,7 @@ namespace GenShin_Launcher_Plus.Models
         public string AddUsersPageTextboxTips { get; set; }
         //AddUsersPageViewModel
         public string AddUsersErrorMessageStr { get; set; }
+        public string SaveAccountErr { get; set; }
 
         //SettingsPage
         public string SettingsTitle { get; set; }

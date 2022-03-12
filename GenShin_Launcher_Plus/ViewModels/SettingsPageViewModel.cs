@@ -349,7 +349,6 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand SaveSettingsCommand { get; set; }
         private async void SaveSettings()
         {
-            SwitchUser = SwitchUser;
             if (SwitchUser != null && SwitchUser != "")
             {
                 MainBase.IniModel.SwitchUser = SwitchUser;

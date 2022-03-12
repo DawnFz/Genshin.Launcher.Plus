@@ -8,6 +8,7 @@ using GenShin_Launcher_Plus.Models;
 using Newtonsoft.Json;
 using System.IO;
 using System.Windows;
+using GenShin_Launcher_Plus.ViewModels;
 
 namespace GenShin_Launcher_Plus.Core
 {
@@ -28,15 +29,29 @@ namespace GenShin_Launcher_Plus.Core
             {
                 object? cnsdk = Registry.GetValue(CnPathKey, CnSdkKey, string.Empty);
                 object? data = Registry.GetValue(CnPathKey, DataKey, string.Empty);
-                userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])cnsdk);
-                userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
+                try
+                {
+                    userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])cnsdk);
+                    userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
+                }
+                catch
+                {
+                    MessageBox.Show(MainBase.lang.SaveAccountErr);
+                }
             }
             else if (port == "Global")
             {
                 object? globalsdk = Registry.GetValue(GlobalPathKey, GlobalSdkKey, string.Empty);
                 object? data = Registry.GetValue(GlobalPathKey, DataKey, string.Empty);
-                userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])globalsdk);
-                userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
+                try
+                {
+                    userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])globalsdk);
+                    userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
+                }
+                catch
+                {
+                    MessageBox.Show(MainBase.lang.SaveAccountErr);
+                }
             }
             return JsonConvert.SerializeObject(userRegistry);
         }
