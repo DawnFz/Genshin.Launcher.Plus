@@ -12,8 +12,13 @@ using System.Windows.Input;
 using System.Collections.Generic;
 using DGP.Genshin.FPSUnlocking;
 
+
+
 namespace GenShin_Launcher_Plus.ViewModels
 {
+    /// <summary>
+    /// 这个类为启动页的ViewModel，目前正在改进
+    /// </summary>
     public class HomePageViewModel : ObservableObject
 
     {

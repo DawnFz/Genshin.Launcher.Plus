@@ -16,6 +16,12 @@ using System.Windows;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
+    /// <summary>
+    /// 这个类是是更新页面的ViewModel 
+    /// 集成了更新页面所有的操作实现逻辑和UI更新绑定
+    /// 目前正在将这个类里的一些功能逐步分离出来单独封装
+    /// </summary>
+    
     public class UpdatePageViewModel : ObservableObject
     {
         private IDialogCoordinator dialogCoordinator;
@@ -78,6 +84,8 @@ namespace GenShin_Launcher_Plus.ViewModels
             set => SetProperty(ref _UseGlobalUrlCheck, value);
         }
 
+
+        //开始更新命令
         public ICommand UpdateRunCommand { get; set; }
         private async void UpdateRun()
         {
@@ -154,6 +162,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                 ViewControlVisibility = "Hidden";
             }
         }
+
+        //检查网络文件是否存在
         private async Task<bool> HttpFileExistAsync(string url)
         {
             try

@@ -60,7 +60,7 @@ namespace GenShin_Launcher_Plus.Core
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error : {ex.Message}");              
+                    MessageBox.Show($"Error : {ex.Message}");
                 }
                 finally
                 {
@@ -77,6 +77,9 @@ namespace GenShin_Launcher_Plus.Core
             }
         }
 
+        /// <summary>
+        /// 根据类型返回相应内容
+        /// </summary>
         public string GetSetting(string sectionName, string settingName, int i)
         {
             SectionPair sectionPair;
@@ -85,15 +88,9 @@ namespace GenShin_Launcher_Plus.Core
             switch (i)
             {
                 case 1:
-                    if ((string)keyPairs[sectionPair] != "")
-                        return (string)keyPairs[sectionPair];
-                    else
-                        return "1";
+                    return (string)keyPairs[sectionPair] != string.Empty ? (string)keyPairs[sectionPair] : "1";
                 case 2:
-                    if ((string)keyPairs[sectionPair] != "")
-                        return (string)keyPairs[sectionPair];
-                    else
-                        return "False";
+                    return (string)keyPairs[sectionPair] != string.Empty ? (string)keyPairs[sectionPair] : "False";
                 default:
                     return (string)keyPairs[sectionPair];
             }
@@ -152,7 +149,7 @@ namespace GenShin_Launcher_Plus.Core
         public IniControl()
         {
             parser = new();
-            gameparser = new(Path.Combine(GamePath == null ? "" : GamePath, "Config.ini"));
+            gameparser = new(Path.Combine(GamePath ?? "", "Config.ini"));
         }
         IniParser parser { get; set; }
         IniParser gameparser { get; set; }

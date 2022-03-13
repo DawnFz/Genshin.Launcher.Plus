@@ -12,6 +12,9 @@ using GenShin_Launcher_Plus.ViewModels;
 
 namespace GenShin_Launcher_Plus.Core
 {
+    /// <summary>
+    /// 对原神注册表的操作
+    /// </summary>
     public class RegistryControl
     {
         private const string CnPathKey = @"HKEY_CURRENT_USER\Software\miHoYo\原神";
@@ -20,41 +23,42 @@ namespace GenShin_Launcher_Plus.Core
         private const string GlobalSdkKey = "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810";
         private const string DataKey = "GENERAL_DATA_h2389025596";
 
-        public string GetFromRegedit(string name, string port)
+        /// <summary>
+        /// 获取注册表内容
+        /// </summary>
+        public string? GetFromRegedit(string name, string port)
         {
             UserRegistryModel userRegistry = new();
             userRegistry.Name = name;
             userRegistry.Port = port;
-            if (port == "CN")
+            try
             {
-                object? cnsdk = Registry.GetValue(CnPathKey, CnSdkKey, string.Empty);
-                object? data = Registry.GetValue(CnPathKey, DataKey, string.Empty);
-                try
+                if (port == "CN")
                 {
+                    object? cnsdk = Registry.GetValue(CnPathKey, CnSdkKey, string.Empty);
+                    object? data = Registry.GetValue(CnPathKey, DataKey, string.Empty);
                     userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])cnsdk);
                     userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
+
                 }
-                catch
+                else if (port == "Global")
                 {
-                    MessageBox.Show(MainBase.lang.SaveAccountErr);
-                }
-            }
-            else if (port == "Global")
-            {
-                object? globalsdk = Registry.GetValue(GlobalPathKey, GlobalSdkKey, string.Empty);
-                object? data = Registry.GetValue(GlobalPathKey, DataKey, string.Empty);
-                try
-                {
+                    object? globalsdk = Registry.GetValue(GlobalPathKey, GlobalSdkKey, string.Empty);
+                    object? data = Registry.GetValue(GlobalPathKey, DataKey, string.Empty);
                     userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])globalsdk);
                     userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
                 }
-                catch
-                {
-                    MessageBox.Show(MainBase.lang.SaveAccountErr);
-                }
+            }
+            catch
+            {
+                MessageBox.Show(MainBase.lang.SaveAccountErr);
             }
             return JsonConvert.SerializeObject(userRegistry);
         }
+
+        /// <summary>
+        /// 更新注册表内容
+        /// </summary>
         public void SetToRegedit(string name)
         {
             string file = Path.Combine(Directory.GetCurrentDirectory(), "UserData", name);

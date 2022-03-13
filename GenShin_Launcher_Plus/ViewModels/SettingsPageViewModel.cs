@@ -18,6 +18,13 @@ using System.Windows.Input;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
+
+    /// <summary>
+    /// 这个类是SettingsPage的ViewModel 
+    /// 集成了SettingsPage所有的操作实现逻辑
+    /// 目前正在将这个类里的一些功能逐步分离出来单独封装
+    /// </summary>
+
     internal class SettingsPageViewModel : ObservableObject
     {
         //转换文件列表

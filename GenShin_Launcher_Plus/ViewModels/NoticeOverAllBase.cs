@@ -4,6 +4,15 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
+
+    /// <summary>
+    /// 这个类用于连接SettingsPageViewModel对
+    /// HomePageViewModel和HomePage的绑定更新
+    /// 目前已经有更好的解决办法，这个类勿动，作者会
+    /// 以新的实现方式对SettingsPageViewModel与
+    /// HomePageViewModel和HomePage的绑定更新
+    /// </summary>
+
     public class NoticeOverAllBase : ObservableObject
     {
         public NoticeOverAllBase()

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
+    /// <summary>
+    /// 全局调用的可更新UI的静态对象
+    /// </summary>
     public class MainBase
     {
         public static IniControl IniModel = new();

@@ -40,19 +40,10 @@ namespace GenShin_Launcher_Plus.ViewModels
             MainBase.IniModel.EXEname(Path.GetFileName(Environment.ProcessPath));
         }
 
-
         public LanguagesModel languages { get; set; }
-
         public string Title { get; set; }
-
         private ImageBrush _Background;
-        public ImageBrush Background
-        {
-            get => _Background;
-            set => SetProperty(ref _Background, value);
-        }
-
-
+        public ImageBrush Background { get => _Background; set => SetProperty(ref _Background, value); }
 
         private async void Mainloading()
         {
@@ -200,7 +191,6 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             Environment.Exit(0);
         }
-
 
         public ICommand MainMinimizedCommand { get; set; }
         private void MainMinimized()
