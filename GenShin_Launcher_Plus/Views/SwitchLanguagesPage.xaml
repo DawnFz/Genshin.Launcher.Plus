@@ -6,13 +6,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
              mc:Ignorable="d" 
-             Height="685" Width="1197">
-    <Grid Background="#FF647687" Margin="501,274,400,249">
-        <GroupBox Header="{Binding languages.LanguageSetTitle}">
+             Height="730" Width="1280">
+    <Grid Background="#FF647687" Width="280" Height="150">
+        <GroupBox d:Header="Title" Header="{Binding languages.LanguageSetTitle}">
             <Grid Background="White">
-                <Button FontSize="12" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" x:Name="Save" d:Content="确定" Content="{Binding languages.SaveBtn}" HorizontalAlignment="Left" Margin="54,75,0,0" VerticalAlignment="Top" Width="80" Command="{Binding SaveLangSetCommand}" FontFamily="Microsoft YaHei UI" FontWeight="Normal"/>
-                <Button FontSize="12" Style="{DynamicResource MahApps.Styles.Button.Square}" d:Content="取消" Content="{Binding languages.Cancel}" HorizontalAlignment="Left" Margin="152,75,0,0" VerticalAlignment="Top" Width="80" Click="RemoveThisPage" FontFamily="Microsoft YaHei UI" FontWeight="Normal"/>
-                <ComboBox  HorizontalAlignment="Center" Height="16" Margin="0,28,0,0" VerticalAlignment="Top" Width="178" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding langlist}" DisplayMemberPath="LangName" SelectedValue="{Binding SwitchLang, Mode=OneWayToSource}" SelectedValuePath="LangFileName" SelectedIndex="{Binding LangIndex,Mode=OneWay}"/>
+                <Button FontSize="12" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" x:Name="Save" d:Content="确定" Content="{Binding languages.SaveBtn}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Command="{Binding SaveLangSetCommand}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Margin="46,65,0,0"/>
+                <Button FontSize="12" Style="{DynamicResource MahApps.Styles.Button.Square}" d:Content="取消" Content="{Binding languages.Cancel}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Click="RemoveThisPage" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Margin="144,65,0,0"/>
+                <ComboBox  HorizontalAlignment="Center" Height="16" Margin="0,25,0,0" VerticalAlignment="Top" Width="178" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding langlist}" DisplayMemberPath="LangName" SelectedValue="{Binding SwitchLang, Mode=OneWayToSource}" SelectedValuePath="LangFileName" SelectedIndex="{Binding LangIndex,Mode=OneWay}"/>
             </Grid>
         </GroupBox>
     </Grid>

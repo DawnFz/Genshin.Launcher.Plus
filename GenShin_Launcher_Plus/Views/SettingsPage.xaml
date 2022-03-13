@@ -9,8 +9,8 @@
              Dialog:DialogParticipation.Register="{Binding}"
              xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
              mc:Ignorable="d" 
-             Height="685" Width="1197">
-    <Grid Background="White" Margin="442,37,365,72">
+             Height="730" Width="1280">
+    <Grid Background="White" Width="390" Height="575">
         <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="{Binding languages.SaveBtn}" HorizontalAlignment="Left" Margin="298,536,0,0" VerticalAlignment="Top" Height="28" Width="81" FontFamily="Microsoft YaHei UI" FontSize="12" Command="{Binding SaveSettingsCommand}" IsEnabled="{Binding PageUiStatus}"/>
         <TextBox mah:TextBoxHelper.Watermark="{Binding languages.PathBoxTips}" Height="23" Margin="13,482,11,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" Text="{Binding GamePath}"/>
         <Button IsEnabled="{Binding PageUiStatus}" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="..." HorizontalAlignment="Left" Margin="353,482,0,0" VerticalAlignment="Top" Height="26" Width="26" FontFamily="Microsoft YaHei UI" FontSize="12" BorderBrush="#FF83919F" Command="{Binding ChooseGamePathCommand}" />

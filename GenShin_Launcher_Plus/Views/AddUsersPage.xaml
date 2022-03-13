@@ -6,8 +6,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
              mc:Ignorable="d" 
-             Height="685" Width="1197">
-    <Grid Height="180" Width="370" Background="#FF647687" Margin="450,252,377,253">
+             Height="730" Width="1280">
+    <Grid Height="180" Width="370" Background="#FF647687">
         <GroupBox Header="{Binding languages.AddUsersPageTitle}">
             <Grid Background="White">
                 <Label Content="{Binding languages.AddUsersPageSubTitle}" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="Microsoft YaHei UI"/>
