@@ -2,7 +2,7 @@
 
 |README - 語言|
 |-|
-|[簡體中文](../README.md)|
+|[简体中文](../README.md)|
 |[繁體中文](./README_CNT.md)|
 |日本語 - 製作中|
 |[English](./README_EN.md)|
