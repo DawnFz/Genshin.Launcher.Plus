@@ -1,30 +1,30 @@
-# 快速开始
+# 快速開始
 
-|README - 语言|
+|README - 語言|
 |-|
-|[简体中文](../README.md)|
-|[繁体中文](./README_CNT.md)|
-|日本語 - 制作中|
+|[簡體中文](../README.md)|
+|[繁體中文](./README_CNT.md)|
+|日本語 - 製作中|
 |[English](./README_EN.md)|
 
-## 系统环境要求
+## 系統環境要求
 
-|要求|规格|
+|要求|規格|
 |-|-|
-|系统版本|Windows 7 SP1 及以上（64位操作系统）|
-|运行时|.NET 6.0.2 **Desktop** Runtime|
+|系統版本|Windows 7 SP1 及以上（64位操作系統）|
+|運行時|.NET 6.0.2 **Desktop** Runtime|
 
-## 下载 原启Plus
+## 下載 原啟Plus
 
-- 你可以在 Genshin Launcher Plus 的 GitHub 仓库的 [发布页面](https://github.com/DawnFz/Genshin.Launcher.Plus/releases) 下载最新版原启Plus
-  - 无法访问Github的用户亦可以通过 [Coding](https://nenedan.coding.net/public/glp/GenShin_Launcher_Plus/git/files) 分流下载
-  - 你也可以从[原启Plus交流群](https://jq.qq.com/?_wv=1027&k=hHtDKShK)下载到所有和 **原神启动器Plus** 的相关文件
+- 你可以在 Genshin Launcher Plus 的 GitHub 倉庫的 [發布頁面](https://github.com/DawnFz/Genshin.Launcher.Plus/releases) 下載最新版原啟Plus
+  - 無法訪問Github的用戶亦可以通過 [Coding](https://nenedan.coding.net/public/glp/GenShin_Launcher_Plus/git/files) 分流下載
+  - 你也可以從[原啟Plus交流群](https://jq.qq.com/?_wv=1027&k=hHtDKShK)下載到所有和 **原神啟動器Plus** 的相關文件
 
-## 项目简介
+## 項目簡介
 
--  [项目主页](https://www.dawnfz.com)
--  [更新历史](https://www.dawnfz.com/document/view/updated)
+-  [項目主頁](https://www.dawnfz.com)
+-  [更新歷史](https://www.dawnfz.com/document/view/updated)
 
-## 截图预览
+## 截圖預覽
 
-![原启Plus主页](https://s2.loli.net/2022/03/08/UcaQSyRz6LJTen9.jpg)
+![原啟Plus主頁](https://s2.loli.net/2022/03/08/UcaQSyRz6LJTen9.jpg)
