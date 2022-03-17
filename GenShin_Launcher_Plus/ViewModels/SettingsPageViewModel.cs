@@ -5,12 +5,10 @@ using Microsoft.VisualBasic.Devices;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,13 +16,12 @@ using System.Windows.Input;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
-
     /// <summary>
     /// 这个类是SettingsPage的ViewModel 
     /// 集成了SettingsPage所有的操作实现逻辑
-    /// 目前正在将这个类里的一些功能逐步分离出来单独封装
+    /// 目前这个类有点乱，不要乱动关于IniModel的数据
+    /// 避免出现错误，开发者已经开始着手改进该类了
     /// </summary>
-
     internal class SettingsPageViewModel : ObservableObject
     {
         //转换文件列表
@@ -324,13 +321,12 @@ namespace GenShin_Launcher_Plus.ViewModels
                 if ((await dialogCoordinator.ShowMessageAsync(this, languages.SevereWarning, languages.SevereWarningStr, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Cancel, NegativeButtonText = languages.Determine })) != MessageDialogResult.Affirmative)
                 {
                     isUnFPS = true;
-                    MainBase.IniModel.isUnFPS = isUnFPS;
                 }
                 else
                 {
                     isUnFPS = false;
-                    MainBase.IniModel.isUnFPS = isUnFPS;
                 }
+                MainBase.IniModel.isUnFPS = isUnFPS;
             }
         }
 
@@ -356,14 +352,6 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand SaveSettingsCommand { get; set; }
         private async void SaveSettings()
         {
-            if (SwitchUser != null && SwitchUser != "")
-            {
-                MainBase.IniModel.SwitchUser = SwitchUser;
-                MainBase.noab.SwitchUser = $"{languages.UserNameLab}：{SwitchUser}";
-                MainBase.noab.IsSwitchUser = "Visible";
-                RegistryControl registryControl = new();
-                registryControl.SetToRegedit(SwitchUser);
-            }
             if (GamePath != "" && File.Exists(Path.Combine(GamePath, "Yuanshen.exe")) || File.Exists(Path.Combine(GamePath, "GenshinImpact.exe")))
             {
                 MainBase.IniModel.GamePath = GamePath;
@@ -373,10 +361,18 @@ namespace GenShin_Launcher_Plus.ViewModels
                 await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PathErrorMessageStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
                 return;
             }
+            if (SwitchUser != null && SwitchUser != "")
+            {
+                MainBase.IniModel.SwitchUser = SwitchUser;
+                MainBase.noab.SwitchUser = $"{languages.UserNameLab}：{SwitchUser}";
+                MainBase.noab.IsSwitchUser = "Visible";
+                RegistryControl registryControl = new();
+                registryControl.SetToRegedit(SwitchUser);
+            }
             MainBase.IniModel.Width = Width;
             MainBase.IniModel.Height = Height;
             MainBase.IniModel.isUnFPS = isUnFPS;
-            if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, "config.ini")) == true)
+            if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, "config.ini")))
             {
                 switch (IniModel.isMihoyo)
                 {
@@ -387,6 +383,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                         if (File.Exists(Path.Combine(GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
                             File.Delete(Path.Combine(GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
                         MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}";
+                        MainBase.noab.IsGamePortLists = "Visible";
+                        MainBase.noab.GamePortListIndex = 0;
                         break;
                     case 1:
                         MainBase.IniModel.Cps = "bilibili";
@@ -405,6 +403,9 @@ namespace GenShin_Launcher_Plus.ViewModels
                             }
                         }
                         MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}";
+                        MainBase.noab.IsGamePortLists = "Visible";
+                        MainBase.noab.GamePortListIndex = 1;
+
                         break;
                     case 2:
                         MainBase.IniModel.Cps = "mihoyo";
@@ -413,6 +414,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                         if (File.Exists(Path.Combine(GamePath, "GenshinImpact_Data/Plugins/PCGameSDK.dll")))
                             File.Delete(Path.Combine(GamePath, "GenshinImpact_Data/Plugins/PCGameSDK.dll"));
                         MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeMStr}";
+                        MainBase.noab.IsGamePortLists = "Hidden";
+                        MainBase.noab.GamePortListIndex = -1;
                         break;
                     default:
                         break;
@@ -428,23 +431,16 @@ namespace GenShin_Launcher_Plus.ViewModels
             SwitchUser = MainBase.noab.SwitchUser;
             GamePath = MainBase.IniModel.GamePath;
             isUnFPS = MainBase.IniModel.isUnFPS;
-            Width = MainBase.IniModel.Width == null ? "1600" : MainBase.IniModel.Width;
-            Height = MainBase.IniModel.Height == null ? "900" : MainBase.IniModel.Height;
-            if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, "config.ini")))
+            Width = MainBase.IniModel.Width ?? "1600";
+            Height = MainBase.IniModel.Height ?? "900";
+            IniModel.isMihoyo = MainBase.IniModel.Cps switch
             {
-                if (MainBase.IniModel.Cps == "pcadbdpz")
-                { IniModel.isMihoyo = 0; }
-                else if (MainBase.IniModel.Cps == "bilibili")
-                { IniModel.isMihoyo = 1; }
-                else if (MainBase.IniModel.Cps == "mihoyo")
-                { IniModel.isMihoyo = 2; }
-                else
-                { IniModel.isMihoyo = 3; }
-            }
-            else
-            { IniModel.isMihoyo = 3; }
+                "pcadbdpz"=>0,
+                "bilibili"=>1,
+                "mihoyo"=>2,
+                _=>3,
+            };
         }
-
 
         //关闭设置页面
         public ICommand ThisPageRemoveCommand { get; set; }
@@ -797,7 +793,6 @@ namespace GenShin_Launcher_Plus.ViewModels
                 }
                 else
                 {
-
                     GameSwitchLog += $"{globalfiles[a]} {languages.RestoreSkipStr}\r\n";
                     whole++;
                 }

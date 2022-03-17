@@ -2,17 +2,10 @@
 using GenShin_Launcher_Plus.ViewModels;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace GenShin_Launcher_Plus
@@ -24,18 +17,17 @@ namespace GenShin_Launcher_Plus
     {
         public MainWindow()
         {
-            LoadProgramCore lpc = new ();
+            LoadProgramCore lpc = new();
             lpc.LoadLanguageCore(MainBase.IniModel.ReadLang);
             lpc.LoadUpdateCore();
             InitializeComponent();
             DataContext = new MainWindowViewModel(DialogCoordinator.Instance);
             MainFlipView.DataContext = MainBase.noab;
             HomePage.Children.Add(new Views.HomePage());
-            if (!File.Exists(Path.Combine(MainBase.IniModel.GamePath==null?"": MainBase.IniModel.GamePath, "Yuanshen.exe")) && !File.Exists(Path.Combine(MainBase.IniModel.GamePath == null ? "" : MainBase.IniModel.GamePath, "GenshinImpact.exe")))
+            if (!File.Exists(Path.Combine(MainBase.IniModel.GamePath ?? "", "Yuanshen.exe")) && !File.Exists(Path.Combine(MainBase.IniModel.GamePath ?? "", "GenshinImpact.exe")))
             {
                 MainGrid.Children.Add(new Views.GuidePage());
             }
-            
             Task checkupdate = new(() =>
             {
                 string newver = MainBase.update.Version;
@@ -45,10 +37,10 @@ namespace GenShin_Launcher_Plus
                     Dispatcher.Invoke(() =>
                     {
                         MainGrid.Children.Add(new Views.UpdatePage());
-                    });           
+                    });
                 }
             });
-            checkupdate.Start();    
+            checkupdate.Start();
         }
 
         private void WindowDragMove(object sender, MouseButtonEventArgs e)

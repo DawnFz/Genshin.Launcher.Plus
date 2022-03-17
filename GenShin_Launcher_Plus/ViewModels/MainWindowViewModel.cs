@@ -9,13 +9,10 @@ using System.Windows.Media.Imaging;
 using GenShin_Launcher_Plus.Core;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Input;
-using System.Threading.Tasks;
 using GenShin_Launcher_Plus.Models;
 using System.Net.Http;
-using System.Text.Json.Nodes;
 using System.Security.Cryptography;
 using System.Text;
-using System.Collections.Generic;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -29,7 +26,6 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 Directory.CreateDirectory("UserData");
             }
-            languages = MainBase.lang;
             Mainloading();
             OpenImagesDirectoryCommand = new RelayCommand(OpenImagesDirectory);
             OpenAboutCommand = new RelayCommand(OpenAbout);
@@ -40,7 +36,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             MainBase.IniModel.EXEname(Path.GetFileName(Environment.ProcessPath));
         }
 
-        public LanguagesModel languages { get; set; }
+        public LanguagesModel languages { get => MainBase.lang; }
         public string Title { get; set; }
         private ImageBrush _Background;
         public ImageBrush Background { get => _Background; set => SetProperty(ref _Background, value); }

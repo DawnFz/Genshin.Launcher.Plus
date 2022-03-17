@@ -1,13 +1,6 @@
-﻿using ICSharpCode.SharpZipLib.Zip;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows;
 
 namespace GenShin_Launcher_Plus.Core
 {
@@ -24,7 +17,6 @@ namespace GenShin_Launcher_Plus.Core
         /// <summary>
         /// 对程序目录下Config中Setting.ini的操作
         /// </summary>
-
         private string _ReadLang;
         public string ReadLang
         {
@@ -235,7 +227,6 @@ namespace GenShin_Launcher_Plus.Core
             parser.AddSetting("setup", "LauncherPlusName", value);
             parser.SaveSettings();
         }
-
 
         /// <summary>
         /// 对游戏目录下的Config.ini操作

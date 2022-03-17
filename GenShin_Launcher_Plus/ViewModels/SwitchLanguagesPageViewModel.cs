@@ -1,12 +1,7 @@
-﻿using GenShin_Launcher_Plus.Core;
-using GenShin_Launcher_Plus.Models;
+﻿using GenShin_Launcher_Plus.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -16,10 +11,9 @@ namespace GenShin_Launcher_Plus.ViewModels
     {
         public SwitchLanguagesPageViewModel()
         {
-            languages = MainBase.lang;
             SaveLangSetCommand = new RelayCommand(ThisPageRemove);
         }
-        public LanguagesModel languages { get; set; }
+        public LanguagesModel languages { get => MainBase.lang; }
 
         public int LangIndex
         {

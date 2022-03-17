@@ -1,11 +1,7 @@
 ﻿using GenShin_Launcher_Plus.ViewModels;
 using GenShin_Launcher_Plus.Models;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Windows;
 
 namespace GenShin_Launcher_Plus.Core
 {

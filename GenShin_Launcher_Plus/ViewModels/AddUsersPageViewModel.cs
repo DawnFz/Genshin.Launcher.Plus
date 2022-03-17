@@ -2,10 +2,8 @@
 using GenShin_Launcher_Plus.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -22,12 +20,11 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         public AddUsersPageViewModel()
         {
-            languages = MainBase.lang;
             CreateGamePortList();
             SaveUserDataCommand = new RelayCommand(SaveUserData);
         }
 
-        public LanguagesModel languages { get; set; }
+        public LanguagesModel languages { get => MainBase.lang; }
 
         public string GamePort { get; set; }
         public string Name { get; set; }

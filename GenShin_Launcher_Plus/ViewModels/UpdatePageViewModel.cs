@@ -5,11 +5,6 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using GenShin_Launcher_Plus.Models;
 using System.Windows;
@@ -17,9 +12,8 @@ using System.Windows;
 namespace GenShin_Launcher_Plus.ViewModels
 {
     /// <summary>
-    /// 这个类是是更新页面的ViewModel 
-    /// 集成了更新页面所有的操作实现逻辑和UI更新绑定
-    /// 目前正在将这个类里的一些功能逐步分离出来单独封装
+    /// 更新页面的ViewModel 
+    /// 集成了更新页面的操作实现逻辑和UI更新绑定
     /// </summary>
     
     public class UpdatePageViewModel : ObservableObject

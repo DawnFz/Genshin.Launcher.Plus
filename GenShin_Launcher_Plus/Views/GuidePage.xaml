@@ -4,29 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             Dialog:DialogParticipation.Register="{Binding}"
              xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
              mc:Ignorable="d" 
              Height="730" Width="1280" Background="White">
-    <Grid>
-        <mah:FlipView x:Name="FlipView" BannerOpacity="0" MouseHoverBorderBrush="White">
-            <mah:FlipView.Items>
-                <Grid Background="White">
-                    <TextBlock HorizontalAlignment="Center" Margin="0,24,0,0" VerticalAlignment="Top" FontSize="45" Foreground="Black" Width="1032" Height="106" TextAlignment="Center"><Run d:Text="Welcome Title" Text="{Binding languages.WelcomeTitle}"/><LineBreak/></TextBlock>
-                    <TextBox x:Name="GamePath" mah:TextBoxHelper.Watermark="{Binding languages.PathBoxTips}" HorizontalAlignment="Left" Height="44" Margin="189,652,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="830" FontSize="24" FontFamily="Microsoft YaHei UI" BorderThickness="3"/>
-                    <Button x:Name="Dirchoose" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="···" HorizontalAlignment="Left" Margin="1019,652,0,0" VerticalAlignment="Top" Height="44" Width="79" FontFamily="Microsoft YaHei UI" FontSize="16" BorderBrush="#FF83919F" Click="Dirchoose_Click"/>
-                    <TextBlock HorizontalAlignment="Center" Margin="0,94,0,0" VerticalAlignment="Top" FontSize="26" Foreground="Black" Width="1032" Height="65" TextAlignment="Center" d:Text="Bootstrap Title" Text="{Binding languages.BootstrapTitle}"/>
-                    <Image Source="/Images/UI_0.jpg" Margin="552,262,552,289"/>
-                    <TextBlock  x:Name="ErrorTitle" HorizontalAlignment="Center" Margin="0,579,0,0" VerticalAlignment="Top" FontSize="32" Foreground="Black" Width="1032" Height="65" TextAlignment="Center"><Run d:Text="Final Tips Label" Text="{Binding languages.FinalTipLabel}"/></TextBlock>
-                    <TextBlock Margin="0,528,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" Foreground="#FF848484" Width="956" Height="30" TextAlignment="Center"><Run Language="zh-cn" d:Text="Path Hint Label" Text="{Binding languages.PathHintLabel}"/></TextBlock>
-                </Grid>
-                <Grid Background="White">
-                    <Image Source="/Images/UI_3.jpg"/>
-                </Grid>
-                <Grid Background="White">
-                    <Image Source="/Images/UI_4.jpg"/>
-                    <Button x:Name="SaveButton" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="{Binding languages.GuideFinishBtn}" HorizontalAlignment="Left" Margin="1131,642,0,0" VerticalAlignment="Top" Height="57" Width="118" FontFamily="Microsoft YaHei UI" FontSize="18" Click="ThisPageRemove" BorderThickness="4" />
-                </Grid>
-            </mah:FlipView.Items>
-        </mah:FlipView>
+    <Grid Background="White">
+        <TextBlock HorizontalAlignment="Center" Margin="0,78,0,0" VerticalAlignment="Top" FontSize="45" Foreground="Black" Width="1032" Height="106" TextAlignment="Center"><Run d:Text="Welcome Title" Text="{Binding languages.WelcomeTitle}"/><LineBreak/></TextBlock>
+        <TextBox mah:TextBoxHelper.Watermark="{Binding languages.PathBoxTips}" HorizontalAlignment="Left" Height="44" Margin="189,616,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="830" FontSize="24" FontFamily="Microsoft YaHei UI" BorderThickness="3"/>
+        <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="···" HorizontalAlignment="Left" Margin="1019,616,0,0" VerticalAlignment="Top" Height="44" Width="79" FontFamily="Microsoft YaHei UI" FontSize="16" BorderBrush="#FF83919F" Command="{Binding DirchooseCommand}"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,148,0,0" VerticalAlignment="Top" FontSize="26" Foreground="Black" Width="1032" Height="65" TextAlignment="Center" d:Text="Bootstrap Title" Text="{Binding languages.BootstrapTitle}"/>
+        <Image Source="/Images/UI_0.jpg" Height="180"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,543,0,0" VerticalAlignment="Top" FontSize="32" Foreground="Black" Width="1032" Height="65" TextAlignment="Center"><Run d:Text="Final Tips Label" Text="{Binding languages.FinalTipLabel}"/></TextBlock>
+        <TextBlock Margin="0,492,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" Foreground="#FF848484" Width="956" Height="30" TextAlignment="Center"><Run Language="zh-cn" d:Text="Path Hint Label" Text="{Binding languages.PathHintLabel}"/></TextBlock>
     </Grid>
 </UserControl>

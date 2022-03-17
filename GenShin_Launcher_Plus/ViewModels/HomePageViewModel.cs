@@ -26,207 +26,35 @@ namespace GenShin_Launcher_Plus.ViewModels
         public HomePageViewModel(IDialogCoordinator instance)
         {
             dialogCoordinator = instance;
-            languages = MainBase.lang;
             RunGameCommand = new AsyncRelayCommand(RunGameAsync);
-
             if (MainBase.IniModel.SwitchUser != null && MainBase.IniModel.SwitchUser != "")
             {
                 MainBase.noab.IsSwitchUser = "Visible";
-                IsSwitchUser = "Visible";
                 MainBase.noab.SwitchUser = $"{languages.UserNameLab} : {MainBase.IniModel.SwitchUser}";
             }
             else
             {
                 MainBase.noab.IsSwitchUser = "Hidden";
-                IsSwitchUser = "Hidden";
             }
             CreateGamePortList();
             ReadUserList();
-            GetGamePort();
         }
-        public LanguagesModel languages { get; set; }
-        /// <summary>
-        /// 此方法非常稳健，请不要尝试优化此代码
-        /// </summary>
-        private void GetGamePort()
-        {
-            if (File.Exists(Path.Combine(MainBase.IniModel.GamePath == null ? "" : MainBase.IniModel.GamePath, "config.ini")))
-            {
-                if (MainBase.IniModel.Cps == "pcadbdpz")
-                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}"; }
-                else if (MainBase.IniModel.Cps == "bilibili")
-                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}"; }
-                else if (MainBase.IniModel.Cps == "mihoyo")
-                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeMStr}"; }
-                else
-                { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeNullStr}"; }
-            }
-            else
-            { MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeNullStr}"; }
-        }
+        public LanguagesModel languages { get => MainBase.lang; }
 
-        private string _SwitchUserValue;
-        public string SwitchUserValue
-        {
-            get => _SwitchUserValue;
-            set
-            {
-                SetProperty(ref _SwitchUserValue, value);
-                if (SwitchUserValue != null && SwitchUserValue != "")
-                {
-                    MainBase.noab.SwitchUser = $"{languages.UserNameLab} : {SwitchUserValue}";
-                    //更改注册表账号状态
-                    MainBase.IniModel.SwitchUser = SwitchUserValue;
-                    RegistryControl registryControl = new();
-                    registryControl.SetToRegedit(SwitchUserValue);
-                }
-            }
-        }
-
-        //选择账户Combobox控件状态
-        private string _IsSwitchUser;
-        public string IsSwitchUser
-        {
-            get => _IsSwitchUser;
-            set => SetProperty(ref _IsSwitchUser, value);
-        }
-
-
-        //选择游戏端口Combobox控件状态
-        private string _IsGamePortLists;
-        public string IsGamePortLists
-        {
-            get
-            {
-                if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, "config.ini")))
-                {
-                    if (MainBase.IniModel.Cps == "mihoyo")
-                    {
-                        _IsGamePortLists = "Hidden";
-                    }
-                    else
-                    {
-                        _IsGamePortLists = "Visible";
-                    }
-                }
-                else
-                {
-                    _IsGamePortLists = "Hidden";
-                }
-                return _IsGamePortLists;
-            }
-            set => SetProperty(ref _IsGamePortLists, value);
-        }
-        //游戏端口列表
-        private List<GamePortListModel> _GamePortLists;
-        public List<GamePortListModel> GamePortLists
-        {
-            get => _GamePortLists;
-            set => SetProperty(ref _GamePortLists, value);
-        }
         private void CreateGamePortList()
         {
-            GamePortLists = new List<GamePortListModel>();
-            GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypePStr });
-            GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypeBStr });
-        }
-
-        //游戏端口列表索引
-        public int GamePortListIndex
-        {
-            get
-            {
-                if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, "config.ini")))
-                {
-                    if (MainBase.IniModel.Cps == "pcadbdpz")
-                    {
-                        MainBase.noab.SwitchPort = $"{MainBase.lang.GameClientStr} : {MainBase.lang.GameClientTypePStr}";
-                        return 0;
-                    }
-                    else if (MainBase.IniModel.Cps == "bilibili")
-                    {
-                        MainBase.noab.SwitchPort = $"{MainBase.lang.GameClientStr} : {MainBase.lang.GameClientTypeBStr}";
-                        return 1;
-                    }
-                    else if (MainBase.IniModel.Cps == "mihoyo")
-                    {
-                        MainBase.noab.SwitchPort = $"{MainBase.lang.GameClientStr} : {MainBase.lang.GameClientTypeMStr}";
-                        return -1;
-                    }
-                    else
-                    {
-                        MainBase.noab.SwitchPort = $"{MainBase.lang.GameClientStr} : {MainBase.lang.GameClientTypeNullStr}";
-                        return -1;
-                    }
-                }
-                else
-                {
-                    MainBase.noab.SwitchPort = $"{MainBase.lang.GameClientStr} : {MainBase.lang.GameClientTypeNullStr}";
-                    return -1;
-                }
-            }
-            set
-            {
-                if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, "config.ini")) == true)
-                {
-                    if (MainBase.IniModel.Cps != "mihoyo")
-                    {
-                        switch (value)
-                        {
-                            case 0:
-                                MainBase.IniModel.Cps = "pcadbdpz";
-                                MainBase.IniModel.Channel = 1;
-                                MainBase.IniModel.Sub_channel = 1;
-                                if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
-                                    File.Delete(Path.Combine(MainBase.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
-                                MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}";
-                                break;
-                            case 1:
-                                MainBase.IniModel.Cps = "bilibili";
-                                MainBase.IniModel.Channel = 14;
-                                MainBase.IniModel.Sub_channel = 0;
-                                if (!File.Exists(Path.Combine(MainBase.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
-                                {
-                                    FilesControl utils = new();
-                                    try
-                                    {
-                                        utils.FileWriter("StaticRes/mihoyosdk.dll", Path.Combine(MainBase.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        MessageBox.Show(ex.Message);
-                                    }
-                                }
-                                MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}";
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-                else
-                {
-                    dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PathErrorMessageStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
-                }
-            }
-        }
-
-
-        //用户列表
-        public List<UserListModel> _UserLists;
-        public List<UserListModel> UserLists
-        {
-            get => _UserLists;
-            set => SetProperty(ref _UserLists, value);
+            MainBase.noab.GamePortLists = new List<GamePortListModel>();
+            MainBase.noab.GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypePStr });
+            MainBase.noab.GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypeBStr });
         }
 
         private void ReadUserList()
         {
-            UserLists = new List<UserListModel>();
+            MainBase.noab.UserLists = new List<UserListModel>();
             DirectoryInfo TheFolder = new(@"UserData");
             foreach (FileInfo NextFile in TheFolder.GetFiles())
             {
-                UserLists.Add(new UserListModel { UserName = NextFile.Name });
+                MainBase.noab.UserLists.Add(new UserListModel { UserName = NextFile.Name });
             }
         }
 
