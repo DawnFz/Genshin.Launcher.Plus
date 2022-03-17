@@ -15,7 +15,7 @@ namespace GenShin_Launcher_Plus.Core
     {
         public IniModel()
         {
-            parser = new();
+            parser = new(@"Config\Setting.ini");
             gameparser = new(Path.Combine(GamePath ?? "", "Config.ini"));
         }
         IniParser parser { get; set; }

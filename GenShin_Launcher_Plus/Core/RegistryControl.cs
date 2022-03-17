@@ -64,16 +64,26 @@ namespace GenShin_Launcher_Plus.Core
             string file = Path.Combine(Directory.GetCurrentDirectory(), "UserData", name);
             string json = File.ReadAllText(file);
             UserRegistryModel userRegistry = JsonConvert.DeserializeObject<UserRegistryModel>(json);
-            if (userRegistry.Port == "CN")
-            {
-                Registry.SetValue(CnPathKey, CnSdkKey, Encoding.UTF8.GetBytes(userRegistry.MIHOYOSDK_ADL_PROD));
-                Registry.SetValue(CnPathKey, DataKey, Encoding.UTF8.GetBytes(userRegistry.GENERAL_DATA));
-            }
-            else if (userRegistry.Port == "Global")
-            {
-                Registry.SetValue(GlobalPathKey, GlobalSdkKey, Encoding.UTF8.GetBytes(userRegistry.MIHOYOSDK_ADL_PROD));
-                Registry.SetValue(GlobalPathKey, DataKey, Encoding.UTF8.GetBytes(userRegistry.GENERAL_DATA));
-            }
+            if (userRegistry.MIHOYOSDK_ADL_PROD != null &&
+                userRegistry.MIHOYOSDK_ADL_PROD != "null" &&
+                userRegistry.MIHOYOSDK_ADL_PROD != string.Empty &&
+                userRegistry.GENERAL_DATA != null &&
+                userRegistry.GENERAL_DATA != "null" &&
+                userRegistry.GENERAL_DATA != string.Empty)
+                if (userRegistry.Port == "CN")
+                {
+                    Registry.SetValue(CnPathKey, CnSdkKey, Encoding.UTF8.GetBytes(userRegistry.MIHOYOSDK_ADL_PROD));
+                    Registry.SetValue(CnPathKey, DataKey, Encoding.UTF8.GetBytes(userRegistry.GENERAL_DATA));
+                }
+                else if (userRegistry.Port == "Global")
+                {
+                    Registry.SetValue(GlobalPathKey, GlobalSdkKey, Encoding.UTF8.GetBytes(userRegistry.MIHOYOSDK_ADL_PROD));
+                    Registry.SetValue(GlobalPathKey, DataKey, Encoding.UTF8.GetBytes(userRegistry.GENERAL_DATA));
+                }
+                else
+                {
+                    MessageBox.Show("Error : The file does not support ! !");
+                }
             else
             {
                 MessageBox.Show("Error : The file does not support ! !");

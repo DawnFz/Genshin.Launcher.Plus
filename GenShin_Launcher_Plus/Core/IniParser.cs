@@ -18,7 +18,7 @@ namespace GenShin_Launcher_Plus.Core
             public string Section;
             public string Key;
         }
-        public IniParser(string iniPath = @"Config\Setting.ini")
+        public IniParser(string iniPath)
         {
             TextReader iniFile = null;
             string strLine = null;
