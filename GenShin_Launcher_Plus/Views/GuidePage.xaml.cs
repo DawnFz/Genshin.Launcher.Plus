@@ -21,6 +21,7 @@ namespace GenShin_Launcher_Plus.Views
 
         private void ThisPageRemove(object sender, RoutedEventArgs e)
         {
+            //提醒：改一下这里的逻辑
             if (!File.Exists(Path.Combine(GamePath.Text, "Yuanshen.exe")) && !File.Exists(Path.Combine(GamePath.Text, "GenshinImpact.exe")))
             {
                 FlipView.SelectedIndex = 0;

@@ -200,7 +200,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
         }
         //存放设置属性的实体类
-        public IniControl IniModel
+        public IniModel IniModel
         {
             get => MainBase.IniModel;
             set => SetProperty(ref MainBase.IniModel, value);

@@ -13,7 +13,7 @@ namespace GenShin_Launcher_Plus.ViewModels
     /// </summary>
     public class MainBase
     {
-        public static IniControl IniModel = new();
+        public static IniModel IniModel = new();
         public static List<LanguageListsModel> langlist = new();
         public static NoticeOverAllBase noab = new();
         public static LanguagesModel lang = new();

@@ -96,6 +96,10 @@ namespace GenShin_Launcher_Plus.Core
             }
             catch { return false; }
         }
+
+        /// <summary>
+        /// 将程序中的资源文件写出到硬盘
+        /// </summary>
         public void FileWriter(string resName, string fileName)
         {
             var resUri = $"pack://application:,,,/{resName}";
