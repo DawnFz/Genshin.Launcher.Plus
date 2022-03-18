@@ -11,7 +11,7 @@ namespace GenShin_Launcher_Plus.Core
     /// <summary>
     /// 用于处理文件下载
     /// </summary>
-    public class DownloadFileCore : ObservableObject
+    public class FileDownloader : ObservableObject
     {
         private double _DownloadBarMax;
         public double DownloadBarMax
@@ -48,7 +48,7 @@ namespace GenShin_Launcher_Plus.Core
             using (Stream responseStream = await response.Content.ReadAsStreamAsync())
             {
                 int bufferSize = 1024;
-                using (FileStream fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize, true))
+                using (FileStream fileStream = new(fileName, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize, true))
                 {
                     byte[] buffer = new byte[bufferSize];
                     long progressBarValue = 0;
@@ -74,11 +74,12 @@ namespace GenShin_Launcher_Plus.Core
         {
             try
             {
-                HttpResponseMessage response = await LazyClient.Value.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-                return response.IsSuccessStatusCode;
+                return (await LazyClient.Value.GetAsync(url, HttpCompletionOption.ResponseHeadersRead)).IsSuccessStatusCode;
             }
-            catch { }
-            return false;
+            catch 
+            { 
+                return false;
+            }
         }
 
         public delegate void ProgressBarSetter(double value);

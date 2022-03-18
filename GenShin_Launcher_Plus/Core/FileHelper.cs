@@ -4,10 +4,11 @@ using System.IO;
 using System.Text;
 using System.Net;
 using System.Windows;
+using GenShin_Launcher_Plus.Core.Extension;
 
 namespace GenShin_Launcher_Plus.Core
 {
-    public class FilesControl
+    public class FileHelper
     {
         public string ReadHTML(string url)
         {
@@ -45,19 +46,6 @@ namespace GenShin_Launcher_Plus.Core
             return MiddleText(ReadHTML("https://www.cnblogs.com/DawnFz/p/15990791.html"),$"【{tag}++】",$"【{tag}--】");
         }
         //
-
-
-        public void StreamToFile(Stream stream, string fileName)
-        {
-            byte[] bytes = new byte[stream.Length];
-            stream.Read(bytes, 0, bytes.Length);
-            stream.Seek(0, SeekOrigin.Begin);
-            FileStream fs = new(fileName, FileMode.Create);
-            BinaryWriter bw = new(fs);
-            bw.Write(bytes);
-            bw.Close();
-            fs.Close();
-        }
 
         public static bool UnZip(string zipFile, string directory)
         {
@@ -100,12 +88,11 @@ namespace GenShin_Launcher_Plus.Core
         /// <summary>
         /// 将程序中的资源文件写出到硬盘
         /// </summary>
-        public void FileWriter(string resName, string fileName)
+        public static void ExtractEmbededAppResource(string resourceName, string fileName)
         {
-            var resUri = $"pack://application:,,,/{resName}";
-            var uri = new Uri(resUri, UriKind.RelativeOrAbsolute);
-            var stream = Application.GetResourceStream(uri).Stream;
-            StreamToFile(stream, fileName);
+            Uri uri = new($"pack://application:,,,/{resourceName}", UriKind.RelativeOrAbsolute);
+            Stream stream = Application.GetResourceStream(uri).Stream;
+            stream.ToFile(fileName);
         }
     }
 }

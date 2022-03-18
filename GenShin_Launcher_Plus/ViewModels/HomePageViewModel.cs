@@ -12,15 +12,12 @@ using System.Windows.Input;
 using System.Collections.Generic;
 using DGP.Genshin.FPSUnlocking;
 
-
-
 namespace GenShin_Launcher_Plus.ViewModels
 {
     /// <summary>
     /// 这个类为启动页的ViewModel，目前正在改进
     /// </summary>
     public class HomePageViewModel : ObservableObject
-
     {
         private IDialogCoordinator dialogCoordinator;
         public HomePageViewModel(IDialogCoordinator instance)
@@ -63,11 +60,13 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             //从Config中读取启动参数
             string gameMain = Path.Combine(MainBase.IniModel.GamePath, "YuanShen.exe");
-            var argBuilder = new CommandLineBuilder();
-            argBuilder.AddOption("-screen-fullscreen ", Convert.ToString(MainBase.IniModel.FullSize));
-            argBuilder.AddOption("-screen-height ", MainBase.IniModel.Height);
-            argBuilder.AddOption("-screen-width ", MainBase.IniModel.Width);
-            argBuilder.AddOption("-pop ", MainBase.IniModel.isPopup ? " -popupwindow " : "");
+            string arg = new CommandLineBuilder()
+                .AppendIf("-popupwindow", MainBase.IniModel.isPopup)
+                .Append("-screen-fullscreen", MainBase.IniModel.FullSize)
+                .Append("-screen-height", MainBase.IniModel.Height)
+                .Append("-screen-width", MainBase.IniModel.Width)
+                .ToString();
+            
             //判断游戏文件、目录是否存在
             if (!File.Exists(gameMain))
             {
@@ -78,11 +77,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                     return;
                 }
             }
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                Application.Current.MainWindow.WindowState = WindowState.Minimized;
-            });
-            //创建Task线程启动游戏
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
 
             Process game = new()
             {
@@ -92,22 +87,16 @@ namespace GenShin_Launcher_Plus.ViewModels
                     Verb = "runas",
                     UseShellExecute = true,
                     WorkingDirectory = MainBase.IniModel.GamePath,
-                    Arguments = argBuilder.ToString(),
+                    Arguments = arg,
                 }
             };
 
             if (MainBase.IniModel.isUnFPS)
             {
-                Unlocker unlocker;
-                if (int.TryParse(MainBase.IniModel.MaxFps, out int targetFps))
-                {
-                    unlocker = new Unlocker(game, targetFps);
-                }
-                else
-                {
-                    unlocker = new Unlocker(game, 144);
-                }
-                var result = await unlocker.StartProcessAndUnlockAsync();
+                Unlocker unlocker = int.TryParse(MainBase.IniModel.MaxFps, out int targetFps) 
+                    ? new Unlocker(game, targetFps) 
+                    : new Unlocker(game, 144);
+                UnlockResult result = await unlocker.StartProcessAndUnlockAsync();
                 Application.Current.MainWindow.WindowState = WindowState.Normal;
             }
             else

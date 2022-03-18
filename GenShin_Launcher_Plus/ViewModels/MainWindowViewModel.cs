@@ -127,10 +127,9 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
 
             //
-            FilesControl utils = new();
             try
             {
-                utils.FileWriter("StaticRes/Update.dll", @"Update.exe");
+                FileHelper.ExtractEmbededAppResource("StaticRes/Update.dll", @"Update.exe");
             }
             catch (Exception ex)
             {

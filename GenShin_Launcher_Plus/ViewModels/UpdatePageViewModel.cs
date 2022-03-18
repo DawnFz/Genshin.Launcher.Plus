@@ -26,8 +26,8 @@ namespace GenShin_Launcher_Plus.ViewModels
             UpdateRunCommand = new RelayCommand(UpdateRun);
             ViewControlVisibility = "Hidden";
         }
-        private DownloadFileCore _DFC;
-        public DownloadFileCore DFC
+        private FileDownloader _DFC;
+        public FileDownloader DFC
         {
             get=> _DFC;
             set=> SetProperty(ref _DFC, value);
@@ -78,7 +78,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                     if ((await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, languages.DownloadComStr, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Cancel, NegativeButtonText = languages.Determine })) != MessageDialogResult.Affirmative)
                     {
                         //解压更新了的ZIP文件
-                        if (FilesControl.UnZip("UpdateTemp.zip", @""))
+                        if (FileHelper.UnZip("UpdateTemp.zip", @""))
                         {
                             File.Delete(@"UpdateTemp.zip");
                             Process.Start(@"Update.exe");

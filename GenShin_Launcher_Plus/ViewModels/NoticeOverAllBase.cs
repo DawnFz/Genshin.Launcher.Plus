@@ -95,10 +95,9 @@ namespace GenShin_Launcher_Plus.ViewModels
                             MainBase.IniModel.Sub_channel = 0;
                             if (!File.Exists(Path.Combine(MainBase.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
                             {
-                                FilesControl utils = new();
                                 try
                                 {
-                                    utils.FileWriter("StaticRes/mihoyosdk.dll", Path.Combine(MainBase.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
+                                    FileHelper.ExtractEmbededAppResource("StaticRes/mihoyosdk.dll", Path.Combine(MainBase.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
                                 }
                                 catch (Exception ex)
                                 {

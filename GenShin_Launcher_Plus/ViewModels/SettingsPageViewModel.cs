@@ -392,10 +392,9 @@ namespace GenShin_Launcher_Plus.ViewModels
                         MainBase.IniModel.Sub_channel = 0;
                         if (!File.Exists(Path.Combine(GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
                         {
-                            FilesControl utils = new();
                             try
                             {
-                                utils.FileWriter("StaticRes/mihoyosdk.dll", Path.Combine(GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
+                                FileHelper.ExtractEmbededAppResource("StaticRes/mihoyosdk.dll", Path.Combine(GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
                             }
                             catch (Exception ex)
                             {
@@ -453,7 +452,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand GameFileConvertCommand { get; set; }
         private void GameFileConvert()
         {
-            if (!CheckControl.IsFileOpen(Path.Combine(MainBase.IniModel.GamePath, "Yuanshen.exe")) && !CheckControl.IsFileOpen(Path.Combine(MainBase.IniModel.GamePath, "GenshinImpact.exe")))
+            if (!File2.IsFileOpen(Path.Combine(MainBase.IniModel.GamePath, "Yuanshen.exe")) && !File2.IsFileOpen(Path.Combine(MainBase.IniModel.GamePath, "GenshinImpact.exe")))
             {
 
                 Task start = new(async () =>
@@ -489,7 +488,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                                 {
                                     TimeStatus = languages.TimeStatusUning;
                                     //解压Pkg
-                                    if (FilesControl.UnZip("GlobalFile.pkg", @""))
+                                    if (FileHelper.UnZip("GlobalFile.pkg", @""))
                                     {
                                         if (JudgePkgVer("GlobalFile"))
                                         {
@@ -546,7 +545,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                                 {
                                     TimeStatus = languages.TimeStatusUning;
                                     //解压Pkg
-                                    if (FilesControl.UnZip("CnFile.pkg", @""))
+                                    if (FileHelper.UnZip("CnFile.pkg", @""))
                                     {
                                         if (JudgePkgVer("CnFile"))
                                         {

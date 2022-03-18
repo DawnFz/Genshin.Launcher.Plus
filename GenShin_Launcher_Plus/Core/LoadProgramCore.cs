@@ -42,7 +42,7 @@ namespace GenShin_Launcher_Plus.Core
         /// </summary>
         public void LoadUpdateCore()
         {
-            FilesControl fc = new();
+            FileHelper fc = new();
             if (MainBase.IniModel.ReadLang == "Lang_CN" || MainBase.IniModel.ReadLang == null || MainBase.IniModel.ReadLang == string.Empty)
             {
                 string json = fc.GetJsonFromHtml("UpdateCN");

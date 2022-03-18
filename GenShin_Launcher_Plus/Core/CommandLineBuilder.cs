@@ -3,23 +3,42 @@ using System.Text;
 
 namespace GenShin_Launcher_Plus.Core
 {
+    /// <summary>
+    /// Toke from Snap.Data.Utility
+    /// </summary>
     public class CommandLineBuilder
     {
-        readonly Dictionary<string, string> _options = new();
-        public void AddOption(string name, string value)
+        private const char WhiteSpace = ' ';
+        private readonly Dictionary<string, string?> options = new();
+
+        public CommandLineBuilder AppendIf(string name, bool condition, object? value = null)
         {
-            _options.Add(name, value);
+            return condition ? Append(name, value) : this;
         }
+
+        public CommandLineBuilder Append(string name, object? value = null)
+        {
+            options.Add(name, value?.ToString());
+            return this;
+        }
+
+        public string Build()
+        {
+            return ToString();
+        }
+
         public override string ToString()
         {
-            var s = new StringBuilder();
-            foreach (var e in _options)
+            StringBuilder s = new();
+            foreach ((string key, string? value) in options)
             {
-                s.Append(" ");
-                s.Append(e.Key);
-                s.Append(' ');
-                s.Append(e.Value);
-                s.Append(' ');
+                s.Append(WhiteSpace);
+                s.Append(key);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    s.Append(WhiteSpace);
+                    s.Append(value);
+                }
             }
             return s.ToString();
         }
