@@ -17,20 +17,18 @@ namespace GenShin_Launcher_Plus
     {
         public MainWindow()
         {
-            LoadProgramCore lpc = new();
-            lpc.LoadLanguageCore(MainBase.IniModel.ReadLang);
-            lpc.LoadUpdateCore();
+            new LoadProgramCore().LoadLanguageCore(App.Current.IniModel.ReadLang);
             InitializeComponent();
             DataContext = new MainWindowViewModel(DialogCoordinator.Instance);
-            MainFlipView.DataContext = MainBase.noab;
+            MainFlipView.DataContext = App.Current.NoticeOverAllBase;
             HomePage.Children.Add(new Views.HomePage());
-            if (!File.Exists(Path.Combine(MainBase.IniModel.GamePath ?? "", "Yuanshen.exe")) && !File.Exists(Path.Combine(MainBase.IniModel.GamePath ?? "", "GenshinImpact.exe")))
+            if (!File.Exists(Path.Combine(App.Current.IniModel.GamePath ?? "", "Yuanshen.exe")) && !File.Exists(Path.Combine(App.Current.IniModel.GamePath ?? "", "GenshinImpact.exe")))
             {
                 MainGrid.Children.Add(new Views.GuidePage());
             }
             Task checkupdate = new(() =>
             {
-                string newver = MainBase.update.Version;
+                string newver = App.Current.UpdateObject.Version;
                 string version = Application.ResourceAssembly.GetName().Version.ToString();
                 if (version != newver)
                 {
@@ -58,7 +56,7 @@ namespace GenShin_Launcher_Plus
         private void AddUser_Click(object sender, RoutedEventArgs e)
         {
             AddUsersPage.Children.Clear();
-            AddUsersPage.Children.Add(new Views.AddUsersPage());
+            AddUsersPage.Children.Add(new Views.UsersPage());
             MainFlipView.SelectedIndex = 2;
         }
 

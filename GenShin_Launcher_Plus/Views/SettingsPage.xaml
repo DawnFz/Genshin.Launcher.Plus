@@ -18,8 +18,8 @@
             <Grid>
                 <mah:MetroProgressBar Margin="10,132,95,8" IsIndeterminate="True" Maximum="100" Minimum="0" Foreground="#FF9CA7B2" Visibility="{Binding ProgressBar}"/>
                 <Button FontSize="12" Content="{Binding languages.SwitchBtn}" HorizontalAlignment="Left" Margin="279,135,0,0" VerticalAlignment="Top" IsEnabled="{Binding PageUiStatus}" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="68" Command="{Binding GameFileConvertCommand}"/>
-                <Label d:Content="状态：设计状态" FontFamily="Microsoft YaHei UI" FontSize="12" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="270" RenderTransformOrigin="0.5,0.5" Content="{Binding TimeStatus}" Margin="9,0,0,0"/>
-                <TextBox  HorizontalAlignment="Center" Height="93" VerticalAlignment="Top" Width="338" Margin="0,30,0,0" Background="#CC83919F" Foreground="White" TextWrapping="Wrap" FontFamily="Microsoft YaHei UI" Text="{Binding GameSwitchLog}">
+                <Label d:Content="状态：设计状态" FontFamily="Microsoft YaHei UI" FontSize="12" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="270" RenderTransformOrigin="0.5,0.5" Content="{Binding StateIndicator}" Margin="9,0,0,0"/>
+                <TextBox  HorizontalAlignment="Center" Height="93" VerticalAlignment="Top" Width="338" Margin="0,30,0,0" Background="#CC83919F" Foreground="White" TextWrapping="Wrap" FontFamily="Microsoft YaHei UI" Text="{Binding ConvertingLog}">
                     <b:Interaction.Triggers>
                         <b:EventTrigger EventName="TextChanged">
                             <b:CallMethodAction MethodName="ScrollToEnd"/>
@@ -39,7 +39,7 @@
                 <CheckBox Content="{Binding languages.BorderlessCkB}" HorizontalAlignment="Left" Margin="5,159,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.isPopup}"/>
                 <CheckBox Content="{Binding languages.UnlockFpsCkB}" HorizontalAlignment="Left" Margin="5,135,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding isUnFPS}" Command="{Binding ChooseUnlockFpsCommand}"/>
                 <TextBox mah:TextBoxHelper.Watermark="{Binding languages.FpsBoxTips}" HorizontalAlignment="Left" Margin="102,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="56" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="{Binding isUnFPS}" Text="{Binding IniModel.MaxFps}"/>
-                <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" Margin="0,71,0,0" VerticalAlignment="Top" Width="153" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GamePortLists}" DisplayMemberPath="GamePort" SelectedValuePath="GamePort" SelectedIndex="{Binding IniModel.isMihoyo}"/>
+                <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" Margin="0,71,0,0" VerticalAlignment="Top" Width="153" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GamePortLists}" DisplayMemberPath="GamePort" SelectedValuePath="GamePort" SelectedIndex="{Binding isMihoyo}"/>
                 <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="16" Margin="5,103,0,0" VerticalAlignment="Top" Width="94" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GameWindowModeList}" DisplayMemberPath="GameWindowMode" SelectedValuePath="GameWindowMode" SelectedIndex="{Binding IniModel.FullSize}"/>
             </Grid>
         </GroupBox>
@@ -49,7 +49,7 @@
         </GroupBox>
         <Grid HorizontalAlignment="Center" Height="36" VerticalAlignment="Top" Width="390" Background="{Binding SettingTitleColor}">
             <Label Content="{Binding SettingsTitle}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
-            <Button FontSize="12" Content="{Binding languages.CloseBtn}" HorizontalAlignment="Left" IsEnabled="{Binding PageUiStatus}" Margin="339,0,0,0" VerticalAlignment="Center" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="46" Command="{Binding ThisPageRemoveCommand}" Background="#FEFF6B79" BorderThickness="0" Height="10"/>
+            <Button HorizontalAlignment="Left" IsEnabled="{Binding PageUiStatus}" Margin="360,0,0,0" VerticalAlignment="Center" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FFFF5252" Content="❌" BorderBrush="{x:Null}" Height="22" Width="22" Foreground="White" FontSize="9" Command="{Binding ThisPageRemoveCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

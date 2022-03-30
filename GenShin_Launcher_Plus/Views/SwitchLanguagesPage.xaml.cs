@@ -17,7 +17,7 @@ namespace GenShin_Launcher_Plus.Views
 
         private void RemoveThisPage(object sender, RoutedEventArgs e)
         {
-            MainBase.noab.MainPagesIndex = 0;
+            App.Current.NoticeOverAllBase.MainPagesIndex = 0;
         }
     }
 }

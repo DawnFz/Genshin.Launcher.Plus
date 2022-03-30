@@ -13,6 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using GenShin_Launcher_Plus.Service;
+using GenShin_Launcher_Plus.Service.IService;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -22,72 +24,8 @@ namespace GenShin_Launcher_Plus.ViewModels
     /// 目前这个类有点乱，不要乱动关于IniModel的数据
     /// 避免出现错误，开发者已经开始着手改进该类了
     /// </summary>
-    internal class SettingsPageViewModel : ObservableObject
+    public class SettingsPageViewModel : ObservableObject
     {
-        //转换文件列表
-        private string[] globalfiles = new string[]
-        { "GenshinImpact_Data/app.info",
-          "GenshinImpact_Data/globalgamemanagers",
-          "GenshinImpact_Data/globalgamemanagers.assets",
-          "GenshinImpact_Data/globalgamemanagers.assets.resS",
-          "GenshinImpact_Data/upload_crash.exe",
-          "GenshinImpact_Data/Managed/Metadata/global-metadata.dat" ,
-          "GenshinImpact_Data/Native/Data/Metadata/global-metadata.dat",
-          "GenshinImpact_Data/Native/UserAssembly.dll",
-          "GenshinImpact_Data/Native/UserAssembly.exp",
-          "GenshinImpact_Data/Native/UserAssembly.lib",
-          "GenshinImpact_Data/Plugins/cri_mana_vpx.dll",
-          "GenshinImpact_Data/Plugins/cri_vip_unity_pc.dll",
-          "GenshinImpact_Data/Plugins/cri_ware_unity.dll",
-          "GenshinImpact_Data/Plugins/d3dcompiler_43.dll",
-          "GenshinImpact_Data/Plugins/d3dcompiler_47.dll",
-          "GenshinImpact_Data/Plugins/hdiffz.dll",
-          "GenshinImpact_Data/Plugins/hpatchz.dll",
-          "GenshinImpact_Data/Plugins/mihoyonet.dll",
-          "GenshinImpact_Data/Plugins/Mmoron.dll",
-          "GenshinImpact_Data/Plugins/MTBenchmark_Windows.dll",
-          "GenshinImpact_Data/Plugins/NamedPipeClient.dll",
-          "GenshinImpact_Data/Plugins/UnityNativeChromaSDK.dll",
-          "GenshinImpact_Data/Plugins/UnityNativeChromaSDK3.dll",
-          "GenshinImpact_Data/Plugins/xlua.dll",
-          "GenshinImpact_Data/StreamingAssets/20527480.blk",
-          "Audio_Chinese_pkg_version",
-          "pkg_version",
-          "UnityPlayer.dll",
-          "GenshinImpact.exe"
-        };
-
-        private string[] cnfiles = new string[]
-        { "YuanShen_Data/app.info",
-          "YuanShen_Data/globalgamemanagers",
-          "YuanShen_Data/globalgamemanagers.assets",
-          "YuanShen_Data/globalgamemanagers.assets.resS",
-          "YuanShen_Data/upload_crash.exe",
-          "YuanShen_Data/Managed/Metadata/global-metadata.dat" ,
-          "YuanShen_Data/Native/Data/Metadata/global-metadata.dat",
-          "YuanShen_Data/Native/UserAssembly.dll",
-          "YuanShen_Data/Native/UserAssembly.exp",
-          "YuanShen_Data/Native/UserAssembly.lib",
-          "YuanShen_Data/Plugins/cri_mana_vpx.dll",
-          "YuanShen_Data/Plugins/cri_vip_unity_pc.dll",
-          "YuanShen_Data/Plugins/cri_ware_unity.dll",
-          "YuanShen_Data/Plugins/d3dcompiler_43.dll",
-          "YuanShen_Data/Plugins/d3dcompiler_47.dll",
-          "YuanShen_Data/Plugins/hdiffz.dll",
-          "YuanShen_Data/Plugins/hpatchz.dll",
-          "YuanShen_Data/Plugins/mihoyonet.dll",
-          "YuanShen_Data/Plugins/Mmoron.dll",
-          "YuanShen_Data/Plugins/MTBenchmark_Windows.dll",
-          "YuanShen_Data/Plugins/NamedPipeClient.dll",
-          "YuanShen_Data/Plugins/UnityNativeChromaSDK.dll",
-          "YuanShen_Data/Plugins/UnityNativeChromaSDK3.dll",
-          "YuanShen_Data/Plugins/xlua.dll",
-          "YuanShen_Data/StreamingAssets/20527480.blk",
-          "Audio_Chinese_pkg_version",
-          "pkg_version",
-          "UnityPlayer.dll",
-          "YuanShen.exe"
-        };
 
         //构造器
         private IDialogCoordinator dialogCoordinator;
@@ -95,8 +33,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             //
             SettingsTitle = languages.SettingsTitle;
-            GameSwitchLog = languages.GameSwitchLogStr;
-            TimeStatus = languages.TimeStatusDefault;
+            ConvertingLog = languages.ConvertingLogStr;
+            StateIndicator = languages.StateIndicatorDefault;
             //
             dialogCoordinator = instance;
             SettingsPageCreated();
@@ -108,10 +46,10 @@ namespace GenShin_Launcher_Plus.ViewModels
             DeleteUserCommand = new RelayCommand(DeleteUser);
             ChooseGamePathCommand = new RelayCommand(ChooseGamePath);
             ChooseUnlockFpsCommand = new RelayCommand(ChooseUnlockFps);
-            GameFileConvertCommand = new RelayCommand(GameFileConvert);
+            GameFileConvertCommand = new AsyncRelayCommand(GameFileConvert);
             ThisPageRemoveCommand = new RelayCommand(ThisPageRemove);
         }
-        public LanguagesModel languages { get => MainBase.lang; }
+        public LanguageModel languages { get => App.Current.Language; }
 
         //保存状态
         private string _SettingsTitle;
@@ -147,6 +85,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         public string GamePath { get => _GamePath; set => SetProperty(ref _GamePath, value); }
         private string _SwitchUser;
         public string SwitchUser { get => _SwitchUser; set => SetProperty(ref _SwitchUser, value); }
+        private int _isMihoyo;
+        public int isMihoyo { get => _isMihoyo; set => SetProperty(ref _isMihoyo, value); }
 
         //选中分辨率的索引
         private int _DisplaySelectedIndex = -1;
@@ -199,17 +139,15 @@ namespace GenShin_Launcher_Plus.ViewModels
         //存放设置属性的实体类
         public IniModel IniModel
         {
-            get => MainBase.IniModel;
-            set => SetProperty(ref MainBase.IniModel, value);
-
+            get => App.Current.IniModel;
         }
 
         //转换时的日志列表
-        private string _GameSwitchLog;
-        public string GameSwitchLog
+        private string _ConvertingLog;
+        public string ConvertingLog
         {
-            get => _GameSwitchLog;
-            set => SetProperty(ref _GameSwitchLog, value);
+            get => _ConvertingLog;
+            set => SetProperty(ref _ConvertingLog, value);
         }
 
         //转换时的控件状态
@@ -221,11 +159,11 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
 
         //转换状态
-        private string _TimeStatus;
-        public string TimeStatus
+        private string _StateIndicator;
+        public string StateIndicator
         {
-            get => _TimeStatus;
-            set => SetProperty(ref _TimeStatus, value);
+            get => _StateIndicator;
+            set => SetProperty(ref _StateIndicator, value);
         }
         public List<DisplaySizeListModel> DisplaySizeLists { get; set; }
         private void CreateDisplaySizeList()
@@ -242,6 +180,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                 new DisplaySizeListModel{ DisplaySize = languages.AdaptiveStr },
             };
         }
+
+        public bool ConvertState { get; set; }
 
         //用户列表
         public List<UserListModel> _UserLists;
@@ -326,7 +266,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 {
                     isUnFPS = false;
                 }
-                MainBase.IniModel.isUnFPS = isUnFPS;
+                App.Current.IniModel.isUnFPS = isUnFPS;
             }
         }
 
@@ -354,7 +294,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             if (GamePath != "" && File.Exists(Path.Combine(GamePath, "Yuanshen.exe")) || File.Exists(Path.Combine(GamePath, "GenshinImpact.exe")))
             {
-                MainBase.IniModel.GamePath = GamePath;
+                App.Current.IniModel.GamePath = GamePath;
             }
             else
             {
@@ -363,33 +303,33 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             if (SwitchUser != null && SwitchUser != "")
             {
-                MainBase.IniModel.SwitchUser = SwitchUser;
-                MainBase.noab.SwitchUser = $"{languages.UserNameLab}：{SwitchUser}";
-                MainBase.noab.IsSwitchUser = "Visible";
-                RegistryControl registryControl = new();
-                registryControl.SetToRegedit(SwitchUser);
+                App.Current.IniModel.SwitchUser = SwitchUser;
+                App.Current.NoticeOverAllBase.SwitchUser = $"{languages.UserNameLab}：{SwitchUser}";
+                App.Current.NoticeOverAllBase.IsSwitchUser = "Visible";
+                RegistryService registryControl = new();
+                registryControl.SetToRegistry(SwitchUser);
             }
-            MainBase.IniModel.Width = Width;
-            MainBase.IniModel.Height = Height;
-            MainBase.IniModel.isUnFPS = isUnFPS;
-            if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, "config.ini")))
+            App.Current.IniModel.Width = Width;
+            App.Current.IniModel.Height = Height;
+            App.Current.IniModel.isUnFPS = isUnFPS;
+            if (File.Exists(Path.Combine(App.Current.IniModel.GamePath, "config.ini")))
             {
-                switch (IniModel.isMihoyo)
+                switch (isMihoyo)
                 {
                     case 0:
-                        MainBase.IniModel.Cps = "pcadbdpz";
-                        MainBase.IniModel.Channel = 1;
-                        MainBase.IniModel.Sub_channel = 1;
+                        App.Current.IniModel.Cps = "pcadbdpz";
+                        App.Current.IniModel.Channel = 1;
+                        App.Current.IniModel.Sub_channel = 1;
                         if (File.Exists(Path.Combine(GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
                             File.Delete(Path.Combine(GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
-                        MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}";
-                        MainBase.noab.IsGamePortLists = "Visible";
-                        MainBase.noab.GamePortListIndex = 0;
+                        App.Current.NoticeOverAllBase.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}";
+                        App.Current.NoticeOverAllBase.IsGamePortLists = "Visible";
+                        App.Current.NoticeOverAllBase.GamePortListIndex = 0;
                         break;
                     case 1:
-                        MainBase.IniModel.Cps = "bilibili";
-                        MainBase.IniModel.Channel = 14;
-                        MainBase.IniModel.Sub_channel = 0;
+                        App.Current.IniModel.Cps = "bilibili";
+                        App.Current.IniModel.Channel = 14;
+                        App.Current.IniModel.Sub_channel = 0;
                         if (!File.Exists(Path.Combine(GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
                         {
                             try
@@ -401,43 +341,43 @@ namespace GenShin_Launcher_Plus.ViewModels
                                 MessageBox.Show(ex.Message);
                             }
                         }
-                        MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}";
-                        MainBase.noab.IsGamePortLists = "Visible";
-                        MainBase.noab.GamePortListIndex = 1;
+                        App.Current.NoticeOverAllBase.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}";
+                        App.Current.NoticeOverAllBase.IsGamePortLists = "Visible";
+                        App.Current.NoticeOverAllBase.GamePortListIndex = 1;
 
                         break;
                     case 2:
-                        MainBase.IniModel.Cps = "mihoyo";
-                        MainBase.IniModel.Channel = 1;
-                        MainBase.IniModel.Sub_channel = 0;
+                        App.Current.IniModel.Cps = "mihoyo";
+                        App.Current.IniModel.Channel = 1;
+                        App.Current.IniModel.Sub_channel = 0;
                         if (File.Exists(Path.Combine(GamePath, "GenshinImpact_Data/Plugins/PCGameSDK.dll")))
                             File.Delete(Path.Combine(GamePath, "GenshinImpact_Data/Plugins/PCGameSDK.dll"));
-                        MainBase.noab.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeMStr}";
-                        MainBase.noab.IsGamePortLists = "Hidden";
-                        MainBase.noab.GamePortListIndex = -1;
+                        App.Current.NoticeOverAllBase.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeMStr}";
+                        App.Current.NoticeOverAllBase.IsGamePortLists = "Hidden";
+                        App.Current.NoticeOverAllBase.GamePortListIndex = -1;
                         break;
                     default:
                         break;
                 }
             }
             DelaySaveButtonTitle();
-            MainBase.noab.MainPagesIndex = 0;
+            App.Current.NoticeOverAllBase.MainPagesIndex = 0;
         }
 
         //被创建时从Setting.ini文件读取给IniModel对象赋值
         private void SettingsPageCreated()
-        {
-            SwitchUser = MainBase.noab.SwitchUser;
-            GamePath = MainBase.IniModel.GamePath;
-            isUnFPS = MainBase.IniModel.isUnFPS;
-            Width = MainBase.IniModel.Width ?? "1600";
-            Height = MainBase.IniModel.Height ?? "900";
-            IniModel.isMihoyo = MainBase.IniModel.Cps switch
+        {     
+            SwitchUser = App.Current.NoticeOverAllBase.SwitchUser;
+            GamePath = App.Current.IniModel.GamePath;
+            isUnFPS = App.Current.IniModel.isUnFPS;
+            Width = App.Current.IniModel.Width ?? "1600";
+            Height = App.Current.IniModel.Height ?? "900";
+            isMihoyo = App.Current.IniModel.Cps switch
             {
-                "pcadbdpz"=>0,
-                "bilibili"=>1,
-                "mihoyo"=>2,
-                _=>3,
+                "pcadbdpz" => 0,
+                "bilibili" => 1,
+                "mihoyo" => 2,
+                _ => 3,
             };
         }
 
@@ -445,360 +385,48 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand ThisPageRemoveCommand { get; set; }
         private void ThisPageRemove()
         {
-            MainBase.noab.MainPagesIndex = 0;
+            App.Current.NoticeOverAllBase.MainPagesIndex = 0;
         }
 
         //转换国际服及转换国服绑定命令
         public ICommand GameFileConvertCommand { get; set; }
-        private void GameFileConvert()
+        private async Task GameFileConvert()
         {
-            if (!File2.IsFileOpen(Path.Combine(MainBase.IniModel.GamePath, "Yuanshen.exe")) && !File2.IsFileOpen(Path.Combine(MainBase.IniModel.GamePath, "GenshinImpact.exe")))
+            PageUiStatus = "false";
+            ProgressBar = "Visible";
+            FileHelper fileHelper = new();
+            if (!fileHelper.IsFileOpen(Path.Combine(App.Current.IniModel.GamePath, "Yuanshen.exe")) && !fileHelper.IsFileOpen(Path.Combine(App.Current.IniModel.GamePath, "GenshinImpact.exe")))
             {
-
-                Task start = new(async () =>
+                IGameConvertService gameConvert = new GameConvertService();
+                await gameConvert.ConvertGameFileAsync();
+                if (ConvertState)
                 {
-                    if ((await dialogCoordinator.ShowMessageAsync(this, $"{languages.Warning} ! !", languages.WarningCCStr, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Cancel, NegativeButtonText = languages.SwitchBtn })) != MessageDialogResult.Affirmative)
-                    {
-                        PageUiStatus = "false";
-                        ProgressBar = "Visible";
-                        //判断客户端
-                        string port = JudgeGamePort();
-                        //判断Pkg是否正常
-                        if (port == "YuanShen")
-                        {
-                            if (!CheckFileIntegrity(MainBase.IniModel.GamePath, cnfiles, 1, ".bak"))
-                            {
-                                //没备份文件
-                                if (Directory.Exists(@"GlobalFile"))
-                                {
-                                    if (JudgePkgVer("GlobalFile"))
-                                    {
-                                        if (CheckFileIntegrity(@"GlobalFile", globalfiles, 0))
-                                        {
-                                            await GlobalMoveFile();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        DirectoryInfo di = new(@"GlobalFile");
-                                        di.Delete(true);
-                                    }
-                                }
-                                else if (File.Exists(@"GlobalFile.pkg"))
-                                {
-                                    TimeStatus = languages.TimeStatusUning;
-                                    //解压Pkg
-                                    if (FileHelper.UnZip("GlobalFile.pkg", @""))
-                                    {
-                                        if (JudgePkgVer("GlobalFile"))
-                                        {
-                                            await GlobalMoveFile();
-                                        }
-                                        else
-                                        {
-                                            DirectoryInfo di = new(@"GlobalFile");
-                                            di.Delete(true);
-                                            TimeStatus = languages.TimeStatusUpdate;
-                                        }
-                                    }
-                                    //解压失败
-                                    else
-                                    {
-                                        TimeStatus = languages.TimeStatusUnErr;
-                                        GameSwitchLog += languages.ErrorGPkgNF;
-                                        await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PkgNoUnError, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
-                                    }
-                                }
-                                else
-                                {
-                                    TimeStatus = languages.TimeStatusCheck;
-                                    GameSwitchLog += languages.ErrorGPkgNF;
-                                    await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PkgNoUnError, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
-                                }
-                            }
-                            else
-                            {
-                                await ReGlobalGame();
-                            }
-                        }
-                        else
-                        {
-                            if (!CheckFileIntegrity(MainBase.IniModel.GamePath, globalfiles, 1, ".bak"))
-                            {
-                                //没备份文件
-                                if (Directory.Exists(@"CnFile"))
-                                {
-                                    if (JudgePkgVer("CnFile"))
-                                    {
-                                        if (CheckFileIntegrity(@"CnFile", cnfiles, 0))
-                                        {
-                                            await CnMoveFile();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        DirectoryInfo di = new(@"CnFile");
-                                        di.Delete(true);
-                                    }
-                                }
-                                else if (File.Exists(@"CnFile.pkg"))
-                                {
-                                    TimeStatus = languages.TimeStatusUning;
-                                    //解压Pkg
-                                    if (FileHelper.UnZip("CnFile.pkg", @""))
-                                    {
-                                        if (JudgePkgVer("CnFile"))
-                                        {
-                                            await CnMoveFile();
-                                        }
-                                        else
-                                        {
-                                            DirectoryInfo di = new(@"CnFile");
-                                            di.Delete(true);
-                                            TimeStatus = languages.TimeStatusUpdate;
-                                        }
-                                    }
-                                    //解压失败
-                                    else
-                                    {
-                                        TimeStatus = languages.TimeStatusUnErr;
-                                        GameSwitchLog += languages.ErrorCPkgNF;
-                                        await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PkgNoUnError, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                                    }
-                                }
-                                else
-                                {
-                                    TimeStatus = languages.TimeStatusCheck;
-                                    GameSwitchLog += languages.ErrorCPkgNF;
-                                    await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PkgNoUnError, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "确定" });
-                                }
-                            }
-                            else
-                            {
-                                await ReCnGame();
-                            }
-                        }
-                        ProgressBar = "Hidden";
-                        PageUiStatus = "true";
-                        SaveSettings();
-                    }
-                });
-                start.Start();
+                    await dialogCoordinator.ShowMessageAsync(
+                    this, languages.TipsStr,
+                    "客户端转换完成，请留意输出日志，记得保存哦~！~\r\n如果转换过程中出现什么问题可以参阅帮助文档网站",
+                      MessageDialogStyle.Affirmative,
+                     new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
+
+                }
+                else
+                {
+                    await dialogCoordinator.ShowMessageAsync(
+                    this, languages.Error,
+                    "转换失败，请留意输出日志\r\n您也可以参阅帮助文档网站",
+                    MessageDialogStyle.Affirmative,
+                    new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
+                }
             }
             else
             {
-                dialogCoordinator.ShowMessageAsync(this, languages.Error, "请先关闭游戏再执行转换操作，如确定游戏已经完全关闭还是弹此提示请重启电脑再试或联系开发者！", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
+                await dialogCoordinator.ShowMessageAsync(
+                    this, languages.Error,
+                    "请先关闭游戏再执行转换操作，如确定游戏已经完全关闭还是弹此提示请重启电脑再试或联系开发者！",
+                    MessageDialogStyle.Affirmative,
+                    new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
             }
-        }
-
-        //转换国际服及转换国服核心逻辑-判断客户端
-        private string JudgeGamePort()
-        {
-            if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, "YuanShen.exe")))
-            {
-                return "YuanShen";
-            }
-            else if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, "GenshinImpact.exe")))
-            {
-                return "GenshinImpact";
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        //转换国际服及转换国服核心逻辑-判断PKG文件版本
-        private bool JudgePkgVer(string GamePort)
-        {
-            string pkgfile = MainBase.update.PkgVersion;
-            if (!File.Exists($"{GamePort}/{pkgfile}"))
-            {
-                dialogCoordinator.ShowMessageAsync(this, languages.Warning, $"{languages.NewPkgVer} : [{ pkgfile }]\r\n", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
-                ProcessStartInfo info = new()
-                {
-                    FileName = "https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg",
-                    UseShellExecute = true,
-                };
-                Process.Start(info);
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        //遍历判断文件是否存在
-        private bool CheckFileIntegrity(string dirpath, string[] filepath, int len, string postfix = "")
-        {
-            bool notError = true;
-            for (int i = 0; i < filepath.Length - len; i++)
-            {
-                if (File.Exists(Path.Combine(dirpath, filepath[i] + postfix)) == false)
-                {
-                    GameSwitchLog += $"{filepath[i]} {postfix} {languages.ErrorFileNF}\r\n";
-                    notError = false;
-                    break;
-                }
-                GameSwitchLog += $"{filepath[i]} {postfix} {languages.FileExist}\r\n";
-            }
-            return notError;
-        }
-
-        //国内转国际
-        private async Task GlobalMoveFile()
-        {
-            Computer redir = new();
-            TimeStatus = languages.TimeStatusBaking;
-            for (int a = 0; a < cnfiles.Length; a++)
-            {
-                String newFileName = Path.GetFileNameWithoutExtension(Path.Combine(MainBase.IniModel.GamePath, cnfiles[a])) + Path.GetExtension(Path.Combine(MainBase.IniModel.GamePath, cnfiles[a]));
-                if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, cnfiles[a])) == true)
-                {
-                    try
-                    {
-                        redir.FileSystem.RenameFile(Path.Combine(MainBase.IniModel.GamePath, cnfiles[a]), newFileName + ".bak");
-                    }
-                    catch (Exception ex)
-                    {
-                        GameSwitchLog += $"{newFileName} {languages.ErrorBakF}";
-                        GameSwitchLog += $"{ex.Message}\r\n\r\n";
-                    }
-                    GameSwitchLog += $"{newFileName} {languages.BakSuccess}\r\n";
-                }
-                else
-                {
-                    GameSwitchLog += $"{newFileName} {languages.BakFileNfSk}\r\n";
-                }
-            }
-            TimeStatus = languages.TimeStatusReping;
-            redir.FileSystem.RenameDirectory(Path.Combine(MainBase.IniModel.GamePath, "YuanShen_Data"), "GenshinImpact_Data");
-            for (int i = 0; i < globalfiles.Length; i++)
-            {
-                File.Copy(Path.Combine(@"GlobalFile", globalfiles[i]), Path.Combine(MainBase.IniModel.GamePath, globalfiles[i]), true);
-                GameSwitchLog += $"{globalfiles[i]} {languages.RepSuccess}\r\n";
-            };
-            IniModel.isMihoyo = 2;
-            TimeStatus = languages.TimeStatusDefault;
-            await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, languages.SwitchSucessStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
-        }
-
-        //国际转国内
-        private async Task CnMoveFile()
-        {
-            Computer redir = new();
-            TimeStatus = languages.TimeStatusBaking;
-            for (int a = 0; a < globalfiles.Length; a++)
-            {
-                String newFileName = Path.GetFileNameWithoutExtension(Path.Combine(MainBase.IniModel.GamePath, globalfiles[a])) + Path.GetExtension(Path.Combine(MainBase.IniModel.GamePath, globalfiles[a]));
-                if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, globalfiles[a])) == true)
-                {
-                    try
-                    {
-                        redir.FileSystem.RenameFile(Path.Combine(MainBase.IniModel.GamePath, globalfiles[a]), newFileName + ".bak");
-                    }
-                    catch (Exception ex)
-                    {
-                        GameSwitchLog += $"{newFileName} {languages.ErrorBakF}";
-                        GameSwitchLog += $"{ex.Message}\r\n\r\n";
-                    }
-                    GameSwitchLog += $"{newFileName} {languages.BakSuccess}\r\n";
-                }
-                else
-                {
-                    GameSwitchLog += $"{newFileName} {languages.BakFileNfSk}\r\n";
-                }
-            }
-            TimeStatus = languages.TimeStatusReping;
-            redir.FileSystem.RenameDirectory(Path.Combine(MainBase.IniModel.GamePath, "GenshinImpact_Data"), "YuanShen_Data");
-            for (int i = 0; i < cnfiles.Length; i++)
-            {
-                File.Copy(Path.Combine(@"CnFile", cnfiles[i]), Path.Combine(MainBase.IniModel.GamePath, cnfiles[i]), true);
-                GameSwitchLog += $"{cnfiles[i]} {languages.RepSuccess}\r\n";
-            };
-            IniModel.isMihoyo = 0;
-            TimeStatus = languages.TimeStatusDefault;
-            await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, languages.SwitchSucessStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
-        }
-        //还原
-        private async Task ReCnGame()
-        {
-            Computer redir = new();
-            TimeStatus = languages.TimeStatusCleaning;
-            for (int i = 0; i < globalfiles.Length; i++)
-            {
-                if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, globalfiles[i])) == true)
-                {
-                    File.Delete(Path.Combine(MainBase.IniModel.GamePath, globalfiles[i]));
-                    GameSwitchLog += $"{globalfiles[i]} {languages.CleanedStr}\r\n";
-                }
-                else
-                {
-                    GameSwitchLog += $"{globalfiles[i]} {languages.CleanSkipStr}\r\n";
-                }
-            }
-            TimeStatus = languages.TimeStatusRecover;
-            redir.FileSystem.RenameDirectory(Path.Combine(MainBase.IniModel.GamePath, "GenshinImpact_Data"), "YuanShen_Data");
-            int whole = 0, success = 0;
-            for (int a = 0; a < cnfiles.Length; a++)
-            {
-                string newFileName = Path.GetFileNameWithoutExtension(cnfiles[a]) + Path.GetExtension(cnfiles[a]);
-                if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, cnfiles[a] + ".bak")) == true)
-                {
-                    redir.FileSystem.RenameFile(Path.Combine(MainBase.IniModel.GamePath, cnfiles[a] + ".bak"), newFileName);
-                    GameSwitchLog += $"{cnfiles[a]} {languages.RestoreSucess}\r\n";
-                    success++;
-                }
-                else
-                {
-
-                    GameSwitchLog += $"{cnfiles[a]} {languages.RestoreSkipStr}\r\n";
-                    whole++;
-                }
-            }
-            TimeStatus = languages.TimeStatusDefault;
-            IniModel.isMihoyo = 0;
-            await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, $"{languages.RestoreOverTipsStr} , {languages.RestoreNum} : {success } ,{languages.RestoreErrNum} : {whole} , {languages.RestoreEndStr}", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
-        }
-
-        private async Task ReGlobalGame()
-        {
-            Computer redir = new();
-            TimeStatus = languages.TimeStatusCleaning;
-            for (int i = 0; i < cnfiles.Length; i++)
-            {
-                if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, cnfiles[i])) == true)
-                {
-                    File.Delete(Path.Combine(MainBase.IniModel.GamePath, cnfiles[i]));
-                    GameSwitchLog += $"{cnfiles[i]} {languages.CleanedStr}\r\n";
-                }
-                else
-                {
-                    GameSwitchLog += $"{cnfiles[i]} {languages.CleanSkipStr}\r\n";
-                }
-            }
-            TimeStatus = languages.TimeStatusRecover;
-            redir.FileSystem.RenameDirectory(Path.Combine(MainBase.IniModel.GamePath, "YuanShen_Data"), "GenshinImpact_Data");
-            int whole = 0, success = 0;
-            for (int a = 0; a < globalfiles.Length; a++)
-            {
-                string newFileName = Path.GetFileNameWithoutExtension(globalfiles[a]) + Path.GetExtension(globalfiles[a]);
-                if (File.Exists(Path.Combine(MainBase.IniModel.GamePath, globalfiles[a] + ".bak")) == true)
-                {
-                    redir.FileSystem.RenameFile(Path.Combine(MainBase.IniModel.GamePath, globalfiles[a] + ".bak"), newFileName);
-                    GameSwitchLog += $"{globalfiles[a]} {languages.RestoreSucess}\r\n";
-                    success++;
-                }
-                else
-                {
-                    GameSwitchLog += $"{globalfiles[a]} {languages.RestoreSkipStr}\r\n";
-                    whole++;
-                }
-            }
-            TimeStatus = languages.TimeStatusDefault;
-            IniModel.isMihoyo = 2;
-            await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, $"{languages.RestoreOverTipsStr} , {languages.RestoreNum} : {success } ,{languages.RestoreErrNum} : {whole}", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
+            ProgressBar = "Hidden";
+            PageUiStatus = "true";
         }
     }
 }

@@ -33,10 +33,10 @@ namespace GenShin_Launcher_Plus.ViewModels
             ExitProgramCommand = new RelayCommand(ExitProgram);
             MainMinimizedCommand = new RelayCommand(MainMinimized);
             Title = $"{languages.MainTitle} {Application.ResourceAssembly.GetName().Version}";
-            MainBase.IniModel.EXEname(Path.GetFileName(Environment.ProcessPath));
+            App.Current.IniModel.EXEname(Path.GetFileName(Environment.ProcessPath));
         }
 
-        public LanguagesModel languages { get => MainBase.lang; }
+        public LanguageModel languages { get => App.Current.Language; }
         public string Title { get; set; }
         private ImageBrush _Background;
         public ImageBrush Background { get => _Background; set => SetProperty(ref _Background, value); }
@@ -45,7 +45,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             //
             Background = new();
-            if (MainBase.IniModel.UseXunkongWallpaper)
+            if (App.Current.IniModel.UseXunkongWallpaper)
             {
                 Background.Stretch = Stretch.UniformToFill;
                 var uri = new Uri("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
@@ -106,13 +106,13 @@ namespace GenShin_Launcher_Plus.ViewModels
                 {
                     uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.jpg"), UriKind.Absolute);
                 }
-                else if (MainBase.IniModel.isWebBg == true)
+                else if (App.Current.IniModel.isWebBg == true)
                 {
                     uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
                 }
                 else
                 {
-                    string bgurl = MainBase.update.BgUrl;
+                    string bgurl = App.Current.UpdateObject.BgUrl;
                     if (bgurl != "" && bgurl != null)
                     {
                         uri = new(bgurl, UriKind.Absolute);
@@ -140,11 +140,11 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand OpenImagesDirectoryCommand { get; set; }
         private async void OpenImagesDirectory()
         {
-            if (Directory.Exists(Path.Combine(MainBase.IniModel.GamePath, "ScreenShot")))
+            if (Directory.Exists(Path.Combine(App.Current.IniModel.GamePath, "ScreenShot")))
             {
                 ProcessStartInfo info = new()
                 {
-                    FileName = Path.Combine(MainBase.IniModel.GamePath, "ScreenShot"),
+                    FileName = Path.Combine(App.Current.IniModel.GamePath, "ScreenShot"),
                     UseShellExecute = true,
                 };
                 Process.Start(info);

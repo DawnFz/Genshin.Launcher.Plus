@@ -24,11 +24,11 @@ namespace GenShin_Launcher_Plus.ViewModels
             set=> SetProperty(ref _GamePath, value);
         }
 
-        public LanguagesModel languages { get => MainBase.lang; }
+        public LanguageModel languages { get => App.Current.Language; }
         public ICommand DirchooseCommand { get; set; }
         private void Dirchoose()
         {
-            CommonOpenFileDialog dialog = new(MainBase.lang.GameDirMsg);
+            CommonOpenFileDialog dialog = new(App.Current.Language.GameDirMsg);
             dialog.IsFolderPicker = true;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
@@ -39,8 +39,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                 }
                 else
                 {
-                    MainBase.IniModel.GamePath = GamePath;
-                    MainBase.IniModel = new();
+                    App.Current.IniModel.GamePath = GamePath;
+                    App.Current.IniModel = new();
                     MainWindow mainWindow = new();
                     mainWindow.Show();
                     Application.Current.MainWindow.Close();

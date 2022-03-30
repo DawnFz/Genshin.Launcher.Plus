@@ -26,20 +26,20 @@ namespace GenShin_Launcher_Plus.ViewModels
             UpdateRunCommand = new RelayCommand(UpdateRun);
             ViewControlVisibility = "Hidden";
         }
-        private FileDownloader _DFC;
-        public FileDownloader DFC
+        private DownloadHelper _DFC;
+        public DownloadHelper DFC
         {
             get=> _DFC;
             set=> SetProperty(ref _DFC, value);
         }
-        public LanguagesModel languages { get => MainBase.lang; }
+        public LanguageModel languages { get => App.Current.Language; }
         public string Notify
         {
-            get => MainBase.update.Content;
+            get => App.Current.UpdateObject.Content;
         }
         public string Title
         {
-            get => MainBase.update.Title;
+            get => App.Current.UpdateObject.Title;
         }
 
         private bool _ButtonIsEnabled = true;
@@ -71,14 +71,14 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 ButtonIsEnabled = false;
                 ViewControlVisibility = "Visibility";
-                string updatefile = UseGlobalUrlCheck ? MainBase.update.GlobalDownloadUrl : MainBase.update.DownloadUrl;
+                string updatefile = UseGlobalUrlCheck ? App.Current.UpdateObject.GlobalDownloadUrl : App.Current.UpdateObject.DownloadUrl;
                 if (await DFC.HttpFileExistAsync(updatefile) == true)
                 {
                     await DFC.DownloadHttpFileAsync(updatefile, @"UpdateTemp.zip");
                     if ((await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, languages.DownloadComStr, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Cancel, NegativeButtonText = languages.Determine })) != MessageDialogResult.Affirmative)
                     {
                         //解压更新了的ZIP文件
-                        if (FileHelper.UnZip("UpdateTemp.zip", @""))
+                        if (FileHelper.UnZip("UpdateTemp.zip"))
                         {
                             File.Delete(@"UpdateTemp.zip");
                             Process.Start(@"Update.exe");

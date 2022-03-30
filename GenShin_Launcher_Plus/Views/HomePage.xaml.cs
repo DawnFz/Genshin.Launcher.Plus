@@ -12,7 +12,7 @@ namespace GenShin_Launcher_Plus.Views
         {
             InitializeComponent();
             DataContext = new ViewModels.HomePageViewModel(DialogCoordinator.Instance);
-            LabGrid.DataContext = ViewModels.MainBase.noab;
+            LabGrid.DataContext = App.Current.NoticeOverAllBase;
         }
     }
 }

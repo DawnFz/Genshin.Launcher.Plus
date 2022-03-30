@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls.Dialogs;
+﻿using GenShin_Launcher_Plus.ViewModels;
+using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Controls;
 
 namespace GenShin_Launcher_Plus.Views
@@ -11,8 +12,10 @@ namespace GenShin_Launcher_Plus.Views
 
         public SettingsPage()
         {
+            SettingsPageViewModel vm = new (DialogCoordinator.Instance);
+            App.Current.SettingsPageViewModel = vm;
             InitializeComponent();
-            DataContext = new ViewModels.SettingsPageViewModel(DialogCoordinator.Instance);
+            DataContext = vm;
         }
     }
 }

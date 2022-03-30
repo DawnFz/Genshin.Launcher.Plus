@@ -13,13 +13,13 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             SaveLangSetCommand = new RelayCommand(ThisPageRemove);
         }
-        public LanguagesModel languages { get => MainBase.lang; }
+        public LanguageModel languages { get => App.Current.Language; }
 
         public int LangIndex
         {
             get
             {
-                return MainBase.IniModel.ReadLang switch
+                return App.Current.IniModel.ReadLang switch
                 {
                     "Lang_CN" => 0,
                     "Lang_TW" => 1,
@@ -28,15 +28,15 @@ namespace GenShin_Launcher_Plus.ViewModels
                 };
             }
         }
-        public List<LanguageListsModel> langlist { get => MainBase.langlist; }
+        public List<LanguageListModel> langlist { get => App.Current.LangList; }
 
         private string _SwitchLang;
         public string SwitchLang { get => _SwitchLang; set => SetProperty(ref _SwitchLang, value); }
         public ICommand SaveLangSetCommand { get; set; }
         private void ThisPageRemove()
         {
-            MainBase.IniModel.ReadLang = SwitchLang;
-            MainBase.noab.MainPagesIndex = 0;
+            App.Current.IniModel.ReadLang = SwitchLang;
+            App.Current.NoticeOverAllBase.MainPagesIndex = 0;
             MainWindow mainWindow = new();
             mainWindow.Show();
             Application.Current.MainWindow.Close();
