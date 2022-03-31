@@ -35,7 +35,12 @@ namespace GenShin_Launcher_Plus.ViewModels
                 GamePath = dialog.FileName;
                 if (!File.Exists(Path.Combine(GamePath, "Yuanshen.exe")) && !File.Exists(Path.Combine(GamePath, "GenshinImpact.exe")))
                 {
-                    dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.PathErrorMessageStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
+                    dialogCoordinator.ShowMessageAsync(
+                        this, languages.Error, 
+                        languages.PathErrorMessageStr, 
+                        MessageDialogStyle.Affirmative,
+                        new MetroDialogSettings()
+                        { AffirmativeButtonText = languages.Determine });
                 }
                 else
                 {

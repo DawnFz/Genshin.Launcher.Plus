@@ -75,7 +75,15 @@ namespace GenShin_Launcher_Plus.ViewModels
                 if (await DFC.HttpFileExistAsync(updatefile) == true)
                 {
                     await DFC.DownloadHttpFileAsync(updatefile, @"UpdateTemp.zip");
-                    if ((await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, languages.DownloadComStr, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Cancel, NegativeButtonText = languages.Determine })) != MessageDialogResult.Affirmative)
+                    if ((await dialogCoordinator.ShowMessageAsync(
+                        this, languages.TipsStr,
+                        languages.DownloadComStr,
+                        MessageDialogStyle.AffirmativeAndNegative,
+                        new MetroDialogSettings() 
+                        { 
+                            AffirmativeButtonText = languages.Cancel,
+                            NegativeButtonText = languages.Determine 
+                        })) != MessageDialogResult.Affirmative)
                     {
                         //解压更新了的ZIP文件
                         if (FileHelper.UnZip("UpdateTemp.zip"))
@@ -98,14 +106,24 @@ namespace GenShin_Launcher_Plus.ViewModels
                 }
                 else
                 {
-                    await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.DownFailedStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
+                    await dialogCoordinator.ShowMessageAsync(
+                        this, languages.Error,
+                        languages.DownFailedStr, 
+                        MessageDialogStyle.Affirmative,
+                        new MetroDialogSettings()
+                        { AffirmativeButtonText = languages.Determine });
                     ViewControlVisibility = "Hidden";
                     ButtonIsEnabled = true;
                 }
             }
             else
             {
-                await dialogCoordinator.ShowMessageAsync(this, languages.TipsStr, languages.RepWarnStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
+                await dialogCoordinator.ShowMessageAsync(
+                    this, languages.TipsStr,
+                    languages.RepWarnStr, 
+                    MessageDialogStyle.Affirmative,
+                    new MetroDialogSettings()
+                    { AffirmativeButtonText = languages.Determine });
             }
         }
     }

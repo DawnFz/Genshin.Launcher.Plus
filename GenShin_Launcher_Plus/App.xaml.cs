@@ -61,8 +61,8 @@ namespace GenShin_Launcher_Plus
         private LanguageModel _Language;
         public LanguageModel Language { get => _Language; set => _Language = value; }
 
-        private UpdateModel _UpdateObject;
-        public UpdateModel UpdateObject { get => _UpdateObject; set => _UpdateObject = value; }
+        private UpdateModel? _UpdateObject;
+        public UpdateModel? UpdateObject { get => _UpdateObject; set => _UpdateObject = value; }
 
         private SettingsPageViewModel _SettingsPageViewModel;
         public SettingsPageViewModel SettingsPageViewModel { get => _SettingsPageViewModel; set => _SettingsPageViewModel = value; }

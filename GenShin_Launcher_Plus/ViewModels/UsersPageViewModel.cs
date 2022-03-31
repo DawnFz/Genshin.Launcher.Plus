@@ -1,4 +1,4 @@
-﻿using GenShin_Launcher_Plus.Core;
+﻿using GenShin_Launcher_Plus.Service;
 using GenShin_Launcher_Plus.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;

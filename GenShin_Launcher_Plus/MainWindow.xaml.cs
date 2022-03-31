@@ -22,11 +22,12 @@ namespace GenShin_Launcher_Plus
             DataContext = new MainWindowViewModel(DialogCoordinator.Instance);
             MainFlipView.DataContext = App.Current.NoticeOverAllBase;
             HomePage.Children.Add(new Views.HomePage());
-            if (!File.Exists(Path.Combine(App.Current.IniModel.GamePath ?? "", "Yuanshen.exe")) && !File.Exists(Path.Combine(App.Current.IniModel.GamePath ?? "", "GenshinImpact.exe")))
+            if (!File.Exists(Path.Combine(App.Current.IniModel.GamePath ?? "", "Yuanshen.exe")) &&
+                !File.Exists(Path.Combine(App.Current.IniModel.GamePath ?? "", "GenshinImpact.exe")))
             {
                 MainGrid.Children.Add(new Views.GuidePage());
             }
-            Task checkupdate = new(() =>
+            Task.Run(() =>
             {
                 string newver = App.Current.UpdateObject.Version;
                 string version = Application.ResourceAssembly.GetName().Version.ToString();
@@ -38,7 +39,6 @@ namespace GenShin_Launcher_Plus
                     });
                 }
             });
-            checkupdate.Start();
         }
 
         private void WindowDragMove(object sender, MouseButtonEventArgs e)

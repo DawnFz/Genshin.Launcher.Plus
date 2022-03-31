@@ -5,7 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Version>1.3.9.0</Version>
+    <Version>1.3.9.5</Version>
     <StartupObject>GenShin_Launcher_Plus.App</StartupObject>
     <ApplicationIcon>ICON.ico</ApplicationIcon>
     <IsPublishable>True</IsPublishable>
@@ -24,8 +24,6 @@
     <None Remove="Images\SettingsButton.png" />
     <None Remove="Images\TencentGroupButton.png" />
     <None Remove="Images\UI_0.jpg" />
-    <None Remove="Images\UI_3.jpg" />
-    <None Remove="Images\UI_4.jpg" />
     <None Remove="StaticRes\mihoyosdk.dll" />
     <None Remove="StaticRes\Update.dll" />
   </ItemGroup>
@@ -36,12 +34,6 @@
 
   <ItemGroup>
     <Resource Include="Images\UI_0.jpg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\UI_3.jpg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\UI_4.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="StaticRes\mihoyosdk.dll">

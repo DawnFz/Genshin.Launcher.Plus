@@ -9,10 +9,6 @@ namespace GenShin_Launcher_Plus.Core
 {
     internal class FileHelper
     {
-
-
-
-
         [DllImport("kernel32.dll")]
         private static extern IntPtr _lopen(string lpPathName, int iReadWrite);
         [DllImport("kernel32.dll")]
@@ -39,9 +35,6 @@ namespace GenShin_Launcher_Plus.Core
             CloseHandle(vHandle);
             return false;
         }
-
-
-
 
         /// <summary>
         /// 将程序中的资源文件写出到硬盘
@@ -70,45 +63,5 @@ namespace GenShin_Launcher_Plus.Core
                 return false;
             }
         }
-
-
-        /*
-        public static bool UnZip(string zipFile, string directory)
-        {
-            try
-            {
-                ZipInputStream f = new(File.OpenRead(zipFile));
-            A: ZipEntry zp = f.GetNextEntry();
-                while (zp != null)
-                {
-                    string un_tmp2;
-                    if (zp.Name.EndsWith("/"))
-                    {
-                        int tmp1 = zp.Name.LastIndexOf("/");
-                        un_tmp2 = zp.Name.Substring(0, tmp1);
-                        Directory.CreateDirectory(directory + un_tmp2);
-                    }
-                    if (!zp.IsDirectory && zp.Crc != 00000000L)
-                    {
-                        int i = 2048;
-                        byte[] b = new byte[i];
-                        FileStream s = File.Create(directory + zp.Name);
-                        while (true)
-                        {
-                            i = f.Read(b, 0, b.Length);
-                            if (i > 0)
-                                s.Write(b, 0, i);
-                            else
-                                break;
-                        }
-                        s.Close();
-                    }
-                    goto A;
-                }
-                f.Close();
-                return true;
-            }
-            catch { return false; }
-        }*/
     }
 }

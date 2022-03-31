@@ -32,6 +32,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             OpenQQGroupUrlCommand = new RelayCommand(OpenQQGroupUrl);
             ExitProgramCommand = new RelayCommand(ExitProgram);
             MainMinimizedCommand = new RelayCommand(MainMinimized);
+
             Title = $"{languages.MainTitle} {Application.ResourceAssembly.GetName().Version}";
             App.Current.IniModel.EXEname(Path.GetFileName(Environment.ProcessPath));
         }

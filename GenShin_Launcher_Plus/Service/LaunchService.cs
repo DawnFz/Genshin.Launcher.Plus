@@ -13,7 +13,7 @@ using GenShin_Launcher_Plus.Service.IService;
 
 namespace GenShin_Launcher_Plus.Service
 {
-    public class LaunchService: ILaunchService
+    public class LaunchService : ILaunchService
     {
         private IDialogCoordinator dialogCoordinator;
         public LaunchService(IDialogCoordinator instance)
@@ -40,7 +40,12 @@ namespace GenShin_Launcher_Plus.Service
                 gameMain = Path.Combine(App.Current.IniModel.GamePath, "GenshinImpact.exe");
                 if (!File.Exists(gameMain))
                 {
-                    await dialogCoordinator.ShowMessageAsync(this, App.Current.Language.Error, App.Current.Language.PathErrorMessageStr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = App.Current.Language.Determine });
+                    await dialogCoordinator.ShowMessageAsync(
+                        this, App.Current.Language.Error,
+                        App.Current.Language.PathErrorMessageStr,
+                        MessageDialogStyle.Affirmative,
+                        new MetroDialogSettings()
+                        { AffirmativeButtonText = App.Current.Language.Determine });
                     return;
                 }
             }

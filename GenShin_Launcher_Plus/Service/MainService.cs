@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace GenShin_Launcher_Plus.Service
 {
-    internal class MainService
+    public class MainService
     {
+
     }
 }

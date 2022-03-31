@@ -43,21 +43,18 @@ namespace GenShin_Launcher_Plus.Core
         public void LoadUpdateCore()
         {
             HtmlHelper fc = new();
-            if (App.Current.IniModel.ReadLang == "Lang_CN" || App.Current.IniModel.ReadLang == null || App.Current.IniModel.ReadLang == string.Empty)
+            if (App.Current.IniModel.ReadLang == "Lang_CN" ||
+                App.Current.IniModel.ReadLang == null ||
+                App.Current.IniModel.ReadLang == string.Empty)
             {
                 string json = fc.GetJsonFromHtml("UpdateCN");
-                App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json);
+                App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json) ?? new();
             }
             else
             {
                 string json = fc.GetJsonFromHtml("UpdateGlobal");
-                App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json);
+                App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json) ?? new();
             }
-        }
-
-        public void CreateInstance()
-        {
-            
         }
     }
 }

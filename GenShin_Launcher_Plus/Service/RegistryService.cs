@@ -7,7 +7,7 @@ using System.Windows;
 using GenShin_Launcher_Plus.ViewModels;
 using GenShin_Launcher_Plus.Service.IService;
 
-namespace GenShin_Launcher_Plus.Core
+namespace GenShin_Launcher_Plus.Service
 {
     /// <summary>
     /// 对原神注册表的操作
