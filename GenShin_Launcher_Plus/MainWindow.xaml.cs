@@ -18,23 +18,9 @@ namespace GenShin_Launcher_Plus
         public MainWindow()
         {
             InitializeComponent();
-            App.Current.LoadProgramCore.LoadLanguageCore();
-            DataContext = new MainWindowViewModel(DialogCoordinator.Instance);
+            DataContext = new MainWindowViewModel(DialogCoordinator.Instance,this);
             MainFlipView.DataContext = App.Current.NoticeOverAllBase;
             HomePage.Children.Add(new Views.HomePage());
-            if (!File.Exists(Path.Combine(App.Current.IniModel.GamePath ?? "", "Yuanshen.exe")) &&
-                !File.Exists(Path.Combine(App.Current.IniModel.GamePath ?? "", "GenshinImpact.exe")))
-            {
-                MainGrid.Children.Add(new Views.GuidePage());
-            }
-
-            string newver = App.Current.UpdateObject.Version;
-            string version = Application.ResourceAssembly.GetName().Version.ToString();
-            if (version != newver && !App.Current.IsLoading)
-            {
-                MainGrid.Children.Add(new Views.UpdatePage());
-                App.Current.IsLoading = true;
-            }
         }
 
         private void WindowDragMove(object sender, MouseButtonEventArgs e)

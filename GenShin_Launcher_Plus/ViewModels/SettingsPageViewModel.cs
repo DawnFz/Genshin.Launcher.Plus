@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Input;
 using GenShin_Launcher_Plus.Service;
 using GenShin_Launcher_Plus.Service.IService;
+using System.Windows.Threading;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -314,7 +315,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 }
             }
             DelaySaveButtonTitle();
-            App.Current.NoticeOverAllBase.MainPagesIndex = 0;
+            ThisPageRemove();
         }
 
         //关闭设置页面
@@ -322,6 +323,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         private void ThisPageRemove()
         {
             App.Current.NoticeOverAllBase.MainPagesIndex = 0;
+            App.Current.SettingsPageViewModel = null;
+            GC.Collect();
         }
 
         //转换国际服及转换国服绑定命令

@@ -20,6 +20,7 @@ namespace GenShin_Launcher_Plus.Service
                 string updatefile = vm.UseGlobalUrlCheck ? App.Current.UpdateObject.GlobalDownloadUrl : App.Current.UpdateObject.DownloadUrl;
                 if (await vm.DFC.HttpFileExistAsync(updatefile) == true)
                 {
+                    //等待文件下载
                     await vm.DFC.DownloadHttpFileAsync(updatefile, @"UpdateTemp.zip");
                     if ((await vm.dialogCoordinator.ShowMessageAsync(
                         vm, App.Current.Language.TipsStr,
@@ -31,7 +32,7 @@ namespace GenShin_Launcher_Plus.Service
                             NegativeButtonText = App.Current.Language.Determine
                         })) != MessageDialogResult.Affirmative)
                     {
-                        //解压更新了的ZIP文件
+                        //执行更新操作
                         if (FileHelper.UnZip("UpdateTemp.zip"))
                         {
                             File.Delete(@"UpdateTemp.zip");
@@ -39,9 +40,10 @@ namespace GenShin_Launcher_Plus.Service
                             Environment.Exit(0);
                         }
                         else
-                        {
-                            MessageBox.Show("解压更新文件失败，可能是文件已损坏 !");
-                            File.Delete(@"UpdateTemp.zip");
+                        {                           
+                            File.Move(@"UpdateTemp.zip", @"UpdateTemp.upd");
+                            Process.Start(@"Update.exe");
+                            Environment.Exit(0);
                         }
                     }
                     else

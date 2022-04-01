@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Windows;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace GenShin_Launcher_Plus.Helper
 {

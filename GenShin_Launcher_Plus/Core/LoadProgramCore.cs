@@ -15,7 +15,6 @@ namespace GenShin_Launcher_Plus.Core
         {
             App.Current.IniModel = new();
             App.Current.NoticeOverAllBase = new();
-            LoadUpdateCoreAsync();
         }
 
         private const string Lang_CN = "{\"LangVersion\":\"1.0.0.4\",\"Languages\":\"简体中文\",\"SaveBtn\":\"保存\",\"Error\":\"错误\",\"Determine\":\"确定\",\"Cancel\":\"取消\",\"TipsStr\":\"提醒\",\"LanguageSetTitle\":\"程序语言设置\",\"AboutStr\":\"注意，启动器涉及到注册表修改和文件替换，部分杀毒软\\r\\n件可能会报毒，为了客户端数据完整建议关闭杀软后再运行\\r\\n本程序完全开源，并不会将用户数据公布到网络，\\r\\n本启动器需要联网部分的代码仅为版本检测和公告获取\\r\\n\\r\\n\\r\\n编写：DawnFz (ねねだん)\\r\\n联系邮箱：admin@dawnfz.com\\r\\n技术支持：Lightczx（Github）【Snap.Genshin作者】\\r\\n您可以跳转到Github以获取本项目源代码\\r\\n\\r\\n\\r\\n————————本程序用到的代码及参考————————\\r\\n[Snap.Genshin]\\r\\n项目地址：https://github.com/DGP-Studio/Snap.Genshin \\r\\n\",\"MainTitle\":\"原神启动器Plus \",\"ScreenPathErr\":\"本功能为打开游戏内截图照相保存目录\\r\\n没有检测到照相文件或者请先输入正确的游戏路径！\",\"AboutTitle\":\"关于\",\"RunGameBtn\":\"开始游戏\",\"UserNameLab\":\"账号\",\"GamePortLab\":\"客户端\",\"UserNameStr\":\"账号\",\"GameClientStr\":\"客户端\",\"GameClientTypePStr\":\"官方服务器\",\"GameClientTypeBStr\":\"哔哩哔哩服\",\"GameClientTypeMStr\":\"国际服务器\",\"GameClientTypeNullStr\":\"未知客户端\",\"PathErrorMessageStr\":\"游戏路径不存在或者游戏路径错误！请检查重新设置后再试！\",\"AddUsersPageTitle\":\"保存上次登录的账号数据\",\"AddUsersPageSubTitle\":\"输入一个文件名以保存数据\",\"AddUsersPageTextboxTips\":\"请勿输入特殊符号\",\"AddUsersErrorMessageStr\":\"未选择帐户所属的服务器或未输入保存的名字，此保存将不会生效！\",\"SettingsTitle\":\"设置\",\"CloseBtn\":\"关闭\",\"HeightStr\":\"窗口高度\",\"WitdhStr\":\"窗口宽度\",\"AttachTitle\":\"窗口及分辨率\",\"UserListTitle\":\"选择使用的账号[可选]\",\"ClientSwitchTitle\":\"游戏客户端转换\",\"PathBoxTips\":\"在这里填写游戏目录[默认为Genshin Impact Game]\",\"DelUserBtn\":\"删除所选账号\",\"SwitchBtn\":\"转换\",\"BorderlessCkB\":\"采用无边框窗口启动\",\"UnlockFpsCkB\":\"解锁游戏内帧率上限\",\"FpsBoxTips\":\"帧上限\",\"BackgroundCkB\":\"不使用网络背景\",\"BackgroundXK\":\"使用寻空每日一图\",\"StateIndicatorDefault\":\"状态：无状态\",\"StateIndicatorUning\":\"状态：解压PKG资源文件中\",\"StateIndicatorUpdate\":\"状态：PKG资源文件有更新\",\"StateIndicatorCheck\":\"状态：请检查PKG文件是否存在\",\"StateIndicatorUnErr\":\"状态：PKG解压失败，请检查PKG是否正常\",\"StateIndicatorBaking\":\"状态：备份原始客户端中\",\"StateIndicatorReping\":\"状态：正在替换新文件到客户端\",\"StateIndicatorRecover\":\"状态：正在还原原始客户端文件\",\"StateIndicatorCleaning\":\"状态：清理多余文件中\",\"ConvertingLogStr\":\"PKG转换资源下载地址及访问密码: etxd\\r\\nhttps://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg\\r\\n\",\"WindowMode\":\"窗口启动\",\"Fullscreen\":\"全屏启动\",\"GameDirMsg\":\"请选择游戏目录[默认为Genshin Impact Game]\",\"AdaptiveStr\":\"自适应屏幕分辨率\",\"SevereWarning\":\"严重警告\",\"SevereWarningStr\":\"此操作涉及修改游戏客户端进程，目前不知道确切会不会出现封号风险，出现问题请自行承担后果！如之前没使用过UnlockFPS的建议不要使用！按下同意代表使用本功能后的一切后果由自己承担！怕就不要用，用就不要怕！【注意：启用本功能后拉起游戏会慢一点，为正常现象】\",\"Warning\":\"警告\",\"WarningDAW\":\"您确定删除这个账号：\",\"ErrorSA\":\"请选中一个账号再使用本功能！\",\"ErrorEYJ\":\"在上面随便一个框填上想要的宽或者高另一个框留空使用本按钮自动取21:9比例分辨率\",\"WarningCCStr\":\"转换或还原将会执行重命名，替换，删除等操作修改客户端文件，该过程大概率会触发杀软报毒！为了防止客户端损坏导致不完整，执行前检查杀软（包括 Windows Defender）是否完全关闭或将本启动器加入白名单，并检查游戏是否彻底关闭，否则可能将导致客户端文件缺失！！\\r\\n\\r\\n提示：如游戏大版本更新时请执行还原转换为国内服使用游戏自带启动器更新！\",\"ErrorCPkgNF\":\"没有找到资源[CnFile.pkg]或解压失败，请检查Pkg文件是否和本应用处于同一目录\\r\\n\",\"ErrorGPkgNF\":\"没有找到资源[GlobalFile.pkg]或解压失败，请检查Pkg文件是否和本应用处于同一目录\\r\\n\",\"PkgNoUnError\":\"PKG文件不存在或解压失败\",\"NewPkgVer\":\"转换包有新版本，访问密码：etxd：\",\"ErrorFileNF\":\"文件不存在，启动器将尝试下一步操作，若无反应请重新下载资源文件！\",\"FileExist\":\"存在\",\"ErrorBakF\":\"备份失败：原因：\",\"BakSuccess\":\"备份成功\",\"BakFileNfSk\":\"文件不存在，备份失败，跳过\",\"RepSuccess\":\"替换成功\",\"SwitchSucessStr\":\"转换完毕，按下确定自动保存，尽情享受吧！~\",\"CleanedStr\":\"清理完毕\",\"CleanSkipStr\":\"文件不存在，已跳过\",\"RestoreSucess\":\"还原成功\",\"RestoreSkipStr\":\"不存在，跳过还原\",\"RestoreOverTipsStr\":\"还原完毕\",\"RestoreNum\":\"成功数\",\"RestoreErrNum\":\"失败数\",\"RestoreEndStr\":\"按下确定自动保存，尽情享受吧！~\",\"DownPageTips\":\"因CDN缓存问题下载可能会有点慢或者卡进度，请耐心等待\",\"UpdateSkipBtn\":\"暂不更新\",\"DownStartBtn\":\"开始更新\",\"DownFailedStr\":\"网络更新文件资源不存在或服务器网络错误\",\"RepWarnStr\":\"你正在进行更新操作，请勿重复操作\",\"DownloadComStr\":\"下载完成，是否现在进行更新操作\\r\\n确定后只需等待5秒将自动启动新版本\",\"DownProgress\":\"下载进度\",\"WelcomeTitle\":\"欢迎使用原神启动器Plus\",\"BootstrapTitle\":\"在开始前请先跟随引导熟悉一下使用方法和规范\",\"PathHintLabel\":\"游戏目录本体指Genshin Impact下的Genshin Impact Game目录\",\"FinalTipLabel\":\"输入或者点击右侧[···]按钮选择如上图所示的游戏目录\",\"GuideFinishBtn\":\"完成向导\",\"SaveAccountErr\":\"保存账号错误，请检查您的账号是否为已登录状态\",\"UseGlobalUrl\":\"使用Github链接\",}";
@@ -48,18 +47,18 @@ namespace GenShin_Launcher_Plus.Core
         /// <summary>
         /// 初始化更新页面的内容
         /// </summary>
-        public async Task LoadUpdateCoreAsync()
+        public void LoadUpdateCoreAsync()
         {
             if (App.Current.IniModel.ReadLang == "Lang_CN" ||
                 App.Current.IniModel.ReadLang == null ||
                 App.Current.IniModel.ReadLang == string.Empty)
             {
-                string json = await HtmlHelper.GetInfoFromHtmlAsync("UpdateCN");
+                string json = HtmlHelper.GetInfoFromHtmlAsync("UpdateCN");
                 App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json) ?? new();
             }
             else
             {
-                string json = await HtmlHelper.GetInfoFromHtmlAsync("UpdateGlobal");
+                string json = HtmlHelper.GetInfoFromHtmlAsync("UpdateGlobal");
                 App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json) ?? new();
             }
         }

@@ -5,28 +5,23 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using GenShin_Launcher_Plus.Helper;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Input;
 using GenShin_Launcher_Plus.Models;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
+using GenShin_Launcher_Plus.Service.IService;
+using GenShin_Launcher_Plus.Service;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
     public class MainWindowViewModel : ObservableObject
     {
         private IDialogCoordinator dialogCoordinator;
-        public MainWindowViewModel(IDialogCoordinator instance)
+        public MainWindowViewModel(IDialogCoordinator instance, MainWindow main)
         {
             dialogCoordinator = instance;
-            if (!Directory.Exists(@"UserData"))
-            {
-                Directory.CreateDirectory("UserData");
-            }
-            Mainloading();
+            App.Current.LoadProgramCore.LoadLanguageCore();
+            MainService = new MainWindowService(main,this);
+
             OpenImagesDirectoryCommand = new RelayCommand(OpenImagesDirectory);
             OpenAboutCommand = new RelayCommand(OpenAbout);
             OpenQQGroupUrlCommand = new RelayCommand(OpenQQGroupUrl);
@@ -37,106 +32,12 @@ namespace GenShin_Launcher_Plus.ViewModels
             App.Current.IniModel.EXEname(Path.GetFileName(Environment.ProcessPath));
         }
 
+        public IMainWindowService MainService { get; set; }
+
         public LanguageModel languages { get => App.Current.Language; }
         public string Title { get; set; }
         private ImageBrush _Background;
         public ImageBrush Background { get => _Background; set => SetProperty(ref _Background, value); }
-
-        private async void Mainloading()
-        {
-            //
-            Background = new();
-            if (App.Current.IniModel.UseXunkongWallpaper)
-            {
-                Background.Stretch = Stretch.UniformToFill;
-                var uri = new Uri("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
-                try
-                {
-                    var file = Path.Combine(AppContext.BaseDirectory, "Config/XunkongWallpaper.webp");
-                    if (File.Exists(file))
-                    {
-                        uri = new Uri(file);
-                        using var fs = File.OpenRead(file);
-                        var bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.StreamSource = fs;
-                        bitmap.EndInit();
-                        Background.ImageSource = bitmap;
-                    }
-                    else
-                    {
-                        Background.ImageSource = new BitmapImage(uri);
-                    }
-                    const string url = "https://api.xunkong.cc/v0.1/wallpaper/recommend/redirect";
-                    var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.All });
-                    client.DefaultRequestHeaders.Add("User-Agent", $"GenShinLauncher/{Application.ResourceAssembly.GetName().Version}");
-                    try
-                    {
-                        var UserName = Environment.UserName;
-                        var MachineGuid = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography\", "MachineGuid", UserName);
-                        var UserBytes = Encoding.UTF8.GetBytes(UserName + MachineGuid);
-                        var hash = MD5.HashData(UserBytes);
-                        var deviceId = Convert.ToHexString(hash);
-                        client.DefaultRequestHeaders.Add("X-Device-Id", deviceId);
-                    }
-                    catch { }
-                    var bytes = await client.GetByteArrayAsync(url);
-                    var ms = new MemoryStream(bytes);
-                    var newBitmap = new BitmapImage();
-                    newBitmap.BeginInit();
-                    newBitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    newBitmap.StreamSource = ms;
-                    newBitmap.EndInit();
-                    Background.ImageSource = newBitmap;
-                    await File.WriteAllBytesAsync(file, bytes);
-                }
-                catch
-                {
-                    Background.ImageSource = new BitmapImage(uri);
-                }
-            }
-            else
-            {
-                Uri uri;
-                if (File.Exists(@"Config\Bg.png"))
-                {
-                    uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.png"), UriKind.Absolute);
-                }
-                else if (File.Exists(@"Config\Bg.jpg"))
-                {
-                    uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.jpg"), UriKind.Absolute);
-                }
-                else if (App.Current.IniModel.isWebBg == true)
-                {
-                    uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
-                }
-                else
-                {
-                    string bgurl = App.Current.UpdateObject.BgUrl;
-                    if (bgurl != "" && bgurl != null)
-                    {
-                        uri = new(bgurl, UriKind.Absolute);
-                    }
-                    else
-                    {
-                        uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
-                    }
-                }
-                Background.ImageSource = new BitmapImage(uri);
-                Background.Stretch = Stretch.UniformToFill;
-            }
-
-            //
-            try
-            {
-                FileHelper.ExtractEmbededAppResource("StaticRes/Update.dll", @"Update.exe");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
 
         public ICommand OpenImagesDirectoryCommand { get; set; }
         private async void OpenImagesDirectory()
@@ -152,15 +53,27 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             else
             {
-                await dialogCoordinator.ShowMessageAsync(this, languages.Error, languages.ScreenPathErr, MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine });
+                await dialogCoordinator.ShowMessageAsync(
+                    this, languages.Error,
+                    languages.ScreenPathErr,
+                    MessageDialogStyle.Affirmative,
+                    new MetroDialogSettings() 
+                    { AffirmativeButtonText = languages.Determine });
             }
         }
-
 
         public ICommand OpenAboutCommand { get; set; }
         private async void OpenAbout()
         {
-            if ((await dialogCoordinator.ShowMessageAsync(this, languages.AboutTitle, languages.AboutStr, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = languages.Determine, NegativeButtonText = "GitHub" })) != MessageDialogResult.Affirmative)
+            if ((await dialogCoordinator.ShowMessageAsync(
+                this, languages.AboutTitle, 
+                languages.AboutStr,
+                MessageDialogStyle.AffirmativeAndNegative, 
+                new MetroDialogSettings()
+                { 
+                    AffirmativeButtonText = languages.Determine,
+                    NegativeButtonText = "GitHub" 
+                })) != MessageDialogResult.Affirmative)
             {
                 ProcessStartInfo info = new()
                 {

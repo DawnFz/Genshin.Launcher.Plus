@@ -10,10 +10,11 @@ namespace GenShin_Launcher_Plus.Core
 {
     public class HtmlHelper
     {
-        /*
-        public string ReadHTML(string url)
+
+        private const string Url = "https://www.cnblogs.com/DawnFz/p/15990791.html";
+        public static string ReadHTMLAsText(string url)
         {
-            string strHTML = "";
+            string strHTML = string.Empty;
             try
             {
                 WebClient myWebClient = new();
@@ -25,11 +26,11 @@ namespace GenShin_Launcher_Plus.Core
             }
             catch
             {
-                return "";
+                return string.Empty;
             }
             return strHTML;
         }
-        public string MiddleText(string Str, string preStr, string nextStr)
+        public static string MiddleText(string Str, string preStr, string nextStr)
         {
             try
             {
@@ -39,49 +40,12 @@ namespace GenShin_Launcher_Plus.Core
             }
             catch
             {
-                return "";
-            }
-        }
-        public string GetJsonFromHtml(string tag)
-        {
-            return MiddleText(ReadHTML("https://www.cnblogs.com/DawnFz/p/15990791.html"),$"【{tag}++】",$"【{tag}--】");
-        }
-        //
-        */
-        private const string Url = "https://www.cnblogs.com/DawnFz/p/15990791.html";
-
-        private static async Task<string> ReadHTMLAsTextAsync(string url)
-        {
-            try
-            {
-                using (Stream stream = await new HttpClient().GetStreamAsync(url))
-                {
-                    using (StreamReader sr = new(stream, Encoding.UTF8))
-                    {
-                        return await sr.ReadToEndAsync();
-                    }
-                }
-            }
-            catch
-            {
                 return string.Empty;
             }
         }
-        private static string Mid(string str, string preStr, string nextStr)
+        public static string GetInfoFromHtmlAsync(string tag)
         {
-            try
-            {
-                string trimFront = str[(str.IndexOf(preStr) + preStr.Length)..];
-                return trimFront[..trimFront.IndexOf(nextStr)];
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
-        public static async Task<string> GetInfoFromHtmlAsync(string tag)
-        {
-            return Mid(await ReadHTMLAsTextAsync(Url), $"【{tag}++】", $"【{tag}--】");
+            return MiddleText(ReadHTMLAsText(Url), $"【{tag}++】", $"【{tag}--】");
         }
 
     }
