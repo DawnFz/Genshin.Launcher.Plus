@@ -5,7 +5,7 @@ using System.IO.Compression;
 using System.Windows;
 using System.Runtime.InteropServices;
 
-namespace GenShin_Launcher_Plus.Core
+namespace GenShin_Launcher_Plus.Helper
 {
     internal class FileHelper
     {

@@ -11,8 +11,8 @@ using GenShin_Launcher_Plus.Service.IService;
 namespace GenShin_Launcher_Plus.ViewModels
 {
     /// <summary>
-    /// 这个类是AddUsersPage的ViewModel 
-    /// 集成了AddUsersPage的部分操作实现逻辑
+    /// UsersPage的ViewModel 
+    /// 集成了UsersPage的部分操作实现逻辑
     /// </summary>
     public class UsersPageViewModel : ObservableObject
     {

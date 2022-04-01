@@ -6,7 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using GenShin_Launcher_Plus.ViewModels;
 
-namespace GenShin_Launcher_Plus.Core
+namespace GenShin_Launcher_Plus.Helper
 {
     /// <summary>
     /// 用于处理文件下载

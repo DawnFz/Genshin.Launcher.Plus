@@ -1,4 +1,5 @@
 ﻿using GenShin_Launcher_Plus.Core;
+using GenShin_Launcher_Plus.Helper;
 using GenShin_Launcher_Plus.Models;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Toolkit.Mvvm.ComponentModel;

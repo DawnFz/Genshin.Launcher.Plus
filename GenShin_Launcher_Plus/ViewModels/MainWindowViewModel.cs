@@ -6,7 +6,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using GenShin_Launcher_Plus.Core;
+using GenShin_Launcher_Plus.Helper;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Input;
 using GenShin_Launcher_Plus.Models;

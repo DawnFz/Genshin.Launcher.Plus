@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using GenShin_Launcher_Plus.Core;
+using GenShin_Launcher_Plus.Helper;
 using GenShin_Launcher_Plus.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
