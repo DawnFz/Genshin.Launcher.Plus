@@ -29,7 +29,9 @@ namespace GenShin_Launcher_Plus.ViewModels
             dialogCoordinator = instance;
 
             _gameConvert = new GameConvertService();
-            _settingService = new SettingService(100);
+            _userDataService = new UserDataService();
+            _registryService = new RegistryService();
+            _settingService = new SettingService(this);
 
             DeleteUserCommand = new RelayCommand(DeleteUser);
             SaveSettingsCommand = new RelayCommand(SaveSettings);
@@ -38,7 +40,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             ChooseUnlockFpsCommand = new RelayCommand(ChooseUnlockFps);
             GameFileConvertCommand = new AsyncRelayCommand(GameFileConvert);
 
-            _UserLists = SettingService.ReadUserList();
+            _UserLists = UserDataService.ReadUserList();
             _GamePortLists = SettingService.CreateGamePortList();
             _DisplaySizeLists = SettingService.CreateDisplaySizeList();
             _GameWindowModeList = SettingService.CreateGameWindowModeList();
@@ -50,6 +52,12 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         private ISettingService _settingService;
         public ISettingService SettingService { get => _settingService; }
+
+        private IUserDataService _userDataService;
+        public IUserDataService UserDataService { get => _userDataService; }
+
+        private IRegistryService _registryService;
+        public IRegistryService RegistryService { get => _registryService; }
 
         public IniModel IniModel { get => App.Current.IniModel; }
         public LanguageModel languages { get => App.Current.Language; }
@@ -98,12 +106,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         public int DisplaySelectedIndex
         {
             get => _DisplaySelectedIndex;
-            set
-            {
-                SettingService.SetDisplaySelectedIndex(value);
-                IniModel.Width = Width;
-                IniModel.Height = Height;
-            }
+            set => SettingService.SetDisplaySelectedIndex(value, this);
         }
 
 
@@ -216,7 +219,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                     })) != MessageDialogResult.Affirmative)
                 {
                     File.Delete(Path.Combine(@"UserData", SwitchUser));
-                    UserLists = SettingService.ReadUserList();
+                    UserLists = UserDataService.ReadUserList();
                     App.Current.NoticeOverAllBase.UserLists = UserLists;
                 }
             }
@@ -254,8 +257,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 App.Current.IniModel.SwitchUser = SwitchUser;
                 App.Current.NoticeOverAllBase.SwitchUser = $"{languages.UserNameLab}：{SwitchUser}";
                 App.Current.NoticeOverAllBase.IsSwitchUser = "Visible";
-                RegistryService registryControl = new();
-                registryControl.SetToRegistry(SwitchUser);
+                RegistryService.SetToRegistry(SwitchUser);
             }
             App.Current.IniModel.Width = Width;
             App.Current.IniModel.Height = Height;
@@ -331,7 +333,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             if (!fileHelper.IsFileOpen(Path.Combine(App.Current.IniModel.GamePath, "Yuanshen.exe")) &&
                 !fileHelper.IsFileOpen(Path.Combine(App.Current.IniModel.GamePath, "GenshinImpact.exe")))
             {
-                await GameConvert.ConvertGameFileAsync();
+                await GameConvert.ConvertGameFileAsync(this);
                 if (ConvertState)
                 {
                     await dialogCoordinator.ShowMessageAsync(

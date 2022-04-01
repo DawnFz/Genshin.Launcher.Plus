@@ -13,9 +13,7 @@ namespace GenShin_Launcher_Plus
         private readonly SingleInstanceChecker singleInstanceChecker = new("GenshinLauncherPlus");
         public App()
         {
-            _IniModel = new();
-            _NoticeOverAllBase = new();
-            new LoadProgramCore().LoadUpdateCore();
+            LoadProgramCore = new();
             InitializeComponent();
         }
 
@@ -49,23 +47,21 @@ namespace GenShin_Launcher_Plus
 
         public new static App Current => (App)Application.Current;
 
-        private IniModel _IniModel;
-        public IniModel IniModel { get => _IniModel; set => _IniModel = value; }
+        public LoadProgramCore LoadProgramCore { get; set; }
 
-        private List<LanguageListModel> _LangList;
-        public List<LanguageListModel> LangList { get => _LangList; set => _LangList = value; }
+        public IniModel IniModel { get; set; }
 
-        private NoticeOverAllBase _NoticeOverAllBase;
-        public NoticeOverAllBase NoticeOverAllBase { get => _NoticeOverAllBase; }
+        public List<LanguageListModel> LangList { get; set; }
 
-        private LanguageModel _Language;
-        public LanguageModel Language { get => _Language; set => _Language = value; }
+        public NoticeOverAllBase NoticeOverAllBase { get; set; }
 
-        private UpdateModel? _UpdateObject;
-        public UpdateModel? UpdateObject { get => _UpdateObject; set => _UpdateObject = value; }
+        public LanguageModel Language { get; set; }
 
-        private SettingsPageViewModel _SettingsPageViewModel;
-        public SettingsPageViewModel SettingsPageViewModel { get => _SettingsPageViewModel; set => _SettingsPageViewModel = value; }
+        public UpdateModel? UpdateObject { get; set; }
+
+        public SettingsPageViewModel SettingsPageViewModel { get; set; }
+
+        public bool IsLoading { get; set; }
 
     }
 }

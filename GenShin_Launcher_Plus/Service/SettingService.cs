@@ -1,5 +1,6 @@
 ﻿using GenShin_Launcher_Plus.Models;
 using GenShin_Launcher_Plus.Service.IService;
+using GenShin_Launcher_Plus.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,42 +11,27 @@ namespace GenShin_Launcher_Plus.Service
 {
     public class SettingService : ISettingService
     {
-        public SettingService(int delay)
+        public SettingService(SettingsPageViewModel vm)
         {
-            Task.Run(async () =>
-            {
-                await Task.Delay(delay);
-                SettingsPageCreated();
-            });
+            SettingsPageCreated(vm);
         }
 
-        public void SettingsPageCreated()
+        public void SettingsPageCreated(SettingsPageViewModel vm)
         {
-            App.Current.SettingsPageViewModel.SwitchUser = App.Current.IniModel.SwitchUser;
-            App.Current.SettingsPageViewModel.GamePath = App.Current.IniModel.GamePath;
-            App.Current.SettingsPageViewModel.isUnFPS = App.Current.IniModel.isUnFPS;
-            App.Current.SettingsPageViewModel.Width = App.Current.IniModel.Width ?? "1600";
-            App.Current.SettingsPageViewModel.Height = App.Current.IniModel.Height ?? "900";
-            App.Current.SettingsPageViewModel.ConvertingLog = App.Current.Language.ConvertingLogStr;
-            App.Current.SettingsPageViewModel.StateIndicator = App.Current.Language.StateIndicatorDefault;
-            App.Current.SettingsPageViewModel.isMihoyo = App.Current.IniModel.Cps switch
+            vm.SwitchUser = App.Current.IniModel.SwitchUser;
+            vm.GamePath = App.Current.IniModel.GamePath;
+            vm.isUnFPS = App.Current.IniModel.isUnFPS;
+            vm.Width = App.Current.IniModel.Width ?? "1600";
+            vm.Height = App.Current.IniModel.Height ?? "900";
+            vm.ConvertingLog = App.Current.Language.ConvertingLogStr;
+            vm.StateIndicator = App.Current.Language.StateIndicatorDefault;
+            vm.isMihoyo = App.Current.IniModel.Cps switch
             {
                 "pcadbdpz" => 0,
                 "bilibili" => 1,
                 "mihoyo" => 2,
                 _ => 3,
             };
-        }
-
-        public List<UserListModel> ReadUserList()
-        {
-            List<UserListModel> list = new();
-            DirectoryInfo TheFolder = new(@"UserData");
-            foreach (FileInfo NextFile in TheFolder.GetFiles())
-            {
-                list.Add(new UserListModel { UserName = NextFile.Name });
-            }
-            return list;
         }
 
         public List<DisplaySizeListModel> CreateDisplaySizeList()
@@ -82,41 +68,41 @@ namespace GenShin_Launcher_Plus.Service
             return list;
         }
 
-        public void SetDisplaySelectedIndex(int index)
+        public void SetDisplaySelectedIndex(int index, SettingsPageViewModel vm)
         {
             switch (index)
             {
                 case 0:
-                    App.Current.SettingsPageViewModel.Width = "3840";
-                    App.Current.SettingsPageViewModel.Height = "2160";
+                    vm.Width = "3840";
+                    vm.Height = "2160";
                     break;
                 case 1:
-                    App.Current.SettingsPageViewModel.Width = "2560";
-                    App.Current.SettingsPageViewModel.Height = "1080";
+                    vm.Width = "2560";
+                    vm.Height = "1080";
                     break;
                 case 2:
-                    App.Current.SettingsPageViewModel.Width = "1920";
-                    App.Current.SettingsPageViewModel.Height = "1080";
+                    vm.Width = "1920";
+                    vm.Height = "1080";
                     break;
                 case 3:
-                    App.Current.SettingsPageViewModel.Width = "1600";
-                    App.Current.SettingsPageViewModel.Height = "900";
+                    vm.Width = "1600";
+                    vm.Height = "900";
                     break;
                 case 4:
-                    App.Current.SettingsPageViewModel.Width = "1360";
-                    App.Current.SettingsPageViewModel.Height = "768";
+                    vm.Width = "1360";
+                    vm.Height = "768";
                     break;
                 case 5:
-                    App.Current.SettingsPageViewModel.Width = "1280";
-                    App.Current.SettingsPageViewModel.Height = "1024";
+                    vm.Width = "1280";
+                    vm.Height = "1024";
                     break;
                 case 6:
-                    App.Current.SettingsPageViewModel.Width = "1280";
-                    App.Current.SettingsPageViewModel.Height = "720";
+                    vm.Width = "1280";
+                    vm.Height = "720";
                     break;
                 case 7:
-                    App.Current.SettingsPageViewModel.Width = Convert.ToString(SystemParameters.PrimaryScreenWidth);
-                    App.Current.SettingsPageViewModel.Height = Convert.ToString(SystemParameters.PrimaryScreenHeight);
+                    vm.Width = Convert.ToString(SystemParameters.PrimaryScreenWidth);
+                    vm.Height = Convert.ToString(SystemParameters.PrimaryScreenHeight);
                     break;
                 default:
                     break;

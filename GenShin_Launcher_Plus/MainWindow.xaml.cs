@@ -17,8 +17,8 @@ namespace GenShin_Launcher_Plus
     {
         public MainWindow()
         {
-            new LoadProgramCore().LoadLanguageCore(App.Current.IniModel.ReadLang);
             InitializeComponent();
+            App.Current.LoadProgramCore.LoadLanguageCore();
             DataContext = new MainWindowViewModel(DialogCoordinator.Instance);
             MainFlipView.DataContext = App.Current.NoticeOverAllBase;
             HomePage.Children.Add(new Views.HomePage());
@@ -27,18 +27,14 @@ namespace GenShin_Launcher_Plus
             {
                 MainGrid.Children.Add(new Views.GuidePage());
             }
-            Task.Run(() =>
+
+            string newver = App.Current.UpdateObject.Version;
+            string version = Application.ResourceAssembly.GetName().Version.ToString();
+            if (version != newver && !App.Current.IsLoading)
             {
-                string newver = App.Current.UpdateObject.Version;
-                string version = Application.ResourceAssembly.GetName().Version.ToString();
-                if (version != newver)
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        MainGrid.Children.Add(new Views.UpdatePage());
-                    });
-                }
-            });
+                MainGrid.Children.Add(new Views.UpdatePage());
+                App.Current.IsLoading = true;
+            }
         }
 
         private void WindowDragMove(object sender, MouseButtonEventArgs e)
@@ -63,7 +59,7 @@ namespace GenShin_Launcher_Plus
         private void LangBtn_Click(object sender, RoutedEventArgs e)
         {
             SwitchLanguages.Children.Clear();
-            SwitchLanguages.Children.Add(new Views.SwitchLanguagesPage());
+            SwitchLanguages.Children.Add(new Views.LanguagesPage());
             MainFlipView.SelectedIndex = 3;
         }
 

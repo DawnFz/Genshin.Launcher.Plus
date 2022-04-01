@@ -7,9 +7,9 @@ using System.Windows.Input;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
-    public class SwitchLanguagesPageViewModel : ObservableObject
+    public class LanguagesPageViewModel : ObservableObject
     {
-        public SwitchLanguagesPageViewModel()
+        public LanguagesPageViewModel()
         {
             SaveLangSetCommand = new RelayCommand(ThisPageRemove);
         }

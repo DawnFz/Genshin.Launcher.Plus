@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-
-
+using GenShin_Launcher_Plus.Service.IService;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -20,10 +19,27 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         public UsersPageViewModel()
         {
-            CreateGamePortList();
+            _GamePortLists = new();
+
             SaveUserDataCommand = new RelayCommand(SaveUserData);
             RemoveThisPageCommand = new RelayCommand(RemoveThisPage);
+
+            _registryService = new RegistryService();
+            _userDataService = new UserDataService();
+
+            GamePortLists
+                .Add(new GamePortListModel
+                { GamePort = languages.GameClientTypePStr });
+            GamePortLists
+                .Add(new GamePortListModel
+                { GamePort = languages.GameClientTypeMStr });
         }
+
+        private IRegistryService _registryService;
+        public IRegistryService RegistryService { get => _registryService; }
+
+        private IUserDataService _userDataService;
+        public IUserDataService UserDataService { get => _userDataService; }
 
         public LanguageModel languages { get => App.Current.Language; }
 
@@ -32,36 +48,26 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         //游戏客户端列表
         private List<GamePortListModel> _GamePortLists;
-        public List<GamePortListModel> GamePortLists
-        {
-            get => _GamePortLists;
-            set => SetProperty(ref _GamePortLists, value);
-        }
-        private void CreateGamePortList()
-        {
-            GamePortLists = new();
-            GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypePStr });
-            GamePortLists.Add(new GamePortListModel { GamePort = languages.GameClientTypeMStr });
-        }
+        public List<GamePortListModel> GamePortLists { get => _GamePortLists; }
 
         public ICommand SaveUserDataCommand { get; set; }
         private void SaveUserData()
         {
-            RegistryService registryControl = new();
             if (GamePort == languages.GameClientTypePStr && Name != null)
             {
-                string userdata = registryControl.GetFromRegistry(Name, "CN");
+                string userdata = RegistryService.GetFromRegistry(Name, "CN");
                 File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
             }
             else if (GamePort == languages.GameClientTypeMStr && Name != null)
             {
-                string userdata = registryControl.GetFromRegistry(Name, "Global");
+                string userdata = RegistryService.GetFromRegistry(Name, "Global");
                 File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
             }
             else
             {
                 MessageBox.Show(languages.AddUsersErrorMessageStr);
             }
+            App.Current.NoticeOverAllBase.UserLists = UserDataService.ReadUserList();
             RemoveThisPage();
         }
 

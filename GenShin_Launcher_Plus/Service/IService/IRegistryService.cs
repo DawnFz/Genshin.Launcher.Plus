@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GenShin_Launcher_Plus.Service.IService
+﻿namespace GenShin_Launcher_Plus.Service.IService
 {
     public interface IRegistryService
     {

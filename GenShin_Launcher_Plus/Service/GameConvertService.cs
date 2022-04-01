@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Threading.Tasks;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows;
+using GenShin_Launcher_Plus.ViewModels;
 
 namespace GenShin_Launcher_Plus.Service
 {
@@ -127,12 +128,10 @@ namespace GenShin_Launcher_Plus.Service
         }
         private string GameFolder { get; set; }
 
-
-
         /// <summary>
         /// 转换游戏文件
         /// </summary>
-        public async Task ConvertGameFileAsync()
+        public async Task ConvertGameFileAsync(SettingsPageViewModel vm)
         {
             string currentPath = Environment.CurrentDirectory;
             string port = GetCurrentSchemeName();
@@ -154,19 +153,19 @@ namespace GenShin_Launcher_Plus.Service
                 _ => throw new NotImplementedException()
             };
 
-            await Task.Run(async() =>
+            await Task.Run(async () =>
             {
                 if (oldfiles != null && newfiles != null)
                 {
-                    if (!CheckFileIntegrity(GameFolder, oldfiles, 1, ".bak"))
+                    if (!CheckFileIntegrity(GameFolder, oldfiles, 1,vm, ".bak"))
                     {
                         if (Directory.Exists($"{currentPath}/{newport}File"))
                         {
-                            if (CheckPackageVersion($"{newport}File"))
+                            if (CheckPackageVersion($"{newport}File", vm))
                             {
-                                if (CheckFileIntegrity($"{currentPath}/{newport}File", newfiles, 0))
+                                if (CheckFileIntegrity($"{currentPath}/{newport}File", newfiles, 0,vm))
                                 {
-                                    await ReplaceGameFiles(oldfiles, newfiles, newport);
+                                    await ReplaceGameFiles(oldfiles, newfiles, newport, vm);
                                 }
                             }
                             else
@@ -176,37 +175,37 @@ namespace GenShin_Launcher_Plus.Service
                         }
                         else if (File.Exists($"{currentPath}/{newport}File.pkg"))
                         {
-                            App.Current.SettingsPageViewModel.StateIndicator = "状态：解压PKG资源文件中";
+                            vm.StateIndicator = "状态：解压PKG资源文件中";
                             if (Decompress(newport))
                             {
-                                if (CheckPackageVersion($"{newport}File"))
+                                if (CheckPackageVersion($"{newport}File", vm))
                                 {
-                                    await ReplaceGameFiles(oldfiles, newfiles, newport);
+                                    await ReplaceGameFiles(oldfiles, newfiles, newport, vm);
                                 }
                                 else
                                 {
                                     Directory.Delete($"{currentPath}/{newport}File", true);
-                                    App.Current.SettingsPageViewModel.StateIndicator = "状态：PKG资源文件有新版本";
-                                    App.Current.SettingsPageViewModel.ConvertState = false;
+                                    vm.StateIndicator = "状态：PKG资源文件有新版本";
+                                    vm.ConvertState = false;
                                 }
                             }
                             else
                             {
-                                App.Current.SettingsPageViewModel.StateIndicator = "状态：PKG解压失败，请检查PKG是否正常";
-                                App.Current.SettingsPageViewModel.ConvertingLog += $"资源[{newport}File.pkg]解压失败，请检查Pkg文件是否正常\r\n";
-                                App.Current.SettingsPageViewModel.ConvertState = false;
+                                vm.StateIndicator = "状态：PKG解压失败，请检查PKG是否正常";
+                                vm.ConvertingLog += $"资源[{newport}File.pkg]解压失败，请检查Pkg文件是否正常\r\n";
+                                vm.ConvertState = false;
                             }
                         }
                         else
                         {
-                            App.Current.SettingsPageViewModel.StateIndicator = "状态：请检查PKG文件是否存在";
-                            App.Current.SettingsPageViewModel.ConvertingLog += $"没有找到资源[{newport}File.pkg]，请检查Pkg文件是否存在于本程序目录下\r\n";
-                            App.Current.SettingsPageViewModel.ConvertState = false;
+                            vm.StateIndicator = "状态：请检查PKG文件是否存在";
+                            vm.ConvertingLog += $"没有找到资源[{newport}File.pkg]，请检查Pkg文件是否存在于本程序目录下\r\n";
+                            vm.ConvertState = false;
                         }
                     }
                     else
                     {
-                        await RestoreGameFiles(oldfiles, newfiles, port);
+                        await RestoreGameFiles(oldfiles, newfiles, port, vm);
                     }
                 }
             });
@@ -237,12 +236,12 @@ namespace GenShin_Launcher_Plus.Service
         /// </summary>
         /// <param name="scheme"></param>
         /// <returns></returns>
-        public bool CheckPackageVersion(string scheme)
+        public bool CheckPackageVersion(string scheme, SettingsPageViewModel vm)
         {
             string pkgfile = App.Current.UpdateObject.PkgVersion;
             if (!File.Exists($"{scheme}/{pkgfile}"))
             {
-                App.Current.SettingsPageViewModel.ConvertingLog = $"{App.Current.Language.NewPkgVer} : [{ pkgfile }]\r\n";
+                vm.ConvertingLog = $"{App.Current.Language.NewPkgVer} : [{ pkgfile }]\r\n";
                 ProcessStartInfo info = new()
                 {
                     FileName = "https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg",
@@ -265,18 +264,18 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="length"></param>
         /// <param name="surfix"></param>
         /// <returns></returns>
-        public bool CheckFileIntegrity(string dirpath, string[] filepath, int length, string surfix = "")
+        public bool CheckFileIntegrity(string dirpath, string[] filepath, int length, SettingsPageViewModel vm, string surfix = "")
         {
             bool succeed = true;
             for (int i = 0; i < filepath.Length - length; i++)
             {
                 if (File.Exists(Path.Combine(dirpath, filepath[i] + surfix)) == false)
                 {
-                    App.Current.SettingsPageViewModel.ConvertingLog += $"{filepath[i]} {surfix} 文件不存在，将尝试下一步操作\r\n若无反应请重新下载资源文件！\r\n";
+                    vm.ConvertingLog += $"{filepath[i]} {surfix} 文件不存在，将尝试下一步操作\r\n若无反应请重新下载资源文件！\r\n";
                     succeed = false;
                     break;
                 }
-                App.Current.SettingsPageViewModel.ConvertingLog += $"{filepath[i]} {surfix} 存在\r\n";
+                vm.ConvertingLog += $"{filepath[i]} {surfix} 存在\r\n";
             }
             return succeed;
         }
@@ -284,9 +283,9 @@ namespace GenShin_Launcher_Plus.Service
         /// <summary>
         /// 替换客户端文件
         /// </summary>
-        public async Task ReplaceGameFiles(string[] originalfile, string[] newfile, string scheme)
+        public async Task ReplaceGameFiles(string[] originalfile, string[] newfile, string scheme, SettingsPageViewModel vm)
         {
-            App.Current.SettingsPageViewModel.StateIndicator = "状态：备份原始客户端中";
+            vm.StateIndicator = "状态：备份原始客户端中";
             for (int a = 0; a < originalfile.Length; a++)
             {
                 string newFileName = Path.Combine(GameFolder, originalfile[a]);
@@ -295,20 +294,20 @@ namespace GenShin_Launcher_Plus.Service
                     try
                     {
                         File.Move(newFileName, newFileName + ".bak");
-                        App.Current.SettingsPageViewModel.ConvertingLog += $"{newFileName} 备份成功\r\n";
+                        vm.ConvertingLog += $"{newFileName} 备份成功\r\n";
                     }
                     catch (Exception ex)
                     {
-                        App.Current.SettingsPageViewModel.ConvertingLog += $"{newFileName} 备份失败：{ex.Message}\r\n";
+                        vm.ConvertingLog += $"{newFileName} 备份失败：{ex.Message}\r\n";
                     }
                 }
                 else
                 {
-                    App.Current.SettingsPageViewModel.ConvertingLog += $"{newFileName} 文件不存在，备份失败，跳过\r\n";
+                    vm.ConvertingLog += $"{newFileName} 文件不存在，备份失败，跳过\r\n";
                 }
             }
 
-            App.Current.SettingsPageViewModel.StateIndicator = "状态：正在替换新文件到客户端";
+            vm.StateIndicator = "状态：正在替换新文件到客户端";
             string originalGameDataFolder = scheme == GlobalFolderName ? YuanShenDataFolderName : GenshinImpactDataFolderName;
             string newGameDataFolder = scheme == GlobalFolderName ? GenshinImpactDataFolderName : YuanShenDataFolderName;
 
@@ -316,16 +315,16 @@ namespace GenShin_Launcher_Plus.Service
             for (int i = 0; i < newfile.Length; i++)
             {
                 File.Copy(Path.Combine(@$"{scheme}File", newfile[i]), Path.Combine(GameFolder, newfile[i]), true);
-                App.Current.SettingsPageViewModel.ConvertingLog += $"{newfile[i]} 替换成功\r\n";
+                vm.ConvertingLog += $"{newfile[i]} 替换成功\r\n";
             };
             //
             string cps = scheme == CnFolderName ? "pcadbdpz" : "mihoyo";
-            App.Current.SettingsPageViewModel.isMihoyo = cps == "mihoyo" ? 2 : 0;
-            App.Current.SettingsPageViewModel.ConvertState = true;
+            vm.isMihoyo = cps == "mihoyo" ? 2 : 0;
+            vm.ConvertState = true;
 
             //
-            App.Current.SettingsPageViewModel.ConvertingLog += "转换完成，您可以启动游戏了";
-            App.Current.SettingsPageViewModel.StateIndicator = "状态：无状态";
+            vm.ConvertingLog += "转换完成，您可以启动游戏了";
+            vm.StateIndicator = "状态：无状态";
         }
 
         /// <summary>
@@ -334,23 +333,23 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="newfile"></param>
         /// <param name="originalfile"></param>
         /// <param name="scheme"></param>
-        public async Task RestoreGameFiles(string[] newfile, string[] originalfile, string scheme)
+        public async Task RestoreGameFiles(string[] newfile, string[] originalfile, string scheme, SettingsPageViewModel vm)
         {
             //Computer redir = new();
-            App.Current.SettingsPageViewModel.StateIndicator = "状态：清理多余文件中";
+            vm.StateIndicator = "状态：清理多余文件中";
             for (int i = 0; i < newfile.Length; i++)
             {
                 if (File.Exists(Path.Combine(GameFolder, newfile[i])))
                 {
                     File.Delete(Path.Combine(GameFolder, newfile[i]));
-                    App.Current.SettingsPageViewModel.ConvertingLog += $"{newfile[i]} 清理完毕\r\n";
+                    vm.ConvertingLog += $"{newfile[i]} 清理完毕\r\n";
                 }
                 else
                 {
-                    App.Current.SettingsPageViewModel.ConvertingLog += $"{newfile[i]} 文件不存在，已跳过\r\n";
+                    vm.ConvertingLog += $"{newfile[i]} 文件不存在，已跳过\r\n";
                 }
             }
-            App.Current.SettingsPageViewModel.StateIndicator = "状态：正在还原原始客户端文件";
+            vm.StateIndicator = "状态：正在还原原始客户端文件";
 
             string nowGameDataFolder = scheme == GlobalFolderName ? GenshinImpactDataFolderName : YuanShenDataFolderName;
             string originalGameDataFolder = scheme == GlobalFolderName ? YuanShenDataFolderName : GenshinImpactDataFolderName;
@@ -363,24 +362,24 @@ namespace GenShin_Launcher_Plus.Service
                 if (File.Exists(Path.Combine(GameFolder, originalfile[a] + ".bak")))
                 {
                     Directory.Move(newFileName + ".bak", newFileName);
-                    App.Current.SettingsPageViewModel.ConvertingLog += $"{originalfile[a]} 还原成功\r\n";
+                    vm.ConvertingLog += $"{originalfile[a]} 还原成功\r\n";
                     success++;
                 }
                 else
                 {
-                    App.Current.SettingsPageViewModel.ConvertingLog += $"{originalfile[a]} 跳过还原\r\n";
+                    vm.ConvertingLog += $"{originalfile[a]} 跳过还原\r\n";
                     total++;
                 }
             }
             //
             string cps = scheme == CnFolderName ? "pcadbdpz" : "mihoyo";
-            App.Current.SettingsPageViewModel.isMihoyo = cps == "mihoyo" ? 0 :2;
-            App.Current.SettingsPageViewModel.ConvertState = true;
+            vm.isMihoyo = cps == "mihoyo" ? 0 : 2;
+            vm.ConvertState = true;
 
             //
-            App.Current.SettingsPageViewModel.StateIndicator = "状态：无状态";
-            App.Current.SettingsPageViewModel.ConvertingLog += $"还原完毕 , 还原成功 : {success} 个文件 ,还原失败 : {total} 个文件\r\n";
-            App.Current.SettingsPageViewModel.ConvertingLog += "转换完成，您可以启动游戏了";
+            vm.StateIndicator = "状态：无状态";
+            vm.ConvertingLog += $"还原完毕 , 还原成功 : {success} 个文件 ,还原失败 : {total} 个文件\r\n";
+            vm.ConvertingLog += "转换完成，您可以启动游戏了";
         }
 
 

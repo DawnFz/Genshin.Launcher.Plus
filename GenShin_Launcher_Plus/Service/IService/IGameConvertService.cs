@@ -1,4 +1,4 @@
-﻿using GenShin_Launcher_Plus.Core;
+﻿using GenShin_Launcher_Plus.ViewModels;
 using System.Threading.Tasks;
 
 namespace GenShin_Launcher_Plus.Service.IService
@@ -8,7 +8,7 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// <summary>
         /// 异步转换客户端文件
         /// </summary>
-        Task ConvertGameFileAsync();
+        Task ConvertGameFileAsync(SettingsPageViewModel vm);
 
         /// <summary>
         /// 转换国际服及转换国服核心逻辑-判断客户端
@@ -20,7 +20,7 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// </summary>
         /// <param name="scheme"></param>
         /// <returns></returns>
-        bool CheckPackageVersion(string scheme);
+        bool CheckPackageVersion(string scheme, SettingsPageViewModel vm);
 
         /// <summary>
         /// 遍历判断文件是否存在
@@ -30,7 +30,7 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// <param name="length"></param>
         /// <param name="surfix"></param>
         /// <returns></returns>
-        bool CheckFileIntegrity(string dirpath, string[] filepath, int length, string surfix = "");
+        bool CheckFileIntegrity(string dirpath, string[] filepath, int length, SettingsPageViewModel vm, string surfix = "");
 
         /// <summary>
         /// 替换客户端文件
@@ -38,7 +38,7 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// <param name="originalfile"></param>
         /// <param name="newfile"></param>
         /// <param name="scheme"></param>
-        Task ReplaceGameFiles(string[] originalfile, string[] newfile, string scheme);
+        Task ReplaceGameFiles(string[] originalfile, string[] newfile, string scheme, SettingsPageViewModel vm);
 
         /// <summary>
         /// 还原客户端文件
@@ -46,6 +46,6 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// <param name="newfile"></param>
         /// <param name="originalfile"></param>
         /// <param name="scheme"></param>
-        Task RestoreGameFiles(string[] newfile, string[] originalfile, string scheme);
+        Task RestoreGameFiles(string[] newfile, string[] originalfile, string scheme, SettingsPageViewModel vm);
     }
 }

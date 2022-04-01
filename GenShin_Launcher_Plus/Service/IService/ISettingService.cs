@@ -1,19 +1,14 @@
 ﻿using GenShin_Launcher_Plus.Models;
-using System;
+using GenShin_Launcher_Plus.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GenShin_Launcher_Plus.Service.IService
 {
     public interface ISettingService
     {
-        void SettingsPageCreated();
+        void SettingsPageCreated(SettingsPageViewModel vm);
 
-        void SetDisplaySelectedIndex(int index);
-
-        List<UserListModel> ReadUserList();
+        void SetDisplaySelectedIndex(int index, SettingsPageViewModel vm);
 
         List<DisplaySizeListModel> CreateDisplaySizeList();
 
