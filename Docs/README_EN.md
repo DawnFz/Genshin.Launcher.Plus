@@ -12,7 +12,7 @@
 |Requirements|Specifications|
 |-|-|
 |System Version|Windows 7 SP1 and above (64-bit OS)|
-|Runtime|.NET 6.0.2 **Desktop** Runtime|
+|Runtime|.NET **Desktop** Runtime 6.0.3|
 
 ## Download
 
@@ -24,6 +24,11 @@
 
 - [Project Homepage](https://www.dawnfz.com)
 - [Updated History](https://www.dawnfz.com/document/view/updated)
+
+## Sponsor
+
+- If you think this project is not bad, please give this project a Star! ~
+- You can also go to the [Sponsor Page](https://www.dawnfz.com/document/view/sponsor.html) to support and give developers a little motivation
 
 ## Screenshot preview
 

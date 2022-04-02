@@ -12,7 +12,7 @@
 |要求|规格|
 |-|-|
 |系统版本|Windows 7 SP1 及以上（64位操作系统）|
-|运行时|.NET 6.0.2 **Desktop** Runtime|
+|运行时|.NET **Desktop** Runtime 6.0.3|
 
 ## 下载 原启Plus
 
@@ -24,6 +24,11 @@
 
 -  [项目主页](https://www.dawnfz.com)
 -  [更新历史](https://www.dawnfz.com/document/view/updated)
+
+## 赞助我们
+
+- 如果你觉得本项目还不错的话请给本项目点个Star吧！~
+- 你也可以到[赞助页面](https://www.dawnfz.com/document/view/sponsor.html)支持一下，给予开发者一点的动力
 
 ## 截图预览
 

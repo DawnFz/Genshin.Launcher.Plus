@@ -9,7 +9,7 @@ using MahApps.Metro.Controls.Dialogs;
 
 namespace GenShin_Launcher_Plus.Service
 {
-    public class UpdateService : IUpadteService
+    public class UpdateService : IUpdateService
     {
         public async void UpdateRun(UpdatePageViewModel vm)
         {
@@ -72,6 +72,27 @@ namespace GenShin_Launcher_Plus.Service
                     MessageDialogStyle.Affirmative,
                     new MetroDialogSettings()
                     { AffirmativeButtonText = App.Current.Language.Determine });
+            }
+        }
+
+        public async void CheckUpdate(MainWindow main)
+        {
+            try
+            {
+                FileHelper.ExtractEmbededAppResource("StaticRes/Update.dll", @"Update.exe");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            App.Current.LoadProgramCore.LoadUpdateCoreAsync();
+            string newver = App.Current.UpdateObject.Version;
+            string version = Application.ResourceAssembly.GetName().Version.ToString();
+            if (version != newver && !App.Current.IsLoading)
+            {
+                main.MainGrid.Children.Add(new Views.UpdatePage());
+                App.Current.IsLoading = true;
             }
         }
     }

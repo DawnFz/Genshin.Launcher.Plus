@@ -335,7 +335,6 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="scheme"></param>
         public async Task RestoreGameFiles(string[] newfile, string[] originalfile, string scheme, SettingsPageViewModel vm)
         {
-            //Computer redir = new();
             vm.StateIndicator = "状态：清理多余文件中";
             for (int i = 0; i < newfile.Length; i++)
             {

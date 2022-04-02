@@ -19,6 +19,7 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// 转换国际服及转换国服核心逻辑-判断PKG文件版本
         /// </summary>
         /// <param name="scheme"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
         bool CheckPackageVersion(string scheme, SettingsPageViewModel vm);
 
@@ -28,6 +29,7 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// <param name="dirpath"></param>
         /// <param name="filepath"></param>
         /// <param name="length"></param>
+        /// <param name="vm"></param>
         /// <param name="surfix"></param>
         /// <returns></returns>
         bool CheckFileIntegrity(string dirpath, string[] filepath, int length, SettingsPageViewModel vm, string surfix = "");
@@ -38,6 +40,7 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// <param name="originalfile"></param>
         /// <param name="newfile"></param>
         /// <param name="scheme"></param>
+        /// <param name="vm"></param>
         Task ReplaceGameFiles(string[] originalfile, string[] newfile, string scheme, SettingsPageViewModel vm);
 
         /// <summary>
@@ -46,6 +49,7 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// <param name="newfile"></param>
         /// <param name="originalfile"></param>
         /// <param name="scheme"></param>
+        /// <param name="vm"></param>
         Task RestoreGameFiles(string[] newfile, string[] originalfile, string scheme, SettingsPageViewModel vm);
     }
 }

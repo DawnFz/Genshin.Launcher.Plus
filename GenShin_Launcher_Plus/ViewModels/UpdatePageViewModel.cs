@@ -28,7 +28,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             ViewControlVisibility = "Hidden";
         }
 
-        private IUpadteService UpadteService { get; set; }
+        private IUpdateService UpadteService { get; set; }
 
 
         private DownloadHelper _DFC;

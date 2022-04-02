@@ -33,7 +33,8 @@ namespace GenShin_Launcher_Plus.ViewModels
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 GamePath = dialog.FileName;
-                if (!File.Exists(Path.Combine(GamePath, "Yuanshen.exe")) && !File.Exists(Path.Combine(GamePath, "GenshinImpact.exe")))
+                if (!File.Exists(Path.Combine(GamePath, "Yuanshen.exe")) && 
+                    !File.Exists(Path.Combine(GamePath, "GenshinImpact.exe")))
                 {
                     dialogCoordinator.ShowMessageAsync(
                         this, languages.Error, 
