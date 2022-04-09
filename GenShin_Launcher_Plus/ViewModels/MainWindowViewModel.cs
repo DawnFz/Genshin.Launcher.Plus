@@ -21,7 +21,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             dialogCoordinator = instance;
             App.Current.LoadProgramCore.LoadLanguageCore();
             new UpdateService().CheckUpdate(main);
-            MainService = new MainWindowService(main,this);
+            MainService = new MainService(main,this);
 
             OpenImagesDirectoryCommand = new RelayCommand(OpenImagesDirectory);
             OpenAboutCommand = new RelayCommand(OpenAbout);

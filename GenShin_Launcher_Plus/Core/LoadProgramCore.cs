@@ -43,24 +43,5 @@ namespace GenShin_Launcher_Plus.Core
             }
             App.Current.Language = JsonConvert.DeserializeObject<LanguageModel>(langjson);
         }
-
-        /// <summary>
-        /// 初始化更新页面的内容
-        /// </summary>
-        public void LoadUpdateCoreAsync()
-        {
-            if (App.Current.IniModel.ReadLang == "Lang_CN" ||
-                App.Current.IniModel.ReadLang == null ||
-                App.Current.IniModel.ReadLang == string.Empty)
-            {
-                string json = HtmlHelper.GetInfoFromHtmlAsync("UpdateCN");
-                App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json) ?? new();
-            }
-            else
-            {
-                string json = HtmlHelper.GetInfoFromHtmlAsync("UpdateGlobal");
-                App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json) ?? new();
-            }
-        }
     }
 }

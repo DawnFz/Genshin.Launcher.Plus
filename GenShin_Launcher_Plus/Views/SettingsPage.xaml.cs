@@ -12,8 +12,7 @@ namespace GenShin_Launcher_Plus.Views
 
         public SettingsPage()
         {
-            App.Current.SettingsPageViewModel = new(DialogCoordinator.Instance);
-            DataContext = App.Current.SettingsPageViewModel;
+            DataContext = new SettingsPageViewModel(DialogCoordinator.Instance);
             InitializeComponent();
         }
     }

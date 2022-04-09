@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows;
 using GenShin_Launcher_Plus.ViewModels;
+using GenShin_Launcher_Plus.Helper;
 
 namespace GenShin_Launcher_Plus.Service
 {
@@ -321,8 +322,8 @@ namespace GenShin_Launcher_Plus.Service
             string cps = scheme == CnFolderName ? "pcadbdpz" : "mihoyo";
             vm.isMihoyo = cps == "mihoyo" ? 2 : 0;
             vm.ConvertState = true;
-
             //
+            SaveGameConfig(vm);
             vm.ConvertingLog += "转换完成，您可以启动游戏了";
             vm.StateIndicator = "状态：无状态";
         }
@@ -374,11 +375,69 @@ namespace GenShin_Launcher_Plus.Service
             string cps = scheme == CnFolderName ? "pcadbdpz" : "mihoyo";
             vm.isMihoyo = cps == "mihoyo" ? 0 : 2;
             vm.ConvertState = true;
-
             //
+            SaveGameConfig(vm);
             vm.StateIndicator = "状态：无状态";
             vm.ConvertingLog += $"还原完毕 , 还原成功 : {success} 个文件 ,还原失败 : {total} 个文件\r\n";
             vm.ConvertingLog += "转换完成，您可以启动游戏了";
+        }
+
+        /// <summary>
+        /// 保存游戏客户端配置
+        /// </summary>
+        /// <param name="vm"></param>
+        public void SaveGameConfig(SettingsPageViewModel vm)
+        {
+            if (File.Exists(Path.Combine(App.Current.IniModel.GamePath, "config.ini")))
+            {
+                string bilibilisdk = "Plugins/PCGameSDK.dll";
+                switch (vm.isMihoyo)
+                {
+                    case 0:
+                        App.Current.IniModel.Cps = "pcadbdpz";
+                        App.Current.IniModel.Channel = 1;
+                        App.Current.IniModel.Sub_channel = 1;
+                        if (File.Exists(Path.Combine(GameFolder, $"YuanShen_Data/{bilibilisdk}")))
+                            File.Delete(Path.Combine(GameFolder, $"YuanShen_Data/{bilibilisdk}"));
+                        App.Current.NoticeOverAllBase.SwitchPort = $"{App.Current.Language.GameClientStr} : {App.Current.Language.GameClientTypePStr}";
+                        App.Current.NoticeOverAllBase.IsGamePortLists = "Visible";
+                        App.Current.NoticeOverAllBase.GamePortListIndex = 0;
+                        break;
+                    case 1:
+                        App.Current.IniModel.Cps = "bilibili";
+                        App.Current.IniModel.Channel = 14;
+                        App.Current.IniModel.Sub_channel = 0;
+                        if (!File.Exists(Path.Combine(GameFolder, $"YuanShen_Data/{bilibilisdk}")))
+                        {
+                            try
+                            {
+                                string sdkPath = Path.Combine(GameFolder, $"YuanShen_Data/{bilibilisdk}");
+                                FileHelper.ExtractEmbededAppResource("StaticRes/mihoyosdk.dll", sdkPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
+                        }
+                        App.Current.NoticeOverAllBase.SwitchPort = $"{App.Current.Language.GameClientStr} : {App.Current.Language.GameClientTypeBStr}";
+                        App.Current.NoticeOverAllBase.IsGamePortLists = "Visible";
+                        App.Current.NoticeOverAllBase.GamePortListIndex = 1;
+
+                        break;
+                    case 2:
+                        App.Current.IniModel.Cps = "mihoyo";
+                        App.Current.IniModel.Channel = 1;
+                        App.Current.IniModel.Sub_channel = 0;
+                        if (File.Exists(Path.Combine(GameFolder, $"GenshinImpact_Data/{bilibilisdk}")))
+                            File.Delete(Path.Combine(GameFolder, $"GenshinImpact_Data/{bilibilisdk}"));
+                        App.Current.NoticeOverAllBase.SwitchPort = $"{App.Current.Language.GameClientStr} : {App.Current.Language.GameClientTypeMStr}";
+                        App.Current.NoticeOverAllBase.IsGamePortLists = "Hidden";
+                        App.Current.NoticeOverAllBase.GamePortListIndex = -1;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
 

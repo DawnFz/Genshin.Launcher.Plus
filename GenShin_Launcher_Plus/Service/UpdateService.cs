@@ -6,6 +6,9 @@ using GenShin_Launcher_Plus.Helper;
 using GenShin_Launcher_Plus.Service.IService;
 using GenShin_Launcher_Plus.ViewModels;
 using MahApps.Metro.Controls.Dialogs;
+using GenShin_Launcher_Plus.Core;
+using GenShin_Launcher_Plus.Models;
+using Newtonsoft.Json;
 
 namespace GenShin_Launcher_Plus.Service
 {
@@ -40,7 +43,7 @@ namespace GenShin_Launcher_Plus.Service
                             Environment.Exit(0);
                         }
                         else
-                        {                           
+                        {
                             File.Move(@"UpdateTemp.zip", @"UpdateTemp.upd");
                             Process.Start(@"Update.exe");
                             Environment.Exit(0);
@@ -75,6 +78,10 @@ namespace GenShin_Launcher_Plus.Service
             }
         }
 
+        /// <summary>
+        /// 检查是否存在更新信息
+        /// 初始化更新页面的内容
+        /// </summary>
         public async void CheckUpdate(MainWindow main)
         {
             try
@@ -86,7 +93,19 @@ namespace GenShin_Launcher_Plus.Service
                 MessageBox.Show(ex.Message);
             }
 
-            App.Current.LoadProgramCore.LoadUpdateCoreAsync();
+            if (App.Current.IniModel.ReadLang == "Lang_CN" ||
+                App.Current.IniModel.ReadLang == null ||
+                App.Current.IniModel.ReadLang == string.Empty)
+            {
+                string json = await HtmlHelper.GetInfoFromHtmlAsync("UpdateCN");
+                App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json) ?? new();
+            }
+            else
+            {
+                string json = await HtmlHelper.GetInfoFromHtmlAsync("UpdateGlobal");
+                App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json) ?? new();
+            }
+
             string newver = App.Current.UpdateObject.Version;
             string version = Application.ResourceAssembly.GetName().Version.ToString();
             if (version != newver && !App.Current.IsLoading)

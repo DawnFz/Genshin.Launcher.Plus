@@ -51,5 +51,11 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// <param name="scheme"></param>
         /// <param name="vm"></param>
         Task RestoreGameFiles(string[] newfile, string[] originalfile, string scheme, SettingsPageViewModel vm);
+
+        /// <summary>
+        /// 保存游戏客户端配置
+        /// </summary>
+        /// <param name="vm"></param>
+        void SaveGameConfig(SettingsPageViewModel vm);
     }
 }

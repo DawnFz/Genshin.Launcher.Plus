@@ -264,56 +264,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             App.Current.IniModel.Width = Width;
             App.Current.IniModel.Height = Height;
             App.Current.IniModel.isUnFPS = isUnFPS;
-            if (File.Exists(Path.Combine(App.Current.IniModel.GamePath, "config.ini")))
-            {
-                string bilibilisdk = "Plugins/PCGameSDK.dll";
-                switch (isMihoyo)
-                {
-                    case 0:
-                        App.Current.IniModel.Cps = "pcadbdpz";
-                        App.Current.IniModel.Channel = 1;
-                        App.Current.IniModel.Sub_channel = 1;
-                        if (File.Exists(Path.Combine(GamePath, $"YuanShen_Data/{bilibilisdk}")))
-                            File.Delete(Path.Combine(GamePath, $"YuanShen_Data/{bilibilisdk}"));
-                        App.Current.NoticeOverAllBase.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypePStr}";
-                        App.Current.NoticeOverAllBase.IsGamePortLists = "Visible";
-                        App.Current.NoticeOverAllBase.GamePortListIndex = 0;
-                        break;
-                    case 1:
-                        App.Current.IniModel.Cps = "bilibili";
-                        App.Current.IniModel.Channel = 14;
-                        App.Current.IniModel.Sub_channel = 0;
-                        if (!File.Exists(Path.Combine(GamePath, $"YuanShen_Data/{bilibilisdk}")))
-                        {
-                            try
-                            {
-                                string sdkPath = Path.Combine(GamePath, $"YuanShen_Data/{bilibilisdk}");
-                                FileHelper.ExtractEmbededAppResource("StaticRes/mihoyosdk.dll", sdkPath);
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.Message);
-                            }
-                        }
-                        App.Current.NoticeOverAllBase.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeBStr}";
-                        App.Current.NoticeOverAllBase.IsGamePortLists = "Visible";
-                        App.Current.NoticeOverAllBase.GamePortListIndex = 1;
-
-                        break;
-                    case 2:
-                        App.Current.IniModel.Cps = "mihoyo";
-                        App.Current.IniModel.Channel = 1;
-                        App.Current.IniModel.Sub_channel = 0;
-                        if (File.Exists(Path.Combine(GamePath, $"GenshinImpact_Data/{bilibilisdk}")))
-                            File.Delete(Path.Combine(GamePath, $"GenshinImpact_Data/{bilibilisdk}"));
-                        App.Current.NoticeOverAllBase.SwitchPort = $"{languages.GameClientStr} : {languages.GameClientTypeMStr}";
-                        App.Current.NoticeOverAllBase.IsGamePortLists = "Hidden";
-                        App.Current.NoticeOverAllBase.GamePortListIndex = -1;
-                        break;
-                    default:
-                        break;
-                }
-            }
+            GameConvert.SaveGameConfig(this);
             DelaySaveButtonTitle();
             ThisPageRemove();
         }
@@ -323,8 +274,6 @@ namespace GenShin_Launcher_Plus.ViewModels
         private void ThisPageRemove()
         {
             App.Current.NoticeOverAllBase.MainPagesIndex = 0;
-            App.Current.SettingsPageViewModel = null;
-            GC.Collect();
         }
 
         //转换国际服及转换国服绑定命令

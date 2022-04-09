@@ -12,41 +12,41 @@ namespace GenShin_Launcher_Plus.Core
     {
 
         private const string Url = "https://www.cnblogs.com/DawnFz/p/15990791.html";
-        public static string ReadHTMLAsText(string url)
+
+        private static async Task<string> ReadHTMLAsTextAsync(string url)
         {
-            string strHTML = string.Empty;
             try
             {
-                WebClient myWebClient = new();
-                myWebClient.Proxy = null;
-                Stream myStream = myWebClient.OpenRead(url);
-                StreamReader sr = new StreamReader(myStream, Encoding.UTF8);
-                strHTML = sr.ReadToEnd();
-                myStream.Close();
+                using (Stream stream = await new HttpClient().GetStreamAsync(url))
+                {
+                    using (StreamReader sr = new(stream, Encoding.UTF8))
+                    {
+                        return await sr.ReadToEndAsync();
+                    }
+                }
             }
             catch
             {
                 return string.Empty;
             }
-            return strHTML;
-        }
-        public static string MiddleText(string Str, string preStr, string nextStr)
-        {
-            try
-            {
-                string tempStr = Str.Substring(Str.IndexOf(preStr) + preStr.Length);
-                tempStr = tempStr.Substring(0, tempStr.IndexOf(nextStr));
-                return tempStr;
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
-        public static string GetInfoFromHtmlAsync(string tag)
-        {
-            return MiddleText(ReadHTMLAsText(Url), $"【{tag}++】", $"【{tag}--】");
         }
 
+        private static string Mid(string str, string preStr, string nextStr)
+        {
+            try
+            {
+                string trimFront = str[(str.IndexOf(preStr) + preStr.Length)..];
+                return trimFront[..trimFront.IndexOf(nextStr)];
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public static async Task<string> GetInfoFromHtmlAsync(string tag)
+        {
+            return Mid(await ReadHTMLAsTextAsync(Url), $"【{tag}++】", $"【{tag}--】");
+        }
     }
 }

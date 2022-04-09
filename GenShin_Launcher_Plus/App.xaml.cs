@@ -59,8 +59,6 @@ namespace GenShin_Launcher_Plus
 
         public UpdateModel? UpdateObject { get; set; }
 
-        public SettingsPageViewModel SettingsPageViewModel { get; set; }
-
         public bool IsLoading { get; set; }
 
     }
