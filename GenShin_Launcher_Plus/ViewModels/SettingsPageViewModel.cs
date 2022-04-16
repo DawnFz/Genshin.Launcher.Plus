@@ -42,6 +42,11 @@ namespace GenShin_Launcher_Plus.ViewModels
             ChooseUnlockFpsCommand = new RelayCommand(ChooseUnlockFps);
             GameFileConvertCommand = new AsyncRelayCommand(GameFileConvert);
 
+            SwitchAccountCommand = new RelayCommand(SwitchAccount);
+            SwitchGameSettingsCommand = new RelayCommand(SwitchGameSettings);
+            SwitchConvertClientCommand = new RelayCommand(SwitchConvertClient);
+            SwitchProgarmSettingCommand = new RelayCommand(SwitchProgarmSetting);
+
             _UserLists = UserDataService.ReadUserList();
             _GamePortLists = SettingService.CreateGamePortList();
             _DisplaySizeLists = SettingService.CreateDisplaySizeList();
@@ -91,16 +96,24 @@ namespace GenShin_Launcher_Plus.ViewModels
         //设置界面UI刷新绑定数据
         private string _Width;
         public string Width { get => _Width; set => SetProperty(ref _Width, value); }
+
         private string _Height;
         public string Height { get => _Height; set => SetProperty(ref _Height, value); }
+
         private bool _isUnFPS;
         public bool isUnFPS { get => _isUnFPS; set => SetProperty(ref _isUnFPS, value); }
+
         private string _GamePath;
         public string GamePath { get => _GamePath; set => SetProperty(ref _GamePath, value); }
+
         private string _SwitchUser;
         public string SwitchUser { get => _SwitchUser; set => SetProperty(ref _SwitchUser, value); }
+
         private int _isMihoyo;
         public int isMihoyo { get => _isMihoyo; set => SetProperty(ref _isMihoyo, value); }
+
+        private int _FlipViewSelectedIndex;
+        public int FlipViewSelectedIndex { get => _FlipViewSelectedIndex; set => SetProperty(ref _FlipViewSelectedIndex, value);}
 
 
         //选中分辨率的索引
@@ -164,6 +177,34 @@ namespace GenShin_Launcher_Plus.ViewModels
         private List<GameWindowModeListModel> _GameWindowModeList;
         public List<GameWindowModeListModel> GameWindowModeList { get => _GameWindowModeList; }
 
+
+        /// <summary>
+        /// 切换FlipView的SelectedIndex方法集
+        /// </summary>
+        /// 
+        public ICommand SwitchGameSettingsCommand { get; set; }
+        private void SwitchGameSettings()
+        {
+            FlipViewSelectedIndex = 0;
+        }
+
+        public ICommand SwitchConvertClientCommand { get; set; }
+        private void SwitchConvertClient()
+        {
+            FlipViewSelectedIndex = 1;
+        }
+
+        public ICommand SwitchAccountCommand { get; set; }
+        private void SwitchAccount()
+        {
+            FlipViewSelectedIndex = 2;
+        }
+
+        public ICommand SwitchProgarmSettingCommand { get; set; }
+        private void SwitchProgarmSetting()
+        {
+            FlipViewSelectedIndex = 3;
+        }
 
         //选择游戏路径的命令
         public ICommand ChooseGamePathCommand { get; set; }

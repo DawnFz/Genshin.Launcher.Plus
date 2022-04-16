@@ -14,16 +14,17 @@
         <Grid Height="360" Width="550" Background="White">
             <Grid HorizontalAlignment="Center" Height="36" VerticalAlignment="Top" Width="550" d:Background="#FF272727" Background="{Binding SettingTitleColor}">
                 <Button HorizontalAlignment="Right" IsEnabled="{Binding PageUiStatus}" Margin="0,0,8,0" VerticalAlignment="Center" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FFFF5252" Content="❌" BorderBrush="{x:Null}" Height="22" Width="22" Foreground="White" FontSize="9" Command="{Binding ThisPageRemoveCommand}"/>
-                <Button FontSize="14" Content="游戏设置" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="100" Height="36" Foreground="White"/>
-                <Button FontSize="14" Content="客户端转换" HorizontalAlignment="Left" Margin="100,0,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="100" Height="36" Foreground="White"/>
-                <Button FontSize="14" Content="账号设置" HorizontalAlignment="Left" Margin="200,0,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="100" Height="36" Foreground="White"/>
-                <Button FontSize="14" Content="程序设置" HorizontalAlignment="Left" Margin="300,0,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="100" Height="36" Foreground="White"/>
-                <Button FontSize="14" Content="保存" HorizontalAlignment="Right" Margin="0,0,40,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="65" Height="36" Foreground="White"/>
+                <Button FontSize="14" Content="游戏设置" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="100" Height="36" Foreground="White" Command="{Binding SwitchGameSettingsCommand}"/>
+                <Button FontSize="14" Content="客户端转换" HorizontalAlignment="Left" Margin="100,0,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="100" Height="36" Foreground="White" Command="{Binding SwitchConvertClientCommand}"/>
+                <Button FontSize="14" Content="账号设置" HorizontalAlignment="Left" Margin="200,0,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="100" Height="36" Foreground="White" Command="{Binding SwitchAccountCommand}"/>
+                <Button FontSize="14" Content="程序设置" HorizontalAlignment="Left" Margin="300,0,0,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="100" Height="36" Foreground="White" Command="{Binding SwitchProgarmSettingCommand}"/>
+                <Button FontSize="14" Content="保存" HorizontalAlignment="Right" Margin="0,0,40,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="65" Height="36" Foreground="White" Command="{Binding SaveSettingsCommand}"/>
             </Grid>
             <Grid Margin="0,36,0,0">
-                <mah:FlipView x:Name="MainFlipView" MouseHoverBorderBrush="{x:Null}" IsBannerEnabled="False" IsNavigationEnabled="False" SelectedIndex="2">
-                    <Grid Margin="20,20,20,20">
+                <mah:FlipView x:Name="MainFlipView" MouseHoverBorderBrush="{x:Null}" IsBannerEnabled="False" IsNavigationEnabled="False" d:SelectedIndex="3" SelectedIndex="{Binding FlipViewSelectedIndex}">
+                    <Grid Margin="20,15,20,20">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
@@ -36,8 +37,8 @@
                             <ColumnDefinition Width="2*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,22,0" TextWrapping="Wrap" Text="{Binding Height}" VerticalAlignment="Center" Width="68" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
-                        <TextBox Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" Margin="23,0,0,0" TextWrapping="Wrap" Text="{Binding Width}" VerticalAlignment="Center" Width="68" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                        <TextBox mah:TextBoxHelper.Watermark="{Binding languages.HeightStr}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,22,0" TextWrapping="Wrap" Text="{Binding Height}" VerticalAlignment="Center" Width="68" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
+                        <TextBox mah:TextBoxHelper.Watermark="{Binding languages.WitdhStr}" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" Margin="23,0,0,0" TextWrapping="Wrap" Text="{Binding Width}" VerticalAlignment="Center" Width="68" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
                         <Label Grid.Row="0" Grid.Column="1" Content="×" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Normal" FontSize="14" Width="20"/>
 
                         <ComboBox Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding DisplaySizeLists}" DisplayMemberPath="DisplaySize" SelectedValuePath="DisplaySize"  SelectedIndex="{Binding DisplaySelectedIndex}"/>
@@ -53,8 +54,12 @@
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="选择游戏窗口的启动模式" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="是否启用无边框窗口化" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
                         <TextBlock Grid.Row="5" Grid.Column="0" Text="是否启用解锁帧率上限" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
+
+                        <Button Margin="0,0,22,0" Grid.Row="6" Grid.Column="1" IsEnabled="{Binding PageUiStatus}" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="..." HorizontalAlignment="Right" VerticalAlignment="Center" Height="26" Width="45" FontFamily="Microsoft YaHei UI" FontSize="12" BorderBrush="#FF83919F" Command="{Binding ChooseGamePathCommand}" />
+                        <TextBox Margin="25,0,67,0" Grid.Row="6" Grid.ColumnSpan="2" mah:TextBoxHelper.Watermark="{Binding languages.PathBoxTips}" TextWrapping="Wrap" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" Text="{Binding GamePath}"/>
+
                     </Grid>
-                    <Grid Margin="50,10,50,20" >
+                    <Grid Margin="50,0,50,20" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="5*"></RowDefinition>
@@ -71,8 +76,21 @@
                             </b:Interaction.Triggers>
                         </TextBox>
                     </Grid>
-                    <Grid>
-                        <TextBlock>3</TextBlock>
+                    <Grid Margin="30">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="8*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Grid.Row="0" Grid.Column="0" d:Header="Title" Header="{Binding languages.UserListTitle}" Margin="0,0,0,5">
+                                <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding UserLists}" DisplayMemberPath="UserName" SelectedValue="{Binding SwitchUser, Mode=OneWayToSource}" SelectedValuePath="UserName" FontSize="12"/>
+                            </GroupBox>
+                            <Button  Grid.Row="1" Grid.Column="0" FontSize="12" Style="{DynamicResource MahApps.Styles.Button.Square}" IsEnabled="{Binding PageUiStatus}" Content="{Binding languages.DelUserBtn}" Command="{Binding DeleteUserCommand}" FontFamily="Microsoft YaHei UI" />
+                        </Grid>
                     </Grid>
                     <Grid>
                         <TextBlock>4</TextBlock>
