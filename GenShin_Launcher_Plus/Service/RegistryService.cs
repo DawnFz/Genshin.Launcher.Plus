@@ -4,7 +4,6 @@ using GenShin_Launcher_Plus.Models;
 using Newtonsoft.Json;
 using System.IO;
 using System.Windows;
-using GenShin_Launcher_Plus.ViewModels;
 using GenShin_Launcher_Plus.Service.IService;
 
 namespace GenShin_Launcher_Plus.Service

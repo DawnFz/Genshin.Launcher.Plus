@@ -108,7 +108,10 @@ namespace GenShin_Launcher_Plus.Service
 
             string newver = App.Current.UpdateObject.Version;
             string version = Application.ResourceAssembly.GetName().Version.ToString();
-            if (version != newver && !App.Current.IsLoading)
+            if (version != newver &&
+                newver != null &&
+                newver != String.Empty &&
+                !App.Current.IsLoading)
             {
                 main.MainGrid.Children.Add(new Views.UpdatePage());
                 App.Current.IsLoading = true;

@@ -19,20 +19,11 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         public UsersPageViewModel()
         {
-            _GamePortLists = new();
-
             SaveUserDataCommand = new RelayCommand(SaveUserData);
             RemoveThisPageCommand = new RelayCommand(RemoveThisPage);
 
             _registryService = new RegistryService();
             _userDataService = new UserDataService();
-
-            GamePortLists
-                .Add(new GamePortListModel
-                { GamePort = languages.GameClientTypePStr });
-            GamePortLists
-                .Add(new GamePortListModel
-                { GamePort = languages.GameClientTypeMStr });
         }
 
         private IRegistryService _registryService;
@@ -43,30 +34,17 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         public LanguageModel languages { get => App.Current.Language; }
 
-        public string GamePort { get; set; }
         public string Name { get; set; }
-
-        //游戏客户端列表
-        private List<GamePortListModel> _GamePortLists;
-        public List<GamePortListModel> GamePortLists { get => _GamePortLists; }
 
         public ICommand SaveUserDataCommand { get; set; }
         private void SaveUserData()
         {
-            if (GamePort == languages.GameClientTypePStr && Name != null)
-            {
-                string userdata = RegistryService.GetFromRegistry(Name, "CN");
-                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
-            }
-            else if (GamePort == languages.GameClientTypeMStr && Name != null)
-            {
-                string userdata = RegistryService.GetFromRegistry(Name, "Global");
-                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
-            }
-            else
-            {
-                MessageBox.Show(languages.AddUsersErrorMessageStr);
-            }
+            //判断YuanShen.exe是否存在，存在则为False，否则为True
+            bool isGlobal = !File.Exists(Path.Combine(App.Current.IniModel.GamePath, "YuanShen.exe"));
+            //判断isGlobal值，为True时为Cn，否则为Global
+            string gamePort = isGlobal ? "Global" : "CN";
+            string userdata = RegistryService.GetFromRegistry(Name, gamePort);
+            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
             App.Current.NoticeOverAllBase.UserLists = UserDataService.ReadUserList();
             RemoveThisPage();
         }

@@ -73,10 +73,18 @@ namespace GenShin_Launcher_Plus.Service
             }
             else
             {
-                if (game.Start())
+                if (App.Current.IniModel.IsRunThenClose)
                 {
-                    await game.WaitForExitAsync();
-                    Application.Current.MainWindow.WindowState = WindowState.Normal;
+                    game.Start();
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    if (game.Start())
+                    {
+                        await game.WaitForExitAsync();
+                        Application.Current.MainWindow.WindowState = WindowState.Normal;
+                    }
                 }
             }
         }

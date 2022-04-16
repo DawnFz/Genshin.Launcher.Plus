@@ -95,21 +95,27 @@ namespace GenShin_Launcher_Plus.Service
                 }
                 else
                 {
-                    /*新的背景解决方案
-                     * 
-                     * 读取json获得背景列表并判断日期进行轮播
-                     * 将在下个版本加入
-                     * 
-                    string bgurl = App.Current.UpdateObject.BgUrl;
-                    if (bgurl != "" && bgurl != null)
-                    {
-                        uri = new(bgurl, UriKind.Absolute);
-                    }*/
+                    vm.Background.ImageSource = new BitmapImage(uri);
                     string bgurl = await HtmlHelper.GetInfoFromHtmlAsync("bg");
-                    if (bgurl != "" && bgurl != null)
+                    var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.All });
+                    if (bgurl!=null)
                     {
-                        uri = new(bgurl, UriKind.Absolute);
-                    }                    
+                        var bytes = await client.GetByteArrayAsync(bgurl);
+                        var ms = new MemoryStream(bytes);
+                        var newBitmap = new BitmapImage();
+                        newBitmap.BeginInit();
+                        newBitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        newBitmap.StreamSource = ms;
+                        newBitmap.EndInit();
+                        vm.Background.ImageSource = newBitmap;
+                        vm.Background.Stretch = Stretch.UniformToFill;
+                    }
+                    else
+                    {
+                        vm.Background.ImageSource = new BitmapImage(uri);
+                        vm.Background.Stretch = Stretch.UniformToFill;
+                    }
+                    return;
                 }
                 vm.Background.ImageSource = new BitmapImage(uri);
                 vm.Background.Stretch = Stretch.UniformToFill;

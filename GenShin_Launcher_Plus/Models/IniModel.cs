@@ -188,6 +188,23 @@ namespace GenShin_Launcher_Plus.Core
             }
         }
 
+        private bool _IsRunThenClose;
+        public bool IsRunThenClose
+        {
+            get
+            {
+                _IsRunThenClose = Convert.ToBoolean(parser.GetSetting("setup", "IsRunThenClose", 2));
+                return _IsRunThenClose;
+            }
+            set
+            {
+                _IsRunThenClose = value;
+                parser.AddSetting("setup", "IsRunThenClose", Convert.ToString(_IsRunThenClose));
+                parser.SaveSettings();
+                SetProperty(ref _IsRunThenClose, value);
+            }
+        }
+
         private ushort _isMihoyo;
         public ushort isMihoyo
         {

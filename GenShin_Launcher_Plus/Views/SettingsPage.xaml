@@ -51,5 +51,6 @@
             <Label Content="{Binding SettingsTitle}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
             <Button HorizontalAlignment="Left" IsEnabled="{Binding PageUiStatus}" Margin="360,0,0,0" VerticalAlignment="Center" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FFFF5252" Content="❌" BorderBrush="{x:Null}" Height="22" Width="22" Foreground="White" FontSize="9" Command="{Binding ThisPageRemoveCommand}"/>
         </Grid>
+        <CheckBox Content="启动后关闭" HorizontalAlignment="Left" Margin="171,546,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.IsRunThenClose}"/>
     </Grid>
 </UserControl>

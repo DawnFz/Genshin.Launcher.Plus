@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
-using MahApps.Metro.Controls.Dialogs;
 using System.Windows;
 using GenShin_Launcher_Plus.ViewModels;
 using GenShin_Launcher_Plus.Helper;
@@ -158,13 +157,13 @@ namespace GenShin_Launcher_Plus.Service
             {
                 if (oldfiles != null && newfiles != null)
                 {
-                    if (!CheckFileIntegrity(GameFolder, oldfiles, 1,vm, ".bak"))
+                    if (!CheckFileIntegrity(GameFolder, oldfiles, 1, vm, ".bak"))
                     {
                         if (Directory.Exists($"{currentPath}/{newport}File"))
                         {
                             if (CheckPackageVersion($"{newport}File", vm))
                             {
-                                if (CheckFileIntegrity($"{currentPath}/{newport}File", newfiles, 0,vm))
+                                if (CheckFileIntegrity($"{currentPath}/{newport}File", newfiles, 0, vm))
                                 {
                                     await ReplaceGameFiles(oldfiles, newfiles, newport, vm);
                                 }
@@ -176,7 +175,7 @@ namespace GenShin_Launcher_Plus.Service
                         }
                         else if (File.Exists($"{currentPath}/{newport}File.pkg"))
                         {
-                            vm.StateIndicator = "状态：解压PKG资源文件中";
+                            vm.StateIndicator = App.Current.Language.StateIndicatorUning;
                             if (Decompress(newport))
                             {
                                 if (CheckPackageVersion($"{newport}File", vm))
@@ -186,21 +185,21 @@ namespace GenShin_Launcher_Plus.Service
                                 else
                                 {
                                     Directory.Delete($"{currentPath}/{newport}File", true);
-                                    vm.StateIndicator = "状态：PKG资源文件有新版本";
+                                    vm.StateIndicator = App.Current.Language.StateIndicatorUpdate;
                                     vm.ConvertState = false;
                                 }
                             }
                             else
                             {
-                                vm.StateIndicator = "状态：PKG解压失败，请检查PKG是否正常";
-                                vm.ConvertingLog += $"资源[{newport}File.pkg]解压失败，请检查Pkg文件是否正常\r\n";
+                                vm.StateIndicator = App.Current.Language.StateIndicatorUnErr;
+                                vm.ConvertingLog += $"[{newport}File.pkg]{App.Current.Language.ErrorPkgUnzip},{App.Current.Language.ErrorPkgNF}\r\n";
                                 vm.ConvertState = false;
                             }
                         }
                         else
                         {
-                            vm.StateIndicator = "状态：请检查PKG文件是否存在";
-                            vm.ConvertingLog += $"没有找到资源[{newport}File.pkg]，请检查Pkg文件是否存在于本程序目录下\r\n";
+                            vm.StateIndicator = App.Current.Language.StateIndicatorCheck;
+                            vm.ConvertingLog += $"[{newport}File.pkg]{App.Current.Language.Error},{App.Current.Language.ErrorPkgNF}\r\n";
                             vm.ConvertState = false;
                         }
                     }
@@ -272,11 +271,11 @@ namespace GenShin_Launcher_Plus.Service
             {
                 if (File.Exists(Path.Combine(dirpath, filepath[i] + surfix)) == false)
                 {
-                    vm.ConvertingLog += $"{filepath[i]} {surfix} 文件不存在，将尝试下一步操作\r\n若无反应请重新下载资源文件！\r\n";
+                    vm.ConvertingLog += $"{filepath[i]} {surfix} {App.Current.Language.ErrorFileNF}\r\n";
                     succeed = false;
                     break;
                 }
-                vm.ConvertingLog += $"{filepath[i]} {surfix} 存在\r\n";
+                vm.ConvertingLog += $"{filepath[i]} {surfix} {App.Current.Language.FileExist}\r\n";
             }
             return succeed;
         }
@@ -286,7 +285,7 @@ namespace GenShin_Launcher_Plus.Service
         /// </summary>
         public async Task ReplaceGameFiles(string[] originalfile, string[] newfile, string scheme, SettingsPageViewModel vm)
         {
-            vm.StateIndicator = "状态：备份原始客户端中";
+            vm.StateIndicator = App.Current.Language.StateIndicatorBaking;
             for (int a = 0; a < originalfile.Length; a++)
             {
                 string newFileName = Path.Combine(GameFolder, originalfile[a]);
@@ -295,20 +294,20 @@ namespace GenShin_Launcher_Plus.Service
                     try
                     {
                         File.Move(newFileName, newFileName + ".bak");
-                        vm.ConvertingLog += $"{newFileName} 备份成功\r\n";
+                        vm.ConvertingLog += $"{newFileName} {App.Current.Language.BakSuccess}\r\n";
                     }
                     catch (Exception ex)
                     {
-                        vm.ConvertingLog += $"{newFileName} 备份失败：{ex.Message}\r\n";
+                        vm.ConvertingLog += $"{newFileName} {App.Current.Language.ErrorBakF} {ex.Message}\r\n";
                     }
                 }
                 else
                 {
-                    vm.ConvertingLog += $"{newFileName} 文件不存在，备份失败，跳过\r\n";
+                    vm.ConvertingLog += $"{newFileName} {App.Current.Language.BakFileNfSk}\r\n";
                 }
             }
 
-            vm.StateIndicator = "状态：正在替换新文件到客户端";
+            vm.StateIndicator = App.Current.Language.StateIndicatorReping;
             string originalGameDataFolder = scheme == GlobalFolderName ? YuanShenDataFolderName : GenshinImpactDataFolderName;
             string newGameDataFolder = scheme == GlobalFolderName ? GenshinImpactDataFolderName : YuanShenDataFolderName;
 
@@ -316,7 +315,7 @@ namespace GenShin_Launcher_Plus.Service
             for (int i = 0; i < newfile.Length; i++)
             {
                 File.Copy(Path.Combine(@$"{scheme}File", newfile[i]), Path.Combine(GameFolder, newfile[i]), true);
-                vm.ConvertingLog += $"{newfile[i]} 替换成功\r\n";
+                vm.ConvertingLog += $"{newfile[i]} {App.Current.Language.RepSuccess}\r\n";
             };
             //
             string cps = scheme == CnFolderName ? "pcadbdpz" : "mihoyo";
@@ -324,8 +323,8 @@ namespace GenShin_Launcher_Plus.Service
             vm.ConvertState = true;
             //
             SaveGameConfig(vm);
-            vm.ConvertingLog += "转换完成，您可以启动游戏了";
-            vm.StateIndicator = "状态：无状态";
+            vm.ConvertingLog += App.Current.Language.RestoreEndStr;
+            vm.StateIndicator = App.Current.Language.StateIndicatorDefault;
         }
 
         /// <summary>
@@ -336,20 +335,20 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="scheme"></param>
         public async Task RestoreGameFiles(string[] newfile, string[] originalfile, string scheme, SettingsPageViewModel vm)
         {
-            vm.StateIndicator = "状态：清理多余文件中";
+            vm.StateIndicator = App.Current.Language.StateIndicatorCleaning;
             for (int i = 0; i < newfile.Length; i++)
             {
                 if (File.Exists(Path.Combine(GameFolder, newfile[i])))
                 {
                     File.Delete(Path.Combine(GameFolder, newfile[i]));
-                    vm.ConvertingLog += $"{newfile[i]} 清理完毕\r\n";
+                    vm.ConvertingLog += $"{newfile[i]} {App.Current.Language.CleanedStr}\r\n";
                 }
                 else
                 {
-                    vm.ConvertingLog += $"{newfile[i]} 文件不存在，已跳过\r\n";
+                    vm.ConvertingLog += $"{newfile[i]} {App.Current.Language.CleanSkipStr}\r\n";
                 }
             }
-            vm.StateIndicator = "状态：正在还原原始客户端文件";
+            vm.StateIndicator = App.Current.Language.StateIndicatorRecover;
 
             string nowGameDataFolder = scheme == GlobalFolderName ? GenshinImpactDataFolderName : YuanShenDataFolderName;
             string originalGameDataFolder = scheme == GlobalFolderName ? YuanShenDataFolderName : GenshinImpactDataFolderName;
@@ -362,12 +361,12 @@ namespace GenShin_Launcher_Plus.Service
                 if (File.Exists(Path.Combine(GameFolder, originalfile[a] + ".bak")))
                 {
                     Directory.Move(newFileName + ".bak", newFileName);
-                    vm.ConvertingLog += $"{originalfile[a]} 还原成功\r\n";
+                    vm.ConvertingLog += $"{originalfile[a]} {App.Current.Language.RestoreSucess}\r\n";
                     success++;
                 }
                 else
                 {
-                    vm.ConvertingLog += $"{originalfile[a]} 跳过还原\r\n";
+                    vm.ConvertingLog += $"{originalfile[a]} {App.Current.Language.RestoreSkipStr}\r\n";
                     total++;
                 }
             }
@@ -377,9 +376,9 @@ namespace GenShin_Launcher_Plus.Service
             vm.ConvertState = true;
             //
             SaveGameConfig(vm);
-            vm.StateIndicator = "状态：无状态";
-            vm.ConvertingLog += $"还原完毕 , 还原成功 : {success} 个文件 ,还原失败 : {total} 个文件\r\n";
-            vm.ConvertingLog += "转换完成，您可以启动游戏了";
+            vm.StateIndicator = App.Current.Language.StateIndicatorDefault;
+            vm.ConvertingLog += $"{App.Current.Language.RestoreOverTipsStr}, {App.Current.Language.RestoreNum} :{success}, {App.Current.Language.RestoreErrNum} :{total} \r\n";
+            vm.ConvertingLog += App.Current.Language.RestoreEndStr;
         }
 
         /// <summary>

@@ -93,7 +93,8 @@ namespace GenShin_Launcher_Plus.Service
                             {
                                 try
                                 {
-                                    FileHelper.ExtractEmbededAppResource("StaticRes/mihoyosdk.dll", Path.Combine(App.Current.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
+                                    FileHelper.ExtractEmbededAppResource("StaticRes/mihoyosdk.dll", 
+                                        Path.Combine(App.Current.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
                                 }
                                 catch (Exception ex)
                                 {

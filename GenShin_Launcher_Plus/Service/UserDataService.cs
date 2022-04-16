@@ -19,4 +19,3 @@ namespace GenShin_Launcher_Plus.Service
         }
     }
 }
-

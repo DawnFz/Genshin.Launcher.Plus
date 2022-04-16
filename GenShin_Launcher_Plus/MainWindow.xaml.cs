@@ -31,7 +31,7 @@ namespace GenShin_Launcher_Plus
         private void SettingsPageButton_Click(object sender, RoutedEventArgs e)
         {
             SettingsPage.Children.Clear();
-            SettingsPage.Children.Add(new Views.SettingsPage());
+            SettingsPage.Children.Add(new Views.DemoSetting());
             MainFlipView.SelectedIndex = 1;
         }
 

@@ -81,8 +81,8 @@
         public string ErrorSA { get; set; }
         public string ErrorEYJ { get; set; }
         public string WarningCCStr { get; set; }
-        public string ErrorCPkgNF { get; set; }
-        public string ErrorGPkgNF { get; set; }
+        public string ErrorPkgUnzip { get; set; }
+        public string ErrorPkgNF { get; set; }
         public string PkgNoUnError { get; set; }
         public string NewPkgVer { get; set; }
         public string ErrorFileNF { get; set; }
@@ -100,7 +100,8 @@
         public string RestoreNum { get; set; }
         public string RestoreErrNum { get; set; }
         public string RestoreEndStr { get; set; }
-
+        public string CloseGameWaring { get; set; }
+        public string ConvertError { get; set; }
         //UpdatePage
         public string DownPageTips { get; set; }
         public string UpdateSkipBtn { get; set; }

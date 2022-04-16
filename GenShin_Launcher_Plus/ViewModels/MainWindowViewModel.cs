@@ -23,11 +23,11 @@ namespace GenShin_Launcher_Plus.ViewModels
             new UpdateService().CheckUpdate(main);
             MainService = new MainService(main,this);
 
-            OpenImagesDirectoryCommand = new RelayCommand(OpenImagesDirectory);
             OpenAboutCommand = new RelayCommand(OpenAbout);
             OpenQQGroupUrlCommand = new RelayCommand(OpenQQGroupUrl);
             ExitProgramCommand = new RelayCommand(ExitProgram);
             MainMinimizedCommand = new RelayCommand(MainMinimized);
+            OpenImagesDirectoryCommand = new RelayCommand(OpenImagesDirectory);
 
             Title = $"{languages.MainTitle} {Application.ResourceAssembly.GetName().Version}";
             App.Current.IniModel.EXEname(Path.GetFileName(Environment.ProcessPath));

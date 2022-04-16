@@ -291,7 +291,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 {
                     await dialogCoordinator.ShowMessageAsync(
                     this, languages.TipsStr,
-                    "客户端转换完成，请留意输出日志，记得保存哦~！~\r\n如果转换过程中出现什么问题可以参阅帮助文档网站",
+                    App.Current.Language.SwitchSucessStr,
                       MessageDialogStyle.Affirmative,
                      new MetroDialogSettings()
                      { AffirmativeButtonText = languages.Determine });
@@ -301,7 +301,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 {
                     await dialogCoordinator.ShowMessageAsync(
                     this, languages.Error,
-                    "转换失败，请留意输出日志\r\n您也可以参阅帮助文档网站",
+                    App.Current.Language.ConvertError,
                     MessageDialogStyle.Affirmative,
                     new MetroDialogSettings()
                     { AffirmativeButtonText = languages.Determine });
@@ -311,7 +311,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 await dialogCoordinator.ShowMessageAsync(
                     this, languages.Error,
-                    "请先关闭游戏再执行转换操作，如确定游戏已经完全关闭还是弹此提示请重启电脑再试或联系开发者！",
+                    App.Current.Language.CloseGameWaring,
                     MessageDialogStyle.Affirmative,
                     new MetroDialogSettings()
                     { AffirmativeButtonText = languages.Determine });
