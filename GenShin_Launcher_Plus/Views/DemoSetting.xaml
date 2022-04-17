@@ -43,10 +43,10 @@
 
                         <ComboBox Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding DisplaySizeLists}" DisplayMemberPath="DisplaySize" SelectedValuePath="DisplaySize"  SelectedIndex="{Binding DisplaySelectedIndex}"/>
                         <ComboBox Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GamePortLists}" DisplayMemberPath="GamePort" SelectedValuePath="GamePort" SelectedIndex="{Binding isMihoyo}"/>
-                        <ComboBox Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GameWindowModeList}" DisplayMemberPath="GameWindowMode" SelectedValuePath="GameWindowMode" SelectedIndex="{Binding IniModel.FullSize}"/>
-                        <mah:ToggleSwitch Grid.Row="4" Grid.Column="1" d:Content="无边框窗口化" Content="{Binding languages.BorderlessCkB}" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding IniModel.isPopup}"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GameWindowModeList}" DisplayMemberPath="GameWindowMode" SelectedValuePath="GameWindowMode" SelectedIndex="{Binding DataModel.FullSize}"/>
+                        <mah:ToggleSwitch Grid.Row="4" Grid.Column="1" d:Content="无边框窗口化" Content="{Binding languages.BorderlessCkB}" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding DataModel.isPopup}"/>
                         <mah:ToggleSwitch Grid.Row="5" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding isUnFPS}" Command="{Binding ChooseUnlockFpsCommand}"/>
-                        <TextBox Grid.Row="5" Grid.Column="1" mah:TextBoxHelper.Watermark="{Binding languages.FpsBoxTips}" Margin="72,0,0,0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="85" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="{Binding isUnFPS}" Text="{Binding IniModel.MaxFps}"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" mah:TextBoxHelper.Watermark="{Binding languages.FpsBoxTips}" Margin="72,0,0,0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="85" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="{Binding isUnFPS}" Text="{Binding DataModel.MaxFps}"/>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="自定义启动游戏分辨率" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="选择预设启动时游戏分辨率" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
@@ -92,8 +92,32 @@
                             <Button  Grid.Row="1" Grid.Column="0" FontSize="12" Style="{DynamicResource MahApps.Styles.Button.Square}" IsEnabled="{Binding PageUiStatus}" Content="{Binding languages.DelUserBtn}" Command="{Binding DeleteUserCommand}" FontFamily="Microsoft YaHei UI" />
                         </Grid>
                     </Grid>
-                    <Grid>
-                        <TextBlock>4</TextBlock>
+                    <Grid Margin="50,15,50,20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <mah:ToggleSwitch Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding languages.BackgroundCkB}" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding DataModel.isWebBg}"/>
+                        <mah:ToggleSwitch Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding languages.BackgroundXK}" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding DataModel.UseXunkongWallpaper}"/>
+                        <mah:ToggleSwitch Grid.Row="2" Grid.ColumnSpan="2" Content="启动游戏后关闭本程序" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding DataModel.IsRunThenClose}"/>
+                        <mah:ToggleSwitch Grid.Row="3" Grid.ColumnSpan="2" Content="关闭非必要更新提醒[未实装]" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding DataModel.IsCloseUpdate}"/>
+
+                        <Button Grid.Row="5" Grid.Column="0" Style="{StaticResource MahApps.Styles.Button.Square}" Content="检查更新" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="100" FontFamily="Microsoft YaHei UI" FontSize="12" IsEnabled="{Binding PageUiStatus}" Command="{Binding CheckUpdateCommand}"/>
+                        <Button Grid.Row="6" Grid.Column="0" Style="{StaticResource MahApps.Styles.Button.Square}" Content="打开程序目录" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="100" FontFamily="Microsoft YaHei UI" FontSize="12" IsEnabled="{Binding PageUiStatus}" Command="{Binding OpenApplicationFolderCommand}"/>
+                        <Button Grid.Row="5" Grid.Column="1" Style="{StaticResource MahApps.Styles.Button.Square}" Content="程序语言设置" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="100" FontFamily="Microsoft YaHei UI" FontSize="12" IsEnabled="False"/>
+                        <Button Grid.Row="6" Grid.Column="1" Style="{StaticResource MahApps.Styles.Button.Square}" Content="主页背景设置" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="100" FontFamily="Microsoft YaHei UI" FontSize="12" IsEnabled="{Binding PageUiStatus}" Command="{Binding SetMainBackgroundCommand}"/>
+
                     </Grid>
                 </mah:FlipView>
             </Grid>

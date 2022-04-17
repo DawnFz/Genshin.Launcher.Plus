@@ -28,7 +28,7 @@ namespace GenShin_Launcher_Plus.Service
         public async void MainBackgroundLoad(MainWindowViewModel vm)
         {
             vm.Background = new ImageBrush();
-            if (App.Current.IniModel.UseXunkongWallpaper)
+            if (App.Current.DataModel.UseXunkongWallpaper)
             {
                 vm.Background.Stretch = Stretch.UniformToFill;
                 var uri = new Uri("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
@@ -81,15 +81,7 @@ namespace GenShin_Launcher_Plus.Service
             else
             {
                 Uri uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
-                if (File.Exists(@"Config/Bg.png"))
-                {
-                    uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.png"), UriKind.Absolute);
-                }
-                else if (File.Exists(@"Config/Bg.jpg"))
-                {
-                    uri = new(Path.Combine(Environment.CurrentDirectory, "Config/Bg.jpg"), UriKind.Absolute);
-                }
-                else if (App.Current.IniModel.isWebBg)
+                if (App.Current.DataModel.isWebBg)
                 {
                     uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
                 }
@@ -98,7 +90,7 @@ namespace GenShin_Launcher_Plus.Service
                     vm.Background.ImageSource = new BitmapImage(uri);
                     string bgurl = await HtmlHelper.GetInfoFromHtmlAsync("bg");
                     var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.All });
-                    if (bgurl!=null)
+                    if (bgurl != null)
                     {
                         var bytes = await client.GetByteArrayAsync(bgurl);
                         var ms = new MemoryStream(bytes);
@@ -119,6 +111,31 @@ namespace GenShin_Launcher_Plus.Service
                 }
                 vm.Background.ImageSource = new BitmapImage(uri);
                 vm.Background.Stretch = Stretch.UniformToFill;
+
+                var png = Path.Combine(AppContext.BaseDirectory, "Config/Bg.png");
+                var jpg = Path.Combine(AppContext.BaseDirectory, "Config/Bg.jpg");
+                if (File.Exists(png))
+                {
+                    uri = new Uri(png);
+                    using var fs = File.OpenRead(png);
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.StreamSource = fs;
+                    bitmap.EndInit();
+                    vm.Background.ImageSource = bitmap;
+                }
+                else if (File.Exists(jpg))
+                {
+                    uri = new Uri(jpg);
+                    using var fs = File.OpenRead(jpg);
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.StreamSource = fs;
+                    bitmap.EndInit();
+                    vm.Background.ImageSource = bitmap;
+                }
             }
         }
 
@@ -128,8 +145,8 @@ namespace GenShin_Launcher_Plus.Service
             {
                 Directory.CreateDirectory("UserData");
             }
-            if (!File.Exists(Path.Combine(App.Current.IniModel.GamePath ?? "", "Yuanshen.exe")) &&
-                !File.Exists(Path.Combine(App.Current.IniModel.GamePath ?? "", "GenshinImpact.exe")))
+            if (!File.Exists(Path.Combine(App.Current.DataModel.GamePath ?? "", "Yuanshen.exe")) &&
+                !File.Exists(Path.Combine(App.Current.DataModel.GamePath ?? "", "GenshinImpact.exe")))
             {
                 main.MainGrid.Children.Add(new Views.GuidePage());
             }

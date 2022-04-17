@@ -18,14 +18,14 @@ namespace GenShin_Launcher_Plus.Service
 
         public void SettingsPageCreated(SettingsPageViewModel vm)
         {
-            vm.SwitchUser = App.Current.IniModel.SwitchUser;
-            vm.GamePath = App.Current.IniModel.GamePath;
-            vm.isUnFPS = App.Current.IniModel.isUnFPS;
-            vm.Width = App.Current.IniModel.Width ?? "1600";
-            vm.Height = App.Current.IniModel.Height ?? "900";
+            vm.SwitchUser = App.Current.DataModel.SwitchUser;
+            vm.GamePath = App.Current.DataModel.GamePath;
+            vm.isUnFPS = App.Current.DataModel.isUnFPS;
+            vm.Width = App.Current.DataModel.Width ?? "1600";
+            vm.Height = App.Current.DataModel.Height ?? "900";
             vm.ConvertingLog = App.Current.Language.ConvertingLogStr;
             vm.StateIndicator = App.Current.Language.StateIndicatorDefault;
-            vm.isMihoyo = App.Current.IniModel.Cps switch
+            vm.isMihoyo = App.Current.DataModel.Cps switch
             {
                 "pcadbdpz" => 0,
                 "bilibili" => 1,

@@ -30,7 +30,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             OpenImagesDirectoryCommand = new RelayCommand(OpenImagesDirectory);
 
             Title = $"{languages.MainTitle} {Application.ResourceAssembly.GetName().Version}";
-            App.Current.IniModel.EXEname(Path.GetFileName(Environment.ProcessPath));
+            App.Current.DataModel.EXEname(Path.GetFileName(Environment.ProcessPath));
         }
 
         public IMainWindowService MainService { get; set; }
@@ -43,11 +43,11 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand OpenImagesDirectoryCommand { get; set; }
         private async void OpenImagesDirectory()
         {
-            if (Directory.Exists(Path.Combine(App.Current.IniModel.GamePath, "ScreenShot")))
+            if (Directory.Exists(Path.Combine(App.Current.DataModel.GamePath, "ScreenShot")))
             {
                 ProcessStartInfo info = new()
                 {
-                    FileName = Path.Combine(App.Current.IniModel.GamePath, "ScreenShot"),
+                    FileName = Path.Combine(App.Current.DataModel.GamePath, "ScreenShot"),
                     UseShellExecute = true,
                 };
                 Process.Start(info);

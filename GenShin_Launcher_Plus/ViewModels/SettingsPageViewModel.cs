@@ -47,6 +47,10 @@ namespace GenShin_Launcher_Plus.ViewModels
             SwitchConvertClientCommand = new RelayCommand(SwitchConvertClient);
             SwitchProgarmSettingCommand = new RelayCommand(SwitchProgarmSetting);
 
+            CheckUpdateCommand = new RelayCommand(CheckUpdate);
+            SetMainBackgroundCommand = new RelayCommand(SetMainBackground);
+            OpenApplicationFolderCommand = new RelayCommand(OpenApplicationFolder);
+
             _UserLists = UserDataService.ReadUserList();
             _GamePortLists = SettingService.CreateGamePortList();
             _DisplaySizeLists = SettingService.CreateDisplaySizeList();
@@ -66,7 +70,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         private IRegistryService _registryService;
         public IRegistryService RegistryService { get => _registryService; }
 
-        public IniModel IniModel { get => App.Current.IniModel; }
+        public DataModel DataModel { get => App.Current.DataModel; }
         public LanguageModel languages { get => App.Current.Language; }
 
 
@@ -113,7 +117,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         public int isMihoyo { get => _isMihoyo; set => SetProperty(ref _isMihoyo, value); }
 
         private int _FlipViewSelectedIndex;
-        public int FlipViewSelectedIndex { get => _FlipViewSelectedIndex; set => SetProperty(ref _FlipViewSelectedIndex, value);}
+        public int FlipViewSelectedIndex { get => _FlipViewSelectedIndex; set => SetProperty(ref _FlipViewSelectedIndex, value); }
 
 
         //选中分辨率的索引
@@ -214,8 +218,66 @@ namespace GenShin_Launcher_Plus.ViewModels
             dialog.IsFolderPicker = true;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                IniModel.GamePath = dialog.FileName;
+                DataModel.GamePath = dialog.FileName;
                 GamePath = dialog.FileName;
+            }
+        }
+
+        //设置页面手动检查更新命令
+        public ICommand CheckUpdateCommand { get; set; }
+        private async void CheckUpdate()
+        {
+            App.Current.IsLoading = false;
+            new UpdateService().CheckUpdate(App.Current.ThisMainWindow);
+        }
+
+        //打开本程序目录的命令
+        public ICommand OpenApplicationFolderCommand { get; set; }
+        private void OpenApplicationFolder()
+        {
+            FileHelper.OpenUrl(Environment.CurrentDirectory);
+        }
+
+        public ICommand SetMainBackgroundCommand { get; set; }
+        private async void SetMainBackground()
+        {
+            CommonOpenFileDialog dialog = new(languages.GameDirMsg);
+            dialog.IsFolderPicker = false;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                string extensionName = Path.GetExtension(dialog.FileName);
+                if (extensionName == ".png" || extensionName == ".jpg")
+                {
+                    if (File.Exists($@"Config/bg{extensionName}"))
+                    {
+                        if ((await dialogCoordinator.ShowMessageAsync(
+                            this, languages.Warning,
+                            $"您的Config中已有可读取的Bg{extensionName}文件\r\n是否讲该文件替换为您新选择的图片? ",
+                            MessageDialogStyle.AffirmativeAndNegative,
+                            new MetroDialogSettings()
+                            {
+                                AffirmativeButtonText = languages.Cancel,
+                                NegativeButtonText = languages.Determine
+                            })) != MessageDialogResult.Affirmative)
+                        {
+                            File.Copy(dialog.FileName, $@"Config/bg{extensionName}",true);
+                        }
+                    }
+                    else
+                    {
+                        File.Copy(dialog.FileName, $@"Config/bg{extensionName}", true);
+                    }
+                    _ = new MainService(App.Current.ThisMainWindow,App.Current.ThisMainWindow.ViewModel);
+                }
+                else
+                {
+                    await dialogCoordinator.ShowMessageAsync(
+                        this, languages.Error,
+                        "仅支持png或者jpg文件，请选择支持的格式",
+                        MessageDialogStyle.Affirmative,
+                        new MetroDialogSettings()
+                        { AffirmativeButtonText = languages.Determine });
+                }
             }
         }
 
@@ -241,7 +303,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 {
                     isUnFPS = false;
                 }
-                App.Current.IniModel.isUnFPS = isUnFPS;
+                App.Current.DataModel.isUnFPS = isUnFPS;
             }
         }
 
@@ -284,7 +346,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             string GlobalGamePath = Path.Combine(GamePath, "GenshinImpact.exe");
             if (GamePath != "" && File.Exists(CnGamePath) || File.Exists(GlobalGamePath))
             {
-                App.Current.IniModel.GamePath = GamePath;
+                App.Current.DataModel.GamePath = GamePath;
             }
             else
             {
@@ -297,14 +359,14 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             if (SwitchUser != null && SwitchUser != "")
             {
-                App.Current.IniModel.SwitchUser = SwitchUser;
+                App.Current.DataModel.SwitchUser = SwitchUser;
                 App.Current.NoticeOverAllBase.SwitchUser = $"{languages.UserNameLab}：{SwitchUser}";
                 App.Current.NoticeOverAllBase.IsSwitchUser = "Visible";
                 RegistryService.SetToRegistry(SwitchUser);
             }
-            App.Current.IniModel.Width = Width;
-            App.Current.IniModel.Height = Height;
-            App.Current.IniModel.isUnFPS = isUnFPS;
+            App.Current.DataModel.Width = Width;
+            App.Current.DataModel.Height = Height;
+            App.Current.DataModel.isUnFPS = isUnFPS;
             GameConvert.SaveGameConfig(this);
             DelaySaveButtonTitle();
             ThisPageRemove();
@@ -324,8 +386,8 @@ namespace GenShin_Launcher_Plus.ViewModels
             PageUiStatus = "false";
             ProgressBar = "Visible";
             FileHelper fileHelper = new();
-            if (!fileHelper.IsFileOpen(Path.Combine(App.Current.IniModel.GamePath, "Yuanshen.exe")) &&
-                !fileHelper.IsFileOpen(Path.Combine(App.Current.IniModel.GamePath, "GenshinImpact.exe")))
+            if (!fileHelper.IsFileOpen(Path.Combine(App.Current.DataModel.GamePath, "Yuanshen.exe")) &&
+                !fileHelper.IsFileOpen(Path.Combine(App.Current.DataModel.GamePath, "GenshinImpact.exe")))
             {
                 await GameConvert.ConvertGameFileAsync(this);
                 if (ConvertState)

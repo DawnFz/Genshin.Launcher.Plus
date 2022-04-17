@@ -93,9 +93,9 @@ namespace GenShin_Launcher_Plus.Service
                 MessageBox.Show(ex.Message);
             }
 
-            if (App.Current.IniModel.ReadLang == "Lang_CN" ||
-                App.Current.IniModel.ReadLang == null ||
-                App.Current.IniModel.ReadLang == string.Empty)
+            if (App.Current.DataModel.ReadLang == "Lang_CN" ||
+                App.Current.DataModel.ReadLang == null ||
+                App.Current.DataModel.ReadLang == string.Empty)
             {
                 string json = await HtmlHelper.GetInfoFromHtmlAsync("UpdateCN");
                 App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json) ?? new();

@@ -28,19 +28,20 @@
                 </TextBox>
             </Grid>
         </GroupBox>
-        <CheckBox Content="{Binding languages.BackgroundCkB}" HorizontalAlignment="Left" Margin="13,518,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.isWebBg}"/>
-        <CheckBox Content="{Binding languages.BackgroundXK}" HorizontalAlignment="Left" Margin="13,546,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.UseXunkongWallpaper}"/>
+        <CheckBox Content="{Binding languages.BackgroundCkB}" HorizontalAlignment="Left" Margin="13,518,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding DataModel.isWebBg}"/>
+        <CheckBox Content="{Binding languages.BackgroundXK}" HorizontalAlignment="Left" Margin="13,546,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding DataModel.UseXunkongWallpaper}"/>
+       
         <GroupBox HorizontalAlignment="Left" Height="216" VerticalAlignment="Top" Width="173" Header="{Binding languages.AttachTitle}" Margin="13,48,0,0" d:Header="Title">
             <Grid>
                 <TextBox mah:TextBoxHelper.Watermark="{Binding languages.HeightStr}" x:Name="DisHeight" HorizontalAlignment="Left" Margin="90,7,0,0" TextWrapping="Wrap" Text="{Binding Height}" VerticalAlignment="Top" Width="68" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
                 <TextBox mah:TextBoxHelper.Watermark="{Binding languages.WitdhStr}" x:Name="DisWidth" HorizontalAlignment="Left" Margin="5,7,0,0" TextWrapping="Wrap" Text="{Binding Width}" VerticalAlignment="Top" Width="68" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
                 <Label Content="×" HorizontalAlignment="Center" Margin="0,6,0,0" VerticalAlignment="Top" FontWeight="Normal" FontSize="14" Width="20"/>
                 <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" Margin="0,39,0,0" VerticalAlignment="Top" Width="153" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding DisplaySizeLists}" DisplayMemberPath="DisplaySize" SelectedValuePath="DisplaySize"  SelectedIndex="{Binding DisplaySelectedIndex}"/>
-                <CheckBox Content="{Binding languages.BorderlessCkB}" HorizontalAlignment="Left" Margin="5,159,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.isPopup}"/>
+                <CheckBox Content="{Binding languages.BorderlessCkB}" HorizontalAlignment="Left" Margin="5,159,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding DataModel.isPopup}"/>
                 <CheckBox Content="{Binding languages.UnlockFpsCkB}" HorizontalAlignment="Left" Margin="5,135,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding isUnFPS}" Command="{Binding ChooseUnlockFpsCommand}"/>
-                <TextBox mah:TextBoxHelper.Watermark="{Binding languages.FpsBoxTips}" HorizontalAlignment="Left" Margin="102,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="56" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="{Binding isUnFPS}" Text="{Binding IniModel.MaxFps}"/>
+                <TextBox mah:TextBoxHelper.Watermark="{Binding languages.FpsBoxTips}" HorizontalAlignment="Left" Margin="102,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="56" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="{Binding isUnFPS}" Text="{Binding DataModel.MaxFps}"/>
                 <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" Margin="0,71,0,0" VerticalAlignment="Top" Width="153" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GamePortLists}" DisplayMemberPath="GamePort" SelectedValuePath="GamePort" SelectedIndex="{Binding isMihoyo}"/>
-                <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="16" Margin="5,103,0,0" VerticalAlignment="Top" Width="94" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GameWindowModeList}" DisplayMemberPath="GameWindowMode" SelectedValuePath="GameWindowMode" SelectedIndex="{Binding IniModel.FullSize}"/>
+                <ComboBox HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="16" Margin="5,103,0,0" VerticalAlignment="Top" Width="94" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GameWindowModeList}" DisplayMemberPath="GameWindowMode" SelectedValuePath="GameWindowMode" SelectedIndex="{Binding DataModel.FullSize}"/>
             </Grid>
         </GroupBox>
         <Button FontSize="12" Style="{DynamicResource MahApps.Styles.Button.Square}" IsEnabled="{Binding PageUiStatus}" Content="{Binding languages.DelUserBtn}" HorizontalAlignment="Left" Margin="193,237,0,0" VerticalAlignment="Top" Width="186" Command="{Binding DeleteUserCommand}" FontFamily="Microsoft YaHei UI" />
@@ -51,6 +52,6 @@
             <Label Content="{Binding SettingsTitle}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
             <Button HorizontalAlignment="Left" IsEnabled="{Binding PageUiStatus}" Margin="360,0,0,0" VerticalAlignment="Center" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FFFF5252" Content="❌" BorderBrush="{x:Null}" Height="22" Width="22" Foreground="White" FontSize="9" Command="{Binding ThisPageRemoveCommand}"/>
         </Grid>
-        <CheckBox Content="启动后关闭" HorizontalAlignment="Left" Margin="171,546,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding IniModel.IsRunThenClose}"/>
+        <CheckBox Content="启动后关闭" HorizontalAlignment="Left" Margin="171,546,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" IsChecked="{Binding DataModel.IsRunThenClose}"/>
     </Grid>
 </UserControl>

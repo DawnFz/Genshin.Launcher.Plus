@@ -26,18 +26,18 @@ namespace GenShin_Launcher_Plus.Service
         public async Task RunGameAsync()
         {
             //从Config中读取启动参数
-            string gameMain = Path.Combine(App.Current.IniModel.GamePath, "YuanShen.exe");
+            string gameMain = Path.Combine(App.Current.DataModel.GamePath, "YuanShen.exe");
             string arg = new CommandLineBuilder()
-                .AppendIf("-popupwindow", App.Current.IniModel.isPopup)
-                .Append("-screen-fullscreen", App.Current.IniModel.FullSize)
-                .Append("-screen-height", App.Current.IniModel.Height)
-                .Append("-screen-width", App.Current.IniModel.Width)
+                .AppendIf("-popupwindow", App.Current.DataModel.isPopup)
+                .Append("-screen-fullscreen", App.Current.DataModel.FullSize)
+                .Append("-screen-height", App.Current.DataModel.Height)
+                .Append("-screen-width", App.Current.DataModel.Width)
                 .ToString();
 
             //判断游戏文件、目录是否存在
             if (!File.Exists(gameMain))
             {
-                gameMain = Path.Combine(App.Current.IniModel.GamePath, "GenshinImpact.exe");
+                gameMain = Path.Combine(App.Current.DataModel.GamePath, "GenshinImpact.exe");
                 if (!File.Exists(gameMain))
                 {
                     await dialogCoordinator.ShowMessageAsync(
@@ -58,14 +58,14 @@ namespace GenShin_Launcher_Plus.Service
                     FileName = gameMain,
                     Verb = "runas",
                     UseShellExecute = true,
-                    WorkingDirectory = App.Current.IniModel.GamePath,
+                    WorkingDirectory = App.Current.DataModel.GamePath,
                     Arguments = arg,
                 }
             };
 
-            if (App.Current.IniModel.isUnFPS)
+            if (App.Current.DataModel.isUnFPS)
             {
-                Unlocker unlocker = int.TryParse(App.Current.IniModel.MaxFps, out int targetFps)
+                Unlocker unlocker = int.TryParse(App.Current.DataModel.MaxFps, out int targetFps)
                     ? new Unlocker(game, targetFps)
                     : new Unlocker(game, 144);
                 UnlockResult result = await unlocker.StartProcessAndUnlockAsync();
@@ -73,7 +73,7 @@ namespace GenShin_Launcher_Plus.Service
             }
             else
             {
-                if (App.Current.IniModel.IsRunThenClose)
+                if (App.Current.DataModel.IsRunThenClose)
                 {
                     game.Start();
                     Environment.Exit(0);

@@ -19,7 +19,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             get
             {
-                return App.Current.IniModel.ReadLang switch
+                return App.Current.DataModel.ReadLang switch
                 {
                     "Lang_CN" => 0,
                     "Lang_TW" => 1,
@@ -35,7 +35,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand SaveLangSetCommand { get; set; }
         private void ThisPageRemove()
         {
-            App.Current.IniModel.ReadLang = SwitchLang;
+            App.Current.DataModel.ReadLang = SwitchLang;
             App.Current.NoticeOverAllBase.MainPagesIndex = 0;
             MainWindow mainWindow = new();
             mainWindow.Show();

@@ -1,10 +1,7 @@
-﻿using GenShin_Launcher_Plus.Core;
+﻿using GenShin_Launcher_Plus.Helper;
 using GenShin_Launcher_Plus.ViewModels;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -15,10 +12,13 @@ namespace GenShin_Launcher_Plus
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        public MainWindowViewModel ViewModel;
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel(DialogCoordinator.Instance,this);
+            App.Current.ThisMainWindow = this;
+            ViewModel = new MainWindowViewModel(DialogCoordinator.Instance, this);
+            DataContext = ViewModel;
             MainFlipView.DataContext = App.Current.NoticeOverAllBase;
             HomePage.Children.Add(new Views.HomePage());
         }
@@ -51,12 +51,7 @@ namespace GenShin_Launcher_Plus
 
         private void Help_Copy_Click(object sender, RoutedEventArgs e)
         {
-            ProcessStartInfo info = new()
-            {
-                FileName = "https://www.dawnfz.com/document/",
-                UseShellExecute = true,
-            };
-            Process.Start(info);
+            FileHelper.OpenUrl("https://www.dawnfz.com/document/");
         }
     }
 }

@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Windows;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Diagnostics;
 
 namespace GenShin_Launcher_Plus.Helper
 {
@@ -30,7 +31,7 @@ namespace GenShin_Launcher_Plus.Helper
             }
             IntPtr vHandle = _lopen(path, OF_READWRITE | OF_SHARE_DENY_NONE);
             if (vHandle == HFILE_ERROR)
-            {               
+            {
                 return true;
             }
             CloseHandle(vHandle);
@@ -40,6 +41,8 @@ namespace GenShin_Launcher_Plus.Helper
         /// <summary>
         /// 将程序中的资源文件写出到硬盘
         /// </summary>
+        /// <param name="resourceName"></param>
+        /// <param name="fileName"></param>
         public static void ExtractEmbededAppResource(string resourceName, string fileName)
         {
             Uri uri = new($"pack://application:,,,/{resourceName}", UriKind.RelativeOrAbsolute);
@@ -63,6 +66,20 @@ namespace GenShin_Launcher_Plus.Helper
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 以Shell的方式打开Url链接，不限于网址、命令、目录等
+        /// </summary>
+        /// <param name="url"></param>
+        public static void OpenUrl(string url)
+        {
+            ProcessStartInfo info = new()
+            {
+                FileName = url,
+                UseShellExecute = true,
+            };
+            Process.Start(info);
         }
     }
 }

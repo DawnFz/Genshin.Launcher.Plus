@@ -124,7 +124,7 @@ namespace GenShin_Launcher_Plus.Service
 
         public GameConvertService()
         {
-            GameFolder = App.Current.IniModel.GamePath;
+            GameFolder = App.Current.DataModel.GamePath;
         }
         private string GameFolder { get; set; }
 
@@ -387,15 +387,15 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="vm"></param>
         public void SaveGameConfig(SettingsPageViewModel vm)
         {
-            if (File.Exists(Path.Combine(App.Current.IniModel.GamePath, "config.ini")))
+            if (File.Exists(Path.Combine(App.Current.DataModel.GamePath, "config.ini")))
             {
                 string bilibilisdk = "Plugins/PCGameSDK.dll";
                 switch (vm.isMihoyo)
                 {
                     case 0:
-                        App.Current.IniModel.Cps = "pcadbdpz";
-                        App.Current.IniModel.Channel = 1;
-                        App.Current.IniModel.Sub_channel = 1;
+                        App.Current.DataModel.Cps = "pcadbdpz";
+                        App.Current.DataModel.Channel = 1;
+                        App.Current.DataModel.Sub_channel = 1;
                         if (File.Exists(Path.Combine(GameFolder, $"YuanShen_Data/{bilibilisdk}")))
                             File.Delete(Path.Combine(GameFolder, $"YuanShen_Data/{bilibilisdk}"));
                         App.Current.NoticeOverAllBase.SwitchPort = $"{App.Current.Language.GameClientStr} : {App.Current.Language.GameClientTypePStr}";
@@ -403,9 +403,9 @@ namespace GenShin_Launcher_Plus.Service
                         App.Current.NoticeOverAllBase.GamePortListIndex = 0;
                         break;
                     case 1:
-                        App.Current.IniModel.Cps = "bilibili";
-                        App.Current.IniModel.Channel = 14;
-                        App.Current.IniModel.Sub_channel = 0;
+                        App.Current.DataModel.Cps = "bilibili";
+                        App.Current.DataModel.Channel = 14;
+                        App.Current.DataModel.Sub_channel = 0;
                         if (!File.Exists(Path.Combine(GameFolder, $"YuanShen_Data/{bilibilisdk}")))
                         {
                             try
@@ -424,9 +424,9 @@ namespace GenShin_Launcher_Plus.Service
 
                         break;
                     case 2:
-                        App.Current.IniModel.Cps = "mihoyo";
-                        App.Current.IniModel.Channel = 1;
-                        App.Current.IniModel.Sub_channel = 0;
+                        App.Current.DataModel.Cps = "mihoyo";
+                        App.Current.DataModel.Channel = 1;
+                        App.Current.DataModel.Sub_channel = 0;
                         if (File.Exists(Path.Combine(GameFolder, $"GenshinImpact_Data/{bilibilisdk}")))
                             File.Delete(Path.Combine(GameFolder, $"GenshinImpact_Data/{bilibilisdk}"));
                         App.Current.NoticeOverAllBase.SwitchPort = $"{App.Current.Language.GameClientStr} : {App.Current.Language.GameClientTypeMStr}";

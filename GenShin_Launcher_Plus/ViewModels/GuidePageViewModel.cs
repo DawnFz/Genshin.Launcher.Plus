@@ -45,8 +45,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                 }
                 else
                 {
-                    App.Current.IniModel.GamePath = GamePath;
-                    App.Current.IniModel = new();
+                    App.Current.DataModel.GamePath = GamePath;
+                    App.Current.DataModel = new();
                     MainWindow mainWindow = new();
                     mainWindow.Show();
                     Application.Current.MainWindow.Close();

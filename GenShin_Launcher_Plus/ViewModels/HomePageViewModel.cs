@@ -21,10 +21,10 @@ namespace GenShin_Launcher_Plus.ViewModels
             LaunchService = new LaunchService(instance);
             dialogCoordinator = instance;
             RunGameCommand = new AsyncRelayCommand(LaunchService.RunGameAsync);
-            if (App.Current.IniModel.SwitchUser != null && App.Current.IniModel.SwitchUser != "")
+            if (App.Current.DataModel.SwitchUser != null && App.Current.DataModel.SwitchUser != "")
             {
                 App.Current.NoticeOverAllBase.IsSwitchUser = "Visible";
-                App.Current.NoticeOverAllBase.SwitchUser = $"{languages.UserNameLab} : {App.Current.IniModel.SwitchUser}";
+                App.Current.NoticeOverAllBase.SwitchUser = $"{languages.UserNameLab} : {App.Current.DataModel.SwitchUser}";
             }
             else
             {

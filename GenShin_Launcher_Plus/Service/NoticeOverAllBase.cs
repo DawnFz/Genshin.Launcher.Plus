@@ -36,7 +36,7 @@ namespace GenShin_Launcher_Plus.Service
         {
             get
             {
-                string gameClientType = App.Current.IniModel.Cps switch
+                string gameClientType = App.Current.DataModel.Cps switch
                 {
                     "pcadbdpz" => App.Current.Language.GameClientTypePStr,
                     "bilibili" => App.Current.Language.GameClientTypeBStr,
@@ -53,7 +53,7 @@ namespace GenShin_Launcher_Plus.Service
         {
             get
             {
-                int index = App.Current.IniModel.Cps switch
+                int index = App.Current.DataModel.Cps switch
                 {
                     "pcadbdpz" => 0,
                     "bilibili" => 1,
@@ -73,28 +73,28 @@ namespace GenShin_Launcher_Plus.Service
             set
             {
                 SetProperty(ref _GamePortListIndex, value);
-                if (App.Current.IniModel.Cps != "mihoyo")
+                if (App.Current.DataModel.Cps != "mihoyo")
                 {
                     switch (value)
                     {
                         case 0:
-                            App.Current.IniModel.Cps = "pcadbdpz";
-                            App.Current.IniModel.Channel = 1;
-                            App.Current.IniModel.Sub_channel = 1;
-                            if (File.Exists(Path.Combine(App.Current.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
-                                File.Delete(Path.Combine(App.Current.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
+                            App.Current.DataModel.Cps = "pcadbdpz";
+                            App.Current.DataModel.Channel = 1;
+                            App.Current.DataModel.Sub_channel = 1;
+                            if (File.Exists(Path.Combine(App.Current.DataModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
+                                File.Delete(Path.Combine(App.Current.DataModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
                             App.Current.NoticeOverAllBase.SwitchPort = $"{App.Current.Language.GameClientStr} : {App.Current.Language.GameClientTypePStr}";
                             break;
                         case 1:
-                            App.Current.IniModel.Cps = "bilibili";
-                            App.Current.IniModel.Channel = 14;
-                            App.Current.IniModel.Sub_channel = 0;
-                            if (!File.Exists(Path.Combine(App.Current.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
+                            App.Current.DataModel.Cps = "bilibili";
+                            App.Current.DataModel.Channel = 14;
+                            App.Current.DataModel.Sub_channel = 0;
+                            if (!File.Exists(Path.Combine(App.Current.DataModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll")))
                             {
                                 try
                                 {
                                     FileHelper.ExtractEmbededAppResource("StaticRes/mihoyosdk.dll", 
-                                        Path.Combine(App.Current.IniModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
+                                        Path.Combine(App.Current.DataModel.GamePath, "YuanShen_Data/Plugins/PCGameSDK.dll"));
                                 }
                                 catch (Exception ex)
                                 {
@@ -121,7 +121,7 @@ namespace GenShin_Launcher_Plus.Service
                 {
                     App.Current.NoticeOverAllBase.SwitchUser = $"{App.Current.Language.UserNameLab} : {SwitchUserValue}";
                     //更改注册表账号状态
-                    App.Current.IniModel.SwitchUser = SwitchUserValue;
+                    App.Current.DataModel.SwitchUser = SwitchUserValue;
                     RegistryService registryControl = new();
                     registryControl.SetToRegistry(SwitchUserValue);
                 }
@@ -142,7 +142,7 @@ namespace GenShin_Launcher_Plus.Service
         {
             get
             {
-                return App.Current.IniModel.Cps switch
+                return App.Current.DataModel.Cps switch
                 {
                     "mihoyo" => "Hidden",
                     _ => "Visible",

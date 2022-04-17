@@ -49,7 +49,7 @@ namespace GenShin_Launcher_Plus
 
         public LoadProgramCore LoadProgramCore { get; set; }
 
-        public IniModel IniModel { get; set; }
+        public DataModel DataModel { get; set; }
 
         public List<LanguageListModel> LangList { get; set; }
 
@@ -58,6 +58,8 @@ namespace GenShin_Launcher_Plus
         public LanguageModel Language { get; set; }
 
         public UpdateModel? UpdateObject { get; set; }
+
+        public MainWindow ThisMainWindow { get; set; }
 
         public bool IsLoading { get; set; }
 

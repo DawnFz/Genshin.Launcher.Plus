@@ -13,7 +13,7 @@ namespace GenShin_Launcher_Plus.Core
     {
         public LoadProgramCore()
         {
-            App.Current.IniModel = new();
+            App.Current.DataModel = new();
             App.Current.NoticeOverAllBase = new();
         }
 
@@ -26,7 +26,7 @@ namespace GenShin_Launcher_Plus.Core
             string json = "[{\"LangID\":\"0001\",\"LangVersion\":\"1.4.2.0\",\"LangName\":\"简体中文\",\"LangFileName\":\"Lang_CN\"},{\"LangID\":\"0002\",\"LangVersion\":\"1.4.2.0\",\"LangName\":\"繁体中文\",\"LangFileName\":\"Lang_TW\"},{\"LangID\":\"0003\",\"LangVersion\":\"1.4.2.0\",\"LangName\":\"English\",\"LangFileName\":\"Lang_EN\"}]";
             App.Current.LangList = JsonConvert.DeserializeObject<List<LanguageListModel>>(json);
             string langjson;
-            switch (App.Current.IniModel.ReadLang)
+            switch (App.Current.DataModel.ReadLang)
             {
                 case "Lang_CN":
                     langjson = Lang_CN;

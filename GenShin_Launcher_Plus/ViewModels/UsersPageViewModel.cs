@@ -40,7 +40,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         private void SaveUserData()
         {
             //判断YuanShen.exe是否存在，存在则为False，否则为True
-            bool isGlobal = !File.Exists(Path.Combine(App.Current.IniModel.GamePath, "YuanShen.exe"));
+            bool isGlobal = !File.Exists(Path.Combine(App.Current.DataModel.GamePath, "YuanShen.exe"));
             //判断isGlobal值，为True时为Cn，否则为Global
             string gamePort = isGlobal ? "Global" : "CN";
             string userdata = RegistryService.GetFromRegistry(Name, gamePort);
