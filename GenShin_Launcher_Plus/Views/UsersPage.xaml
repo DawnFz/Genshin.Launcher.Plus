@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
              mc:Ignorable="d" 
              Height="730" Width="1280">
-    <Grid Height="185" Width="340" Background="#FF647687">
+    <Grid Height="180" Width="340" Background="#FF647687">
         <GroupBox Header="{Binding languages.AddUsersPageTitle}">
             <Grid Background="White">
                 <Label d:Content="设计时预览" Content="{Binding languages.AddUsersPageSubTitle}" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="Microsoft YaHei UI"/>

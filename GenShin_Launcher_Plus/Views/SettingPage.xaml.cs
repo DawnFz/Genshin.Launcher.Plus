@@ -5,12 +5,11 @@ using System.Windows.Controls;
 namespace GenShin_Launcher_Plus.Views
 {
     /// <summary>
-    /// SettingsPage.xaml 的交互逻辑
+    /// DemoSetting.xaml 的交互逻辑
     /// </summary>
-    public partial class SettingsPage : UserControl
+    public partial class SettingPage : UserControl
     {
-
-        public SettingsPage()
+        public SettingPage()
         {
             DataContext = new SettingsPageViewModel(DialogCoordinator.Instance);
             InitializeComponent();

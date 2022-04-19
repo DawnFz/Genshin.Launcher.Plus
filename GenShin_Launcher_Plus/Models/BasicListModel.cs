@@ -6,7 +6,9 @@
     }
     public class DisplaySizeListModel
     {
-        public string DisplaySize { get; set; }
+        public string SizeName { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
     }
     public class GamePortListModel
     {

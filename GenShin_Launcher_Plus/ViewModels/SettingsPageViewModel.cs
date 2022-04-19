@@ -49,6 +49,7 @@ namespace GenShin_Launcher_Plus.ViewModels
 
             CheckUpdateCommand = new RelayCommand(CheckUpdate);
             SetMainBackgroundCommand = new RelayCommand(SetMainBackground);
+            SwitchLanguagePageCommand = new RelayCommand(SwitchLanguagePage);
             OpenApplicationFolderCommand = new RelayCommand(OpenApplicationFolder);
 
             _UserLists = UserDataService.ReadUserList();
@@ -228,7 +229,17 @@ namespace GenShin_Launcher_Plus.ViewModels
         private async void CheckUpdate()
         {
             App.Current.IsLoading = false;
+            App.Current.DataModel.IsCloseUpdate = false;
             new UpdateService().CheckUpdate(App.Current.ThisMainWindow);
+        }
+
+        //跳转到设置程序语言界面
+        public ICommand SwitchLanguagePageCommand { get; set; }
+        private void SwitchLanguagePage()
+        {
+            App.Current.ThisMainWindow.SwitchLanguages.Children.Clear();
+            App.Current.ThisMainWindow.SwitchLanguages.Children.Add(new Views.LanguagesPage());
+            App.Current.ThisMainWindow.MainFlipView.SelectedIndex = 3;
         }
 
         //打开本程序目录的命令
@@ -238,6 +249,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             FileHelper.OpenUrl(Environment.CurrentDirectory);
         }
 
+        //设置背景图片的命令
         public ICommand SetMainBackgroundCommand { get; set; }
         private async void SetMainBackground()
         {
@@ -246,34 +258,18 @@ namespace GenShin_Launcher_Plus.ViewModels
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 string extensionName = Path.GetExtension(dialog.FileName);
-                if (extensionName == ".png" || extensionName == ".jpg")
+                if (extensionName.ToLower() == ".png" || 
+                    extensionName.ToLower() == ".jpg" || 
+                    extensionName.ToLower() == ".webp")
                 {
-                    if (File.Exists($@"Config/bg{extensionName}"))
-                    {
-                        if ((await dialogCoordinator.ShowMessageAsync(
-                            this, languages.Warning,
-                            $"您的Config中已有可读取的Bg{extensionName}文件\r\n是否讲该文件替换为您新选择的图片? ",
-                            MessageDialogStyle.AffirmativeAndNegative,
-                            new MetroDialogSettings()
-                            {
-                                AffirmativeButtonText = languages.Cancel,
-                                NegativeButtonText = languages.Determine
-                            })) != MessageDialogResult.Affirmative)
-                        {
-                            File.Copy(dialog.FileName, $@"Config/bg{extensionName}",true);
-                        }
-                    }
-                    else
-                    {
-                        File.Copy(dialog.FileName, $@"Config/bg{extensionName}", true);
-                    }
-                    _ = new MainService(App.Current.ThisMainWindow,App.Current.ThisMainWindow.ViewModel);
+                    App.Current.DataModel.BackgroundPath = dialog.FileName;
+                    _ = new MainService(App.Current.ThisMainWindow, App.Current.ThisMainWindow.ViewModel);
                 }
                 else
                 {
                     await dialogCoordinator.ShowMessageAsync(
                         this, languages.Error,
-                        "仅支持png或者jpg文件，请选择支持的格式",
+                        "仅支持png、jpg或webp文件，请选择支持的格式",
                         MessageDialogStyle.Affirmative,
                         new MetroDialogSettings()
                         { AffirmativeButtonText = languages.Determine });

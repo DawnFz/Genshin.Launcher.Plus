@@ -58,6 +58,5 @@
             <Label x:Name="TitleMain" Content="{Binding Title}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
         </Grid>
         <Button x:Name="Help_Copy" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="?" HorizontalAlignment="Left" Margin="10,684,0,0" VerticalAlignment="Top" Height="36" Width="36" BorderBrush="#7F000000" BorderThickness="4" Background="#7F808080" Foreground="White" FontSize="18" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Click="Help_Copy_Click"/>
-        <Button x:Name="LangBtn" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="L" HorizontalAlignment="Left" Margin="52,684,0,0" VerticalAlignment="Top" Height="36" Width="36" BorderBrush="#7F000000" BorderThickness="4" Background="#7F808080" Foreground="White" FontSize="18" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Click="LangBtn_Click"/>
     </Grid>
 </mah:MetroWindow>

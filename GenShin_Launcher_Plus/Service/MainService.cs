@@ -81,11 +81,7 @@ namespace GenShin_Launcher_Plus.Service
             else
             {
                 Uri uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
-                if (App.Current.DataModel.isWebBg)
-                {
-                    uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
-                }
-                else
+                if (!App.Current.DataModel.isWebBg)
                 {
                     vm.Background.ImageSource = new BitmapImage(uri);
                     string bgurl = await HtmlHelper.GetInfoFromHtmlAsync("bg");
@@ -112,23 +108,10 @@ namespace GenShin_Launcher_Plus.Service
                 vm.Background.ImageSource = new BitmapImage(uri);
                 vm.Background.Stretch = Stretch.UniformToFill;
 
-                var png = Path.Combine(AppContext.BaseDirectory, "Config/Bg.png");
-                var jpg = Path.Combine(AppContext.BaseDirectory, "Config/Bg.jpg");
-                if (File.Exists(png))
+                var bg = App.Current.DataModel.BackgroundPath;
+                if (File.Exists(bg))
                 {
-                    uri = new Uri(png);
-                    using var fs = File.OpenRead(png);
-                    var bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.StreamSource = fs;
-                    bitmap.EndInit();
-                    vm.Background.ImageSource = bitmap;
-                }
-                else if (File.Exists(jpg))
-                {
-                    uri = new Uri(jpg);
-                    using var fs = File.OpenRead(jpg);
+                    using var fs = File.OpenRead(bg);
                     var bitmap = new BitmapImage();
                     bitmap.BeginInit();
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;

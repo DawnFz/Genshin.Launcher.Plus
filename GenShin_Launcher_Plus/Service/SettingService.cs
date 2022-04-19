@@ -38,14 +38,14 @@ namespace GenShin_Launcher_Plus.Service
         {
             List<DisplaySizeListModel> list = new()
             {
-                new DisplaySizeListModel { DisplaySize = "3840 × 2160  | 16:9" },
-                new DisplaySizeListModel { DisplaySize = "2560 × 1080  | 21:9" },
-                new DisplaySizeListModel { DisplaySize = "1920 × 1080  | 16:9" },
-                new DisplaySizeListModel { DisplaySize = "1600 × 900    | 16:9" },
-                new DisplaySizeListModel { DisplaySize = "1360 × 768    | 16:9" },
-                new DisplaySizeListModel { DisplaySize = "1280 × 1024  |  4:3" },
-                new DisplaySizeListModel { DisplaySize = "1280 × 720    | 16:9" },
-                new DisplaySizeListModel { DisplaySize = App.Current.Language.AdaptiveStr },
+                new DisplaySizeListModel { SizeName = "3840 × 2160  | 16:9" },
+                new DisplaySizeListModel { SizeName = "2560 × 1080  | 21:9" },
+                new DisplaySizeListModel { SizeName = "1920 × 1080  | 16:9" },
+                new DisplaySizeListModel { SizeName = "1600 × 900    | 16:9" },
+                new DisplaySizeListModel { SizeName = "1360 × 768    | 16:9" },
+                new DisplaySizeListModel { SizeName = "1280 × 1024  |  4:3" },
+                new DisplaySizeListModel { SizeName = "1280 × 720    | 16:9" },
+                new DisplaySizeListModel { SizeName = App.Current.Language.AdaptiveStr },
             };
             return list;
         }

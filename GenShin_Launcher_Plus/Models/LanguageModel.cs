@@ -59,6 +59,22 @@
         public string FpsBoxTips { get; set; }
         public string BackgroundCkB { get; set; }
         public string BackgroundXK { get; set; }
+        public string GameSettingsBtn { get; set; }
+        public string GameClientSwitchBtn { get; set; }
+        public string AccountSettingsBtn { get; set; }
+        public string ProgramSettingsBtn { get; set; }
+        public string SetDisplaySizeLab { get; set; }
+        public string ChooseDisplaySizeListLab { get; set; }
+        public string SetGameClientLab { get; set; }
+        public string SetGameWindowModeLab { get; set; }
+        public string SetBorderlessLab { get; set; }
+        public string SetUnLockFpsLab { get; set; }
+        public string StartedCloseCkb { get; set; }
+        public string NoCheckUpdateCkb { get; set; }
+        public string CheckUpdateBtn { get; set; }
+        public string OpenProgameFolderBtn { get; set; }
+        public string ProgameLanguageSetBtn { get; set; }
+        public string SetMainBackgroundBtn { get; set; }
         //SettingsPageViewModel
         public string StateIndicatorDefault { get; set; }
         public string StateIndicatorUning { get; set; }

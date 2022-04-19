@@ -101,8 +101,10 @@ namespace GenShin_Launcher_Plus.Service
         public void CreateGamePortList()
         {
             App.Current.NoticeOverAllBase.GamePortLists = new();
-            App.Current.NoticeOverAllBase.GamePortLists.Add(new GamePortListModel { GamePort = App.Current.Language.GameClientTypePStr });
-            App.Current.NoticeOverAllBase.GamePortLists.Add(new GamePortListModel { GamePort = App.Current.Language.GameClientTypeBStr });
+            App.Current.NoticeOverAllBase.GamePortLists.Add(
+                new GamePortListModel { GamePort = App.Current.Language.GameClientTypePStr });
+            App.Current.NoticeOverAllBase.GamePortLists.Add(
+                new GamePortListModel { GamePort = App.Current.Language.GameClientTypeBStr });
         }
     }
 }

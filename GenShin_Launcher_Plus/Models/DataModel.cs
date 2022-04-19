@@ -51,6 +51,23 @@ namespace GenShin_Launcher_Plus.Core
             }
         }
 
+        private string _BackgroundPath;
+        public string BackgroundPath
+        {
+            get
+            {
+                _BackgroundPath = parser.GetSetting("setup", "BackgroundPath", 0);
+                return _BackgroundPath;
+            }
+            set
+            {
+                _BackgroundPath = value;
+                parser.AddSetting("setup", "BackgroundPath", _BackgroundPath);
+                parser.SaveSettings();
+                SetProperty(ref _BackgroundPath, value);
+            }
+        }
+
         private string _Width;
         public string Width
         {

@@ -31,7 +31,7 @@ namespace GenShin_Launcher_Plus
         private void SettingsPageButton_Click(object sender, RoutedEventArgs e)
         {
             SettingsPage.Children.Clear();
-            SettingsPage.Children.Add(new Views.DemoSetting());
+            SettingsPage.Children.Add(new Views.SettingPage());
             MainFlipView.SelectedIndex = 1;
         }
 
@@ -40,13 +40,6 @@ namespace GenShin_Launcher_Plus
             AddUsersPage.Children.Clear();
             AddUsersPage.Children.Add(new Views.UsersPage());
             MainFlipView.SelectedIndex = 2;
-        }
-
-        private void LangBtn_Click(object sender, RoutedEventArgs e)
-        {
-            SwitchLanguages.Children.Clear();
-            SwitchLanguages.Children.Add(new Views.LanguagesPage());
-            MainFlipView.SelectedIndex = 3;
         }
 
         private void Help_Copy_Click(object sender, RoutedEventArgs e)
