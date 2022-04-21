@@ -5,7 +5,7 @@ using System.Windows.Controls;
 namespace GenShin_Launcher_Plus.Views
 {
     /// <summary>
-    /// DemoSetting.xaml 的交互逻辑
+    /// SettingPage.xaml 的交互逻辑
     /// </summary>
     public partial class SettingPage : UserControl
     {

@@ -11,6 +11,7 @@ namespace GenShin_Launcher_Plus.Service
 
     /// <summary>
     /// 连接SettingsPage与HomePage的服务
+    /// 隶属于ViewModel
     /// </summary>
 
     public class NoticeOverAllBase : ObservableObject

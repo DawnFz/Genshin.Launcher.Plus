@@ -15,7 +15,6 @@ namespace GenShin_Launcher_Plus.ViewModels
     /// 更新页面的ViewModel 
     /// 集成了更新页面的UI更新绑定
     /// </summary>
-
     public class UpdatePageViewModel : ObservableObject
     {
         public IDialogCoordinator dialogCoordinator;

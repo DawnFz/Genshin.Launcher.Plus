@@ -22,6 +22,9 @@ namespace GenShin_Launcher_Plus.Service
         /// <summary>
         /// 获取注册表内容
         /// </summary>
+        /// <param name="name"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public string? GetFromRegistry(string name, string port)
         {
             RegistryModel userRegistry = new();
@@ -55,6 +58,7 @@ namespace GenShin_Launcher_Plus.Service
         /// <summary>
         /// 更新注册表内容
         /// </summary>
+        /// <param name="name"></param>
         public void SetToRegistry(string name)
         {
             string file = Path.Combine(Directory.GetCurrentDirectory(), "UserData", name);

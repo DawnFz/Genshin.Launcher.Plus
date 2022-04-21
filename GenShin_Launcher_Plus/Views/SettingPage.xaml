@@ -21,7 +21,7 @@
                 <Button FontSize="14" Content="{Binding languages.SaveBtn}" HorizontalAlignment="Right" Margin="0,0,40,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="65" Height="36" Foreground="#FFB0FFF2" Command="{Binding SaveSettingsCommand}"/>
             </Grid>
             <Grid Margin="0,36,0,0">
-                <mah:FlipView x:Name="MainFlipView" MouseHoverBorderBrush="{x:Null}" IsBannerEnabled="False" IsNavigationEnabled="False" d:SelectedIndex="3" SelectedIndex="{Binding FlipViewSelectedIndex}">
+                <mah:FlipView x:Name="MainFlipView" MouseHoverBorderBrush="{x:Null}" IsBannerEnabled="False" IsNavigationEnabled="False" d:SelectedIndex="1" SelectedIndex="{Binding FlipViewSelectedIndex}">
                     <Grid Margin="20,15,20,20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"></RowDefinition>
@@ -41,13 +41,14 @@
                         <TextBox mah:TextBoxHelper.Watermark="{Binding languages.WitdhStr}" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" Margin="23,0,0,0" TextWrapping="Wrap" Text="{Binding Width}" VerticalAlignment="Center" Width="68" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center"/>
                         <Label Grid.Row="0" Grid.Column="1" Content="×" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Normal" FontSize="14" Width="20"/>
 
-                        <ComboBox Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding DisplaySizeLists}" DisplayMemberPath="SizeName" SelectedValuePath="SizeName"  SelectedIndex="{Binding DisplaySelectedIndex}"/>
+                        <ComboBox Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding DisplaySizeLists}" DisplayMemberPath="SizeName" SelectedValue="{Binding SwitchSize, Mode=OneWayToSource}" SelectedValuePath="SizeName"/>
                         <ComboBox Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GamePortLists}" DisplayMemberPath="GamePort" SelectedValuePath="GamePort" SelectedIndex="{Binding isMihoyo}"/>
                         <ComboBox Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GameWindowModeList}" DisplayMemberPath="GameWindowMode" SelectedValuePath="GameWindowMode" SelectedIndex="{Binding DataModel.FullSize}"/>
                         <mah:ToggleSwitch Grid.Row="4" Grid.Column="1" d:Content="{Binding languages.BorderlessCkB}" Content="{Binding languages.BorderlessCkB}" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding DataModel.isPopup}"/>
                         <mah:ToggleSwitch Grid.Row="5" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding isUnFPS}" Command="{Binding ChooseUnlockFpsCommand}"/>
                         <TextBox Grid.Row="5" Grid.Column="1" mah:TextBoxHelper.Watermark="{Binding languages.FpsBoxTips}" Margin="72,0,0,0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="85" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="{Binding isUnFPS}" Text="{Binding DataModel.MaxFps}"/>
 
+                        <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" IsEnabled="{Binding PageUiStatus}" VerticalAlignment="Center" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FF50B12F" BorderBrush="{x:Null}" Height="16" Width="16" Content="➕" Command="{Binding SaveDisPlaySizeCommand}" FontSize="8" Foreground="White"/>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding languages.SetDisplaySizeLab}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding languages.ChooseDisplaySizeListLab}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding languages.SetGameClientLab}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"/>
@@ -67,6 +68,7 @@
                         </Grid.RowDefinitions>
                         <mah:MetroProgressBar Margin="0,20,0,0"  Grid.Row="2" IsIndeterminate="True" Maximum="100" Minimum="0" Foreground="#FF9CA7B2" HorizontalAlignment="Left" Visibility="{Binding ProgressBar}" Width="200"/>
                         <Button Grid.Row="2" FontSize="12" Content="{Binding languages.SwitchBtn}" HorizontalAlignment="Right" VerticalAlignment="bottom" IsEnabled="{Binding PageUiStatus}" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="68" Command="{Binding GameFileConvertCommand}"/>
+                        <Button Grid.Row="2" FontSize="12" Margin="0,0,75,0" Content="{Binding languages.GetPkgFileBtn}" HorizontalAlignment="Right" VerticalAlignment="bottom" IsEnabled="{Binding PageUiStatus}" Style="{StaticResource MahApps.Styles.Button.Square}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="90" Command="{Binding OpenPkgDownloadUrlCommand}"/>
                         <Label  Grid.Row="0" d:Content="状态：设计状态" FontFamily="Microsoft YaHei UI" FontSize="12" HorizontalAlignment="Left" Height="26" VerticalAlignment="Center" Width="270" RenderTransformOrigin="0.5,0.5" Content="{Binding StateIndicator}" Margin="9,0,0,0"/>
                         <TextBox  Grid.Row="1" Background="#CC83919F" Foreground="White" TextWrapping="Wrap" FontFamily="Microsoft YaHei UI" Text="{Binding ConvertingLog}">
                             <b:Interaction.Triggers>

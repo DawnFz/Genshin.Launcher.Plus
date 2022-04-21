@@ -11,13 +11,13 @@
              Height="730"
              Width="1280">
     <Grid Background="#FF5B6C75">
-        <Label Content="{Binding Title,Mode=OneWay}" d:Content="Title" HorizontalAlignment="Left" Margin="43,38,0,0" VerticalAlignment="Top" Foreground="White" FontSize="36"/>
+        <Label Content="{Binding Title,Mode=OneWay}" d:Content="Title" HorizontalAlignment="Left" Margin="43,30,0,0" VerticalAlignment="Top" Foreground="White" FontSize="36"/>
         <mah:MetroProgressBar HorizontalAlignment="Left" Height="43" VerticalAlignment="Top" Width="797" Margin="43,645,0,0" Maximum="{Binding DFC.DownloadBarMax}" Value="{Binding DFC.DownloadBarValue}" Foreground="#FF9FB2BD" Visibility="{Binding ViewControlVisibility}"/>
         <Label Content="{Binding DFC.DownloadLabel}" d:Content="设计预览" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="20" Margin="845,649,0,0"  Visibility="{Binding ViewControlVisibility}"/>
         <Label Content="{Binding languages.DownPageTips}" d:Content="CDNTIPS" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#3FFFFFFF" FontSize="22" Margin="43,596,0,0" Background="Transparent" Visibility="{Binding ViewControlVisibility}"/>
         <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" d:Content="Start" Content="{Binding languages.DownStartBtn}" HorizontalAlignment="Left" Margin="1076,642,0,0" VerticalAlignment="Top" Height="48" Width="160" FontFamily="Microsoft YaHei UI" FontSize="18" BorderThickness="3" FontWeight="Normal" Command="{Binding UpdateRunCommand}" IsEnabled="{Binding ButtonIsEnabled}"/>
         <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" d:Content="Skip" Content="{Binding languages.UpdateSkipBtn}" HorizontalAlignment="Left" Margin="1076,586,0,0" VerticalAlignment="Top" Height="48" Width="160" FontFamily="Microsoft YaHei UI" FontSize="18" BorderThickness="3" Background="#CC989898" Click="SkipButton_Click" FontWeight="Normal" IsEnabled="{Binding ButtonIsEnabled}" />
-        <TextBlock Margin="52,110,240,0" VerticalAlignment="Top" FontSize="20" TextWrapping="Wrap" Foreground="White" Height="478" ><Run Language="zh-cn" Text="{Binding Notify,Mode=OneWay}" d:Text="Body"/></TextBlock>
+        <TextBlock Margin="58,100,345,0" VerticalAlignment="Top" FontSize="20" TextWrapping="Wrap" Foreground="White" Height="478" ><Run Language="zh-cn" Text="{Binding Notify,Mode=OneWay}" d:Text="Body"/></TextBlock>
         <CheckBox HorizontalAlignment="Left" Margin="1080,546,0,0" VerticalAlignment="Top"  IsEnabled="{Binding ButtonIsEnabled}" IsChecked="{Binding UseGlobalUrlCheck}">
             <TextBlock d:Text="使用GitHub链接" Text="{Binding languages.UseGlobalUrl}" FontSize="18" Foreground="White" FontWeight="Normal"/>
         </CheckBox>

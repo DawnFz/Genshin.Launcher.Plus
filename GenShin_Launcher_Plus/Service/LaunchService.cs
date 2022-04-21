@@ -23,6 +23,10 @@ namespace GenShin_Launcher_Plus.Service
             CreateGamePortList();
         }
 
+        /// <summary>
+        /// 异步启动游戏并且传入游戏参数
+        /// </summary>
+        /// <returns></returns>
         public async Task RunGameAsync()
         {
             //从Config中读取启动参数
@@ -63,6 +67,7 @@ namespace GenShin_Launcher_Plus.Service
                 }
             };
 
+            //判断是否启用解锁FPS
             if (App.Current.DataModel.isUnFPS)
             {
                 Unlocker unlocker = int.TryParse(App.Current.DataModel.MaxFps, out int targetFps)
@@ -73,6 +78,7 @@ namespace GenShin_Launcher_Plus.Service
             }
             else
             {
+                //判断是否开启启动游戏后关闭原神启动器Plus
                 if (App.Current.DataModel.IsRunThenClose)
                 {
                     game.Start();
@@ -89,6 +95,9 @@ namespace GenShin_Launcher_Plus.Service
             }
         }
 
+        /// <summary>
+        /// 读取用户文件到NoticeOverAllBase中的列表
+        /// </summary>
         public void ReadUserList()
         {
             App.Current.NoticeOverAllBase.UserLists = new List<UserListModel>();
@@ -98,6 +107,9 @@ namespace GenShin_Launcher_Plus.Service
                 App.Current.NoticeOverAllBase.UserLists.Add(new UserListModel { UserName = NextFile.Name });
             }
         }
+        /// <summary>
+        /// 创建NoticeOverAllBase中的客户端列表
+        /// </summary>
         public void CreateGamePortList()
         {
             App.Current.NoticeOverAllBase.GamePortLists = new();

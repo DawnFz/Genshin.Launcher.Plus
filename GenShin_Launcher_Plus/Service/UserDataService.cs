@@ -7,6 +7,10 @@ namespace GenShin_Launcher_Plus.Service
 {
     public class UserDataService : IUserDataService
     {
+        /// <summary>
+        /// 读取用户数据列表
+        /// </summary>
+        /// <returns></returns>
         public List<UserListModel> ReadUserList()
         {
             List<UserListModel> list = new();

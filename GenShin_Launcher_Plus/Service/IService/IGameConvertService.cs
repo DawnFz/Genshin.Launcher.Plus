@@ -5,9 +5,12 @@ namespace GenShin_Launcher_Plus.Service.IService
 {
     public interface IGameConvertService
     {
+
         /// <summary>
-        /// 异步转换客户端文件
+        /// 异步转换游戏客户端文件
         /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         Task ConvertGameFileAsync(SettingsPageViewModel vm);
 
         /// <summary>

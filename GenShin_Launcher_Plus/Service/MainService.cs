@@ -25,6 +25,10 @@ namespace GenShin_Launcher_Plus.Service
             MainBackgroundLoad(vm);
         }
 
+        /// <summary>
+        /// 异步实现Main中的背景调用
+        /// </summary>
+        /// <param name="vm"></param>
         public async void MainBackgroundLoad(MainWindowViewModel vm)
         {
             vm.Background = new ImageBrush();
@@ -122,6 +126,10 @@ namespace GenShin_Launcher_Plus.Service
             }
         }
 
+        /// <summary>
+        /// 检查程序所需要的配置文件
+        /// </summary>
+        /// <param name="main"></param>
         public void CheckConfig(MainWindow main)
         {
             if (!Directory.Exists(@"UserData"))

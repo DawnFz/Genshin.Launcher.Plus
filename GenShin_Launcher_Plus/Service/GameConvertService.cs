@@ -128,9 +128,13 @@ namespace GenShin_Launcher_Plus.Service
         }
         private string GameFolder { get; set; }
 
+
         /// <summary>
-        /// 转换游戏文件
+        /// 转换游戏文件主方法
         /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task ConvertGameFileAsync(SettingsPageViewModel vm)
         {
             string currentPath = Environment.CurrentDirectory;
@@ -235,6 +239,7 @@ namespace GenShin_Launcher_Plus.Service
         /// 转换国际服及转换国服核心逻辑-判断PKG文件版本
         /// </summary>
         /// <param name="scheme"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
         public bool CheckPackageVersion(string scheme, SettingsPageViewModel vm)
         {
@@ -262,6 +267,7 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="dirpath"></param>
         /// <param name="filepath"></param>
         /// <param name="length"></param>
+        /// <param name="vm"></param>
         /// <param name="surfix"></param>
         /// <returns></returns>
         public bool CheckFileIntegrity(string dirpath, string[] filepath, int length, SettingsPageViewModel vm, string surfix = "")
@@ -283,6 +289,11 @@ namespace GenShin_Launcher_Plus.Service
         /// <summary>
         /// 替换客户端文件
         /// </summary>
+        /// <param name="originalfile"></param>
+        /// <param name="newfile"></param>
+        /// <param name="scheme"></param>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public async Task ReplaceGameFiles(string[] originalfile, string[] newfile, string scheme, SettingsPageViewModel vm)
         {
             vm.StateIndicator = App.Current.Language.StateIndicatorBaking;
@@ -327,12 +338,15 @@ namespace GenShin_Launcher_Plus.Service
             vm.StateIndicator = App.Current.Language.StateIndicatorDefault;
         }
 
+
         /// <summary>
         /// 还原客户端文件
         /// </summary>
         /// <param name="newfile"></param>
         /// <param name="originalfile"></param>
         /// <param name="scheme"></param>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         public async Task RestoreGameFiles(string[] newfile, string[] originalfile, string scheme, SettingsPageViewModel vm)
         {
             vm.StateIndicator = App.Current.Language.StateIndicatorCleaning;

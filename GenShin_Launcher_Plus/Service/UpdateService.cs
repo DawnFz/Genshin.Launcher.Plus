@@ -14,6 +14,10 @@ namespace GenShin_Launcher_Plus.Service
 {
     public class UpdateService : IUpdateService
     {
+        /// <summary>
+        /// 更新服务的主方法
+        /// </summary>
+        /// <param name="vm"></param>
         public async void UpdateRun(UpdatePageViewModel vm)
         {
             if (vm.ButtonIsEnabled)
@@ -82,6 +86,7 @@ namespace GenShin_Launcher_Plus.Service
         /// 检查是否存在更新信息
         /// 初始化更新页面的内容
         /// </summary>
+        /// <param name="main"></param>
         public async void CheckUpdate(MainWindow main)
         {
             try
@@ -97,6 +102,7 @@ namespace GenShin_Launcher_Plus.Service
                 App.Current.DataModel.ReadLang == null ||
                 App.Current.DataModel.ReadLang == string.Empty)
             {
+                //string json = await HtmlHelper.GetInfoFromHtmlAsync("UpdateDebug");
                 string json = await HtmlHelper.GetInfoFromHtmlAsync("UpdateCN");
                 App.Current.UpdateObject = JsonConvert.DeserializeObject<UpdateModel>(json) ?? new();
             }
@@ -111,13 +117,15 @@ namespace GenShin_Launcher_Plus.Service
             string version = Application.ResourceAssembly.GetName().Version.ToString();
             if (version != newver &&
                 newver != null &&
-                newver != String.Empty &&
-                !App.Current.IsLoading &&
-                !App.Current.DataModel.IsCloseUpdate ||
-                requisiteUpdate)
+                newver != string.Empty &&
+                !App.Current.IsLoading)
             {
-                main.MainGrid.Children.Add(new Views.UpdatePage());
-                App.Current.IsLoading = true;
+                if (App.Current.DataModel.IsCloseUpdate && requisiteUpdate ||
+                    !App.Current.DataModel.IsCloseUpdate)
+                {
+                    main.MainGrid.Children.Add(new Views.UpdatePage());
+                    App.Current.IsLoading = true;
+                }
             }
         }
     }

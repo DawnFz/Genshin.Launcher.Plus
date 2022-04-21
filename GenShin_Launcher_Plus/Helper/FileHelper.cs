@@ -6,6 +6,7 @@ using System.Windows;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace GenShin_Launcher_Plus.Helper
 {
@@ -80,6 +81,12 @@ namespace GenShin_Launcher_Plus.Helper
                 UseShellExecute = true,
             };
             Process.Start(info);
+        }
+
+        public static bool IsInt(string inString)
+        {
+            Regex regex = new("^[0-9]*[1-9][0-9]*$");
+            return regex.IsMatch(inString.Trim());
         }
     }
 }

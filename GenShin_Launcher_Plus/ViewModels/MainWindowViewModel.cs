@@ -10,6 +10,7 @@ using System.Windows.Input;
 using GenShin_Launcher_Plus.Models;
 using GenShin_Launcher_Plus.Service.IService;
 using GenShin_Launcher_Plus.Service;
+using GenShin_Launcher_Plus.Helper;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -45,12 +46,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             if (Directory.Exists(Path.Combine(App.Current.DataModel.GamePath, "ScreenShot")))
             {
-                ProcessStartInfo info = new()
-                {
-                    FileName = Path.Combine(App.Current.DataModel.GamePath, "ScreenShot"),
-                    UseShellExecute = true,
-                };
-                Process.Start(info);
+                FileHelper.OpenUrl(Path.Combine(App.Current.DataModel.GamePath, "ScreenShot"));
             }
             else
             {
@@ -76,24 +72,14 @@ namespace GenShin_Launcher_Plus.ViewModels
                     NegativeButtonText = "GitHub" 
                 })) != MessageDialogResult.Affirmative)
             {
-                ProcessStartInfo info = new()
-                {
-                    FileName = "https://github.com/DawnFz/Genshin.Launcher.Plus",
-                    UseShellExecute = true,
-                };
-                Process.Start(info);
+                FileHelper.OpenUrl("https://github.com/DawnFz/Genshin.Launcher.Plus");
             }
         }
 
         public ICommand OpenQQGroupUrlCommand { get; set; }
         private void OpenQQGroupUrl()
         {
-            ProcessStartInfo info = new()
-            {
-                FileName = "https://jq.qq.com/?_wv=1027&k=Kxt00f0Y",
-                UseShellExecute = true,
-            };
-            Process.Start(info);
+            FileHelper.OpenUrl("https://jq.qq.com/?_wv=1027&k=Kxt00f0Y");
         }
 
         public ICommand ExitProgramCommand { get; set; }

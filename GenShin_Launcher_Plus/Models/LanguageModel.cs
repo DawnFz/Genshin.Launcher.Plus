@@ -118,6 +118,7 @@
         public string RestoreEndStr { get; set; }
         public string CloseGameWaring { get; set; }
         public string ConvertError { get; set; }
+        public string GetPkgFileBtn { get; set; }
         //UpdatePage
         public string DownPageTips { get; set; }
         public string UpdateSkipBtn { get; set; }

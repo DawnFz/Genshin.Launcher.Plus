@@ -48,8 +48,10 @@ namespace GenShin_Launcher_Plus.ViewModels
             SwitchProgarmSettingCommand = new RelayCommand(SwitchProgarmSetting);
 
             CheckUpdateCommand = new RelayCommand(CheckUpdate);
+            SaveDisPlaySizeCommand = new RelayCommand(SaveDisPlaySize);
             SetMainBackgroundCommand = new RelayCommand(SetMainBackground);
             SwitchLanguagePageCommand = new RelayCommand(SwitchLanguagePage);
+            OpenPkgDownloadUrlCommand = new RelayCommand(OpenPkgDownloadUrl);
             OpenApplicationFolderCommand = new RelayCommand(OpenApplicationFolder);
 
             _UserLists = UserDataService.ReadUserList();
@@ -121,13 +123,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         public int FlipViewSelectedIndex { get => _FlipViewSelectedIndex; set => SetProperty(ref _FlipViewSelectedIndex, value); }
 
 
-        //选中分辨率的索引
-        private int _DisplaySelectedIndex = -1;
-        public int DisplaySelectedIndex
-        {
-            get => _DisplaySelectedIndex;
-            set => SettingService.SetDisplaySelectedIndex(value, this);
-        }
+        //选中分辨率进行调整
+        public string SwitchSize { set => SettingService.SetDisplaySelectedValue(value, this); }
 
 
         //开始转换显示的等待条
@@ -175,8 +172,27 @@ namespace GenShin_Launcher_Plus.ViewModels
         private List<GamePortListModel> _GamePortLists;
         public List<GamePortListModel> GamePortLists { get => _GamePortLists; }
 
+        //预设分辨率列表
         private List<DisplaySizeListModel> _DisplaySizeLists;
-        public List<DisplaySizeListModel> DisplaySizeLists { get => _DisplaySizeLists; }
+        public List<DisplaySizeListModel> DisplaySizeLists
+        {
+            get
+            {
+                if (_DisplaySizeLists == null)
+                { 
+                    return new List<DisplaySizeListModel>()
+                    {
+                        new DisplaySizeListModel
+                        { 
+                            SizeName = "没有已保存的预设选项",
+                            IsNull = true,
+                        } 
+                    }; 
+                }
+                else { return _DisplaySizeLists; }
+            }
+            set => SetProperty(ref _DisplaySizeLists, value);
+        }
 
         //游戏窗口模式列表
         private List<GameWindowModeListModel> _GameWindowModeList;
@@ -211,6 +227,31 @@ namespace GenShin_Launcher_Plus.ViewModels
             FlipViewSelectedIndex = 3;
         }
 
+        //保存设置的分辨率到列表
+        public ICommand SaveDisPlaySizeCommand { get; set; }
+        private async void SaveDisPlaySize()
+        {
+            if (FileHelper.IsInt(Width) && FileHelper.IsInt(Height))
+            {
+                SettingService.SaveDisplaySizeToList(this, Width, Height);
+                await dialogCoordinator.ShowMessageAsync(
+                   this, languages.TipsStr,
+                   "添加自定义分辨率到预设列表成功！",
+                   MessageDialogStyle.Affirmative,
+                   new MetroDialogSettings()
+                   { AffirmativeButtonText = languages.Determine });
+            }
+            else
+            {
+                await dialogCoordinator.ShowMessageAsync(
+                   this, languages.Error,
+                   "请输入正确的分辨率宽高数值！",
+                   MessageDialogStyle.Affirmative,
+                   new MetroDialogSettings()
+                   { AffirmativeButtonText = languages.Determine });
+            }
+        }
+
         //选择游戏路径的命令
         public ICommand ChooseGamePathCommand { get; set; }
         private void ChooseGamePath()
@@ -222,6 +263,13 @@ namespace GenShin_Launcher_Plus.ViewModels
                 DataModel.GamePath = dialog.FileName;
                 GamePath = dialog.FileName;
             }
+        }
+
+        //跳转到下载Pkg文件的链接命令
+        public ICommand OpenPkgDownloadUrlCommand { get; set; }
+        private void OpenPkgDownloadUrl()
+        {
+            FileHelper.OpenUrl("https://resource.snapgenshin.com/Plugins/Genshin.Launcher.Plus.SE.Plugin/");
         }
 
         //设置页面手动检查更新命令
@@ -253,13 +301,13 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand SetMainBackgroundCommand { get; set; }
         private async void SetMainBackground()
         {
-            CommonOpenFileDialog dialog = new(languages.GameDirMsg);
+            CommonOpenFileDialog dialog = new();
             dialog.IsFolderPicker = false;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 string extensionName = Path.GetExtension(dialog.FileName);
-                if (extensionName.ToLower() == ".png" || 
-                    extensionName.ToLower() == ".jpg" || 
+                if (extensionName.ToLower() == ".png" ||
+                    extensionName.ToLower() == ".jpg" ||
                     extensionName.ToLower() == ".webp")
                 {
                     App.Current.DataModel.BackgroundPath = dialog.FileName;

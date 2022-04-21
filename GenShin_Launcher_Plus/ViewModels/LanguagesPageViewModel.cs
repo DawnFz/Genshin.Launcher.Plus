@@ -15,6 +15,9 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
         public LanguageModel languages { get => App.Current.Language; }
 
+        /// <summary>
+        /// 从设置文件中获得选中的语言
+        /// </summary>
         public int LangIndex
         {
             get
@@ -32,6 +35,10 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         private string _SwitchLang;
         public string SwitchLang { get => _SwitchLang; set => SetProperty(ref _SwitchLang, value); }
+
+        /// <summary>
+        /// 保存语言后重新创建窗口实现更新语言
+        /// </summary>
         public ICommand SaveLangSetCommand { get; set; }
         private void ThisPageRemove()
         {

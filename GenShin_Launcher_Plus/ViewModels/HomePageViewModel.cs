@@ -10,7 +10,7 @@ using GenShin_Launcher_Plus.Service.IService;
 namespace GenShin_Launcher_Plus.ViewModels
 {
     /// <summary>
-    /// 这个类为启动页的ViewModel
+    /// 启动页的ViewModel
     /// </summary>
     public class HomePageViewModel : ObservableObject
     {
