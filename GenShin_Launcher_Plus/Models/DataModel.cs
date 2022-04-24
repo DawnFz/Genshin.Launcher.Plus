@@ -102,6 +102,23 @@ namespace GenShin_Launcher_Plus.Core
             }
         }
 
+        private string _ImageDate;
+        public string ImageDate
+        {
+            get
+            {
+                _ImageDate = parser.GetSetting("setup", "ImageDate", 1);
+                return _ImageDate;
+            }
+            set
+            {
+                _ImageDate = value;
+                parser.AddSetting("setup", "ImageDate", Convert.ToString(_ImageDate));
+                parser.SaveSettings();
+                SetProperty(ref _ImageDate, value);
+            }
+        }
+
         private string _MaxFps;
         public string MaxFps
         {

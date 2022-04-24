@@ -16,7 +16,7 @@
         ShowTitleBar="False" 
         ShowCloseButton="False"       
         Title="原神启动器Plus">
-    <Grid x:Name="MainGrid" Background="{Binding Background}">
+    <Grid x:Name="MainGrid" Background="{Binding Background}" RenderOptions.BitmapScalingMode="HighQuality">
         <Grid x:Name="ControlPage">
             <mah:FlipView x:Name="MainFlipView" MouseHoverBorderBrush="{x:Null}" IsBannerEnabled="False" IsNavigationEnabled="False" SelectedIndex="{Binding MainPagesIndex}">
                 <Grid x:Name="HomePage"/>

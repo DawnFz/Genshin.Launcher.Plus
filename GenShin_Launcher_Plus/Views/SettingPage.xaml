@@ -21,7 +21,7 @@
                 <Button FontSize="14" Content="{Binding languages.SaveBtn}" HorizontalAlignment="Right" Margin="0,0,40,0" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.Button.MetroWindow.Base}" FontFamily="Microsoft YaHei UI" FontWeight="Normal" Width="65" Height="36" Foreground="#FFB0FFF2" Command="{Binding SaveSettingsCommand}"/>
             </Grid>
             <Grid Margin="0,36,0,0">
-                <mah:FlipView x:Name="MainFlipView" MouseHoverBorderBrush="{x:Null}" IsBannerEnabled="False" IsNavigationEnabled="False" d:SelectedIndex="1" SelectedIndex="{Binding FlipViewSelectedIndex}">
+                <mah:FlipView x:Name="MainFlipView" MouseHoverBorderBrush="{x:Null}" IsBannerEnabled="False" IsNavigationEnabled="False" d:SelectedIndex="3" SelectedIndex="{Binding FlipViewSelectedIndex}">
                     <Grid Margin="20,15,20,20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"></RowDefinition>

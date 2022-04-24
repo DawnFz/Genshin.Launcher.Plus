@@ -6,15 +6,34 @@ using System.Threading.Tasks;
 
 namespace GenShin_Launcher_Plus.Models
 {
+    public class DailyImageModel
+    {
+        public List<DailyImageArray> ImageInfo { get; set; }
+    }
+    public class DailyImageArray
+    {
+        public string ImagePid { get; set; }
+        public string ImageDate { get; set; }
+    }
 
+
+    //下面是用于测试未正式启用的直接从Api获取图片的模型
     public class ImageModel
     {
-        public string Mon { get; set; }
-        public string Tues { get; set; }
-        public string Wed { get; set; }
-        public string Thur { get; set; }
-        public string Fri { get; set; }
-        public string Sat { get; set; }
-        public string Sun { get; set; }
+        public string Error { get; set; }
+        public List<PixivJson> data { get; set; }
+
+    }
+    public class PixivJson
+    {
+        public string pid { get; set; }
+        public int p { get; set; }
+        public bool r18 { get; set; }
+        public string ext { get; set; }
+        public OriginalUrl urls { get; set; }
+    }
+    public class OriginalUrl
+    {
+        public string original { get; set; }
     }
 }

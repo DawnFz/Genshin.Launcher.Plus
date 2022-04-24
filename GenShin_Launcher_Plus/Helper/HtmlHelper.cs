@@ -13,7 +13,7 @@ namespace GenShin_Launcher_Plus.Core
 
         private const string Url = "https://www.cnblogs.com/DawnFz/p/15990791.html";
 
-        private static async Task<string> ReadHTMLAsTextAsync(string url)
+        public static async Task<string> ReadHTMLAsTextAsync(string url)
         {
             try
             {
@@ -42,6 +42,11 @@ namespace GenShin_Launcher_Plus.Core
             {
                 return string.Empty;
             }
+        }
+
+        public static string GetDateFromUrl(string str,string end)
+        {
+            return Mid(str, "https://i.pximg.net/img-original/img/", $"/{end}");
         }
 
         public static async Task<string> GetInfoFromHtmlAsync(string tag)
