@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using GenShin_Launcher_Plus.ViewModels;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace GenShin_Launcher_Plus.Views
 {
@@ -12,7 +13,7 @@ namespace GenShin_Launcher_Plus.Views
         public UsersPage()
         {
             InitializeComponent();
-            DataContext = new UsersPageViewModel();
+            DataContext = new UsersPageViewModel(DialogCoordinator.Instance);
         }
     }
 }

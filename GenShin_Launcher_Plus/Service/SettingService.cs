@@ -20,14 +20,21 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="vm"></param>
         public SettingService(SettingsPageViewModel vm)
         {
-            vm.SwitchUser = App.Current.DataModel.SwitchUser;
-            vm.GamePath = App.Current.DataModel.GamePath;
-            vm.isUnFPS = App.Current.DataModel.isUnFPS;
             vm.Width = App.Current.DataModel.Width ?? "1600";
             vm.Height = App.Current.DataModel.Height ?? "900";
+            vm.IsUnFPS = App.Current.DataModel.IsUnFPS;
+            vm.GamePath = App.Current.DataModel.GamePath;
+            vm.SwitchUser = App.Current.DataModel.SwitchUser;
+            vm.IsPopup = App.Current.DataModel.IsPopup;
+            vm.FullSize = App.Current.DataModel.FullSize;
+            vm.MaxFps = App.Current.DataModel.MaxFps;
+            vm.IsWebBg = App.Current.DataModel.IsWebBg;
+            vm.UseXunkongWallpaper = App.Current.DataModel.UseXunkongWallpaper;
+            vm.IsRunThenClose = App.Current.DataModel.IsRunThenClose;
+            vm.IsCloseUpdate = App.Current.DataModel.IsCloseUpdate;
             vm.ConvertingLog = App.Current.Language.ConvertingLogStr;
             vm.StateIndicator = App.Current.Language.StateIndicatorDefault;
-            vm.isMihoyo = App.Current.DataModel.Cps switch
+            vm.IsMihoyo = App.Current.DataModel.Cps switch
             {
                 "pcadbdpz" => 0,
                 "bilibili" => 1,

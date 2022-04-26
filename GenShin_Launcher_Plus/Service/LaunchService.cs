@@ -32,7 +32,7 @@ namespace GenShin_Launcher_Plus.Service
             //从Config中读取启动参数
             string gameMain = Path.Combine(App.Current.DataModel.GamePath, "YuanShen.exe");
             string arg = new CommandLineBuilder()
-                .AppendIf("-popupwindow", App.Current.DataModel.isPopup)
+                .AppendIf("-popupwindow", App.Current.DataModel.IsPopup)
                 .Append("-screen-fullscreen", App.Current.DataModel.FullSize)
                 .Append("-screen-height", App.Current.DataModel.Height)
                 .Append("-screen-width", App.Current.DataModel.Width)
@@ -68,7 +68,7 @@ namespace GenShin_Launcher_Plus.Service
             };
 
             //判断是否启用解锁FPS
-            if (App.Current.DataModel.isUnFPS)
+            if (App.Current.DataModel.IsUnFPS)
             {
                 Unlocker unlocker = int.TryParse(App.Current.DataModel.MaxFps, out int targetFps)
                     ? new Unlocker(game, targetFps)

@@ -1,12 +1,13 @@
 ﻿using GenShin_Launcher_Plus.Service;
 using GenShin_Launcher_Plus.Models;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using GenShin_Launcher_Plus.Service.IService;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -16,9 +17,10 @@ namespace GenShin_Launcher_Plus.ViewModels
     /// </summary>
     public class UsersPageViewModel : ObservableObject
     {
-
-        public UsersPageViewModel()
+        private IDialogCoordinator dialogCoordinator;
+        public UsersPageViewModel(IDialogCoordinator instance)
         {
+            dialogCoordinator = instance;
             SaveUserDataCommand = new RelayCommand(SaveUserData);
             RemoveThisPageCommand = new RelayCommand(RemoveThisPage);
 
@@ -34,19 +36,32 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         public LanguageModel languages { get => App.Current.Language; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public ICommand SaveUserDataCommand { get; set; }
-        private void SaveUserData()
+        private async void SaveUserData()
         {
             //判断YuanShen.exe是否存在，存在则为False，否则为True
             bool isGlobal = !File.Exists(Path.Combine(App.Current.DataModel.GamePath, "YuanShen.exe"));
             //判断isGlobal值，为True时为Cn，否则为Global
             string gamePort = isGlobal ? "Global" : "CN";
-            string userdata = RegistryService.GetFromRegistry(Name, gamePort);
-            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
-            App.Current.NoticeOverAllBase.UserLists = UserDataService.ReadUserList();
-            RemoveThisPage();
+            if(Name!=null&&Name!=string.Empty)
+            {
+                string userdata = RegistryService.GetFromRegistry(Name, gamePort);
+                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
+                App.Current.NoticeOverAllBase.UserLists = UserDataService.ReadUserList();
+                RemoveThisPage();
+            }
+            else
+            {
+                await dialogCoordinator.ShowMessageAsync(
+                    this, languages.Error,
+                    "保存的账号名字不能为空！",
+                    MessageDialogStyle.Affirmative,
+                    new MetroDialogSettings()
+                    { AffirmativeButtonText = languages.Determine });
+            }
+
         }
 
         public ICommand RemoveThisPageCommand { get; set; }

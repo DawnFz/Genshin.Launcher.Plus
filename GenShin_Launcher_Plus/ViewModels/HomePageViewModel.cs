@@ -1,5 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using GenShin_Launcher_Plus.Models;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Input;

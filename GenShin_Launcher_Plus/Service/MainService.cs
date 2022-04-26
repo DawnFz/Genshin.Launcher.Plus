@@ -117,7 +117,7 @@ namespace GenShin_Launcher_Plus.Service
             else
             {
                 Uri uri = new("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
-                if (!App.Current.DataModel.isWebBg)
+                if (!App.Current.DataModel.IsWebBg)
                 {
                     vm.Background.ImageSource = new BitmapImage(uri);
                     string bgurl = await HtmlHelper.GetInfoFromHtmlAsync("bg");

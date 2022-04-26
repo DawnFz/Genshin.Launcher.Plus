@@ -1,11 +1,11 @@
 ﻿using GenShin_Launcher_Plus.Models;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Input;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.IO;
 using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {

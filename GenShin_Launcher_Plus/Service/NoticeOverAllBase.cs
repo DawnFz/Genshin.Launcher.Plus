@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows;
 using GenShin_Launcher_Plus.Helper;
 using GenShin_Launcher_Plus.Models;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace GenShin_Launcher_Plus.Service
 {
@@ -107,6 +107,7 @@ namespace GenShin_Launcher_Plus.Service
                         default:
                             break;
                     }
+                    App.Current.DataModel.SaveDataToFile();
                 }
             }
         }
@@ -123,6 +124,7 @@ namespace GenShin_Launcher_Plus.Service
                     App.Current.NoticeOverAllBase.SwitchUser = $"{App.Current.Language.UserNameLab} : {SwitchUserValue}";
                     //更改注册表账号状态
                     App.Current.DataModel.SwitchUser = SwitchUserValue;
+                    App.Current.DataModel.SaveDataToFile();
                     RegistryService registryControl = new();
                     registryControl.SetToRegistry(SwitchUserValue);
                 }

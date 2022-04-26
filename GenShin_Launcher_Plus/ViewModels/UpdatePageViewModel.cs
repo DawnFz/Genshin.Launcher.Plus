@@ -1,13 +1,14 @@
-﻿using GenShin_Launcher_Plus.Core;
-using MahApps.Metro.Controls.Dialogs;
+﻿using MahApps.Metro.Controls.Dialogs;
 using System;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using GenShin_Launcher_Plus.Models;
 using GenShin_Launcher_Plus.Service.IService;
 using GenShin_Launcher_Plus.Service;
 using GenShin_Launcher_Plus.Helper;
+using GenShin_Launcher_Plus.Views;
+using System.Windows.Controls;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {

@@ -330,7 +330,7 @@ namespace GenShin_Launcher_Plus.Service
             };
             //
             string cps = scheme == CnFolderName ? "pcadbdpz" : "mihoyo";
-            vm.isMihoyo = cps == "mihoyo" ? 2 : 0;
+            vm.IsMihoyo = cps == "mihoyo" ? 2 : 0;
             vm.ConvertState = true;
             //
             SaveGameConfig(vm);
@@ -386,7 +386,7 @@ namespace GenShin_Launcher_Plus.Service
             }
             //
             string cps = scheme == CnFolderName ? "pcadbdpz" : "mihoyo";
-            vm.isMihoyo = cps == "mihoyo" ? 0 : 2;
+            vm.IsMihoyo = cps == "mihoyo" ? 0 : 2;
             vm.ConvertState = true;
             //
             SaveGameConfig(vm);
@@ -404,7 +404,7 @@ namespace GenShin_Launcher_Plus.Service
             if (File.Exists(Path.Combine(App.Current.DataModel.GamePath, "config.ini")))
             {
                 string bilibilisdk = "Plugins/PCGameSDK.dll";
-                switch (vm.isMihoyo)
+                switch (vm.IsMihoyo)
                 {
                     case 0:
                         App.Current.DataModel.Cps = "pcadbdpz";

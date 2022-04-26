@@ -1,9 +1,9 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Threading;
 using System.IO;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using GenShin_Launcher_Plus.ViewModels;
 
 namespace GenShin_Launcher_Plus.Helper

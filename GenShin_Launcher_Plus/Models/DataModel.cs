@@ -1,10 +1,9 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using System;
+﻿using System;
 using System.IO;
 
 namespace GenShin_Launcher_Plus.Core
 {
-    public class DataModel : ObservableObject
+    public class DataModel
     {
         public DataModel()
         {
@@ -29,8 +28,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _ReadLang = value;
                 parser.AddSetting("setup", "Language", _ReadLang);
-                parser.SaveSettings();
-                SetProperty(ref _ReadLang,value);
             }
         }
 
@@ -46,8 +43,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _GamePath = value;
                 parser.AddSetting("setup", "GamePath", _GamePath);
-                parser.SaveSettings();
-                SetProperty(ref _GamePath, value);
             }
         }
 
@@ -63,8 +58,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _BackgroundPath = value;
                 parser.AddSetting("setup", "BackgroundPath", _BackgroundPath);
-                parser.SaveSettings();
-                SetProperty(ref _BackgroundPath, value);
             }
         }
 
@@ -80,8 +73,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _Width = value;
                 parser.AddSetting("setup", "Width", Convert.ToString(_Width));
-                parser.SaveSettings();
-                SetProperty(ref _Width, value);
             }
         }
 
@@ -97,8 +88,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _Height = value;
                 parser.AddSetting("setup", "Height", Convert.ToString(_Height));
-                parser.SaveSettings();
-                SetProperty(ref _Height, value);
             }
         }
 
@@ -114,8 +103,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _ImageDate = value;
                 parser.AddSetting("setup", "ImageDate", Convert.ToString(_ImageDate));
-                parser.SaveSettings();
-                SetProperty(ref _ImageDate, value);
             }
         }
 
@@ -131,8 +118,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _MaxFps = value;
                 parser.AddSetting("setup", "MaxFps", _MaxFps);
-                parser.SaveSettings();
-                SetProperty(ref _MaxFps, value);
             }
         }
 
@@ -148,43 +133,37 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _SwitchUser = value;
                 parser.AddSetting("setup", "SwitchUser", _SwitchUser);
-                parser.SaveSettings();
-                SetProperty(ref _SwitchUser, value);
             }
         }
 
-        private bool _isPopup;
-        public bool isPopup
+        private bool _IsPopup;
+        public bool IsPopup
         {
             get
             {
-                _isPopup = Convert.ToBoolean(parser.GetSetting("setup", "isPopup", 2));
-                return _isPopup;
+                _IsPopup = Convert.ToBoolean(parser.GetSetting("setup", "isPopup", 2));
+                return _IsPopup;
             }
             set
             {
-                _isPopup = value;
-                parser.AddSetting("setup", "isPopup", Convert.ToString(_isPopup));
-                parser.SaveSettings();
-                SetProperty(ref _isPopup, value);
+                _IsPopup = value;
+                parser.AddSetting("setup", "isPopup", Convert.ToString(_IsPopup));
             }
         }
 
 
-        private bool _isWebBg;
-        public bool isWebBg
+        private bool _IsWebBg;
+        public bool IsWebBg
         {
             get
             {
-                _isWebBg = Convert.ToBoolean(parser.GetSetting("setup", "isWebBg", 2));
-                return _isWebBg;
+                _IsWebBg = Convert.ToBoolean(parser.GetSetting("setup", "isWebBg", 2));
+                return _IsWebBg;
             }
             set
             {
-                _isWebBg = value;
-                parser.AddSetting("setup", "isWebBg", Convert.ToString(_isWebBg));
-                parser.SaveSettings();
-                SetProperty(ref _isWebBg, value);
+                _IsWebBg = value;
+                parser.AddSetting("setup", "isWebBg", Convert.ToString(_IsWebBg));
             }
         }
 
@@ -200,25 +179,21 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _FullSize = value;
                 parser.AddSetting("setup", "FullSize", Convert.ToString(_FullSize));
-                parser.SaveSettings();
-                SetProperty(ref _FullSize, value);
             }
         }
 
-        private bool _isUnFPS;
-        public bool isUnFPS
+        private bool _IsUnFPS;
+        public bool IsUnFPS
         {
             get
             {
-                _isUnFPS = Convert.ToBoolean(parser.GetSetting("setup", "isUnFPS", 2));
-                return _isUnFPS;
+                _IsUnFPS = Convert.ToBoolean(parser.GetSetting("setup", "isUnFPS", 2));
+                return _IsUnFPS;
             }
             set
             {
-                _isUnFPS = value;
-                parser.AddSetting("setup", "isUnFPS", Convert.ToString(_isUnFPS));
-                parser.SaveSettings();
-                SetProperty(ref _isUnFPS, value);
+                _IsUnFPS = value;
+                parser.AddSetting("setup", "isUnFPS", Convert.ToString(_IsUnFPS));
             }
         }
 
@@ -234,8 +209,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _IsCloseUpdate = value;
                 parser.AddSetting("setup", "IsCloseUpdate", Convert.ToString(_IsCloseUpdate));
-                parser.SaveSettings();
-                SetProperty(ref _IsCloseUpdate, value);
             }
         }
 
@@ -251,25 +224,21 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _IsRunThenClose = value;
                 parser.AddSetting("setup", "IsRunThenClose", Convert.ToString(_IsRunThenClose));
-                parser.SaveSettings();
-                SetProperty(ref _IsRunThenClose, value);
             }
         }
 
-        private ushort _isMihoyo;
-        public ushort isMihoyo
+        private int _IsMihoyo;
+        public int IsMihoyo
         {
             get
             {
-                _isMihoyo = Convert.ToUInt16(parser.GetSetting("setup", "isMihoyo", 1));
-                return _isMihoyo;
+                _IsMihoyo = Convert.ToUInt16(parser.GetSetting("setup", "isMihoyo", 1));
+                return _IsMihoyo;
             }
             set
             {
-                _isMihoyo = value;
-                parser.AddSetting("setup", "isMihoyo", Convert.ToString(_isMihoyo));
-                parser.SaveSettings();
-                SetProperty(ref _isMihoyo, value);
+                _IsMihoyo = value;
+                parser.AddSetting("setup", "isMihoyo", Convert.ToString(_IsMihoyo));
             }
         }
 
@@ -285,8 +254,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _UseXunkongWallpaper = value;
                 parser.AddSetting("setup", "UseXunkongWallpaper", Convert.ToString(_UseXunkongWallpaper));
-                parser.SaveSettings();
-                SetProperty(ref _UseXunkongWallpaper, value);
             }
         }
 
@@ -311,8 +278,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _Channel = value;
                 gameparser.AddSetting("General", "channel", Convert.ToString(_Channel));
-                gameparser.SaveSettings();
-                SetProperty(ref _Channel, value);
             }
         }
 
@@ -328,8 +293,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _Sub_channel = value;
                 gameparser.AddSetting("General", "sub_channel", Convert.ToString(_Sub_channel));
-                gameparser.SaveSettings();
-                SetProperty(ref _Sub_channel, value);
             }
         }
 
@@ -345,9 +308,13 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _Cps = value;
                 gameparser.AddSetting("General", "cps", _Cps);
-                gameparser.SaveSettings();
-                SetProperty(ref _Cps, value);
             }
+        }
+
+        public void SaveDataToFile()
+        {
+            parser.SaveSettings();
+            gameparser.SaveSettings();
         }
     }
 

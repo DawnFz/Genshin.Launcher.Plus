@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls.Dialogs;
+﻿using GenShin_Launcher_Plus.ViewModels;
+using MahApps.Metro.Controls.Dialogs;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,7 +13,7 @@ namespace GenShin_Launcher_Plus.Views
         public UpdatePage()
         {
             InitializeComponent();
-            DataContext = new ViewModels.UpdatePageViewModel(DialogCoordinator.Instance);
+            DataContext = new UpdatePageViewModel(DialogCoordinator.Instance);
         }
         private void SkipButton_Click(object sender, RoutedEventArgs e)
         {

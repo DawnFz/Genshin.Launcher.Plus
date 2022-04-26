@@ -2,19 +2,17 @@
 using GenShin_Launcher_Plus.Helper;
 using GenShin_Launcher_Plus.Models;
 using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using GenShin_Launcher_Plus.Service;
 using GenShin_Launcher_Plus.Service.IService;
-using System.Windows.Threading;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -73,7 +71,6 @@ namespace GenShin_Launcher_Plus.ViewModels
         private IRegistryService _registryService;
         public IRegistryService RegistryService { get => _registryService; }
 
-        public DataModel DataModel { get => App.Current.DataModel; }
         public LanguageModel languages { get => App.Current.Language; }
 
 
@@ -102,25 +99,157 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         //设置界面UI刷新绑定数据
         private string _Width;
-        public string Width { get => _Width; set => SetProperty(ref _Width, value); }
+        public string Width 
+        { 
+            get => _Width;
+            set
+            {
+                App.Current.DataModel.Width = value;
+                SetProperty(ref _Width, value);
+            }
+        }
 
         private string _Height;
-        public string Height { get => _Height; set => SetProperty(ref _Height, value); }
+        public string Height
+        { 
+            get => _Height;
+            set 
+            { 
+                App.Current.DataModel.Height = value;
+                SetProperty(ref _Height, value);
+            }
+        }
 
-        private bool _isUnFPS;
-        public bool isUnFPS { get => _isUnFPS; set => SetProperty(ref _isUnFPS, value); }
+        private bool _IsUnFPS;
+        public bool IsUnFPS
+        {
+            get => _IsUnFPS;
+            set
+            { 
+                App.Current.DataModel.IsUnFPS = value;
+                SetProperty(ref _IsUnFPS, value); 
+            }
+        }
 
         private string _GamePath;
-        public string GamePath { get => _GamePath; set => SetProperty(ref _GamePath, value); }
+        public string GamePath 
+        { 
+            get => _GamePath;
+            set 
+            { 
+                App.Current.DataModel.GamePath = value;
+                SetProperty(ref _GamePath, value); 
+            }
+        }
 
         private string _SwitchUser;
-        public string SwitchUser { get => _SwitchUser; set => SetProperty(ref _SwitchUser, value); }
+        public string SwitchUser 
+        { 
+            get => _SwitchUser;
+            set
+            {
+                App.Current.DataModel.SwitchUser = value;
+                SetProperty(ref _SwitchUser, value);
+            }
+        }
 
-        private int _isMihoyo;
-        public int isMihoyo { get => _isMihoyo; set => SetProperty(ref _isMihoyo, value); }
+        private int _IsMihoyo;
+        public int IsMihoyo 
+        { 
+            get => _IsMihoyo;
+            set
+            {
+                App.Current.DataModel.IsMihoyo = value;
+                SetProperty(ref _IsMihoyo, value);
+            }
+        }
+
+        private bool _IsPopup;
+        public bool IsPopup
+        {
+            get => _IsPopup;
+            set
+            {
+                App.Current.DataModel.IsPopup = value;
+                SetProperty(ref _IsPopup, value);
+            }
+        }
+
+        private ushort _FullSize;
+        public ushort FullSize
+        {
+            get => _FullSize;
+            set
+            {
+                App.Current.DataModel.FullSize = value;
+                SetProperty(ref _FullSize, value);
+            }
+        }
+
+        private string _MaxFps;
+        public string MaxFps
+        {
+            get => _MaxFps;
+            set
+            {
+                App.Current.DataModel.MaxFps = value;
+                SetProperty(ref _MaxFps, value);
+            }
+        }
+
+        private bool _IsWebBg;
+        public bool IsWebBg
+        {
+            get => _IsWebBg;
+            set
+            {
+                App.Current.DataModel.IsWebBg = value;
+                SetProperty(ref _IsWebBg, value);
+            }
+        }
+
+        private bool _UseXunkongWallpaper;
+        public bool UseXunkongWallpaper
+        {
+            get => _UseXunkongWallpaper;
+            set
+            {
+                App.Current.DataModel.UseXunkongWallpaper = value;
+                SetProperty(ref _UseXunkongWallpaper, value);
+            }
+        }
+
+        private bool _IsRunThenClose;
+        public bool IsRunThenClose
+        {
+            get => _IsRunThenClose;
+            set
+            {
+                App.Current.DataModel.IsRunThenClose = value;
+                SetProperty(ref _IsRunThenClose, value);
+            }
+        }
+
+        private bool _IsCloseUpdate;
+        public bool IsCloseUpdate
+        {
+            get => _IsCloseUpdate;
+            set
+            {
+                App.Current.DataModel.IsCloseUpdate = value;
+                SetProperty(ref _IsCloseUpdate, value);
+            }
+        }
 
         private int _FlipViewSelectedIndex;
-        public int FlipViewSelectedIndex { get => _FlipViewSelectedIndex; set => SetProperty(ref _FlipViewSelectedIndex, value); }
+        public int FlipViewSelectedIndex 
+        { 
+            get => _FlipViewSelectedIndex;
+            set
+            {
+                SetProperty(ref _FlipViewSelectedIndex, value);
+            }
+        }
 
 
         //选中分辨率进行调整
@@ -260,7 +389,6 @@ namespace GenShin_Launcher_Plus.ViewModels
             dialog.IsFolderPicker = true;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                DataModel.GamePath = dialog.FileName;
                 GamePath = dialog.FileName;
             }
         }
@@ -311,6 +439,8 @@ namespace GenShin_Launcher_Plus.ViewModels
                     extensionName.ToLower() == ".webp")
                 {
                     App.Current.DataModel.BackgroundPath = dialog.FileName;
+                    IsWebBg = true;
+                    UseXunkongWallpaper = false;
                     _ = new MainService(App.Current.ThisMainWindow, App.Current.ThisMainWindow.ViewModel);
                 }
                 else
@@ -329,7 +459,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand ChooseUnlockFpsCommand { get; set; }
         private async void ChooseUnlockFps()
         {
-            if (isUnFPS)
+            if (IsUnFPS)
             {
                 if ((await dialogCoordinator.ShowMessageAsync(
                     this, languages.SevereWarning,
@@ -341,13 +471,13 @@ namespace GenShin_Launcher_Plus.ViewModels
                         NegativeButtonText = languages.Determine
                     })) != MessageDialogResult.Affirmative)
                 {
-                    isUnFPS = true;
+                    IsUnFPS = true;
                 }
                 else
                 {
-                    isUnFPS = false;
+                    IsUnFPS = false;
                 }
-                App.Current.DataModel.isUnFPS = isUnFPS;
+                App.Current.DataModel.IsUnFPS = IsUnFPS;
             }
         }
 
@@ -403,16 +533,13 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             if (SwitchUser != null && SwitchUser != "")
             {
-                App.Current.DataModel.SwitchUser = SwitchUser;
                 App.Current.NoticeOverAllBase.SwitchUser = $"{languages.UserNameLab}：{SwitchUser}";
                 App.Current.NoticeOverAllBase.IsSwitchUser = "Visible";
                 RegistryService.SetToRegistry(SwitchUser);
             }
-            App.Current.DataModel.Width = Width;
-            App.Current.DataModel.Height = Height;
-            App.Current.DataModel.isUnFPS = isUnFPS;
             GameConvert.SaveGameConfig(this);
             DelaySaveButtonTitle();
+            App.Current.DataModel.SaveDataToFile();
             ThisPageRemove();
         }
 
