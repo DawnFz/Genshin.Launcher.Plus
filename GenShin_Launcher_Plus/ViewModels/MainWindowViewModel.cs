@@ -11,6 +11,7 @@ using GenShin_Launcher_Plus.Models;
 using GenShin_Launcher_Plus.Service.IService;
 using GenShin_Launcher_Plus.Service;
 using GenShin_Launcher_Plus.Helper;
+using System.Windows.Data;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -22,7 +23,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             dialogCoordinator = instance;
             App.Current.LoadProgramCore.LoadLanguageCore();
             new UpdateService().CheckUpdate(main);
-            MainService = new MainService(main,this);
+            MainService = new MainService(main, this);
 
             OpenAboutCommand = new RelayCommand(OpenAbout);
             OpenQQGroupUrlCommand = new RelayCommand(OpenQQGroupUrl);
@@ -32,6 +33,7 @@ namespace GenShin_Launcher_Plus.ViewModels
 
             Title = $"{languages.MainTitle} {Application.ResourceAssembly.GetName().Version}";
             App.Current.DataModel.EXEname(Path.GetFileName(Environment.ProcessPath));
+           
         }
 
         public IMainWindowService MainService { get; set; }
@@ -40,6 +42,25 @@ namespace GenShin_Launcher_Plus.ViewModels
         public string Title { get; set; }
         private ImageBrush _Background;
         public ImageBrush Background { get => _Background; set => SetProperty(ref _Background, value); }
+
+        public string MainWidth
+        {
+            get => App.Current.DataModel.MainWidth;
+            set
+            {
+                App.Current.DataModel.MainWidth = value;
+                App.Current.DataModel.SaveDataToFile();
+            }
+        }
+        public string MainHeight
+        {
+            get => App.Current.DataModel.MainHeight;
+            set
+            {
+                App.Current.DataModel.MainHeight = value;
+                App.Current.DataModel.SaveDataToFile();
+            }
+        }
 
         public ICommand OpenImagesDirectoryCommand { get; set; }
         private async void OpenImagesDirectory()
@@ -54,7 +75,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                     this, languages.Error,
                     languages.ScreenPathErr,
                     MessageDialogStyle.Affirmative,
-                    new MetroDialogSettings() 
+                    new MetroDialogSettings()
                     { AffirmativeButtonText = languages.Determine });
             }
         }
@@ -63,13 +84,13 @@ namespace GenShin_Launcher_Plus.ViewModels
         private async void OpenAbout()
         {
             if ((await dialogCoordinator.ShowMessageAsync(
-                this, languages.AboutTitle, 
+                this, languages.AboutTitle,
                 languages.AboutStr,
-                MessageDialogStyle.AffirmativeAndNegative, 
+                MessageDialogStyle.AffirmativeAndNegative,
                 new MetroDialogSettings()
-                { 
+                {
                     AffirmativeButtonText = languages.Determine,
-                    NegativeButtonText = "GitHub" 
+                    NegativeButtonText = "GitHub"
                 })) != MessageDialogResult.Affirmative)
             {
                 FileHelper.OpenUrl("https://github.com/DawnFz/Genshin.Launcher.Plus");

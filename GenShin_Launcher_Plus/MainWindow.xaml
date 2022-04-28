@@ -8,55 +8,138 @@
         Dialog:DialogParticipation.Register="{Binding}"
         mc:Ignorable="d"
         MouseLeftButtonDown="WindowDragMove"
-        Height="730" Width="1280"
+        d:Height="730" d:Width="1280"
+        Height="{Binding MainHeight,Mode=TwoWay}" Width="{Binding MainWidth,Mode=TwoWay}"
+        MinWidth="840" MinHeight="500"
         WindowStartupLocation="CenterScreen"
         ShowIconOnTitleBar="False"
         WindowStyle="None"         
-        ResizeMode="NoResize" 
+        d:ResizeMode="NoResize" 
         ShowTitleBar="False" 
-        ShowCloseButton="False"       
+        ShowMinButton="False"
+        ShowMaxRestoreButton="False"
+        ShowCloseButton="False"
         Title="原神启动器Plus">
+    <Window.Resources>
+        <Style 
+            TargetType="Button" 
+            x:Key="SideButtonStyle" 
+            BasedOn="{mah:StaticResource MahApps.Styles.Button.Circle}">
+            <Setter Property="BorderBrush" Value="#59000000"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="BorderThickness" Value="4"/>
+        </Style>
+    </Window.Resources>
     <Grid x:Name="MainGrid" Background="{Binding Background}" RenderOptions.BitmapScalingMode="HighQuality">
         <Grid x:Name="ControlPage">
-            <mah:FlipView x:Name="MainFlipView" MouseHoverBorderBrush="{x:Null}" IsBannerEnabled="False" IsNavigationEnabled="False" SelectedIndex="{Binding MainPagesIndex}">
+            <mah:FlipView x:Name="MainFlipView" 
+                          MouseHoverBorderBrush="{x:Null}" 
+                          IsBannerEnabled="False" 
+                          IsNavigationEnabled="False"
+                          SelectedIndex="{Binding MainPagesIndex}">
                 <Grid x:Name="HomePage"/>
                 <Grid x:Name="SettingsPage"/>
                 <Grid x:Name="AddUsersPage"/>
                 <Grid x:Name="SwitchLanguages"/>
             </mah:FlipView>
         </Grid>
-        <Grid HorizontalAlignment="Left" Height="685" Margin="1197,45,0,0" VerticalAlignment="Top" Width="83" Background="#66717171">
-            <Button x:Name="ScreenSrc" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content=""  BorderBrush="#59000000" HorizontalAlignment="Center" Margin="0,176,0,0" VerticalAlignment="Top" Height="50" Width="50" BorderThickness="4" Command="{Binding OpenImagesDirectoryCommand}">
+        <Grid HorizontalAlignment="Right"  Margin="0,0,0,0" Width="83" Background="#66717171">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button x:Name="ScreenSrc" Grid.Row="2" 
+                    Style="{StaticResource SideButtonStyle}"
+                    Command="{Binding OpenImagesDirectoryCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/ImagesButton.png"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="Setting" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,246,0,0" VerticalAlignment="Top" Height="50" Width="50" BorderBrush="#59000000" BorderThickness="4" Click="SettingsPageButton_Click">
+            <Button x:Name="Setting" Grid.Row="3"
+                    Style="{StaticResource SideButtonStyle}"
+                    Click="SettingsPageButton_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/SettingsButton.png"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="QQGroup" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" VerticalAlignment="Top" Height="50" Width="50" BorderBrush="#59000000" BorderThickness="4" Margin="0,316,0,0" Command="{Binding OpenQQGroupUrlCommand}">
+            <Button x:Name="QQGroup" Grid.Row="4"
+                    Style="{StaticResource SideButtonStyle}"
+                    Command="{Binding OpenQQGroupUrlCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/TencentGroupButton.png"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="AddUser" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,386,0,0" VerticalAlignment="Top" Height="50" Width="50" BorderBrush="#59000000" BorderThickness="4" Click="AddUser_Click">
+            <Button x:Name="AddUser" Grid.Row="5"
+                    Style="{StaticResource SideButtonStyle}"
+                    Click="AddUser_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/AddUserButton.png"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="About" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="" HorizontalAlignment="Center" Margin="0,456,0,0" VerticalAlignment="Top" Height="50" Width="50" BorderBrush="#59000000" BorderThickness="4" Command="{Binding OpenAboutCommand}">
+            <Button x:Name="About" Grid.Row="6"
+                    Style="{StaticResource SideButtonStyle}"
+                    Command="{Binding OpenAboutCommand}">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/AboutButton.png"/>
                 </Button.Background>
             </Button>
         </Grid>
-        <Grid HorizontalAlignment="Center" Height="45" VerticalAlignment="Top" Width="1280" Background="#FF272727">
-            <Button x:Name="ExitButton" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FFFF5252" Content="❌" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="1245,0,0,0" VerticalAlignment="Center" Height="25" Width="25" Foreground="White" FontSize="10" Command="{Binding ExitProgramCommand}"/>
-            <Button x:Name="MinSizeButton" Style="{DynamicResource MahApps.Styles.Button.Circle}" Background="#FF777777" Content="➖" BorderBrush="{x:Null}" HorizontalAlignment="Left" Margin="1210,0,0,0" VerticalAlignment="Center" Height="25" Width="25" Foreground="White" FontSize="10" Command="{Binding MainMinimizedCommand}"/>
-            <Label x:Name="TitleMain" Content="{Binding Title}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
+        <Grid Height="45" VerticalAlignment="Top" Background="#FF272727">
+            <Button x:Name="ExitButton" 
+                    Margin="0,0,10,0" 
+                    FontSize="10"
+                    Content="❌" 
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Height="25" Width="25"
+                    Foreground="White"
+                    Background="#FFFF5252"
+                    BorderBrush="{x:Null}"
+                    Style="{DynamicResource MahApps.Styles.Button.Circle}"
+                    Command="{Binding ExitProgramCommand}"/>
+            <Button x:Name="MinSizeButton" 
+                    Margin="0,0,45,0"
+                    FontSize="10"
+                    Content="➖"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center" 
+                    Height="25" Width="25"
+                    BorderBrush="{x:Null}"
+                    Background="#FF777777"
+                    Foreground="White"
+                    Style="{DynamicResource MahApps.Styles.Button.Circle}" 
+                    Command="{Binding MainMinimizedCommand}"/>
+            <Label x:Name="TitleMain" 
+                   Margin="10,0,0,0"
+                   FontSize="16"
+                   Content="{Binding Title}" 
+                   Foreground="White"
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Left"/>
         </Grid>
-        <Button x:Name="Help_Copy" Style="{DynamicResource MahApps.Styles.Button.Circle}" Content="?" HorizontalAlignment="Left" Margin="10,684,0,0" VerticalAlignment="Top" Height="36" Width="36" BorderBrush="#7F000000" BorderThickness="4" Background="#7F808080" Foreground="White" FontSize="18" FontFamily="Microsoft YaHei UI" FontWeight="Bold" Click="Help_Copy_Click"/>
+        <Button x:Name="Help" 
+                Margin="10,0,0,10" 
+                Content="?"
+                FontSize="18" 
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom" 
+                Height="36" Width="36" 
+                BorderBrush="#7F000000" 
+                BorderThickness="4"
+                Background="#7F808080"
+                Foreground="White"
+                FontFamily="Microsoft YaHei UI" 
+                FontWeight="Bold" Click="Help_Click"
+                Style="{DynamicResource MahApps.Styles.Button.Circle}"/>
     </Grid>
 </mah:MetroWindow>

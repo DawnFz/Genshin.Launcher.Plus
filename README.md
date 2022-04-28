@@ -12,12 +12,12 @@
 |要求|规格|
 |-|-|
 |系统版本|Windows 7 SP1 及以上（64位操作系统）|
-|运行时|.NET **Desktop** Runtime 6.0.3|
+|运行时|[.NET **Desktop** Runtime 6.0.4](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.4-windows-x64-installer)|
 
 ## 下载 原启Plus
 
 - 你可以在 Genshin Launcher Plus 的 GitHub 仓库的 [发布页面](https://github.com/DawnFz/GenShin-LauncherDIY/releases) 下载最新版原启Plus
-  - 无法访问Github的用户亦可以通过 [Coding](https://nenedan.coding.net/public/glp/GenShin_Launcher_Plus/git/files) 分流下载
+  - 无法访问Github的用户亦可以通过 [阿里云盘](https://www.aliyundrive.com/s/5fAP4oRCZBs) 分流下载
   - 你也可以从[原启Plus交流群](https://jq.qq.com/?_wv=1027&k=hHtDKShK)下载到所有和 **原神启动器Plus** 的相关文件
 
 ## 项目简介

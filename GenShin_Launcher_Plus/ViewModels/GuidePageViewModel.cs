@@ -46,6 +46,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 else
                 {
                     App.Current.DataModel.GamePath = GamePath;
+                    App.Current.DataModel.SaveDataToFile();
                     App.Current.DataModel = new();
                     MainWindow mainWindow = new();
                     mainWindow.Show();

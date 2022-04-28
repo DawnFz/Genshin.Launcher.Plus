@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
              mc:Ignorable="d" 
-             Height="730" Width="1280">
+             d:Height="730" d:Width="1280">
     <Grid Background="#FF647687" Width="280" Height="150">
         <GroupBox d:Header="Title" Header="{Binding languages.LanguageSetTitle}">
             <Grid Background="White">

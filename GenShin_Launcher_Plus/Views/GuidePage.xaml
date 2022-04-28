@@ -8,14 +8,68 @@
              Dialog:DialogParticipation.Register="{Binding}"
              xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
              mc:Ignorable="d" 
-             Height="730" Width="1280" Background="White">
+             d:Height="730" d:Width="1280" Background="White">
     <Grid Background="White">
-        <TextBlock HorizontalAlignment="Center" Margin="0,78,0,0" VerticalAlignment="Top" FontSize="45" Foreground="Black" Width="1032" Height="106" TextAlignment="Center"><Run d:Text="Welcome Title" Text="{Binding languages.WelcomeTitle}"/><LineBreak/></TextBlock>
-        <TextBox mah:TextBoxHelper.Watermark="{Binding languages.PathBoxTips}" HorizontalAlignment="Left" Height="44" Margin="189,616,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="830" FontSize="24" FontFamily="Microsoft YaHei UI" BorderThickness="3"/>
-        <Button Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="···" HorizontalAlignment="Left" Margin="1019,616,0,0" VerticalAlignment="Top" Height="44" Width="79" FontFamily="Microsoft YaHei UI" FontSize="16" BorderBrush="#FF83919F" Command="{Binding DirchooseCommand}"/>
-        <TextBlock HorizontalAlignment="Center" Margin="0,148,0,0" VerticalAlignment="Top" FontSize="26" Foreground="Black" Width="1032" Height="65" TextAlignment="Center" d:Text="Bootstrap Title" Text="{Binding languages.BootstrapTitle}"/>
-        <Image Source="/Images/UI_0.jpg" Height="180"/>
-        <TextBlock HorizontalAlignment="Center" Margin="0,543,0,0" VerticalAlignment="Top" FontSize="32" Foreground="Black" Width="1032" Height="65" TextAlignment="Center"><Run d:Text="Final Tips Label" Text="{Binding languages.FinalTipLabel}"/></TextBlock>
-        <TextBlock Margin="0,492,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" Foreground="#FF848484" Width="956" Height="30" TextAlignment="Center"><Run Language="zh-cn" d:Text="Path Hint Label" Text="{Binding languages.PathHintLabel}"/></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="1" Grid.Column="1"
+                   TextAlignment="Center"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="45" Foreground="Black"
+                   d:Text="Welcome Title"
+                   Text="{Binding languages.WelcomeTitle}"/>
+        <TextBlock Grid.Row="2" Grid.Column="1"
+                   TextAlignment="Center"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" 
+                   FontSize="26" Foreground="Black"
+                   d:Text="Bootstrap Title"
+                   Text="{Binding languages.BootstrapTitle}"/>
+        <Image Grid.Row="3" Grid.Column="1" Source="/Images/UI_0.jpg" Height="180"/>
+        <TextBlock Grid.Row="4" Grid.Column="1"
+                   TextAlignment="Center"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="20" Foreground="#FF848484"
+                   d:Text="Path Hint Label"
+                   Text="{Binding languages.PathHintLabel}"/>
+        <TextBlock Grid.Row="5" Grid.Column="1" 
+                   TextAlignment="Center" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   FontSize="32" Foreground="Black" 
+                   d:Text="Final Tips Label" 
+                   Text="{Binding languages.FinalTipLabel}"/>
+        <TextBox Margin="0,0,80,0"
+                 Grid.Row="6" Grid.Column="1"
+                 mah:TextBoxHelper.Watermark="{Binding languages.PathBoxTips}" 
+                 Height="44" TextWrapping="Wrap" 
+                 VerticalAlignment="Center"
+                 FontSize="24" 
+                 FontFamily="Microsoft YaHei UI"
+                 BorderThickness="3"/>
+        <Button Grid.Row="6" Grid.Column="1"
+                Content="···"
+                Height="44" Width="80" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Center" 
+                FontFamily="Microsoft YaHei UI"
+                FontSize="16" BorderBrush="#FF83919F"
+                Command="{Binding DirchooseCommand}"
+                Style="{StaticResource MahApps.Styles.Button.Square.Accent}"/>
     </Grid>
 </UserControl>

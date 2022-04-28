@@ -3,15 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              Dialog:DialogParticipation.Register="{Binding}"
              xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
              mc:Ignorable="d"
-             Height="730" Width="1280">
+             d:Height="730" d:Width="1280">
     <Grid>
-        <Button x:Name="RunGame" d:Content="开始游戏" Content="{Binding languages.RunGameBtn}" HorizontalAlignment="Left" Margin="921,633,0,0" VerticalAlignment="Top" Height="64" Width="238" FontSize="24" FontWeight="Normal" FontFamily="Microsoft YaHei" Foreground="#FF5D4400" Command="{Binding RunGameCommand}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="120px"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="1" x:Name="RunGame" d:Content="开始游戏"
+                Content="{Binding languages.RunGameBtn}"
+                HorizontalAlignment="Right" Margin="0,0,110,0" 
+                VerticalAlignment="Center" Height="64" Width="238" 
+                FontSize="24" FontWeight="Normal" FontFamily="Microsoft YaHei"
+                Foreground="#FF5D4400" Command="{Binding RunGameCommand}">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFFFD371"/>
@@ -19,11 +26,58 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Grid x:Name="LabGrid">
-            <Label HorizontalContentAlignment="Center" d:Content="账号：设计时预览" Content="{Binding SwitchUser}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="189" Background="#592D2D2D" Foreground="White" FontSize="16" Margin="727,633,0,0" Visibility="{Binding IsSwitchUser}"/>
-            <Label HorizontalContentAlignment="Center" d:Content="客户端：设计时预览" Content="{Binding SwitchPort}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="189" Background="#592D2D2D" Foreground="White" FontSize="16" Margin="727,666,0,0"/>
-            <ComboBox HorizontalAlignment="Left" Margin="727,633,0,0" VerticalAlignment="Top" Width="189" Height="30" Style="{StaticResource MahApps.Styles.ComboBox.DataGrid.Editing}" Foreground="{x:Null}" FontSize="16" Background="{x:Null}" HorizontalContentAlignment="Center" Visibility="{Binding IsSwitchUser}" ItemsSource="{Binding UserLists}" DisplayMemberPath="UserName" BorderBrush="{x:Null}" SelectedValuePath="UserName" SelectedValue="{Binding SwitchUserValue}"/>
-            <ComboBox HorizontalAlignment="Left" Margin="727,666,0,0" VerticalAlignment="Top" Width="189" Height="30" Style="{StaticResource MahApps.Styles.ComboBox.DataGrid.Editing}" Foreground="{x:Null}" FontSize="16" Background="{x:Null}" HorizontalContentAlignment="Center" Visibility="{Binding IsGamePortLists}" ItemsSource="{Binding GamePortLists}" DisplayMemberPath="GamePort" BorderBrush="{x:Null}" SelectedValuePath="GamePort" SelectedIndex="{Binding GamePortListIndex}"/>
+        <Grid x:Name="LabGrid" 
+              Grid.Row="1" Width="190" Height="64" 
+              Margin="0,0,360,0" HorizontalAlignment="Right">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" 
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Left"
+                   HorizontalContentAlignment="Center" 
+                   d:Content="账号：设计时预览" 
+                   Content="{Binding SwitchUser}"
+                   Width="190" Background="#592D2D2D"
+                   Foreground="White" FontSize="16"
+                   Visibility="{Binding IsSwitchUser}"/>
+            <Label Grid.Row="1" 
+                   VerticalAlignment="Top"                                    
+                   HorizontalAlignment="Left"
+                   HorizontalContentAlignment="Center"
+                   d:Content="客户端：设计时预览"
+                   Content="{Binding SwitchPort}"
+                   Width="190" Background="#592D2D2D"
+                   Foreground="White" FontSize="16"/>
+            <ComboBox Grid.Row="0" FontSize="16"
+                      Width="190" Height="30"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Left"
+                      HorizontalContentAlignment="Center"
+                      Background="{x:Null}"
+                      BorderBrush="{x:Null}"
+                      Foreground="{x:Null}"
+                      DisplayMemberPath="UserName"
+                      SelectedValuePath="UserName"
+                      Visibility="{Binding IsSwitchUser}"
+                      ItemsSource="{Binding UserLists}"
+                      SelectedValue="{Binding SwitchUserValue}"
+                      Style="{StaticResource MahApps.Styles.ComboBox.DataGrid.Editing}"/>
+            <ComboBox Grid.Row="1" FontSize="16"
+                      Width="190" Height="30"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Left" 
+                      HorizontalContentAlignment="Center"
+                      Foreground="{x:Null}"
+                      BorderBrush="{x:Null}" 
+                      Background="{x:Null}"
+                      SelectedValuePath="GamePort"
+                      DisplayMemberPath="GamePort"
+                      Visibility="{Binding IsGamePortLists}"
+                      ItemsSource="{Binding GamePortLists}"
+                      SelectedIndex="{Binding GamePortListIndex}"
+                      Style="{StaticResource MahApps.Styles.ComboBox.DataGrid.Editing}"/>
         </Grid>
     </Grid>
 </UserControl>

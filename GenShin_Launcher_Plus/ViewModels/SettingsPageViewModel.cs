@@ -51,6 +51,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             SwitchLanguagePageCommand = new RelayCommand(SwitchLanguagePage);
             OpenPkgDownloadUrlCommand = new RelayCommand(OpenPkgDownloadUrl);
             OpenApplicationFolderCommand = new RelayCommand(OpenApplicationFolder);
+            RecoverDefaultSizeToMainCommand = new RelayCommand(RecoverDefaultSizeToMain);
 
             _UserLists = UserDataService.ReadUserList();
             _GamePortLists = SettingService.CreateGamePortList();
@@ -72,7 +73,6 @@ namespace GenShin_Launcher_Plus.ViewModels
         public IRegistryService RegistryService { get => _registryService; }
 
         public LanguageModel languages { get => App.Current.Language; }
-
 
 
         private string _SettingTitleColor = "#FF272727";
@@ -379,6 +379,14 @@ namespace GenShin_Launcher_Plus.ViewModels
                    new MetroDialogSettings()
                    { AffirmativeButtonText = languages.Determine });
             }
+        }
+
+        //恢复默认主窗口大小
+        public ICommand RecoverDefaultSizeToMainCommand { get; set; }
+        private void RecoverDefaultSizeToMain()
+        {
+            App.Current.ThisMainWindow.Height = 730;
+            App.Current.ThisMainWindow.Width = 1280;
         }
 
         //选择游戏路径的命令

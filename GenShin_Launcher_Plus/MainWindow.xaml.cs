@@ -42,7 +42,7 @@ namespace GenShin_Launcher_Plus
             MainFlipView.SelectedIndex = 2;
         }
 
-        private void Help_Copy_Click(object sender, RoutedEventArgs e)
+        private void Help_Click(object sender, RoutedEventArgs e)
         {
             FileHelper.OpenUrl("https://www.dawnfz.com/document/");
         }

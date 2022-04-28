@@ -9,7 +9,7 @@
              Dialog:DialogParticipation.Register="{Binding}"
              xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
              mc:Ignorable="d" 
-             Height="730" Width="1280">
+            d:Height="730" d:Width="1280">
     <Grid>
         <Grid Height="360" Width="550" Background="White">
             <Grid HorizontalAlignment="Center" Height="36" VerticalAlignment="Top" Width="550" d:Background="#FF272727" Background="{Binding SettingTitleColor}">
@@ -44,7 +44,7 @@
                         <ComboBox Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding DisplaySizeLists}" DisplayMemberPath="SizeName" SelectedValue="{Binding SwitchSize, Mode=OneWayToSource}" SelectedValuePath="SizeName"/>
                         <ComboBox Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GamePortLists}" DisplayMemberPath="GamePort" SelectedValuePath="GamePort" SelectedIndex="{Binding IsMihoyo}"/>
                         <ComboBox Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="16" VerticalAlignment="Center" Width="156" FontFamily="Microsoft YaHei UI" ItemsSource="{Binding GameWindowModeList}" DisplayMemberPath="GameWindowMode" SelectedValuePath="GameWindowMode" SelectedIndex="{Binding FullSize}"/>
-                        <mah:ToggleSwitch Grid.Row="4" Grid.Column="1" d:Content="{Binding languages.BorderlessCkB}" Content="{Binding languages.BorderlessCkB}" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding isPopup}"/>
+                        <mah:ToggleSwitch Grid.Row="4" Grid.Column="1" d:Content="{Binding languages.BorderlessCkB}" Content="{Binding languages.BorderlessCkB}" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding IsPopup}"/>
                         <mah:ToggleSwitch Grid.Row="5" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Microsoft YaHei UI" IsOn="{Binding IsUnFPS}" Command="{Binding ChooseUnlockFpsCommand}"/>
                         <TextBox Grid.Row="5" Grid.Column="1" mah:TextBoxHelper.Watermark="{Binding languages.FpsBoxTips}" Margin="72,0,0,0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="85" FontFamily="Microsoft YaHei UI" FontWeight="Normal" TextAlignment="Center" IsEnabled="{Binding IsUnFPS}" Text="{Binding MaxFps}"/>
 
@@ -119,7 +119,7 @@
                         <Button Grid.Row="6" Grid.Column="0" Style="{StaticResource MahApps.Styles.Button.Square}" Content="{Binding languages.OpenProgameFolderBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="110" FontFamily="Microsoft YaHei UI" FontSize="12" IsEnabled="{Binding PageUiStatus}" Command="{Binding OpenApplicationFolderCommand}"/>
                         <Button Grid.Row="5" Grid.Column="1" Style="{StaticResource MahApps.Styles.Button.Square}" Content="{Binding languages.ProgameLanguageSetBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="110" FontFamily="Microsoft YaHei UI" FontSize="12" IsEnabled="{Binding PageUiStatus}" Command="{Binding SwitchLanguagePageCommand}"/>
                         <Button Grid.Row="6" Grid.Column="1" Style="{StaticResource MahApps.Styles.Button.Square}" Content="{Binding languages.SetMainBackgroundBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="110" FontFamily="Microsoft YaHei UI" FontSize="12" IsEnabled="{Binding PageUiStatus}" Command="{Binding SetMainBackgroundCommand}"/>
-
+                        <Button Grid.Row="7" Grid.Column="0" Style="{StaticResource MahApps.Styles.Button.Square}" Content="恢复默认大小" HorizontalAlignment="Left" VerticalAlignment="Center" Height="28" Width="110" FontFamily="Microsoft YaHei UI" FontSize="12" IsEnabled="{Binding PageUiStatus}" Command="{Binding RecoverDefaultSizeToMainCommand}"/>
                     </Grid>
                 </mah:FlipView>
             </Grid>

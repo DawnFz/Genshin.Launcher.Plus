@@ -77,7 +77,7 @@ namespace GenShin_Launcher_Plus.Core
         /// <summary>
         /// 根据类型返回相应内容
         /// </summary>
-        public string GetSetting(string sectionName, string settingName, int i)
+        public string GetSetting(string sectionName, string settingName, int i=0)
         {
             SectionPair sectionPair;
             sectionPair.Section = sectionName;

@@ -81,7 +81,7 @@ namespace GenShin_Launcher_Plus.Core
         {
             get
             {
-                _Height = parser.GetSetting("setup", "Height", 1);
+                _Height = parser.GetSetting("setup", "Height");
                 return _Height;
             }
             set
@@ -90,6 +90,45 @@ namespace GenShin_Launcher_Plus.Core
                 parser.AddSetting("setup", "Height", Convert.ToString(_Height));
             }
         }
+
+        private string _MainWidth;
+        public string MainWidth
+        {
+            get
+            {
+                _MainWidth = parser.GetSetting("setup", "MainWidth");
+                if(_MainWidth ==string.Empty|| _MainWidth==null)
+                {
+                    return "1280";
+                }
+                return _MainWidth;
+            }
+            set
+            {
+                _MainWidth = value;
+                parser.AddSetting("setup", "MainWidth", Convert.ToString(_MainWidth));
+            }
+        }
+
+        private string _MainHeight;
+        public string MainHeight
+        {
+            get
+            {
+                _MainHeight = parser.GetSetting("setup", "MainHeight", 1);
+                if (_MainHeight == string.Empty || _MainHeight == null)
+                {
+                    return "730";
+                }
+                return _MainHeight;
+            }
+            set
+            {
+                _MainHeight = value;
+                parser.AddSetting("setup", "MainHeight", Convert.ToString(_MainHeight));
+            }
+        }
+
 
         private string _ImageDate;
         public string ImageDate
