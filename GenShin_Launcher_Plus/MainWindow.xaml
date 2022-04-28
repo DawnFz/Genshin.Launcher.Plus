@@ -13,10 +13,8 @@
         MinWidth="840" MinHeight="500"
         WindowStartupLocation="CenterScreen"
         ShowIconOnTitleBar="False"
-        WindowStyle="None"         
-        d:ResizeMode="NoResize" 
-        ShowTitleBar="False" 
-        ShowMinButton="False"
+        WindowStyle="None"
+        TitleBarHeight="0"
         ShowMaxRestoreButton="False"
         ShowCloseButton="False"
         Title="原神启动器Plus">
@@ -33,7 +31,9 @@
             <Setter Property="BorderThickness" Value="4"/>
         </Style>
     </Window.Resources>
-    <Grid x:Name="MainGrid" Background="{Binding Background}" RenderOptions.BitmapScalingMode="HighQuality">
+    <Grid x:Name="MainGrid" 
+          Background="{Binding Background}" 
+          RenderOptions.BitmapScalingMode="HighQuality">
         <Grid x:Name="ControlPage">
             <mah:FlipView x:Name="MainFlipView" 
                           MouseHoverBorderBrush="{x:Null}" 
@@ -94,7 +94,7 @@
                 </Button.Background>
             </Button>
         </Grid>
-        <Grid Height="45" VerticalAlignment="Top" Background="#FF272727">
+        <Grid Height="45" VerticalAlignment="Top" Background="#FF272727" WindowChrome.IsHitTestVisibleInChrome="True">
             <Button x:Name="ExitButton" 
                     Margin="0,0,10,0" 
                     FontSize="10"

@@ -99,8 +99,8 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         //设置界面UI刷新绑定数据
         private string _Width;
-        public string Width 
-        { 
+        public string Width
+        {
             get => _Width;
             set
             {
@@ -111,10 +111,10 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         private string _Height;
         public string Height
-        { 
+        {
             get => _Height;
-            set 
-            { 
+            set
+            {
                 App.Current.DataModel.Height = value;
                 SetProperty(ref _Height, value);
             }
@@ -125,37 +125,40 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             get => _IsUnFPS;
             set
-            { 
+            {
                 App.Current.DataModel.IsUnFPS = value;
-                SetProperty(ref _IsUnFPS, value); 
+                SetProperty(ref _IsUnFPS, value);
             }
         }
 
         private string _GamePath;
-        public string GamePath 
-        { 
+        public string GamePath
+        {
             get => _GamePath;
-            set 
-            { 
+            set
+            {
                 App.Current.DataModel.GamePath = value;
-                SetProperty(ref _GamePath, value); 
+                SetProperty(ref _GamePath, value);
             }
         }
 
         private string _SwitchUser;
-        public string SwitchUser 
-        { 
+        public string SwitchUser
+        {
             get => _SwitchUser;
             set
             {
-                App.Current.DataModel.SwitchUser = value;
-                SetProperty(ref _SwitchUser, value);
+                if (value != null)
+                {
+                    App.Current.DataModel.SwitchUser = value;
+                    SetProperty(ref _SwitchUser, value);
+                }
             }
         }
 
         private int _IsMihoyo;
-        public int IsMihoyo 
-        { 
+        public int IsMihoyo
+        {
             get => _IsMihoyo;
             set
             {
@@ -242,8 +245,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
 
         private int _FlipViewSelectedIndex;
-        public int FlipViewSelectedIndex 
-        { 
+        public int FlipViewSelectedIndex
+        {
             get => _FlipViewSelectedIndex;
             set
             {
@@ -308,15 +311,15 @@ namespace GenShin_Launcher_Plus.ViewModels
             get
             {
                 if (_DisplaySizeLists == null)
-                { 
+                {
                     return new List<DisplaySizeListModel>()
                     {
                         new DisplaySizeListModel
-                        { 
+                        {
                             SizeName = "没有已保存的预设选项",
                             IsNull = true,
-                        } 
-                    }; 
+                        }
+                    };
                 }
                 else { return _DisplaySizeLists; }
             }

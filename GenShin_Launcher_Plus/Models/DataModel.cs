@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows;
 
 namespace GenShin_Launcher_Plus.Core
 {
