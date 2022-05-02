@@ -9,7 +9,6 @@
         mc:Ignorable="d"
         MouseLeftButtonDown="WindowDragMove"
         d:Height="730" d:Width="1280"
-        Height="{Binding MainHeight,Mode=TwoWay}" Width="{Binding MainWidth,Mode=TwoWay}"
         MinWidth="840" MinHeight="500"
         WindowStartupLocation="CenterScreen"
         ShowIconOnTitleBar="False"
