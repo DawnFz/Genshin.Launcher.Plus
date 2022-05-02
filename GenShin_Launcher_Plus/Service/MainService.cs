@@ -91,7 +91,7 @@ namespace GenShin_Launcher_Plus.Service
                 DailyImageModel dailyImage = JsonConvert.DeserializeObject<DailyImageModel>(imageJson);
                 DateTime date = DateTime.Now;
                 int week = (int)date.DayOfWeek;
-                if (dailyImage.ImageInfo[week].ImageDate != App.Current.DataModel.ImageDate||!File.Exists(file))
+                if (dailyImage.ImageInfo[week].ImageDate != App.Current.DataModel.ImageDate || !File.Exists(file))
                 {
                     try
                     {
@@ -110,7 +110,7 @@ namespace GenShin_Launcher_Plus.Service
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message);
+                        MessageBox.Show($"PID:{dailyImage.ImageInfo[week].ImageDate}\r\n{ex.Message}");
                     }
                 }
             }
@@ -164,6 +164,23 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="main"></param>
         public void CheckConfig(MainWindow main)
         {
+            if (File.Exists(@"YuanShen.exe") || File.Exists(@"GenshinImpact.exe"))
+            {
+                main.Hide();
+                MessageBox.Show("Error: This program cannot be running in this path!");
+
+                if (Directory.Exists(@"UserData"))
+                {
+                    Directory.Delete(@"UserData", true);
+                }
+                if (Directory.Exists(@"Config"))
+                {
+                    Directory.Delete(@"Config", true);
+                }
+
+                Environment.Exit(0);
+
+            }
             if (!Directory.Exists(@"UserData"))
             {
                 Directory.CreateDirectory("UserData");
