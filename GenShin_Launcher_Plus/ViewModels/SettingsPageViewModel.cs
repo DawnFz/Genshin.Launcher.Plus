@@ -53,6 +53,9 @@ namespace GenShin_Launcher_Plus.ViewModels
             OpenApplicationFolderCommand = new RelayCommand(OpenApplicationFolder);
             RecoverDefaultSizeToMainCommand = new RelayCommand(RecoverDefaultSizeToMain);
 
+            IsWebToggleOnCommand = new RelayCommand(IsWebToggleOn);
+            IsDailyBackgroundCommand = new RelayCommand(IsDailyBackground);
+
             _UserLists = UserDataService.ReadUserList();
             _GamePortLists = SettingService.CreateGamePortList();
             _DisplaySizeLists = SettingService.CreateDisplaySizeList();
@@ -464,6 +467,28 @@ namespace GenShin_Launcher_Plus.ViewModels
                         { AffirmativeButtonText = languages.Determine });
                 }
             }
+        }
+
+        //选中不使用网络背景
+        public ICommand IsWebToggleOnCommand { get; set; }
+        private void IsWebToggleOn()
+        {
+            if (IsWebBg)
+            {
+                UseXunkongWallpaper = false;
+            }
+            _ = new MainService(App.Current.ThisMainWindow, App.Current.ThisMainWindow.ViewModel);
+        }
+
+        //选中每日一图
+        public ICommand IsDailyBackgroundCommand { get; set; }
+        private void IsDailyBackground()
+        {
+            if(UseXunkongWallpaper)
+            {
+                IsWebBg = false;
+            }
+            _ = new MainService(App.Current.ThisMainWindow, App.Current.ThisMainWindow.ViewModel);
         }
 
         //选择解锁FPS的指令
