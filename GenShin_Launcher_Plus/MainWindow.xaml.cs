@@ -3,6 +3,7 @@ using GenShin_Launcher_Plus.ViewModels;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace GenShin_Launcher_Plus
@@ -20,6 +21,7 @@ namespace GenShin_Launcher_Plus
             ViewModel = new MainWindowViewModel(DialogCoordinator.Instance, this);
             DataContext = ViewModel;
             MainFlipView.DataContext = App.Current.NoticeOverAllBase;
+            MainSizeBinding();
             HomePage.Children.Add(new Views.HomePage());
         }
 
@@ -45,6 +47,22 @@ namespace GenShin_Launcher_Plus
         private void Help_Click(object sender, RoutedEventArgs e)
         {
             FileHelper.OpenUrl("https://www.dawnfz.com/document/");
+        }
+
+        private void MainSizeBinding()
+        {
+            //Height
+            Binding mainHeight = new();
+            mainHeight.Source = ViewModel;
+            mainHeight.Path = new PropertyPath("MainHeight");
+            mainHeight.Mode = BindingMode.TwoWay;
+            SetBinding(HeightProperty, mainHeight);
+            //Width
+            Binding mainWidth = new();
+            mainWidth.Source = ViewModel;
+            mainWidth.Path = new PropertyPath("MainWidth");
+            mainWidth.Mode = BindingMode.TwoWay;
+            SetBinding(WidthProperty, mainWidth);
         }
     }
 }
