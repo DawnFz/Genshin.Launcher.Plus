@@ -545,7 +545,8 @@
                             Grid.Column="1"
                             Style="{StaticResource ProgarmSettingButtonStyle}" 
                             Content="另存今日背景" 
-                            IsEnabled="{Binding PageUiStatus}"/>
+                            IsEnabled="{Binding PageUiStatus}"
+                            Command="{Binding SaveBackgroundCommand}"/>
                     </Grid>
                 </mah:FlipView>
             </Grid>

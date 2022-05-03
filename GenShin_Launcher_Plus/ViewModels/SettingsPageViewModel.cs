@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GenShin_Launcher_Plus.Service;
 using GenShin_Launcher_Plus.Service.IService;
+using Microsoft.Win32;
+using System.Windows;
 
 namespace GenShin_Launcher_Plus.ViewModels
 {
@@ -46,6 +48,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             SwitchProgarmSettingCommand = new RelayCommand(SwitchProgarmSetting);
 
             CheckUpdateCommand = new RelayCommand(CheckUpdate);
+            SaveBackgroundCommand = new RelayCommand(SaveBackground);
             SaveDisPlaySizeCommand = new RelayCommand(SaveDisPlaySize);
             SetMainBackgroundCommand = new RelayCommand(SetMainBackground);
             SwitchLanguagePageCommand = new RelayCommand(SwitchLanguagePage);
@@ -439,6 +442,29 @@ namespace GenShin_Launcher_Plus.ViewModels
             FileHelper.OpenUrl(Environment.CurrentDirectory);
         }
 
+        //保存今日[每日一图]的图片文件
+        public ICommand SaveBackgroundCommand { get; set; }
+        private async void SaveBackground()
+        {
+            SaveFileDialog dialog = new()
+            {
+                Filter = "JPG Files (*.jpg)|*.jpg",
+                Title = "保存到图片文件",
+                DefaultExt = "jpg"
+            };
+
+            if (dialog.ShowDialog() == true && File.Exists(@"Config/Wallpaper.jpg"))
+            {
+                File.Copy(@"Config/Wallpaper.jpg", dialog.FileName,true);
+                await dialogCoordinator.ShowMessageAsync(
+                    this, languages.TipsStr,
+                    $"已将今日一图保存至：{dialog.FileName}",
+                    MessageDialogStyle.Affirmative,
+                    new MetroDialogSettings()
+                    { AffirmativeButtonText = languages.Determine });
+            }
+        }
+
         //设置背景图片的命令
         public ICommand SetMainBackgroundCommand { get; set; }
         private async void SetMainBackground()
@@ -484,7 +510,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand IsDailyBackgroundCommand { get; set; }
         private void IsDailyBackground()
         {
-            if(UseXunkongWallpaper)
+            if (UseXunkongWallpaper)
             {
                 IsWebBg = false;
             }
