@@ -143,6 +143,7 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _ImageDate = value;
                 parser.AddSetting("setup", "ImageDate", Convert.ToString(_ImageDate));
+                SaveDataToFile();
             }
         }
 
@@ -264,21 +265,6 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _IsRunThenClose = value;
                 parser.AddSetting("setup", "IsRunThenClose", Convert.ToString(_IsRunThenClose));
-            }
-        }
-
-        private int _IsMihoyo;
-        public int IsMihoyo
-        {
-            get
-            {
-                _IsMihoyo = Convert.ToUInt16(parser.GetSetting("setup", "isMihoyo", 1));
-                return _IsMihoyo;
-            }
-            set
-            {
-                _IsMihoyo = value;
-                parser.AddSetting("setup", "isMihoyo", Convert.ToString(_IsMihoyo));
             }
         }
 

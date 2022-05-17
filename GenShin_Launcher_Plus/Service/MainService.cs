@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GenShin_Launcher_Plus.Core;
-using GenShin_Launcher_Plus.Helper;
 using GenShin_Launcher_Plus.Models;
 using GenShin_Launcher_Plus.Service.IService;
 using GenShin_Launcher_Plus.ViewModels;
@@ -18,9 +13,9 @@ using Newtonsoft.Json;
 
 namespace GenShin_Launcher_Plus.Service
 {
+
     public class MainService : IMainWindowService
     {
-
         public MainService(MainWindow main, MainWindowViewModel vm)
         {
             CheckConfig(main);
@@ -33,38 +28,6 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="vm"></param>
         public async void MainBackgroundLoad(MainWindowViewModel vm)
         {
-            /*
-             * 利用 Lolicon Api 搜索Pixiv中的原神板块随机获取图片并返回Json信息
-             * 使用 Pixiv.re 反代从网络获得该图片并应用到背景
-             * 自己会编译的可以自己使用这段注释的代码，Api里的键r18对应的值0为假1为真，懂得都懂
-             * 
-            string json = await HtmlHelper.ReadHTMLAsTextAsync("https://api.lolicon.app/setu/v2?r18=0&proxy=null&tag=%E5%8E%9F%E7%A5%9E");
-            ImageModel imageModel = JsonConvert.DeserializeObject<ImageModel>(json);
-
-            vm.Background = new ImageBrush();
-            if (App.Current.DataModel.UseXunkongWallpaper)
-            {
-                vm.Background.Stretch = Stretch.UniformToFill;
-                var uri = new Uri("pack://application:,,,/Images/MainBackground.jpg", UriKind.Absolute);
-                vm.Background.ImageSource = new BitmapImage(uri);
-
-                string urlEnd = $"{imageModel.data[0].pid}_p{imageModel.data[0].p}.{imageModel.data[0].ext}";
-                string uploadDate = HtmlHelper.GetDateFromUrl(imageModel.data[0].urls.original, urlEnd);
-                string url = $"https://i.pixiv.re/img-original/img/{uploadDate}/{urlEnd}";
-                MessageBox.Show(url);
-                var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.All });
-
-                var bytes = await client.GetByteArrayAsync(url);
-                var ms = new MemoryStream(bytes);
-                var newBitmap = new BitmapImage();
-                newBitmap.BeginInit();
-                newBitmap.CacheOption = BitmapCacheOption.OnLoad;
-                newBitmap.StreamSource = ms;
-                newBitmap.EndInit();
-                vm.Background.ImageSource = newBitmap;
-
-            }
-            */
             vm.Background = new ImageBrush();
             if (App.Current.DataModel.UseXunkongWallpaper)
             {
@@ -89,13 +52,23 @@ namespace GenShin_Launcher_Plus.Service
 
                 string imageJson = await HtmlHelper.GetInfoFromHtmlAsync("Image");
                 DailyImageModel dailyImage = JsonConvert.DeserializeObject<DailyImageModel>(imageJson);
-                DateTime date = DateTime.Now;
-                int week = (int)date.DayOfWeek;
-                if (dailyImage.ImageInfo[week].ImageDate != App.Current.DataModel.ImageDate || !File.Exists(file))
+                if (dailyImage == null)
+                {
+                    MessageBox.Show("DailyImage Json returns error: object is null");
+                    return;
+                }
+
+                int year = DateTime.Now.Year;
+                int month = DateTime.Now.Month;
+                int day = DateTime.Now.Day;
+                string imageDate = $"{year}{month}{day}";
+                int count = dailyImage.ImageInfo.FindIndex(t => t.ImageDate == imageDate);
+
+                if (count != -1 && dailyImage.ImageInfo[count].ImageDate != App.Current.DataModel.ImageDate || !File.Exists(file))
                 {
                     try
                     {
-                        string url = $"https://pixiv.re/{dailyImage.ImageInfo[week].ImagePid}.jpg";
+                        string url = $"https://pixiv.re/{dailyImage.ImageInfo[count].ImagePid}.jpg";
                         var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.All });
                         var bytes = await client.GetByteArrayAsync(url);
                         var ms = new MemoryStream(bytes);
@@ -106,11 +79,11 @@ namespace GenShin_Launcher_Plus.Service
                         newBitmap.EndInit();
                         vm.Background.ImageSource = newBitmap;
                         await File.WriteAllBytesAsync(file, bytes);
-                        App.Current.DataModel.ImageDate = dailyImage.ImageInfo[week].ImageDate;
+                        App.Current.DataModel.ImageDate = dailyImage.ImageInfo[count].ImageDate;
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"PID:{dailyImage.ImageInfo[week].ImageDate}\r\n{ex.Message}");
+                        MessageBox.Show($"PID:{dailyImage.ImageInfo[count].ImagePid}\r\n{ex.Message}");
                     }
                 }
             }
@@ -164,29 +137,12 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="main"></param>
         public void CheckConfig(MainWindow main)
         {
-            if (File.Exists(@"YuanShen.exe") || File.Exists(@"GenshinImpact.exe"))
-            {
-                main.Hide();
-                MessageBox.Show("Error: This program cannot be running in this path!");
-
-                if (Directory.Exists(@"UserData"))
-                {
-                    Directory.Delete(@"UserData", true);
-                }
-                if (Directory.Exists(@"Config"))
-                {
-                    Directory.Delete(@"Config", true);
-                }
-
-                Environment.Exit(0);
-
-            }
             if (!Directory.Exists(@"UserData"))
             {
                 Directory.CreateDirectory("UserData");
             }
-            if (!File.Exists(Path.Combine(App.Current.DataModel.GamePath ?? "", "Yuanshen.exe")) &&
-                !File.Exists(Path.Combine(App.Current.DataModel.GamePath ?? "", "GenshinImpact.exe")))
+            if (!File.Exists(Path.Combine(App.Current.DataModel.GamePath ?? "Err", "Yuanshen.exe")) &&
+                !File.Exists(Path.Combine(App.Current.DataModel.GamePath ?? "Err", "GenshinImpact.exe")))
             {
                 main.MainGrid.Children.Add(new Views.GuidePage());
             }

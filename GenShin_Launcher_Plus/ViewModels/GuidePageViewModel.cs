@@ -25,6 +25,10 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
 
         public LanguageModel languages { get => App.Current.Language; }
+
+        /// <summary>
+        /// 选择游戏目录的命令方法
+        /// </summary>
         public ICommand DirchooseCommand { get; set; }
         private void Dirchoose()
         {

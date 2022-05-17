@@ -168,7 +168,6 @@ namespace GenShin_Launcher_Plus.ViewModels
             get => _IsMihoyo;
             set
             {
-                App.Current.DataModel.IsMihoyo = value;
                 SetProperty(ref _IsMihoyo, value);
             }
         }
@@ -453,7 +452,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 DefaultExt = "jpg"
             };
 
-            if (dialog.ShowDialog() == true && File.Exists(@"Config/Wallpaper.jpg"))
+            if (File.Exists(@"Config/Wallpaper.jpg") && dialog.ShowDialog() == true)
             {
                 File.Copy(@"Config/Wallpaper.jpg", dialog.FileName,true);
                 await dialogCoordinator.ShowMessageAsync(
@@ -462,6 +461,16 @@ namespace GenShin_Launcher_Plus.ViewModels
                     MessageDialogStyle.Affirmative,
                     new MetroDialogSettings()
                     { AffirmativeButtonText = languages.Determine });
+            }
+            else
+            {
+                await dialogCoordinator.ShowMessageAsync(
+                    this, languages.Error,
+                    "没有已经缓存的每日一图",
+                    MessageDialogStyle.Affirmative,
+                    new MetroDialogSettings()
+                    { AffirmativeButtonText = languages.Determine });
+
             }
         }
 
@@ -631,7 +640,6 @@ namespace GenShin_Launcher_Plus.ViewModels
                       MessageDialogStyle.Affirmative,
                      new MetroDialogSettings()
                      { AffirmativeButtonText = languages.Determine });
-
                 }
                 else
                 {

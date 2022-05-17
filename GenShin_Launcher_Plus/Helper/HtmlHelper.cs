@@ -44,11 +44,6 @@ namespace GenShin_Launcher_Plus.Core
             }
         }
 
-        public static string GetDateFromUrl(string str,string end)
-        {
-            return Mid(str, "https://i.pximg.net/img-original/img/", $"/{end}");
-        }
-
         public static async Task<string> GetInfoFromHtmlAsync(string tag)
         {
             return Mid(await ReadHTMLAsTextAsync(Url), $"【{tag}++】", $"【{tag}--】");

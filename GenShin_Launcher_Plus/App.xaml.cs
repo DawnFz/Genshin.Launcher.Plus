@@ -2,7 +2,9 @@
 using GenShin_Launcher_Plus.Models;
 using GenShin_Launcher_Plus.Service;
 using GenShin_Launcher_Plus.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 
@@ -19,8 +21,34 @@ namespace GenShin_Launcher_Plus
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            RunPathCheck();
+            //单例检查
             singleInstanceChecker.Ensure(this, BringWindowToFront<MainWindow>);
             base.OnStartup(e);
+        }
+
+        /// <summary>
+        /// 用于检查程序是否运行在游戏目录
+        /// </summary>
+        private void RunPathCheck()
+        {
+            if (File.Exists(@"YuanShen.exe") &&
+                Directory.Exists(@"YuanShen_Data") ||
+                File.Exists(@"GenshinImpact.exe") &&
+                Directory.Exists(@"GenshinImpact_Data"))
+            {
+                MessageBox.Show("Error: This program cannot be running in this path!");
+
+                if (Directory.Exists(@"UserData"))
+                {
+                    Directory.Delete(@"UserData", true);
+                }
+                if (Directory.Exists(@"Config"))
+                {
+                    Directory.Delete(@"Config", true);
+                }
+                Environment.Exit(0);
+            }
         }
 
         /// <summary>
