@@ -420,7 +420,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand CheckUpdateCommand { get; set; }
         private async void CheckUpdate()
         {
-            App.Current.IsLoading = false;
+            App.Current.IsLoadUpdated = false;
             App.Current.DataModel.IsCloseUpdate = false;
             new UpdateService().CheckUpdate(App.Current.ThisMainWindow);
         }
@@ -454,7 +454,7 @@ namespace GenShin_Launcher_Plus.ViewModels
 
             if (File.Exists(@"Config/Wallpaper.jpg") && dialog.ShowDialog() == true)
             {
-                File.Copy(@"Config/Wallpaper.jpg", dialog.FileName,true);
+                File.Copy(@"Config/Wallpaper.jpg", dialog.FileName, true);
                 await dialogCoordinator.ShowMessageAsync(
                     this, languages.TipsStr,
                     $"已将今日一图保存至：{dialog.FileName}",
@@ -506,8 +506,22 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         //选中不使用网络背景
         public ICommand IsWebToggleOnCommand { get; set; }
-        private void IsWebToggleOn()
+        private async void IsWebToggleOn()
         {
+            if (App.Current.IsLoadingBackground)
+            {
+                await dialogCoordinator.ShowMessageAsync(
+                    this, languages.TipsStr,
+                    "请先等待当前背景加载完毕",
+                    MessageDialogStyle.Affirmative,
+                    new MetroDialogSettings()
+                    { AffirmativeButtonText = languages.Determine });
+                if (IsWebBg)
+                {
+                    IsWebBg = !IsWebBg;
+                }
+                return;
+            }
             if (IsWebBg)
             {
                 UseXunkongWallpaper = false;
@@ -517,8 +531,22 @@ namespace GenShin_Launcher_Plus.ViewModels
 
         //选中每日一图
         public ICommand IsDailyBackgroundCommand { get; set; }
-        private void IsDailyBackground()
+        private async void IsDailyBackground()
         {
+            if (App.Current.IsLoadingBackground)
+            {
+                await dialogCoordinator.ShowMessageAsync(
+                    this, languages.TipsStr,
+                    "请先等待当前背景加载完毕",
+                    MessageDialogStyle.Affirmative,
+                    new MetroDialogSettings()
+                    { AffirmativeButtonText = languages.Determine });
+                if (UseXunkongWallpaper)
+                {
+                    UseXunkongWallpaper = !UseXunkongWallpaper;
+                }
+                return;
+            }
             if (UseXunkongWallpaper)
             {
                 IsWebBg = false;

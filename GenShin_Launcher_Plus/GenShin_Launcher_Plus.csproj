@@ -5,7 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Version>1.4.7.5</Version>
+    <Version>1.4.7.6</Version>
     <StartupObject>GenShin_Launcher_Plus.App</StartupObject>
     <ApplicationIcon>ICON.ico</ApplicationIcon>
     <IsPublishable>True</IsPublishable>

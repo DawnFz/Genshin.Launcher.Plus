@@ -12,12 +12,12 @@
 |Requirements|Specifications|
 |-|-|
 |System Version|Windows 7 SP1 and above (64-bit OS)|
-|Runtime|.NET **Desktop** Runtime 6.0.3|
+|Runtime|[.NET **Desktop** Runtime 6.0.4](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.4-windows-x64-installer)|
 
 ## Download
 
 - You can download the latest version of GenShin Launcher Plus from the [Release](https://github.com/DawnFz/Genshin.Launcher.Plus/releases) of Genshin Launcher Plus' GitHub repository
-   - Users who cannot access Github can also download through [Coding](https://nenedan.coding.net/public/glp/GenShin_Launcher_Plus/git/files)
+   - Users who cannot access Github can also download through  [AliYunPan](https://www.aliyundrive.com/s/5fAP4oRCZBs)
    - You can also download all files related to **Genshin Launcher Plus** from [Tencent QQ Group](https://jq.qq.com/?_wv=1027&k=hHtDKShK)
 
 ## Project Description

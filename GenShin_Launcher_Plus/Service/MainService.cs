@@ -28,6 +28,7 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="vm"></param>
         public async void MainBackgroundLoad(MainWindowViewModel vm)
         {
+            App.Current.IsLoadingBackground = true;
             vm.Background = new ImageBrush();
             if (App.Current.DataModel.UseXunkongWallpaper)
             {
@@ -55,6 +56,7 @@ namespace GenShin_Launcher_Plus.Service
                 if (dailyImage == null)
                 {
                     MessageBox.Show("DailyImage Json returns error: object is null");
+                    App.Current.IsLoadingBackground = false;
                     return;
                 }
 
@@ -83,6 +85,7 @@ namespace GenShin_Launcher_Plus.Service
                     }
                     catch (Exception ex)
                     {
+                        App.Current.IsLoadingBackground = false;
                         MessageBox.Show($"PID:{dailyImage.ImageInfo[count].ImagePid}\r\n{ex.Message}");
                     }
                 }
@@ -94,6 +97,7 @@ namespace GenShin_Launcher_Plus.Service
                 {
                     vm.Background.ImageSource = new BitmapImage(uri);
                     string bgurl = await HtmlHelper.GetInfoFromHtmlAsync("bg");
+                    //string bgurl = "https://s2.loli.net/2022/05/18/rENRs8K3fLVg2OC.png";
                     var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.All });
                     if (bgurl != null)
                     {
@@ -112,8 +116,10 @@ namespace GenShin_Launcher_Plus.Service
                         vm.Background.ImageSource = new BitmapImage(uri);
                         vm.Background.Stretch = Stretch.UniformToFill;
                     }
+                    App.Current.IsLoadingBackground = false;
                     return;
                 }
+
                 vm.Background.ImageSource = new BitmapImage(uri);
                 vm.Background.Stretch = Stretch.UniformToFill;
 
@@ -129,6 +135,7 @@ namespace GenShin_Launcher_Plus.Service
                     vm.Background.ImageSource = bitmap;
                 }
             }
+            App.Current.IsLoadingBackground = false;
         }
 
         /// <summary>

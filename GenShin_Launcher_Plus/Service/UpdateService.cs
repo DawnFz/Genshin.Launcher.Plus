@@ -118,13 +118,13 @@ namespace GenShin_Launcher_Plus.Service
             if (version != newver &&
                 newver != null &&
                 newver != string.Empty &&
-                !App.Current.IsLoading)
+                !App.Current.IsLoadUpdated)
             {
                 if (App.Current.DataModel.IsCloseUpdate && requisiteUpdate ||
                     !App.Current.DataModel.IsCloseUpdate)
                 {
                     main.MainGrid.Children.Add(new Views.UpdatePage());
-                    App.Current.IsLoading = true;
+                    App.Current.IsLoadUpdated = true;
                 }
             }
         }

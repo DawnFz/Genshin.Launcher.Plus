@@ -89,7 +89,8 @@ namespace GenShin_Launcher_Plus
 
         public MainWindow ThisMainWindow { get; set; }
 
-        public bool IsLoading { get; set; }
+        public bool IsLoadUpdated { get; set; }
+        public bool IsLoadingBackground { get; set; }
 
     }
 }
