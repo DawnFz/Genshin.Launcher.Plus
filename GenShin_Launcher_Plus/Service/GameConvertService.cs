@@ -27,7 +27,6 @@ namespace GenShin_Launcher_Plus.Service
           "GenshinImpact_Data/Plugins/ZFProxyWeb.dll",
           "GenshinImpact_Data/Plugins/ZFEmbedWeb.dll",
           "GenshinImpact_Data/Plugins/zf_cef.dll",
-          "GenshinImpact_Data/Plugins/XInputInterface64.dll",
           "GenshinImpact_Data/Plugins/widevinecdmadapter.dll",
           "GenshinImpact_Data/Plugins/sqlite3.dll",
           "GenshinImpact_Data/Plugins/Rewired_DirectInput.dll",
@@ -35,7 +34,6 @@ namespace GenShin_Launcher_Plus.Service
           "GenshinImpact_Data/Plugins/libUbiCustomEvent.dll",
           "GenshinImpact_Data/Plugins/libGLESv2.dll",
           "GenshinImpact_Data/Plugins/libEGL.dll",
-          "GenshinImpact_Data/Plugins/InControlNative.dll",
           "GenshinImpact_Data/Plugins/chrome_elf.dll",
           //
           "GenshinImpact_Data/Plugins/cri_mana_vpx.dll",
@@ -78,7 +76,6 @@ namespace GenShin_Launcher_Plus.Service
           "YuanShen_Data/Plugins/ZFProxyWeb.dll",
           "YuanShen_Data/Plugins/ZFEmbedWeb.dll",
           "YuanShen_Data/Plugins/zf_cef.dll",
-          "YuanShen_Data/Plugins/XInputInterface64.dll",
           "YuanShen_Data/Plugins/widevinecdmadapter.dll",
           "YuanShen_Data/Plugins/sqlite3.dll",
           "YuanShen_Data/Plugins/Rewired_DirectInput.dll",
@@ -86,7 +83,6 @@ namespace GenShin_Launcher_Plus.Service
           "YuanShen_Data/Plugins/libUbiCustomEvent.dll",
           "YuanShen_Data/Plugins/libGLESv2.dll",
           "YuanShen_Data/Plugins/libEGL.dll",
-          "YuanShen_Data/Plugins/InControlNative.dll",
           "YuanShen_Data/Plugins/chrome_elf.dll",
           //
           "YuanShen_Data/Plugins/cri_mana_vpx.dll",

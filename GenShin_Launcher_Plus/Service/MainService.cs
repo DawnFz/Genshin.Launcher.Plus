@@ -65,8 +65,8 @@ namespace GenShin_Launcher_Plus.Service
                 int day = DateTime.Now.Day;
                 string imageDate = $"{year}{month}{day}";
                 int count = dailyImage.ImageInfo.FindIndex(t => t.ImageDate == imageDate);
-
-                if (count != -1 && dailyImage.ImageInfo[count].ImageDate != App.Current.DataModel.ImageDate || !File.Exists(file))
+                if (count == -1) count = 0;
+                if (dailyImage.ImageInfo[count].ImageDate != App.Current.DataModel.ImageDate || !File.Exists(file))
                 {
                     try
                     {
