@@ -126,7 +126,7 @@
                               MouseHoverBorderBrush="{x:Null}"
                               IsBannerEnabled="False" 
                               IsNavigationEnabled="False"
-                              d:SelectedIndex="3"
+                              d:SelectedIndex="0"
                               SelectedIndex="{Binding FlipViewSelectedIndex}">
 
                     <Grid Margin="20,15,20,20">
@@ -190,6 +190,7 @@
                             DisplayMemberPath="SizeName" 
                             SelectedValuePath="SizeName"
                             Style="{StaticResource ComboboxStyle}"
+                            SelectedIndex="{Binding DisPlaySizeIndex}"
                             ItemsSource="{Binding DisplaySizeLists}" 
                             SelectedValue="{Binding SwitchSize, Mode=OneWayToSource}"/>
 
@@ -259,6 +260,22 @@
                             BorderBrush="{x:Null}" 
                             Background="#FF50B12F" 
                             Command="{Binding SaveDisPlaySizeCommand}"/>
+
+                        <Button 
+                            Grid.Row="1"
+                            Grid.Column="1" 
+                            Height="16" 
+                            Width="16" 
+                            FontSize="8"
+                            Content="➖"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            IsEnabled="{Binding PageUiStatus}"  
+                            Style="{StaticResource MahApps.Styles.Button.Circle}" 
+                            Foreground="White"
+                            BorderBrush="{x:Null}" 
+                            Background="#FFFF3E3E" 
+                            Command="{Binding RemoveDisPlaySizeCommand}"/>
 
                         <TextBlock 
                             Grid.Row="0" 

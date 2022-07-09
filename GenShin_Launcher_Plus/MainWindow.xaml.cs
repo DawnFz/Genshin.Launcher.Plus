@@ -2,6 +2,7 @@
 using GenShin_Launcher_Plus.ViewModels;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -20,9 +21,11 @@ namespace GenShin_Launcher_Plus
             App.Current.ThisMainWindow = this;
             ViewModel = new MainWindowViewModel(DialogCoordinator.Instance, this);
             DataContext = ViewModel;
-            MainFlipView.DataContext = App.Current.NoticeOverAllBase;
             MainSizeBinding();
+            MainFlipView.DataContext = App.Current.NoticeOverAllBase;
             HomePage.Children.Add(new Views.HomePage());
+            Height = Convert.ToDouble(App.Current.DataModel.MainHeight);
+            Width = Convert.ToDouble(App.Current.DataModel.MainWidth);
         }
 
         private void WindowDragMove(object sender, MouseButtonEventArgs e)
@@ -52,16 +55,23 @@ namespace GenShin_Launcher_Plus
         private void MainSizeBinding()
         {
             //Height
-            Binding mainHeight = new();
-            mainHeight.Source = ViewModel;
-            mainHeight.Path = new PropertyPath("MainHeight");
-            mainHeight.Mode = BindingMode.TwoWay;
+            Binding mainHeight = new()
+            {
+                Source = ViewModel,
+                Path = new PropertyPath("MainHeight"),
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
             SetBinding(HeightProperty, mainHeight);
+
             //Width
-            Binding mainWidth = new();
-            mainWidth.Source = ViewModel;
-            mainWidth.Path = new PropertyPath("MainWidth");
-            mainWidth.Mode = BindingMode.TwoWay;
+            Binding mainWidth = new()
+            {
+                Source = ViewModel,
+                Path = new PropertyPath("MainWidth"),
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
             SetBinding(WidthProperty, mainWidth);
         }
     }

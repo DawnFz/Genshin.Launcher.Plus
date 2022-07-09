@@ -22,6 +22,12 @@ namespace GenShin_Launcher_Plus.Service.IService
         void SaveDisplaySizeToList(SettingsPageViewModel vm, string Width, string Height);
 
         /// <summary>
+        /// 删除预设里的分辨率选项
+        /// </summary>
+        /// <param name="vm"></param>
+        public void RemoveDisplaySizeToList(SettingsPageViewModel vm);
+
+        /// <summary>
         /// 创建分辨率列表
         /// </summary>
         /// <returns></returns>
@@ -38,6 +44,7 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// </summary>
         /// <returns></returns>
         List<GamePortListModel> CreateGamePortList();
+
 
     }
 }

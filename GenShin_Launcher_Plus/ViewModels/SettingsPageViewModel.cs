@@ -50,6 +50,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             CheckUpdateCommand = new RelayCommand(CheckUpdate);
             SaveBackgroundCommand = new RelayCommand(SaveBackground);
             SaveDisPlaySizeCommand = new RelayCommand(SaveDisPlaySize);
+            RemoveDisPlaySizeCommand = new RelayCommand(RemoveDisPlaySize);
             SetMainBackgroundCommand = new RelayCommand(SetMainBackground);
             SwitchLanguagePageCommand = new RelayCommand(SwitchLanguagePage);
             OpenPkgDownloadUrlCommand = new RelayCommand(OpenPkgDownloadUrl);
@@ -124,6 +125,13 @@ namespace GenShin_Launcher_Plus.ViewModels
                 App.Current.DataModel.Height = value;
                 SetProperty(ref _Height, value);
             }
+        }
+
+        private int _DisPlaySizeIndex;
+        public int DisPlaySizeIndex
+        {
+            get => _DisPlaySizeIndex;
+            set => SetProperty(ref _DisPlaySizeIndex, value);
         }
 
         private bool _IsUnFPS;
@@ -388,6 +396,34 @@ namespace GenShin_Launcher_Plus.ViewModels
                    { AffirmativeButtonText = languages.Determine });
             }
         }
+
+
+        //删除设置的分辨率到列表
+        public ICommand RemoveDisPlaySizeCommand { get; set; }
+        private async void RemoveDisPlaySize()
+        {
+
+            if (DisplaySizeLists.Count>0&&DisPlaySizeIndex!=-1)
+            {
+                SettingService.RemoveDisplaySizeToList(this);
+                await dialogCoordinator.ShowMessageAsync(
+                   this, languages.TipsStr,
+                   "删除自定义分辨率预设成功！",
+                   MessageDialogStyle.Affirmative,
+                   new MetroDialogSettings()
+                   { AffirmativeButtonText = languages.Determine });
+            }
+            else
+            {
+                await dialogCoordinator.ShowMessageAsync(
+                   this, languages.Error,
+                   "没有选中需要删除的预设！",
+                   MessageDialogStyle.Affirmative,
+                   new MetroDialogSettings()
+                   { AffirmativeButtonText = languages.Determine });
+            }
+        }
+
 
         //恢复默认主窗口大小
         public ICommand RecoverDefaultSizeToMainCommand { get; set; }

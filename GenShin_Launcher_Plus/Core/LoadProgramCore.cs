@@ -3,6 +3,7 @@ using GenShin_Launcher_Plus.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace GenShin_Launcher_Plus.Core
 {
@@ -29,22 +30,13 @@ namespace GenShin_Launcher_Plus.Core
             //从JSON字符串生成集合对象用于存放语言包列表
             string json = "[{\"LangID\":\"0001\",\"LangVersion\":\"1.4.2.0\",\"LangName\":\"简体中文\",\"LangFileName\":\"Lang_CN\"},{\"LangID\":\"0002\",\"LangVersion\":\"1.4.2.0\",\"LangName\":\"繁体中文\",\"LangFileName\":\"Lang_TW\"},{\"LangID\":\"0003\",\"LangVersion\":\"1.4.2.0\",\"LangName\":\"English\",\"LangFileName\":\"Lang_EN\"}]";
             App.Current.LangList = JsonConvert.DeserializeObject<List<LanguageListModel>>(json);
-            string langjson;
-            switch (App.Current.DataModel.ReadLang)
+            string langjson = App.Current.DataModel.ReadLang switch
             {
-                case "Lang_CN":
-                    langjson = Lang_CN;
-                    break;
-                case "Lang_TW":
-                    langjson = Lang_TW;
-                    break;
-                case "Lang_EN":
-                    langjson = Lang_EN;
-                    break;
-                default:
-                    langjson = Lang_CN;
-                    break;
-            }
+                "Lang_CN"=> Lang_CN,
+                "Lang_TW"=> Lang_TW,
+                "Lang_EN"=> Lang_EN,
+                _=> Lang_CN
+            };
             App.Current.Language = JsonConvert.DeserializeObject<LanguageModel>(langjson);
         }
     }

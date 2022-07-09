@@ -52,6 +52,8 @@ namespace GenShin_Launcher_Plus.Service
             if (File.Exists(@"Config/DisplaySize.json"))
             {
                 string json = File.ReadAllText(@"Config/DisplaySize.json");
+                if (json == "[]")
+                    return null;
                 List<DisplaySizeListModel> list = JsonConvert.DeserializeObject<List<DisplaySizeListModel>>(json);
                 return list;
             }
@@ -115,7 +117,7 @@ namespace GenShin_Launcher_Plus.Service
         public void SaveDisplaySizeToList(SettingsPageViewModel vm, string Width, string Height)
         {
             List<DisplaySizeListModel> allList;
-            if (vm.DisplaySizeLists[0].IsNull) { allList = new List<DisplaySizeListModel>(); }
+            if (vm.DisplaySizeLists.Count==1&&vm.DisplaySizeLists[0].IsNull) { allList = new List<DisplaySizeListModel>(); }
             else { allList = new(vm.DisplaySizeLists); }
             foreach (DisplaySizeListModel dsm in allList)
             { if ($"{Width} x {Height}" == dsm.SizeName) { return; } }
@@ -129,6 +131,35 @@ namespace GenShin_Launcher_Plus.Service
             allList.Add(list);
             string newJson = JsonConvert.SerializeObject(allList);
             File.WriteAllText(@"Config/DisplaySize.json", newJson);
+            vm.DisplaySizeLists = allList;
+        }
+
+        /// <summary>
+        /// 将已存储的宽高进行删除
+        /// 并将列表序列化为Json写入本地Json文件
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <param name="Width"></param>
+        /// <param name="Height"></param>
+        public void RemoveDisplaySizeToList(SettingsPageViewModel vm)
+        {
+            List<DisplaySizeListModel> allList;
+            if (vm.DisplaySizeLists[0].IsNull) { allList = new List<DisplaySizeListModel>(); }
+            else { allList = new(vm.DisplaySizeLists); }
+            allList.Remove(vm.DisplaySizeLists[vm.DisPlaySizeIndex]);
+            string newJson = JsonConvert.SerializeObject(allList);
+            File.WriteAllText(@"Config/DisplaySize.json", newJson);
+            if (allList.Count==0)
+            {
+                allList = new List<DisplaySizeListModel>()
+                    {
+                        new DisplaySizeListModel
+                        {
+                            SizeName = "没有已保存的预设选项",
+                            IsNull = true,
+                        }
+                    };
+            }
             vm.DisplaySizeLists = allList;
         }
 
