@@ -43,6 +43,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             GameFileConvertCommand = new AsyncRelayCommand(GameFileConvert);
 
             SwitchAccountCommand = new RelayCommand(SwitchAccount);
+            /*AddDailyImagePidCommand = new RelayCommand(AddDailyImagePid);*/
             SwitchGameSettingsCommand = new RelayCommand(SwitchGameSettings);
             SwitchConvertClientCommand = new RelayCommand(SwitchConvertClient);
             SwitchProgarmSettingCommand = new RelayCommand(SwitchProgarmSetting);
@@ -59,10 +60,12 @@ namespace GenShin_Launcher_Plus.ViewModels
 
             IsWebToggleOnCommand = new RelayCommand(IsWebToggleOn);
             IsDailyBackgroundCommand = new RelayCommand(IsDailyBackground);
+            IsLocalDailyImageCommand = new RelayCommand(IsLocalDailyImageMethod);
 
             _UserLists = UserDataService.ReadUserList();
             _GamePortLists = SettingService.CreateGamePortList();
             _DisplaySizeLists = SettingService.CreateDisplaySizeList();
+            _DailyImageSource = SettingService.ReadDailyImageSourceFromJson();
             _GameWindowModeList = SettingService.CreateGameWindowModeList();
         }
 
@@ -127,7 +130,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
         }
 
-        private int _DisPlaySizeIndex;
+        private int _DisPlaySizeIndex = -1;
         public int DisPlaySizeIndex
         {
             get => _DisPlaySizeIndex;
@@ -142,6 +145,17 @@ namespace GenShin_Launcher_Plus.ViewModels
             {
                 App.Current.DataModel.IsUnFPS = value;
                 SetProperty(ref _IsUnFPS, value);
+            }
+        }
+
+        private bool _IsLocalDailyImage;
+        public bool IsLocalDailyImage
+        {
+            get => _IsLocalDailyImage;
+            set
+            {
+                App.Current.DataModel.IsLocalDailyImage = value;
+                SetProperty(ref _IsLocalDailyImage,value);
             }
         }
 
@@ -174,10 +188,21 @@ namespace GenShin_Launcher_Plus.ViewModels
         public int IsMihoyo
         {
             get => _IsMihoyo;
-            set
-            {
-                SetProperty(ref _IsMihoyo, value);
-            }
+            set => SetProperty(ref _IsMihoyo, value);
+        }
+
+        private string _InputPid;
+        public string InputPid
+        {
+            get => _InputPid;
+            set => SetProperty(ref _InputPid, value);
+        }
+
+        private int _DailyImagePidIndex = -1;
+        public int DailyImagePidIndex
+        {
+            get => _DailyImagePidIndex;
+            set => SetProperty(ref _DailyImagePidIndex, value);
         }
 
         private bool _IsPopup;
@@ -261,10 +286,28 @@ namespace GenShin_Launcher_Plus.ViewModels
         public int FlipViewSelectedIndex
         {
             get => _FlipViewSelectedIndex;
-            set
+            set => SetProperty(ref _FlipViewSelectedIndex, value);
+        }
+
+
+        private List<DailyImageArray> _DailyImageSource;
+        public List<DailyImageArray> DailyImageSource
+        {
+            get
             {
-                SetProperty(ref _FlipViewSelectedIndex, value);
+                if (_DailyImageSource == null)
+                {
+                    return new List<DailyImageArray>()
+                    {
+                        new DailyImageArray
+                        {
+                            ImagePid = "无已保存的Pid数据",
+                        }
+                    };
+                }
+                else { return _DailyImageSource; }
             }
+            set => SetProperty(ref _DailyImageSource, value);
         }
 
 
@@ -403,7 +446,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         private async void RemoveDisPlaySize()
         {
 
-            if (DisplaySizeLists.Count>0&&DisPlaySizeIndex!=-1)
+            if (DisplaySizeLists.Count > 0 && DisPlaySizeIndex != -1)
             {
                 SettingService.RemoveDisplaySizeToList(this);
                 await dialogCoordinator.ShowMessageAsync(
@@ -561,6 +604,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             if (IsWebBg)
             {
                 UseXunkongWallpaper = false;
+                IsLocalDailyImage = false;
             }
             _ = new MainService(App.Current.ThisMainWindow, App.Current.ThisMainWindow.ViewModel);
         }
@@ -585,6 +629,33 @@ namespace GenShin_Launcher_Plus.ViewModels
             }
             if (UseXunkongWallpaper)
             {
+                IsWebBg = false;
+                IsLocalDailyImage = false;
+            }
+            _ = new MainService(App.Current.ThisMainWindow, App.Current.ThisMainWindow.ViewModel);
+        }
+
+        //选中使用本地每日一图
+        public ICommand IsLocalDailyImageCommand { get; set; }
+        private async void IsLocalDailyImageMethod()
+        {
+            if (App.Current.IsLoadingBackground)
+            {
+                await dialogCoordinator.ShowMessageAsync(
+                    this, languages.TipsStr,
+                    "请先等待当前背景加载完毕",
+                    MessageDialogStyle.Affirmative,
+                    new MetroDialogSettings()
+                    { AffirmativeButtonText = languages.Determine });
+                if (IsLocalDailyImage)
+                {
+                    IsLocalDailyImage = !IsLocalDailyImage;
+                }
+                return;
+            }
+            if (IsLocalDailyImage)
+            {
+                UseXunkongWallpaper = false;
                 IsWebBg = false;
             }
             _ = new MainService(App.Current.ThisMainWindow, App.Current.ThisMainWindow.ViewModel);
@@ -672,11 +743,33 @@ namespace GenShin_Launcher_Plus.ViewModels
                 App.Current.NoticeOverAllBase.IsSwitchUser = "Visible";
                 RegistryService.SetToRegistry(SwitchUser);
             }
+/*            if(DailyImagePidIndex>-1&& DailyImagePidIndex<DailyImageSource.Count)
+            {        
+                App.Current.DataModel.ImagePid = DailyImageSource[DailyImagePidIndex].ImagePid;
+                App.Current.DataModel.ImageDate = DailyImageSource[DailyImagePidIndex].ImageDate;
+                App.Current.DataModel.UseXunkongWallpaper = false;
+            }*/
+            App.Current.DataModel.Height = Height;
+            App.Current.DataModel.Width = Width;
             GameConvert.SaveGameConfig(this);
             DelaySaveButtonTitle();
             App.Current.DataModel.SaveDataToFile();
             ThisPageRemove();
         }
+
+/*        //添加自定义PID到自定义每日一图列表
+        public ICommand AddDailyImagePidCommand { get; set; }
+        private async void AddDailyImagePid()
+        {
+            if (!_settingService.SetDailyImageDataToJson(this))
+            {
+                await dialogCoordinator.ShowMessageAsync(
+                    this, languages.Error, "已有相同PID在列表中",
+                    MessageDialogStyle.Affirmative,
+                    new MetroDialogSettings()
+                    { AffirmativeButtonText = languages.Determine });
+            }
+        }*/
 
         //关闭设置页面
         public ICommand ThisPageRemoveCommand { get; set; }

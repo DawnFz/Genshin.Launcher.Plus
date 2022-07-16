@@ -126,7 +126,7 @@
                               MouseHoverBorderBrush="{x:Null}"
                               IsBannerEnabled="False" 
                               IsNavigationEnabled="False"
-                              d:SelectedIndex="0"
+                              d:SelectedIndex="3"
                               SelectedIndex="{Binding FlipViewSelectedIndex}">
 
                     <Grid Margin="20,15,20,20">
@@ -468,7 +468,7 @@
 
                         </Grid>
                     </Grid>
-                    <Grid Margin="50,15,50,20">
+                    <Grid Margin="50,15,20,20">
 
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"></RowDefinition>
@@ -517,6 +517,14 @@
                             Style="{StaticResource ToggleSwitchStyle}"
                             IsOn="{Binding IsCloseUpdate}"/>
 
+                        <!--<mah:ToggleSwitch 
+                            Grid.Row="4"
+                            Grid.ColumnSpan="2" 
+                            Content="使用右侧自定义每日一图" 
+                            Style="{StaticResource ToggleSwitchStyle}"
+                            IsOn="{Binding IsLocalDailyImage}"
+                            Command="{Binding IsLocalDailyImageCommand}"/>-->
+
                         <Button
                             Grid.Row="5" 
                             Grid.Column="0"
@@ -564,6 +572,33 @@
                             Content="另存今日背景" 
                             IsEnabled="{Binding PageUiStatus}"
                             Command="{Binding SaveBackgroundCommand}"/>
+                        <!--<ListBox
+                            Margin="0,0,0,5"
+                            BorderBrush="#ccc"
+                            BorderThickness="2"
+                            Grid.RowSpan="7"
+                            Grid.Column="2"
+                            FontSize="14"
+                            SelectedValuePath="ImagePid"
+                            DisplayMemberPath="ImagePid"
+                            SelectedIndex="{Binding DailyImagePidIndex}"
+                            ItemsSource="{Binding DailyImageSource}"/>
+                        <Button
+                            HorizontalAlignment="Left"
+                            Width="70"
+                            Grid.Row="7" 
+                            Grid.Column="2"
+                            Style="{StaticResource ProgarmSettingButtonStyle}" 
+                            Content="添加Pid" 
+                            IsEnabled="{Binding PageUiStatus}"
+                            Command="{Binding AddDailyImagePidCommand}"/>
+                        <TextBox
+                            Grid.Row="7"
+                            Grid.Column="2"
+                            Height="28"
+                            Width="80"
+                            Text="{Binding InputPid}"
+                            HorizontalAlignment="Right"/>-->
                     </Grid>
                 </mah:FlipView>
             </Grid>

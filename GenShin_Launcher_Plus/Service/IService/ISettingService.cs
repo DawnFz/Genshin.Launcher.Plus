@@ -28,6 +28,12 @@ namespace GenShin_Launcher_Plus.Service.IService
         public void RemoveDisplaySizeToList(SettingsPageViewModel vm);
 
         /// <summary>
+        /// 添加每日一图Pid到本地并序列化到Json文件中
+        /// </summary>
+        /// <returns></returns>
+        bool SetDailyImageDataToJson(SettingsPageViewModel vm);
+
+        /// <summary>
         /// 创建分辨率列表
         /// </summary>
         /// <returns></returns>
@@ -45,6 +51,10 @@ namespace GenShin_Launcher_Plus.Service.IService
         /// <returns></returns>
         List<GamePortListModel> CreateGamePortList();
 
+        /// <summary>
+        /// 从本地Json文件中反序列化每日一图数据
+        /// </summary>
+        List<DailyImageArray> ReadDailyImageSourceFromJson();
 
     }
 }

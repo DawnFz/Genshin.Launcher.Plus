@@ -117,7 +117,7 @@ namespace GenShin_Launcher_Plus.Service
         public void SaveDisplaySizeToList(SettingsPageViewModel vm, string Width, string Height)
         {
             List<DisplaySizeListModel> allList;
-            if (vm.DisplaySizeLists.Count==1&&vm.DisplaySizeLists[0].IsNull) { allList = new List<DisplaySizeListModel>(); }
+            if (vm.DisplaySizeLists.Count == 1 && vm.DisplaySizeLists[0].IsNull) { allList = new List<DisplaySizeListModel>(); }
             else { allList = new(vm.DisplaySizeLists); }
             foreach (DisplaySizeListModel dsm in allList)
             { if ($"{Width} x {Height}" == dsm.SizeName) { return; } }
@@ -149,7 +149,7 @@ namespace GenShin_Launcher_Plus.Service
             allList.Remove(vm.DisplaySizeLists[vm.DisPlaySizeIndex]);
             string newJson = JsonConvert.SerializeObject(allList);
             File.WriteAllText(@"Config/DisplaySize.json", newJson);
-            if (allList.Count==0)
+            if (allList.Count == 0)
             {
                 allList = new List<DisplaySizeListModel>()
                     {
@@ -174,6 +174,68 @@ namespace GenShin_Launcher_Plus.Service
             if (width % height == 0)
             { return height; }
             return GetDivisor(height, width % height);
+        }
+
+
+        /// <summary>
+        /// 反序列化Json获得DailyImageSource
+        /// </summary>
+        /// <returns></returns>
+        public List<DailyImageArray> ReadDailyImageSourceFromJson()
+        {
+            if (File.Exists(@"Config/DailyImagePids.json"))
+            {
+                string json = File.ReadAllText(@"Config/DailyImagePids.json");
+                if (json == "[]")
+                    return null;
+                List<DailyImageArray> list = JsonConvert.DeserializeObject<List<DailyImageArray>>(json);
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 添加用户设定的Pid序号到本地文件(序列化)
+        /// </summary>
+        /// <returns></returns>
+        public bool SetDailyImageDataToJson(SettingsPageViewModel vm)
+        {
+            List<DailyImageArray> allList;
+            if (vm.DailyImageSource.Count == 1 &&
+                vm.DailyImageSource[0].ImagePid == "无已保存的Pid数据")
+            {
+                allList = new List<DailyImageArray>();
+            }
+            else
+            {
+                allList = new(vm.DailyImageSource);
+            }
+
+            foreach (DailyImageArray item in allList)
+            {
+                if(item.ImagePid == vm.InputPid)
+                {
+                    return false;
+                }
+            }
+
+            int year = DateTime.Now.Year;
+            int month = DateTime.Now.Month;
+            int day = DateTime.Now.Day;
+
+            DailyImageArray list = new()
+            {
+                ImagePid = vm.InputPid,
+                ImageDate = $"{year}{month}{day}"
+            };
+            allList.Add(list);
+            string newJson = JsonConvert.SerializeObject(allList);
+            File.WriteAllText(@"Config/DailyImagePids.json", newJson);
+            vm.DailyImageSource = allList;
+            return true;
         }
     }
 }

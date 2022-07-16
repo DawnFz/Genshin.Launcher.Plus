@@ -98,7 +98,7 @@ namespace GenShin_Launcher_Plus.Core
             get
             {
                 _MainWidth = parser.GetSetting("setup", "MainWidth");
-                if(_MainWidth ==string.Empty|| _MainWidth==null)
+                if (_MainWidth == string.Empty || _MainWidth == null)
                 {
                     return "1280";
                 }
@@ -177,6 +177,21 @@ namespace GenShin_Launcher_Plus.Core
             }
         }
 
+        private string _ImagePid;
+        public string ImagePid
+        {
+            get
+            {
+                _ImagePid = parser.GetSetting("setup", "ImagePid", 0);
+                return _ImagePid;
+            }
+            set
+            {
+                _ImagePid = value;
+                parser.AddSetting("setup", "ImagePid", _ImagePid);
+            }
+        }
+
         private bool _IsPopup;
         public bool IsPopup
         {
@@ -205,6 +220,21 @@ namespace GenShin_Launcher_Plus.Core
             {
                 _IsWebBg = value;
                 parser.AddSetting("setup", "isWebBg", Convert.ToString(_IsWebBg));
+            }
+        }
+
+        private bool _IsLocalDailyImage;
+        public bool IsLocalDailyImage
+        {
+            get
+            {
+                _IsLocalDailyImage = Convert.ToBoolean(parser.GetSetting("setup", "IsLocalDailyImage", 2));
+                return _IsLocalDailyImage;
+            }
+            set
+            {
+                _IsLocalDailyImage = value;
+                parser.AddSetting("setup", "IsLocalDailyImage", Convert.ToString(_IsLocalDailyImage));
             }
         }
 
