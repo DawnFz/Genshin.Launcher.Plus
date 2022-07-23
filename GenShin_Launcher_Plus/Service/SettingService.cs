@@ -123,11 +123,13 @@ namespace GenShin_Launcher_Plus.Service
             { if ($"{Width} x {Height}" == dsm.SizeName) { return; } }
             int divisor = GetDivisor(Convert.ToInt32(Width), Convert.ToInt32(Height));
             string windowScale = $"{(Convert.ToInt32(Width) / divisor)}:{(Convert.ToInt32(Height) / divisor)}";
-            DisplaySizeListModel list = new();
-            list.Width = Width;
-            list.Height = Height;
-            list.SizeName = $"{Width} x {Height}  |  {windowScale}";
-            list.IsNull = false;
+            DisplaySizeListModel list = new()
+            {
+                Width = Width,
+                Height = Height,
+                SizeName = $"{Width} x {Height}  |  {windowScale}",
+                IsNull = false
+            };
             allList.Add(list);
             string newJson = JsonConvert.SerializeObject(allList);
             File.WriteAllText(@"Config/DisplaySize.json", newJson);
