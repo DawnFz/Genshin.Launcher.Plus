@@ -10,13 +10,19 @@
              xmlns:local="clr-namespace:GenShin_Launcher_Plus.Views"
              mc:Ignorable="d" 
              d:Height="730" d:Width="1280">
-    <Grid Height="180" Width="340" Background="#FF647687">
+    <Grid Height="200" Width="340" Background="#FF647687">
         <GroupBox Header="{Binding languages.AddUsersPageTitle}">
             <Grid Background="White">
                 <Label d:Content="设计时预览" Content="{Binding languages.AddUsersPageSubTitle}" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="Microsoft YaHei UI"/>
                 <TextBox FontSize="12" mah:TextBoxHelper.Watermark="{Binding languages.AddUsersPageTextboxTips}" HorizontalAlignment="Center" Margin="0,50,0,0" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" Width="220" FontFamily="Microsoft YaHei UI"/>
                 <Button FontSize="12" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="{Binding languages.SaveBtn}" HorizontalAlignment="Left" Margin="74,94,0,0" VerticalAlignment="Top" Width="80" Command="{Binding SaveUserDataCommand}" FontFamily="Microsoft YaHei UI"/>
                 <Button FontSize="12" Style="{DynamicResource MahApps.Styles.Button.Square}" Content="{Binding languages.Cancel}" HorizontalAlignment="Left" Margin="178,94,0,0" VerticalAlignment="Top" Width="80" FontFamily="Microsoft YaHei UI" Command="{Binding RemoveThisPageCommand}"/>
+
+                <mah:ToggleSwitch
+                            FontFamily="Microsoft YaHei UI"
+                            Content="保存游戏内配置" 
+                            IsOn="{Binding IsSaveGameConfig}"
+                            Margin="10,129,0,0" VerticalAlignment="Top"/>
             </Grid>
         </GroupBox>
     </Grid>

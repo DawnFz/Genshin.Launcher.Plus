@@ -62,24 +62,25 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid Height="360" Width="550" Background="White">
+        <Border BorderThickness="1" BorderBrush="Gray">
+            <Grid Height="360" Width="550" Background="White" >
 
-            <Grid HorizontalAlignment="Center"
+                <Grid HorizontalAlignment="Center"
                   VerticalAlignment="Top"
                   Height="36" Width="550" 
                   d:Background="#FF272727"
                   Background="{Binding SettingTitleColor}">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="35"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="35"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="5"
+                    <Button Grid.Column="5"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         IsEnabled="{Binding PageUiStatus}"
@@ -93,60 +94,60 @@
                         Foreground="White"
                         Command="{Binding ThisPageRemoveCommand}"/>
 
-                <Button Grid.Column="0"
+                    <Button Grid.Column="0"
                         Content="{Binding languages.GameSettingsBtn}" 
                         Style="{StaticResource TitleButtonStyle}" 
                         Command="{Binding SwitchGameSettingsCommand}"/>
 
-                <Button Grid.Column="1"
+                    <Button Grid.Column="1"
                         Content="{Binding languages.GameClientSwitchBtn}"
                         Style="{StaticResource TitleButtonStyle}" 
                         Command="{Binding SwitchConvertClientCommand}"/>
 
-                <Button Grid.Column="2"
+                    <Button Grid.Column="2"
                         Content="{Binding languages.AccountSettingsBtn}"
                         Style="{StaticResource TitleButtonStyle}" 
                         Command="{Binding SwitchAccountCommand}"/>
 
-                <Button Grid.Column="3"
+                    <Button Grid.Column="3"
                         Content="{Binding languages.ProgramSettingsBtn}"
                         Style="{StaticResource TitleButtonStyle}"
                         Command="{Binding SwitchProgarmSettingCommand}"/>
 
-                <Button Grid.Column="4"
+                    <Button Grid.Column="4"
                         Foreground="#FFB0FFF2"
                         Content="{Binding languages.SaveBtn}"
                         Style="{StaticResource TitleButtonStyle}"
                         Command="{Binding SaveSettingsCommand}"/>
-            </Grid>
+                </Grid>
 
-            <Grid Margin="0,36,0,0">
+                <Grid Margin="0,36,0,0">
 
-                <mah:FlipView x:Name="MainFlipView" 
+                    <mah:FlipView x:Name="MainFlipView" 
                               MouseHoverBorderBrush="{x:Null}"
                               IsBannerEnabled="False" 
                               IsNavigationEnabled="False"
                               d:SelectedIndex="3"
                               SelectedIndex="{Binding FlipViewSelectedIndex}">
 
-                    <Grid Margin="20,15,20,20">
+                        <Grid Margin="20,15,20,20">
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                <ColumnDefinition Width="2*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBox 
+                            <TextBox 
                             Width="68"
                             Grid.Row="0"
                             Grid.Column="1"
@@ -160,7 +161,7 @@
                             HorizontalAlignment="Right" 
                             mah:TextBoxHelper.Watermark="{Binding languages.HeightStr}"/>
 
-                        <TextBox 
+                            <TextBox 
                             Width="68"
                             Grid.Row="0"
                             Grid.Column="1" 
@@ -174,7 +175,7 @@
                             VerticalAlignment="Center" 
                             mah:TextBoxHelper.Watermark="{Binding languages.WitdhStr}"/>
 
-                        <Label
+                            <Label
                             Width="20"                            
                             Content="×"
                             Grid.Row="0" 
@@ -185,7 +186,7 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"/>
 
-                        <ComboBox 
+                            <ComboBox 
                             Grid.Row="1"
                             DisplayMemberPath="SizeName" 
                             SelectedValuePath="SizeName"
@@ -194,7 +195,7 @@
                             ItemsSource="{Binding DisplaySizeLists}" 
                             SelectedValue="{Binding SwitchSize, Mode=OneWayToSource}"/>
 
-                        <ComboBox
+                            <ComboBox
                             Grid.Row="2" 
                             DisplayMemberPath="GamePort" 
                             SelectedValuePath="GamePort"
@@ -202,7 +203,7 @@
                             SelectedIndex="{Binding IsMihoyo}"
                             ItemsSource="{Binding GamePortLists}"/>
 
-                        <ComboBox
+                            <ComboBox
                             Grid.Row="3"
                             DisplayMemberPath="GameWindowMode"
                             SelectedValuePath="GameWindowMode"
@@ -210,7 +211,7 @@
                             SelectedIndex="{Binding FullSize}"
                             ItemsSource="{Binding GameWindowModeList}"/>
 
-                        <mah:ToggleSwitch
+                            <mah:ToggleSwitch
                             Grid.Row="4" 
                             Grid.Column="1"
                             d:Content="Toggle" 
@@ -220,7 +221,7 @@
                             IsOn="{Binding IsPopup}" 
                             Content="{Binding languages.BorderlessCkB}"/>
 
-                        <mah:ToggleSwitch 
+                            <mah:ToggleSwitch 
                             Grid.Row="5" 
                             Grid.Column="1" 
                             Content="" 
@@ -230,7 +231,7 @@
                             IsOn="{Binding IsUnFPS}" 
                             Command="{Binding ChooseUnlockFpsCommand}"/>
 
-                        <TextBox
+                            <TextBox
                             Width="85" 
                             Grid.Row="5"
                             Grid.Column="1"
@@ -245,7 +246,7 @@
                             IsEnabled="{Binding IsUnFPS}"
                             mah:TextBoxHelper.Watermark="{Binding languages.FpsBoxTips}"/>
 
-                        <Button 
+                            <Button 
                             Grid.Row="0"
                             Grid.Column="1" 
                             Height="16" 
@@ -261,7 +262,7 @@
                             Background="#FF50B12F" 
                             Command="{Binding SaveDisPlaySizeCommand}"/>
 
-                        <Button 
+                            <Button 
                             Grid.Row="1"
                             Grid.Column="1" 
                             Height="16" 
@@ -277,7 +278,7 @@
                             Background="#FFFF3E3E" 
                             Command="{Binding RemoveDisPlaySizeCommand}"/>
 
-                        <TextBlock 
+                            <TextBlock 
                             Grid.Row="0" 
                             Grid.Column="0" 
                             Text="{Binding languages.SetDisplaySizeLab}" 
@@ -285,7 +286,7 @@
                             HorizontalAlignment="Left"
                             Margin="25,0,0,0"/>
 
-                        <TextBlock 
+                            <TextBlock 
                             Grid.Row="1" 
                             Grid.Column="0"
                             Text="{Binding languages.ChooseDisplaySizeListLab}" 
@@ -293,7 +294,7 @@
                             HorizontalAlignment="Left" 
                             Margin="25,0,0,0"/>
 
-                        <TextBlock 
+                            <TextBlock 
                             Grid.Row="2"
                             Grid.Column="0" 
                             Text="{Binding languages.SetGameClientLab}"
@@ -301,7 +302,7 @@
                             HorizontalAlignment="Left" 
                             Margin="25,0,0,0"/>
 
-                        <TextBlock 
+                            <TextBlock 
                             Grid.Row="3" 
                             Grid.Column="0" 
                             Text="{Binding languages.SetGameWindowModeLab}" 
@@ -309,7 +310,7 @@
                             HorizontalAlignment="Left"
                             Margin="25,0,0,0"/>
 
-                        <TextBlock 
+                            <TextBlock 
                             Grid.Row="4"
                             Grid.Column="0"
                             Text="{Binding languages.SetBorderlessLab}"
@@ -317,7 +318,7 @@
                             HorizontalAlignment="Left"
                             Margin="25,0,0,0"/>
 
-                        <TextBlock 
+                            <TextBlock 
                             Grid.Row="5"
                             Grid.Column="0"
                             Text="{Binding languages.SetUnLockFpsLab}"
@@ -325,7 +326,7 @@
                             HorizontalAlignment="Left"
                             Margin="25,0,0,0"/>
 
-                        <Button 
+                            <Button 
                             Width="45"
                             Height="26"
                             Content="..."
@@ -341,7 +342,7 @@
                             IsEnabled="{Binding PageUiStatus}"
                             Command="{Binding ChooseGamePathCommand}" />
 
-                        <TextBox
+                            <TextBox
                             Margin="25,0,67,0" 
                             Grid.Row="6"
                             Grid.ColumnSpan="2" 
@@ -351,17 +352,17 @@
                             FontFamily="Microsoft YaHei UI"
                             Text="{Binding GamePath}"/>
 
-                    </Grid>
+                        </Grid>
 
-                    <Grid Margin="50,0,50,20">
+                        <Grid Margin="50,0,50,20">
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="5*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="5*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
 
-                        <mah:MetroProgressBar
+                            <mah:MetroProgressBar
                             Margin="0,20,0,0"
                             Grid.Row="2"
                             Minimum="0"
@@ -372,7 +373,7 @@
                             HorizontalAlignment="Left"
                             Visibility="{Binding ProgressBar}"/>
 
-                        <Button
+                            <Button
                             Grid.Row="2" 
                             FontSize="12"
                             Width="68"
@@ -385,7 +386,7 @@
                             Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                             Command="{Binding GameFileConvertCommand}"/>
 
-                        <Button
+                            <Button
                             Grid.Row="2" 
                             FontSize="12"
                             Width="90"
@@ -399,7 +400,7 @@
                             Style="{StaticResource MahApps.Styles.Button.Square}"
                             Command="{Binding OpenPkgDownloadUrlCommand}"/>
 
-                        <Label  
+                            <Label  
                             Grid.Row="0" 
                             FontSize="12" 
                             Width="270" 
@@ -410,7 +411,7 @@
                             FontFamily="Microsoft YaHei UI"
                             Content="{Binding StateIndicator}"/>
 
-                        <TextBox
+                            <TextBox
                             Grid.Row="1" 
                             Background="#CC83919F" 
                             Foreground="White" 
@@ -418,45 +419,45 @@
                             FontFamily="Microsoft YaHei UI" 
                             Text="{Binding ConvertingLog}">
 
-                            <b:Interaction.Triggers>
-                                <b:EventTrigger EventName="TextChanged">
-                                    <b:CallMethodAction MethodName="ScrollToEnd"/>
-                                </b:EventTrigger>
-                            </b:Interaction.Triggers>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="TextChanged">
+                                        <b:CallMethodAction MethodName="ScrollToEnd"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
 
-                        </TextBox>
-                    </Grid>
+                            </TextBox>
+                        </Grid>
 
-                    <Grid Margin="30">
-                        <Grid>
+                        <Grid Margin="30">
+                            <Grid>
 
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="8*"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="8*"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
 
-                            <GroupBox 
+                                <GroupBox 
                                 Margin="0,0,0,5"
                                 Grid.Row="0"
                                 Grid.Column="0"
                                 d:Header="Title" 
                                 Header="{Binding languages.UserListTitle}">
 
-                                <ListBox 
+                                    <ListBox 
                                     FontSize="12"
                                     SelectedValuePath="UserName"
                                     DisplayMemberPath="UserName"
                                     ItemsSource="{Binding UserLists}"
                                     SelectedValue="{Binding SwitchUser, Mode=OneWayToSource}"/>
 
-                            </GroupBox>
+                                </GroupBox>
 
-                            <Button  
+                                <Button  
                                 Grid.Row="1" 
                                 Grid.Column="0" 
                                 FontSize="12" 
@@ -466,28 +467,28 @@
                                 Content="{Binding languages.DelUserBtn}"
                                 Command="{Binding DeleteUserCommand}"/>
 
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Grid Margin="50,15,20,20">
+                        <Grid Margin="50,15,20,20">
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
 
-                        <mah:ToggleSwitch
+                            <mah:ToggleSwitch
                             Grid.Row="0"
                             Grid.ColumnSpan="2"
                             Content="{Binding languages.BackgroundCkB}" 
@@ -495,7 +496,7 @@
                             IsOn="{Binding IsWebBg}"
                             Command="{Binding IsWebToggleOnCommand}"/>
 
-                        <mah:ToggleSwitch
+                            <mah:ToggleSwitch
                             Grid.Row="1" 
                             Grid.ColumnSpan="2"
                             Content="{Binding languages.BackgroundXK}" 
@@ -503,21 +504,21 @@
                             IsOn="{Binding UseXunkongWallpaper}"
                             Command="{Binding IsDailyBackgroundCommand}"/>
 
-                        <mah:ToggleSwitch
+                            <mah:ToggleSwitch
                             Grid.Row="2"
                             Grid.ColumnSpan="2" 
                             Content="{Binding languages.StartedCloseCkb}"
                             Style="{StaticResource ToggleSwitchStyle}"
                             IsOn="{Binding IsRunThenClose}"/>
 
-                        <mah:ToggleSwitch 
+                            <mah:ToggleSwitch 
                             Grid.Row="3"
                             Grid.ColumnSpan="2" 
                             Content="{Binding languages.NoCheckUpdateCkb}" 
                             Style="{StaticResource ToggleSwitchStyle}"
                             IsOn="{Binding IsCloseUpdate}"/>
 
-                        <!--<mah:ToggleSwitch 
+                            <!--<mah:ToggleSwitch 
                             Grid.Row="4"
                             Grid.ColumnSpan="2" 
                             Content="使用右侧自定义每日一图" 
@@ -525,39 +526,39 @@
                             IsOn="{Binding IsLocalDailyImage}"
                             Command="{Binding IsLocalDailyImageCommand}"/>-->
 
-                        <Button
+                            <Button
                             Grid.Row="5" 
                             Grid.Column="0"
                             Style="{StaticResource ProgarmSettingButtonStyle}" 
                             Content="{Binding languages.CheckUpdateBtn}"
                             IsEnabled="{Binding PageUiStatus}"
                             Command="{Binding CheckUpdateCommand}"/>
-                        
-                        <Button 
+
+                            <Button 
                             Grid.Row="6" 
                             Grid.Column="0"
                             Style="{StaticResource ProgarmSettingButtonStyle}" 
                             Content="{Binding languages.OpenProgameFolderBtn}" 
                             IsEnabled="{Binding PageUiStatus}"
                             Command="{Binding OpenApplicationFolderCommand}"/>
-                        
-                        <Button 
+
+                            <Button 
                             Grid.Row="5"
                             Grid.Column="1" 
                             Style="{StaticResource ProgarmSettingButtonStyle}"
                             Content="{Binding languages.ProgameLanguageSetBtn}"
                             IsEnabled="{Binding PageUiStatus}"
                             Command="{Binding SwitchLanguagePageCommand}"/>
-                        
-                        <Button 
+
+                            <Button 
                             Grid.Row="6"
                             Grid.Column="1" 
                             Style="{StaticResource ProgarmSettingButtonStyle}"
                             Content="{Binding languages.SetMainBackgroundBtn}" 
                             IsEnabled="{Binding PageUiStatus}"
                             Command="{Binding SetMainBackgroundCommand}"/>
-                        
-                        <Button
+
+                            <Button
                             Grid.Row="7" 
                             Grid.Column="0"
                             Style="{StaticResource ProgarmSettingButtonStyle}" 
@@ -565,14 +566,14 @@
                             IsEnabled="{Binding PageUiStatus}"
                             Command="{Binding RecoverDefaultSizeToMainCommand}"/>
 
-                        <Button
+                            <Button
                             Grid.Row="7" 
                             Grid.Column="1"
                             Style="{StaticResource ProgarmSettingButtonStyle}" 
                             Content="另存今日背景" 
                             IsEnabled="{Binding PageUiStatus}"
                             Command="{Binding SaveBackgroundCommand}"/>
-                        <!--<ListBox
+                            <!--<ListBox
                             Margin="0,0,0,5"
                             BorderBrush="#ccc"
                             BorderThickness="2"
@@ -599,9 +600,10 @@
                             Width="80"
                             Text="{Binding InputPid}"
                             HorizontalAlignment="Right"/>-->
-                    </Grid>
-                </mah:FlipView>
+                        </Grid>
+                    </mah:FlipView>
+                </Grid>
             </Grid>
-        </Grid>
+        </Border>
     </Grid>
 </UserControl>

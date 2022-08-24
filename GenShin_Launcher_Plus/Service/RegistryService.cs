@@ -25,7 +25,7 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="name"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public string? GetFromRegistry(string name, string port)
+        public string? GetFromRegistry(string name, string port, bool isSaveGameConfig)
         {
             RegistryModel userRegistry = new();
             userRegistry.Name = name;
@@ -35,17 +35,22 @@ namespace GenShin_Launcher_Plus.Service
                 if (port == "CN")
                 {
                     object? cnsdk = Registry.GetValue(CnPathKey, CnSdkKey, string.Empty);
-                    object? data = Registry.GetValue(CnPathKey, DataKey, string.Empty);
                     userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])cnsdk);
-                    userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
-
+                    if (isSaveGameConfig)
+                    {
+                        object? data = Registry.GetValue(CnPathKey, DataKey, string.Empty);
+                        userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
+                    }
                 }
                 else if (port == "Global")
                 {
                     object? globalsdk = Registry.GetValue(GlobalPathKey, GlobalSdkKey, string.Empty);
-                    object? data = Registry.GetValue(GlobalPathKey, DataKey, string.Empty);
                     userRegistry.MIHOYOSDK_ADL_PROD = Encoding.UTF8.GetString((byte[])globalsdk);
-                    userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
+                    if (isSaveGameConfig)
+                    {
+                        object? data = Registry.GetValue(GlobalPathKey, DataKey, string.Empty);
+                        userRegistry.GENERAL_DATA = Encoding.UTF8.GetString((byte[])data);
+                    }
                 }
             }
             catch
@@ -66,19 +71,22 @@ namespace GenShin_Launcher_Plus.Service
             RegistryModel userRegistry = JsonConvert.DeserializeObject<RegistryModel>(json);
             if (userRegistry.MIHOYOSDK_ADL_PROD != null &&
                 userRegistry.MIHOYOSDK_ADL_PROD != "null" &&
-                userRegistry.MIHOYOSDK_ADL_PROD != string.Empty &&
-                userRegistry.GENERAL_DATA != null &&
-                userRegistry.GENERAL_DATA != "null" &&
-                userRegistry.GENERAL_DATA != string.Empty)
+                userRegistry.MIHOYOSDK_ADL_PROD != string.Empty)
                 if (userRegistry.Port == "CN")
                 {
                     Registry.SetValue(CnPathKey, CnSdkKey, Encoding.UTF8.GetBytes(userRegistry.MIHOYOSDK_ADL_PROD));
-                    Registry.SetValue(CnPathKey, DataKey, Encoding.UTF8.GetBytes(userRegistry.GENERAL_DATA));
+                    if (userRegistry.GENERAL_DATA != null && userRegistry.GENERAL_DATA != "null" && userRegistry.GENERAL_DATA != string.Empty)
+                    {
+                        Registry.SetValue(CnPathKey, DataKey, Encoding.UTF8.GetBytes(userRegistry.GENERAL_DATA));
+                    }
                 }
                 else if (userRegistry.Port == "Global")
                 {
                     Registry.SetValue(GlobalPathKey, GlobalSdkKey, Encoding.UTF8.GetBytes(userRegistry.MIHOYOSDK_ADL_PROD));
-                    Registry.SetValue(GlobalPathKey, DataKey, Encoding.UTF8.GetBytes(userRegistry.GENERAL_DATA));
+                    if (userRegistry.GENERAL_DATA != null && userRegistry.GENERAL_DATA != "null" && userRegistry.GENERAL_DATA != string.Empty)
+                    {
+                        Registry.SetValue(GlobalPathKey, DataKey, Encoding.UTF8.GetBytes(userRegistry.GENERAL_DATA));
+                    }
                 }
                 else
                 {

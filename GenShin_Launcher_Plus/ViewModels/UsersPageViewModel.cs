@@ -2,9 +2,7 @@
 using GenShin_Launcher_Plus.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
 using System.IO;
-using System.Windows;
 using System.Windows.Input;
 using GenShin_Launcher_Plus.Service.IService;
 using MahApps.Metro.Controls.Dialogs;
@@ -28,6 +26,8 @@ namespace GenShin_Launcher_Plus.ViewModels
             _userDataService = new UserDataService();
         }
 
+        public bool IsSaveGameConfig { get; set; }
+
         private IRegistryService _registryService;
         public IRegistryService RegistryService { get => _registryService; }
 
@@ -45,9 +45,9 @@ namespace GenShin_Launcher_Plus.ViewModels
             bool isGlobal = !File.Exists(Path.Combine(App.Current.DataModel.GamePath, "YuanShen.exe"));
             //判断isGlobal值，为True时为Cn，否则为Global
             string gamePort = isGlobal ? "Global" : "CN";
-            if(Name!=null&&Name!=string.Empty)
+            if (Name != null && Name != string.Empty)
             {
-                string userdata = RegistryService.GetFromRegistry(Name, gamePort);
+                string userdata = RegistryService.GetFromRegistry(Name, gamePort,IsSaveGameConfig);
                 File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserData", Name), userdata);
                 App.Current.NoticeOverAllBase.UserLists = UserDataService.ReadUserList();
                 RemoveThisPage();
@@ -61,7 +61,6 @@ namespace GenShin_Launcher_Plus.ViewModels
                     new MetroDialogSettings()
                     { AffirmativeButtonText = languages.Determine });
             }
-
         }
 
         public ICommand RemoveThisPageCommand { get; set; }
