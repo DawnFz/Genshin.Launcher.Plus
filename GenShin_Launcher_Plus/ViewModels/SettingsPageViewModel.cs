@@ -30,7 +30,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             dialogCoordinator = instance;
 
-            _gameConvert = new ConvertService();
+            _gameConvert = new GameConvertService();
             _userDataService = new UserDataService();
             _registryService = new RegistryService();
             _settingService = new SettingService(this);
@@ -70,8 +70,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         }
 
 
-        private IConvertService _gameConvert;
-        public IConvertService GameConvert { get => _gameConvert; }
+        private IGameConvertService _gameConvert;
+        public IGameConvertService GameConvert { get => _gameConvert; }
 
         private ISettingService _settingService;
         public ISettingService SettingService { get => _settingService; }

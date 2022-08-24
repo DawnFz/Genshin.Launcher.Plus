@@ -8,7 +8,7 @@
         /// <param name="name"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        string? GetFromRegistry(string name, string port);
+        string? GetFromRegistry(string name, string port,bool isSaveGameConfig);
 
         /// <summary>
         /// 写入数据到注册表

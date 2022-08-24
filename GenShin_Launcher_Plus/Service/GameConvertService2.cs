@@ -4,14 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace GenShin_Launcher_Plus.Service
 {
-    internal class ConvertService : IConvertService
+    internal class ConvertService : IGameConvertService
     {
         private const string CN_DIRECTORY = "CnFile";
         private const string GLOBAL_DIRECTORY = "GlobalFile";
@@ -192,6 +189,35 @@ namespace GenShin_Launcher_Plus.Service
         /// <param name="vm"></param>
         /// <exception cref="NotImplementedException"></exception>
         public void SaveGameConfig(SettingsPageViewModel vm)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 该方法在本实现中已弃用
+        /// </summary>
+        /// <param name="dirpath"></param>
+        /// <param name="filepath"></param>
+        /// <param name="length"></param>
+        /// <param name="vm"></param>
+        /// <param name="surfix"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public bool CheckFileIntegrity(string dirpath, string[] filepath, int length, SettingsPageViewModel vm, string surfix = "")
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 该方法在本实现中已弃用
+        /// </summary>
+        /// <param name="originalfile"></param>
+        /// <param name="newfile"></param>
+        /// <param name="scheme"></param>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Task ReplaceGameFiles(string[] originalfile, string[] newfile, string scheme, SettingsPageViewModel vm)
         {
             throw new NotImplementedException();
         }
