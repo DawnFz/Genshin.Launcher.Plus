@@ -43,7 +43,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         private ImageBrush _Background;
         public ImageBrush Background { get => _Background; set => SetProperty(ref _Background, value); }
 
-        public string MainWidth
+        public double MainWidth
         {
             get => App.Current.DataModel.MainWidth;
             set
@@ -52,7 +52,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 App.Current.DataModel.SaveDataToFile();
             }
         }
-        public string MainHeight
+        public double MainHeight
         {
             get => App.Current.DataModel.MainHeight;
             set
