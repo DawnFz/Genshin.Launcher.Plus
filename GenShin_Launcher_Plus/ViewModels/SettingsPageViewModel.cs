@@ -43,7 +43,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             GameFileConvertCommand = new AsyncRelayCommand(GameFileConvert);
 
             SwitchAccountCommand = new RelayCommand(SwitchAccount);
-            /*AddDailyImagePidCommand = new RelayCommand(AddDailyImagePid);*/
+            //AddDailyImagePidCommand = new RelayCommand(AddDailyImagePid); => 新转换逻辑(编写中)
             SwitchGameSettingsCommand = new RelayCommand(SwitchGameSettings);
             SwitchConvertClientCommand = new RelayCommand(SwitchConvertClient);
             SwitchProgarmSettingCommand = new RelayCommand(SwitchProgarmSetting);
@@ -743,6 +743,7 @@ namespace GenShin_Launcher_Plus.ViewModels
                 App.Current.NoticeOverAllBase.IsSwitchUser = "Visible";
                 RegistryService.SetToRegistry(SwitchUser);
             }
+            //自定义每日一图(编写中)
 /*            if(DailyImagePidIndex>-1&& DailyImagePidIndex<DailyImageSource.Count)
             {        
                 App.Current.DataModel.ImagePid = DailyImageSource[DailyImagePidIndex].ImagePid;

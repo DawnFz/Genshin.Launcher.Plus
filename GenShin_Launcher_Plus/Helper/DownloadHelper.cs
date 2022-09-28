@@ -47,7 +47,7 @@ namespace GenShin_Launcher_Plus.Helper
 
             using (Stream responseStream = await response.Content.ReadAsStreamAsync())
             {
-                int bufferSize = 1024;
+                int bufferSize = 2048;
                 using (FileStream fileStream = new(fileName, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize, true))
                 {
                     byte[] buffer = new byte[bufferSize];
