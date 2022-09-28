@@ -48,7 +48,6 @@ namespace GenShin_Launcher_Plus.Service
           "GenshinImpact_Data/Plugins/xlua.dll",
           "GenshinImpact_Data/StreamingAssets/20527480.blk",
           "mhyprot3.Sys",
-          "mhyprot2.Sys",
           //
           "Audio_Chinese_pkg_version",
           "pkg_version",
@@ -92,7 +91,6 @@ namespace GenShin_Launcher_Plus.Service
           "YuanShen_Data/Plugins/xlua.dll",
           "YuanShen_Data/StreamingAssets/20527480.blk",
           "mhyprot3.Sys",
-          "mhyprot2.Sys",
           //
           "Audio_Chinese_pkg_version",
           "pkg_version",
@@ -232,7 +230,7 @@ namespace GenShin_Launcher_Plus.Service
             string pkgfile = App.Current.UpdateObject.PkgVersion;
             if (!File.Exists($"{scheme}/{pkgfile}"))
             {
-                vm.ConvertingLog = $"{App.Current.Language.NewPkgVer} : [{ pkgfile }]\r\n";
+                vm.ConvertingLog = $"{App.Current.Language.NewPkgVer} : [{pkgfile}]\r\n";
                 ProcessStartInfo info = new()
                 {
                     FileName = "https://pan.baidu.com/s/1-5zQoVfE7ImdXrn8OInKqg",
