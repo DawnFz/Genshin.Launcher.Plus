@@ -18,6 +18,7 @@ namespace GenShin_Launcher_Plus.Service
           "GenshinImpact_Data/globalgamemanagers.assets",
           "GenshinImpact_Data/globalgamemanagers.assets.resS",
           "GenshinImpact_Data/upload_crash.exe",
+          "GenshinImpact_Data/blueReporter.exe",
           "GenshinImpact_Data/Managed/Metadata/global-metadata.dat" ,
           "GenshinImpact_Data/Native/Data/Metadata/global-metadata.dat",
           "GenshinImpact_Data/Native/UserAssembly.dll",
@@ -46,12 +47,19 @@ namespace GenShin_Launcher_Plus.Service
           "GenshinImpact_Data/Plugins/UnityNativeChromaSDK.dll",
           "GenshinImpact_Data/Plugins/UnityNativeChromaSDK3.dll",
           "GenshinImpact_Data/Plugins/xlua.dll",
+          "GenshinImpact_Data/Plugins/vulkan-1.dll",
+          "GenshinImpact_Data/Plugins/vk_swiftshader.dll",
+          "GenshinImpact_Data/Plugins/Telemetry.dll",
+          "GenshinImpact_Data/Plugins/MiHoYoMTRSDK.dll",
+          "GenshinImpact_Data/Plugins/kcp.dll",
+          "GenshinImpact_Data/Plugins/Astrolabe.dll",
           "GenshinImpact_Data/StreamingAssets/20527480.blk",
           "mhyprot3.Sys",
           //
           "Audio_Chinese_pkg_version",
           "pkg_version",
           "UnityPlayer.dll",
+          "mhypbase.dll",
           "GenshinImpact.exe"
         };
 
@@ -61,6 +69,7 @@ namespace GenShin_Launcher_Plus.Service
           "YuanShen_Data/globalgamemanagers.assets",
           "YuanShen_Data/globalgamemanagers.assets.resS",
           "YuanShen_Data/upload_crash.exe",
+          "YuanShen_Data/blueReporter.exe",
           "YuanShen_Data/Managed/Metadata/global-metadata.dat" ,
           "YuanShen_Data/Native/Data/Metadata/global-metadata.dat",
           "YuanShen_Data/Native/UserAssembly.dll",
@@ -89,12 +98,19 @@ namespace GenShin_Launcher_Plus.Service
           "YuanShen_Data/Plugins/UnityNativeChromaSDK.dll",
           "YuanShen_Data/Plugins/UnityNativeChromaSDK3.dll",
           "YuanShen_Data/Plugins/xlua.dll",
+          "YuanShen_Data/Plugins/vulkan-1.dll",
+          "YuanShen_Data/Plugins/vk_swiftshader.dll",
+          "YuanShen_Data/Plugins/Telemetry.dll",
+          "YuanShen_Data/Plugins/MiHoYoMTRSDK.dll",
+          "YuanShen_Data/Plugins/kcp.dll",
+          "YuanShen_Data/Plugins/Astrolabe.dll",
           "YuanShen_Data/StreamingAssets/20527480.blk",
           "mhyprot3.Sys",
           //
           "Audio_Chinese_pkg_version",
           "pkg_version",
           "UnityPlayer.dll",
+          "mhypbase.dll",
           "YuanShen.exe"
         };
 
