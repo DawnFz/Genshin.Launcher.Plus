@@ -46,6 +46,7 @@
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Snap.Hutao.Service.Game.Unlocker" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -74,10 +75,6 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DGP.Genshin.FPSUnlocking\DGP.Genshin.FPSUnlocking.csproj" />
   </ItemGroup>
 
   <ItemGroup>
