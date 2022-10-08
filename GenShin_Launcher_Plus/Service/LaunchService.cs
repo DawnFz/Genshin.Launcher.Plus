@@ -1,15 +1,14 @@
-﻿using DGP.Genshin.FPSUnlocking;
-using GenShin_Launcher_Plus.Helper;
+﻿using GenShin_Launcher_Plus.Helper;
 using GenShin_Launcher_Plus.Models;
-using GenShin_Launcher_Plus.ViewModels;
+using GenShin_Launcher_Plus.Service.IService;
+using MahApps.Metro.Controls.Dialogs;
+using Snap.Hutao.Service.Game.Unlocker;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using MahApps.Metro.Controls.Dialogs;
-using GenShin_Launcher_Plus.Service.IService;
 
 namespace GenShin_Launcher_Plus.Service
 {
@@ -70,23 +69,30 @@ namespace GenShin_Launcher_Plus.Service
             //判断是否启用解锁FPS
             if (App.Current.DataModel.IsUnFPS)
             {
-                Unlocker unlocker = int.TryParse(App.Current.DataModel.MaxFps, out int targetFps)
-                    ? new Unlocker(game, targetFps)
-                    : new Unlocker(game, 144);
-                UnlockResult result = await unlocker.StartProcessAndUnlockAsync();
+                GameFpsUnlocker unlocker = new(game, int.TryParse(App.Current.DataModel.MaxFps, out int targetFps) ? targetFps : 144);
+                
+                game.Start();
+
+                TimeSpan find = TimeSpan.FromMilliseconds(100);
+                TimeSpan limit = TimeSpan.FromMilliseconds(10000);
+                TimeSpan adjust = TimeSpan.FromMilliseconds(2000);
+
+                await unlocker.UnlockAsync(find, limit, adjust);
+
                 Application.Current.MainWindow.WindowState = WindowState.Normal;
             }
             else
             {
+                bool started = game.Start();
+
                 //判断是否开启启动游戏后关闭原神启动器Plus
                 if (App.Current.DataModel.IsRunThenClose)
                 {
-                    game.Start();
                     Environment.Exit(0);
                 }
                 else
                 {
-                    if (game.Start())
+                    if (started)
                     {
                         await game.WaitForExitAsync();
                         Application.Current.MainWindow.WindowState = WindowState.Normal;
@@ -112,11 +118,11 @@ namespace GenShin_Launcher_Plus.Service
         /// </summary>
         public void CreateGamePortList()
         {
-            App.Current.NoticeOverAllBase.GamePortLists = new();
-            App.Current.NoticeOverAllBase.GamePortLists.Add(
-                new GamePortListModel { GamePort = App.Current.Language.GameClientTypePStr });
-            App.Current.NoticeOverAllBase.GamePortLists.Add(
-                new GamePortListModel { GamePort = App.Current.Language.GameClientTypeBStr });
+            App.Current.NoticeOverAllBase.GamePortLists = new()
+            {
+                new () { GamePort = App.Current.Language.GameClientTypePStr },
+                new () { GamePort = App.Current.Language.GameClientTypeBStr }
+            };
         }
     }
 }
