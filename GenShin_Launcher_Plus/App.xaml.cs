@@ -16,6 +16,7 @@ namespace GenShin_Launcher_Plus
         public App()
         {
             LoadProgramCore = new();
+            DataModel = new();
             InitializeComponent();
         }
 
@@ -30,7 +31,7 @@ namespace GenShin_Launcher_Plus
         /// <summary>
         /// 用于检查程序是否运行在游戏目录
         /// </summary>
-        private void RunPathCheck()
+        private static void RunPathCheck()
         {
             if (File.Exists(@"YuanShen.exe") &&
                 Directory.Exists(@"YuanShen_Data") ||

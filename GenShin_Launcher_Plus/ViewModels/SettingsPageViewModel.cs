@@ -30,7 +30,8 @@ namespace GenShin_Launcher_Plus.ViewModels
         {
             dialogCoordinator = instance;
 
-            _gameConvert = new GameConvertService();
+            //_gameConvert = new GameConvertService();
+            _gameConvert = new ConvertService();
             _userDataService = new UserDataService();
             _registryService = new RegistryService();
             _settingService = new SettingService(this);
@@ -155,7 +156,7 @@ namespace GenShin_Launcher_Plus.ViewModels
             set
             {
                 App.Current.DataModel.IsLocalDailyImage = value;
-                SetProperty(ref _IsLocalDailyImage,value);
+                SetProperty(ref _IsLocalDailyImage, value);
             }
         }
 
@@ -744,12 +745,12 @@ namespace GenShin_Launcher_Plus.ViewModels
                 RegistryService.SetToRegistry(SwitchUser);
             }
             //自定义每日一图(编写中)
-/*            if(DailyImagePidIndex>-1&& DailyImagePidIndex<DailyImageSource.Count)
-            {        
-                App.Current.DataModel.ImagePid = DailyImageSource[DailyImagePidIndex].ImagePid;
-                App.Current.DataModel.ImageDate = DailyImageSource[DailyImagePidIndex].ImageDate;
-                App.Current.DataModel.UseXunkongWallpaper = false;
-            }*/
+            /*            if(DailyImagePidIndex>-1&& DailyImagePidIndex<DailyImageSource.Count)
+                        {        
+                            App.Current.DataModel.ImagePid = DailyImageSource[DailyImagePidIndex].ImagePid;
+                            App.Current.DataModel.ImageDate = DailyImageSource[DailyImagePidIndex].ImageDate;
+                            App.Current.DataModel.UseXunkongWallpaper = false;
+                        }*/
             App.Current.DataModel.Height = Height;
             App.Current.DataModel.Width = Width;
             GameConvert.SaveGameConfig(this);
@@ -758,19 +759,19 @@ namespace GenShin_Launcher_Plus.ViewModels
             ThisPageRemove();
         }
 
-/*        //添加自定义PID到自定义每日一图列表
-        public ICommand AddDailyImagePidCommand { get; set; }
-        private async void AddDailyImagePid()
-        {
-            if (!_settingService.SetDailyImageDataToJson(this))
-            {
-                await dialogCoordinator.ShowMessageAsync(
-                    this, languages.Error, "已有相同PID在列表中",
-                    MessageDialogStyle.Affirmative,
-                    new MetroDialogSettings()
-                    { AffirmativeButtonText = languages.Determine });
-            }
-        }*/
+        /*        //添加自定义PID到自定义每日一图列表
+                public ICommand AddDailyImagePidCommand { get; set; }
+                private async void AddDailyImagePid()
+                {
+                    if (!_settingService.SetDailyImageDataToJson(this))
+                    {
+                        await dialogCoordinator.ShowMessageAsync(
+                            this, languages.Error, "已有相同PID在列表中",
+                            MessageDialogStyle.Affirmative,
+                            new MetroDialogSettings()
+                            { AffirmativeButtonText = languages.Determine });
+                    }
+                }*/
 
         //关闭设置页面
         public ICommand ThisPageRemoveCommand { get; set; }
