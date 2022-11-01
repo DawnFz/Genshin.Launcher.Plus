@@ -24,8 +24,6 @@ namespace GenShin_Launcher_Plus
             MainSizeBinding();
             MainFlipView.DataContext = App.Current.NoticeOverAllBase;
             HomePage.Children.Add(new Views.HomePage());
-            Height = Convert.ToDouble(App.Current.DataModel.MainHeight);
-            Width = Convert.ToDouble(App.Current.DataModel.MainWidth);
         }
 
         private void WindowDragMove(object sender, MouseButtonEventArgs e)

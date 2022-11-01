@@ -45,26 +45,22 @@ namespace GenShin_Launcher_Plus.Helper
             }
             DownloadBarMax = (double)response.Content.Headers.ContentLength;
 
-            using (Stream responseStream = await response.Content.ReadAsStreamAsync())
+            using Stream responseStream = await response.Content.ReadAsStreamAsync();
+            int bufferSize = 2048;
+            using FileStream fileStream = new(fileName, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize, true);
+            byte[] buffer = new byte[bufferSize];
+            long progressBarValue = 0;
+            int bytesRead = 0;
+            do
             {
-                int bufferSize = 2048;
-                using (FileStream fileStream = new(fileName, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize, true))
-                {
-                    byte[] buffer = new byte[bufferSize];
-                    long progressBarValue = 0;
-                    int bytesRead = 0;
-                    do
-                    {
-                        bytesRead = await responseStream.ReadAsync(buffer, 0, buffer.Length);
-                        await fileStream.WriteAsync(buffer, 0, bytesRead);
-                        progressBarValue += bytesRead;
-                        DownloadBarValue = progressBarValue;
-                        //fire and forget
-                        SetProgressBar();
-                    }
-                    while (bytesRead > 0);
-                }
+                bytesRead = await responseStream.ReadAsync(buffer, 0, buffer.Length);
+                await fileStream.WriteAsync(buffer, 0, bytesRead);
+                progressBarValue += bytesRead;
+                DownloadBarValue = progressBarValue;
+                //fire and forget
+                SetProgressBar();
             }
+            while (bytesRead > 0);
         }
 
         /// <summary>

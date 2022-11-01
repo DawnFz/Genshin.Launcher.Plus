@@ -21,7 +21,6 @@ namespace GenShin_Launcher_Plus.Core
             TextReader iniFile = null;
             string strLine = null;
             string currentRoot = null;
-            string[] keyPair = null;
             iniFilePath = iniPath;
             if (File.Exists(iniPath))
             {
@@ -40,11 +39,10 @@ namespace GenShin_Launcher_Plus.Core
                             }
                             else
                             {
-                                keyPair = strLine.Split(new char[] { '=' }, 2);
+                                string[] keyPair = strLine.Split(new char[] { '=' }, 2);
                                 SectionPair sectionPair;
                                 string value = null;
-                                if (currentRoot == null)
-                                    currentRoot = "ROOT";
+                                currentRoot ??= "ROOT";
                                 sectionPair.Section = currentRoot;
                                 sectionPair.Key = keyPair[0];
                                 if (keyPair.Length > 1)
@@ -55,10 +53,7 @@ namespace GenShin_Launcher_Plus.Core
                         strLine = iniFile.ReadLine();
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error : {ex.Message}");
-                }
+                catch { }
                 finally
                 {
                     if (iniFile != null)
@@ -77,21 +72,17 @@ namespace GenShin_Launcher_Plus.Core
         /// <summary>
         /// 根据类型返回相应内容
         /// </summary>
-        public string GetSetting(string sectionName, string settingName, int i=0)
+        public string GetSetting(string sectionName, string settingName, int i = 0)
         {
             SectionPair sectionPair;
             sectionPair.Section = sectionName;
             sectionPair.Key = settingName;
-            switch (i)
+            return i switch
             {
-                case 1:
-                    return (string)keyPairs[sectionPair] != string.Empty ? (string)keyPairs[sectionPair] : "1";
-                case 2:
-                    return (string)keyPairs[sectionPair] != string.Empty ? (string)keyPairs[sectionPair] : "False";
-                default:
-                    return (string)keyPairs[sectionPair];
-            }
-
+                1 => (string)keyPairs[sectionPair] != string.Empty ? (string)keyPairs[sectionPair] : "1",
+                2 => (string)keyPairs[sectionPair] != string.Empty ? (string)keyPairs[sectionPair] : "False",
+                _ => (string)keyPairs[sectionPair],
+            };
         }
 
         public void AddSetting(string sectionName, string settingName, string settingValue)
@@ -107,7 +98,6 @@ namespace GenShin_Launcher_Plus.Core
         public void SaveSettings()
         {
             ArrayList sections = new();
-            string tmpValue = "";
             string strToSave = "";
             foreach (SectionPair sectionPair in keyPairs.Keys)
             {
@@ -121,7 +111,7 @@ namespace GenShin_Launcher_Plus.Core
                 {
                     if (sectionPair.Section == section)
                     {
-                        tmpValue = (string)keyPairs[sectionPair];
+                        string tmpValue = (string)keyPairs[sectionPair];
                         if (tmpValue != null)
                             tmpValue = "=" + tmpValue;
                         strToSave += (sectionPair.Key + tmpValue + "\r\n");
@@ -135,10 +125,7 @@ namespace GenShin_Launcher_Plus.Core
                 tw.Write(strToSave);
                 tw.Close();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error : {ex.Message}");
-            }
+            catch { }
         }
     }
 }

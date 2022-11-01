@@ -84,9 +84,11 @@ namespace GenShin_Launcher_Plus.Service
         /// <returns></returns>
         public List<GameWindowModeListModel> CreateGameWindowModeList()
         {
-            List<GameWindowModeListModel> list = new();
-            list.Add(new GameWindowModeListModel { GameWindowMode = App.Current.Language.WindowMode });
-            list.Add(new GameWindowModeListModel { GameWindowMode = App.Current.Language.Fullscreen });
+            List<GameWindowModeListModel> list = new()
+            {
+                new GameWindowModeListModel { GameWindowMode = App.Current.Language.WindowMode },
+                new GameWindowModeListModel { GameWindowMode = App.Current.Language.Fullscreen }
+            };
             return list;
         }
 

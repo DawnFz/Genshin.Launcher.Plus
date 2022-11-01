@@ -14,7 +14,6 @@ namespace GenShin_Launcher_Plus.Core
     {
         public LoadProgramCore()
         {
-            App.Current.DataModel = new();
             App.Current.NoticeOverAllBase = new();
         }
 
