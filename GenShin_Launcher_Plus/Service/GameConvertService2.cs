@@ -1,4 +1,5 @@
-﻿using GenShin_Launcher_Plus.Helper;
+﻿using ControlzEx.Theming;
+using GenShin_Launcher_Plus.Helper;
 using GenShin_Launcher_Plus.Service.IService;
 using GenShin_Launcher_Plus.ViewModels;
 using System;
@@ -31,7 +32,6 @@ namespace GenShin_Launcher_Plus.Service
         private List<string> GameFileList { get; set; }
         public ConvertService()
         {
-            GameFileList = new List<string>();
             GamePath = App.Current.DataModel.GamePath;
             CurrentPath = Environment.CurrentDirectory;
         }
@@ -70,6 +70,7 @@ namespace GenShin_Launcher_Plus.Service
         /// <exception cref="NotImplementedException"></exception>
         public async Task ConvertGameFileAsync(SettingsPageViewModel vm)
         {
+            GameFileList = new List<string>();
             Scheme = GetCurrentSchemeName();
             PkgPerfix = Scheme == CN_DIRECTORY ? GLOBAL_DIRECTORY : CN_DIRECTORY;
             GameSource = Scheme == CN_DIRECTORY ? YUANSHEN_DATA : GENSHINIMPACT_DATA;
@@ -101,6 +102,12 @@ namespace GenShin_Launcher_Plus.Service
                 else if (Directory.Exists(Path.Combine(CurrentPath, PkgPerfix)))
                 {
                     //直接从 pkg解压后的目录 处替换
+                    bool up = CheckPackageVersion(ReplaceSourceDirectory, vm);
+                    if (!up)
+                    {
+                        vm.ConvertState = false;
+                        return;
+                    }
                     vm.StateIndicator = "正在获取文件清单";
                     await GetFilesName(Path.Combine(CurrentPath, ReplaceSourceDirectory));
                     await ReplaceGameFiles(vm);
@@ -111,7 +118,12 @@ namespace GenShin_Launcher_Plus.Service
                     //解压 pkg 文件
                     if (Decompress(PkgPerfix))
                     {
-
+                        bool up = CheckPackageVersion(ReplaceSourceDirectory, vm);
+                        if (!up)
+                        {
+                            vm.ConvertState = false;
+                            return;
+                        }
                         //直接从 pkg解压后的目录 处替换
                         vm.StateIndicator = "正在获取文件清单";
                         await GetFilesName(Path.Combine(CurrentPath, ReplaceSourceDirectory));
@@ -219,6 +231,9 @@ namespace GenShin_Launcher_Plus.Service
                     vm.ConvertingLog += $"{gameFilePath}替换失败，文件有所缺失\r\n";
                 }
             }
+
+            string cps = Scheme == CN_DIRECTORY ? "pcadbdpz" : "mihoyo";
+            vm.IsMihoyo = cps == "mihoyo" ? 0 : 2;
             vm.ConvertingLog += $"所有文件替换完成，尽情享受吧...\r\n";
             vm.ConvertState = true;
         }
@@ -260,10 +275,11 @@ namespace GenShin_Launcher_Plus.Service
             vm.ConvertingLog += $"新游戏本体路径:{Path.Combine(GamePath, $"{gameExecute}")} \r\n";
             File.Move(Path.Combine(GamePath, $"{gameExecute}.bak"), Path.Combine(GamePath, gameExecute));
             Directory.Move(Path.Combine(GamePath, GameSource), Path.Combine(GamePath, GameDest));
+
+            string cps = Scheme == CN_DIRECTORY ? "pcadbdpz" : "mihoyo";
+            vm.IsMihoyo = cps == "mihoyo" ? 0 : 2;
             vm.ConvertingLog += $"所有文件还原完成，尽情享受吧...\r\n";
             vm.ConvertState = true;
-
-
         }
 
         /// <summary>
