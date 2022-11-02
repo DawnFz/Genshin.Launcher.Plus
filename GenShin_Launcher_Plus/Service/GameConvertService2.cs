@@ -105,6 +105,7 @@ namespace GenShin_Launcher_Plus.Service
                     bool up = CheckPackageVersion(ReplaceSourceDirectory, vm);
                     if (!up)
                     {
+                        Directory.Delete($"{CurrentPath}/{ReplaceSourceDirectory}", true);
                         vm.ConvertState = false;
                         return;
                     }
@@ -122,6 +123,7 @@ namespace GenShin_Launcher_Plus.Service
                         if (!up)
                         {
                             vm.ConvertState = false;
+                            Directory.Delete($"{CurrentPath}/{ReplaceSourceDirectory}", true);
                             return;
                         }
                         //直接从 pkg解压后的目录 处替换
