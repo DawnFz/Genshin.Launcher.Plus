@@ -493,7 +493,7 @@ namespace GenShin_Launcher_Plus.ViewModels
         public ICommand OpenPkgDownloadUrlCommand { get; set; }
         private void OpenPkgDownloadUrl()
         {
-            FileHelper.OpenUrl("https://resource.snapgenshin.com/Plugins/Genshin.Launcher.Plus.SE.Plugin/");
+            FileHelper.OpenUrl("https://cloud.06dn.com/s/VqYEhY");
         }
 
         //设置页面手动检查更新命令
