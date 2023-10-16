@@ -13,7 +13,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="120px"/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="1" x:Name="RunGame" d:Content="开始游戏"
+        <Button Grid.Row="1" x:Name="RunGame" d:Content="原神，启动！"
                 Content="{Binding languages.RunGameBtn}"
                 HorizontalAlignment="Right" Margin="0,0,110,0" 
                 VerticalAlignment="Center" Height="64" Width="238" 
